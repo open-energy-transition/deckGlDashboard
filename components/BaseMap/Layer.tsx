@@ -69,8 +69,10 @@ export function MyCustomLayers(
       getFillColor: [227, 26, 28],
       pickable: true,
       autoHighlight: true,
+      onHover: () => {},
       onClick: (info, event) => {
         console.log("Clicked:", info, event);
+        handleLineClick();
       },
     }),
     new GeoJsonLayer({

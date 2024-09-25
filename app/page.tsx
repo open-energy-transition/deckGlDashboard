@@ -1,3 +1,6 @@
+import HtmlMap from "@/components/HtmlMap/HtmlMap";
+import SideBySide from "@/components/SideBySide/SideBySide";
+
 export default function Page() {
   return (
     <div className="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center text-white">
@@ -6,5 +9,8 @@ export default function Page() {
         Explore the power system buses across the globe.
       </p>
     </div>
+    // <div className="w-screen">
+    //   <HtmlMap />
+    // </div>
   );
 }

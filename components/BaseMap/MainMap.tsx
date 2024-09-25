@@ -15,9 +15,10 @@ const DATA_URL =
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
   longitude: -123.13,
-  zoom: 2,
-  maxZoom: 16,
-  pitch: 5,
+  zoom: 5,
+  minZoom: 3,
+  maxZoom: 20,
+  pitch: 30,
   bearing: 0,
 };
 
@@ -39,10 +40,11 @@ export default function MainMap({
   }, [selectedLineIds]);
 
   const handleLineClick = (info) => {
-    const clickedFeatureId = info.object?.properties?.id;
-    if (clickedFeatureId) {
-      setSelectedLineIds([clickedFeatureId]); // For multiple selections, adjust accordingly
-    }
+    // const clickedFeatureId = info.object?.properties?.id;
+    // if (clickedFeatureId) {
+    //   setSelectedLineIds([clickedFeatureId]); // For multiple selections, adjust accordingly
+    // }
+    console.log("wegvegv");
   };
 
   const layers = countries.flatMap((country) =>

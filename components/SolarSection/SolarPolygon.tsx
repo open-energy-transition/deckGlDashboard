@@ -6,14 +6,15 @@ import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
 import { US_2021_DATA, US_2050_DATA } from "./Links";
-import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { GeoJsonLayer } from "@deck.gl/layers";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
   longitude: -123.13,
-  zoom: 2,
-  maxZoom: 16,
-  pitch: 5,
+  zoom: 5,
+  minZoom: 2,
+  maxZoom: 20,
+  pitch: 25,
   bearing: 0,
 };
 
@@ -37,7 +38,7 @@ export default function SolarPolygon({
       wireframe: false,
       getElevation: 0,
       getLineColor: [75, 75, 75],
-      getFillColor: [225, 75, 75],
+      getFillColor: [225, 75, 75, 50],
       lineWidthMinPixels: 2,
       // lineWidthScale: 20,
       dashArray: [10, 5],
