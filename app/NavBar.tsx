@@ -20,6 +20,9 @@ const NavBar = () => {
         <Button variant="outline" onClick={() => router.push("/sidebyside")}>
           Polygon version 2
         </Button>
+        <Button variant="outline" onClick={() => router.push("/mainbuspie")}>
+          network version 2
+        </Button>
       </div>
     </div>
   );
