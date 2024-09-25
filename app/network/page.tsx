@@ -8,7 +8,7 @@ const page = () => {
       <div className="relative z-10">
         <Nav />
       </div>
-      <div className="absolute w-full h-full z-0 top-0 overflow-hidden ">
+      <div className="absolute w-full h-full z-0 left-0 top-0 overflow-hidden ">
         <MainMap />
       </div>
     </div>
