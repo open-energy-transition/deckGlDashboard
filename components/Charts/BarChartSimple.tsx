@@ -42,8 +42,8 @@ const chartConfig = {
 
 export default function BarChartSimple() {
   return (
-    <Card>
-      <CardHeader>
+    <Card className="bg-gray-500/40">
+      <CardHeader className="text-slate-100">
         <CardTitle>Bar Chart - Multiple</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>

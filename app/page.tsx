@@ -1,15 +1,10 @@
-import MainMap from "@/components/BaseMap/MainMap";
-import Nav from "@/components/Nav";
-
-export default function Home() {
+export default function Page() {
   return (
-    <div>
-      <div className="relative z-10">
-        <Nav />
-      </div>
-      <div className="absolute w-full h-full z-0 top-0 overflow-hidden ">
-        <MainMap />
-      </div>
+    <div className="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center text-white">
+      <h1 className="text-5xl font-bold mb-4">PyPSA Earth Dashboard</h1>
+      <p className="text-xl">
+        Explore the power system buses across the globe.
+      </p>
     </div>
   );
 }
