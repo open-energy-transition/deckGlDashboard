@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Map, { Marker } from "react-map-gl";
+import React, { useEffect, useState, useRef } from "react";
+import Map, {
+  Marker,
+  NavigationControl,
+  FullscreenControl,
+  ScaleControl,
+  GeolocateControl,
+} from "react-map-gl";
 import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
-import { MyCustomLayers } from "./Layer";
 import { US_DATA, COLUMBIA_DATA, NIGERIA_DATA } from "./Links";
-import PieDonut from "../Charts/PieDonut";
-import { Pie, Label, PieChart } from "recharts";
 import SimplePie from "./SimplePie";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -38,37 +41,62 @@ export default function HtmlMap({
 }: {
   mapStyle?: string;
 }) {
-  const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
-
-  const [selectedLineIds, setSelectedLineIds] = useState([]);
+  const [data, setData] = useState<any>(null);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    console.log(selectedLineIds);
-  }, [selectedLineIds]);
+    const fetchData = async () => {
+      initialized.current = true;
+      try {
+        // Start the fetch request
+        const response = await fetch(US_DATA.buses); // Replace with your API URL
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json(); // Parse JSON from the response
+        console.log(result);
 
-  const handleLineClick = () => {
-    // const clickedFeatureId = info.object?.properties?.id;
-    // if (clickedFeatureId) {
-    //   setSelectedLineIds([clickedFeatureId]); // For multiple selections, adjust accordingly
-    // }
-    console.log("wegvegv");
-  };
+        setData(result);
+      } catch (error) {}
+    };
 
-  const layers = countries.flatMap((country) =>
-    MyCustomLayers(
-      country.substations,
-      country.buses,
-      country.lines,
-      country.polygon,
-      country.id,
-      selectedLineIds,
-      handleLineClick
-    )
-  );
+    if (!initialized.current) {
+      fetchData();
+    }
+  }, []);
+
+  function makemarkers() {
+    const t = data.features.map((element: any) => {
+      console.log(element.geometry.coordinates[0]); //long
+      console.log(element.geometry.coordinates[1]);
+
+      return (
+        <Marker
+          longitude={element.geometry.coordinates[0]}
+          latitude={element.geometry.coordinates[1]}
+          anchor="center"
+          style={{
+            width: "60px",
+            height: "60px",
+            zIndex: 100,
+          }}
+          scale={3}
+          rotationAlignment={"map"}
+          pitchAlignment="map"
+          onClick={() => {
+            console.log("i clicked");
+          }}
+        >
+          <SimplePie />
+        </Marker>
+      );
+    });
+    return t;
+  }
 
   return (
     <DeckGL
-      layers={layers}
+      // layers={layers}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
     >
@@ -77,23 +105,7 @@ export default function HtmlMap({
         mapStyle={"mapbox://styles/mapbox/light-v9"}
         mapboxAccessToken={TOKEN}
       >
-        <Marker
-          longitude={-123.13}
-          latitude={49.254}
-          anchor="center"
-          style={{
-            // width: "20px",
-            // height: "0px",
-            zIndex: 100,
-          }}
-          scale={0.5}
-          rotationAlignment={"map"}
-          pitchAlignment="map"
-        >
-          <SimplePie />
-
-          {/* <div className="bg-slate-500 w-52 h-52 z-50"></div> */}
-        </Marker>
+        {data ? makemarkers() : <></>}
       </Map>
     </DeckGL>
   );

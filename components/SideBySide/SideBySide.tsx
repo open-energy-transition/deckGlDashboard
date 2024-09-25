@@ -1,56 +1,24 @@
 "use client";
 import * as React from "react";
 import { useState, useCallback, useMemo } from "react";
-import Map, { useControl } from "react-map-gl";
-import DeckGL from "@deck.gl/react";
+import Map, {
+  useControl,
+  NavigationControl,
+  FullscreenControl,
+  ScaleControl,
+  GeolocateControl,
+} from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { US_2021_DATA, US_2050_DATA } from "../SolarSection/Links";
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MyDropdown from "../SolarSection/MyDropdown";
+import ModePannel, { Mode } from "./Mode";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
   const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
   overlay.setProps(props);
   return null;
-}
-
-type Mode = "side-by-side" | "split-screen";
-
-function ControlPanel(props: {
-  mode: Mode;
-  onModeChange: (newMode: Mode) => void;
-}) {
-  const onModeChange = useCallback(
-    (evt) => {
-      props.onModeChange(evt.target.value as Mode);
-    },
-    [props.onModeChange]
-  );
-
-  return (
-    <div className="absolute bottom-0 right-0 z-30">
-      <h3>Side by Side</h3>
-      <p>Synchronize two maps.</p>
-
-      <div>
-        <label>Mode: </label>
-        <select value={props.mode} onChange={onModeChange}>
-          <option value="side-by-side">Side by side</option>
-          <option value="split-screen">Split screen</option>
-        </select>
-      </div>
-
-      <div className="source-link">
-        <a
-          href="https://github.com/visgl/react-map-gl/tree/7.0-release/examples/side-by-side"
-          target="_new"
-        >
-          View Code ↗
-        </a>
-      </div>
-    </div>
-  );
 }
 
 const TOKEN =
@@ -136,7 +104,10 @@ export default function SideBySide() {
           mapStyle="mapbox://styles/mapbox/light-v9"
           mapboxAccessToken={TOKEN}
         >
-          <DeckGLOverlay layers={layers} />
+          <GeolocateControl position="top-right" />
+          <FullscreenControl position="top-right" />
+          <NavigationControl position="top-right" />
+          <ScaleControl />
         </Map>
         <Map
           id="right-map"
@@ -147,9 +118,12 @@ export default function SideBySide() {
           style={RightMapStyle}
           mapStyle="mapbox://styles/mapbox/dark-v9"
           mapboxAccessToken={TOKEN}
-        ></Map>
+        >
+          <DeckGLOverlay layers={layers} />
+          <FullscreenControl position="top-left" />
+        </Map>
       </div>
-      <ControlPanel mode={mode} onModeChange={setMode} />
+      <ModePannel mode={mode} onModeChange={setMode} />
       <MyDropdown className="absolute top-0 left-0 w-3/10  overflow-hidden z-50" />
       <MyDropdown className="absolute top-0 right-0 w-3/10 overflow-hidden z-50" />
     </>
