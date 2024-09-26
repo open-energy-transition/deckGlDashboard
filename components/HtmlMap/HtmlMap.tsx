@@ -86,6 +86,9 @@ export default function HtmlMap({
           onClick={() => {
             console.log("i clicked");
           }}
+          key={
+            element.geometry.coordinates[0] - element.geometry.coordinates[1]
+          }
         >
           <SimplePie />
         </Marker>
