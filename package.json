@@ -32,7 +32,8 @@
     "react-map-gl": "^7.0.25",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.9"
   },
   "devDependencies": {
     "@types/node": "^20",
