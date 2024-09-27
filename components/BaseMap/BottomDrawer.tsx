@@ -14,27 +14,21 @@ import { Button } from "../ui/button";
 import React from "react";
 import { LongBar } from "../Charts/LongBar";
 
-const BottomDrawer = ({ height = "40%" }) => {
+const BottomDrawer = () => {
   return (
     <Drawer modal={false}>
       <DrawerTrigger className="absolute right-0 top-0 z-100 p-3">
         <Button variant="outline">Show Network Statics</Button>
       </DrawerTrigger>
-      <DrawerContent className="top-0 bg-gray-900/80 ">
-        <DrawerHeader>
-          <DrawerTitle className="text-white text-4xl">
-            Network Statics
-          </DrawerTitle>
-          <DrawerDescription className="text-orange-300">
-            veiw all network charts
+      <DrawerContent className="top-0">
+        <DrawerHeader className="pb-2">
+          <DrawerTitle className="text-4xl">Network Statics</DrawerTitle>
+          <DrawerDescription className="">
+            veiw all country level charts
           </DrawerDescription>
         </DrawerHeader>
-        {/* <SimplePie />
-        <SimpleBar /> */}
         <LongBar />
-        {/* <PieDonut /> */}
-        {/* <BarChartSimple /> */}
-        <DrawerFooter className="bg-white">
+        <DrawerFooter>
           <DrawerClose>
             <Button>CLOSE</Button>
           </DrawerClose>

@@ -56,7 +56,8 @@ const chartConfig = {
 
 export function ChartRadial() {
   return (
-    <Card className="flex flex-col">
+    // <Card className="flex flex-col bg-transparent">
+    <>
       <CardHeader className="items-center pb-0">
         <CardTitle>Radial Chart - Grid</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -84,6 +85,7 @@ export function ChartRadial() {
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>
-    </Card>
+    </>
+    // </Card>
   );
 }

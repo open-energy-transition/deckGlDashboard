@@ -14,7 +14,6 @@ import {
 import { ChartRadial } from "../Charts/ChartRadial";
 import PieDonut from "../Charts/PieDonut";
 import BarChartSimple from "../Charts/BarChartSimple";
-import { SimpleBar } from "../Charts/SimpleBar";
 
 export default function MySideDrawer({ open, setOpen, side }) {
   return (
@@ -28,9 +27,7 @@ export default function MySideDrawer({ open, setOpen, side }) {
           <ChartRadial />
         </div>
         <div className="pb-4 pt-4">
-          {/* <BarChartSimple />
-           */}
-          <SimpleBar />
+          <BarChartSimple />
         </div>
         <div className="pb-4 pt-4">
           <PieDonut />
