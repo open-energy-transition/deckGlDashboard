@@ -4,16 +4,9 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Light } from "maplibre-gl";
 
 const NavBar = () => {
   const router = useRouter();

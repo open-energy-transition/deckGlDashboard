@@ -1,12 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { TrendingUp } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,9 +17,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Button } from "../ui/button";
 
-export const description = "An interactive bar chart";
+export const description = "An area chart with axes";
 
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
@@ -113,11 +113,7 @@ const chartData = [
   { date: "2024-06-29", desktop: 103, mobile: 160 },
   { date: "2024-06-30", desktop: 446, mobile: 400 },
 ];
-
 const chartConfig = {
-  views: {
-    label: "Page Views",
-  },
   desktop: {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
@@ -128,23 +124,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function LongBar() {
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  );
-
+export default function FilledAreaChart() {
   return (
-    // <Card>
     <>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle>Area Chart - Axes</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            Showing total visitors for the last 6 months
           </CardDescription>
         </div>
       </CardHeader>
@@ -153,50 +140,48 @@ export function LongBar() {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <BarChart
+          <AreaChart
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
+              left: -20,
               right: 12,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="month"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
+              tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickCount={3}
             />
-            <Bar dataKey={"desktop"} fill={`var(--color-${"desktop"})`} />
-          </BarChart>
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <Area
+              dataKey="mobile"
+              type="natural"
+              fill="var(--color-mobile)"
+              fillOpacity={0.4}
+              stroke="var(--color-mobile)"
+              stackId="a"
+            />
+            <Area
+              dataKey="desktop"
+              type="natural"
+              fill="var(--color-desktop)"
+              fillOpacity={0.4}
+              stroke="var(--color-desktop)"
+              stackId="a"
+            />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
-      {/* </Card>
-       */}
     </>
   );
 }

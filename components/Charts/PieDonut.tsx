@@ -55,13 +55,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function PieDonut() {
+interface ComponentProps {
+  withoutCard?: boolean;
+}
+
+export default function PieDonut({
+  withoutCard = true,
+}: ComponentProps): JSX.Element {
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
 
-  return (
-    <Card className="flex flex-col">
+  const returnJSX = (
+    <>
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -124,6 +130,12 @@ export default function PieDonut() {
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>
-    </Card>
+    </>
+  );
+
+  return withoutCard ? (
+    <>{returnJSX}</>
+  ) : (
+    <Card className="h-screen/2 w-screen/2">{returnJSX}</Card>
   );
 }

@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -11,16 +9,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ChartRadial } from "../Charts/ChartRadial";
-import PieDonut from "../Charts/PieDonut";
-import BarChartSimple from "../Charts/BarChartSimple";
+import { ChartRadial } from "@/components/Charts/ChartRadial";
+import PieDonut from "@/components/Charts/PieDonut";
+import BarChartSimple from "@/components/Charts/BarChartSimple";
 
-export default function MySideDrawer({ open, setOpen, side }) {
+export default function MySideDrawer({ open, setOpen, side, data }) {
   return (
     <Sheet modal={false} open={open} onOpenChange={setOpen}>
       <SheetContent side={side} className="overflow-y-scroll no-scrollbar w-96">
         <SheetHeader>
-          <SheetTitle>Bus Graphs</SheetTitle>
+          <SheetTitle>{data} Graphs</SheetTitle>
           <SheetDescription>See statics related to bus here</SheetDescription>
         </SheetHeader>
         <div className="pb-4 pt-4">

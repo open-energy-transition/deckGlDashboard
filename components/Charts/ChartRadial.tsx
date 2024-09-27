@@ -56,7 +56,6 @@ const chartConfig = {
 
 export function ChartRadial() {
   return (
-    // <Card className="flex flex-col bg-transparent">
     <>
       <CardHeader className="items-center pb-0">
         <CardTitle>Radial Chart - Grid</CardTitle>
@@ -86,6 +85,5 @@ export function ChartRadial() {
         </div>
       </CardFooter>
     </>
-    // </Card>
   );
 }

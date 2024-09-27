@@ -42,8 +42,8 @@ const chartConfig = {
 
 export default function BarChartSimple() {
   return (
-    <Card className="bg-white">
-      <CardHeader className="text-slate-100">
+    <>
+      <CardHeader>
         <CardTitle>Bar Chart - Multiple</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
@@ -75,6 +75,6 @@ export default function BarChartSimple() {
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>
-    </Card>
+    </>
   );
 }
