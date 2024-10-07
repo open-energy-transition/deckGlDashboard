@@ -15,21 +15,16 @@ const NavBar = () => {
   return (
     <div className="fixed left-0 top-2/3 transform -translate-y-1/2 z-20 max-w-screen/4 bg-transparent p-3">
       <div className="flex flex-col flex-wrap justify-end gap-1">
-        <Button variant="outline" onClick={() => router.push("/")}>
+        <div className="text-3xl align-text-top-middle">Navigation</div>
+        <Button variant="default" onClick={() => router.push("/")}>
           Home
         </Button>
-        <Button variant="outline" onClick={() => router.push("/network")}>
+        <Button variant="default" onClick={() => router.push("/network")}>
           Network
         </Button>
-        {/* <Button variant="outline" onClick={() => router.push("/polygon")}>
+        <Button variant="default" onClick={() => router.push("/sidebyside")}>
           Polygon
-        </Button> */}
-        <Button variant="outline" onClick={() => router.push("/sidebyside")}>
-          Polygon version 2
         </Button>
-        {/* <Button variant="outline" onClick={() => router.push("/mainbuspie")}>
-          network version 2
-        </Button> */}
         <div className="flex items-center space-x-2">
           <Switch
             id="theme"

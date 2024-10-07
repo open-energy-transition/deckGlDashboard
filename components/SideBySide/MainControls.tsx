@@ -28,35 +28,32 @@ export function MainControls({ year }) {
         <h2 className="text-3xl">{year}</h2>
         <Select>
           <SelectTrigger className="w-3/5">
-            <SelectValue placeholder="Select a fruit" />
+            <SelectValue placeholder="Renewable type" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              <SelectLabel>Renewable type</SelectLabel>
+              <SelectItem value="apple">solar</SelectItem>
+              <SelectItem value="banana">onwind</SelectItem>
+              <SelectItem value="blueberry">offwind-ac/dc</SelectItem>
+              <SelectItem value="grapes">ror</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
         <Select>
-          <SelectTrigger className="w-2/5">
-            <SelectValue placeholder="Select a fruit" />
+          <SelectTrigger className="w-3/5">
+            <SelectValue placeholder="Parameters" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              <SelectLabel>Parameters</SelectLabel>
+              <SelectItem value="apple">CF</SelectItem>
+              <SelectItem value="banana">curtailment</SelectItem>
+              <SelectItem value="blueberry">used %</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div className="flex flex-wrap gap-5 pt-4">
+        <div className="flex flex-wrap gap-5 pt-3">
           <div className="flex flex-col justify-center align-middle items-center">
             <Avatar>
               <div className="bg-slate-200 w-full h-full"></div>
