@@ -42,6 +42,8 @@ export default function MainMap() {
   const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
 
+  const [selectedCountry, setSelectedCountry] = useState(US_DATA);
+
   const [selectedPointID, setSelectedPointID] = useState(null);
   const [hoverPointID, setHoverPointID] = useState(null);
 
@@ -54,7 +56,7 @@ export default function MainMap() {
 
   const [open, setOpen] = useState(false);
 
-  const flyToCity = useCallback((info: any) => {
+  const flyToGeometry = useCallback((info: any) => {
     const cords = info;
     console.log(cords);
     setInitialViewState({
@@ -80,7 +82,6 @@ export default function MainMap() {
   }, [selectedPointID]);
 
   useEffect(() => {
-    console.log(open, selectedLineID);
     if (!lineOpen && selectedLineID) {
       setLineOpen(false);
       setSelectedLineID(null);
@@ -88,22 +89,26 @@ export default function MainMap() {
   }, [lineOpen]);
 
   useEffect(() => {
-    console.log(open, selectedPointID);
     if (!open && selectedPointID) {
       setOpen(false);
       setSelectedPointID(null);
     }
   }, [open]);
 
-  const layers = countries.flatMap((country) =>
-    MyCustomLayers(
-      country.substations,
-      country.buses,
-      country.lines,
-      country.polygon,
-      country.id
-    )
-  );
+  // useEffect(() => {
+  //   console.log(selectedCountry.coordinates);
+  //   flyToGeometry(selectedCountry.coordinates);
+  // }, [selectedCountry]);
+
+  // const layers = countries.flatMap((country) =>
+  //   MyCustomLayers(
+  //     country.substations,
+  //     country.buses,
+  //     country.lines,
+  //     country.polygon,
+  //     country.id
+  //   )
+  // );
 
   // somehow export hese functions without type errors to some other file
 
@@ -115,7 +120,7 @@ export default function MainMap() {
   //     setOpen(false);
   //   } else {
   //     setSelectedPointID(id);
-  //     flyToCity(info.object.geometry.coordinates);
+  //     flyToGeometry(info.object.geometry.coordinates);
   //     setOpen(true);
   //   }
   // }
@@ -135,57 +140,6 @@ export default function MainMap() {
   // function getLineWidth() {}
 
   const temp = [
-    new GeoJsonLayer<BlockProperties>({
-      id: `Buses${2}`,
-      data: US_DATA.buses,
-      opacity: 1,
-      stroked: false,
-      filled: true,
-      pointType: "circle",
-      wireframe: true,
-      getPointRadius: (d) => {
-        if (selectedPointID === d.id) {
-          return 1100;
-        } else if (hoverPointID === d.id) {
-          return 750;
-        } else {
-          return 500;
-        }
-      },
-      pointRadiusScale: 100,
-      onClick: (info, e) => {
-        e.stopPropagation();
-        const id = info.object.id;
-        if (selectedPointID === id) {
-          setSelectedPointID(null);
-          setOpen(false);
-        } else {
-          setSelectedPointID(id);
-          flyToCity(info.object.geometry.coordinates);
-          setOpen(true);
-        }
-      },
-      onHover: (info, e) => {
-        if (info.object) {
-          const id = info.object.id;
-          setHoverPointID(id);
-        } else {
-          setHoverPointID(null);
-        }
-      },
-      getFillColor: [72, 123, 182],
-      pickable: true,
-      updateTriggers: {
-        getPointRadius: [selectedPointID, hoverPointID],
-      },
-      transitions: {
-        getPointRadius: 100,
-      },
-      autoHighlight: true,
-      parameters: {
-        depthTest: false,
-      },
-    }),
     new GeoJsonLayer({
       id: `Linesus`,
       data: US_DATA.lines,
@@ -214,7 +168,7 @@ export default function MainMap() {
           setLineOpen(false);
         } else {
           setSelectedLineID(id);
-          flyToCity(info.coordinate);
+          flyToGeometry(info.coordinate);
           setLineOpen(true);
         }
       },
@@ -238,16 +192,68 @@ export default function MainMap() {
         depthTest: false,
       },
     }),
+    new GeoJsonLayer<BlockProperties>({
+      id: `Buses${2}`,
+      data: US_DATA.buses,
+      opacity: 1,
+      stroked: false,
+      filled: true,
+      pointType: "circle",
+      wireframe: true,
+      getPointRadius: (d) => {
+        if (selectedPointID === d.id) {
+          return 1100;
+        } else if (hoverPointID === d.id) {
+          return 750;
+        } else {
+          return 500;
+        }
+      },
+      pointRadiusScale: 100,
+      onClick: (info, e) => {
+        e.stopPropagation();
+        const id = info.object.id;
+        if (selectedPointID === id) {
+          setSelectedPointID(null);
+          setOpen(false);
+        } else {
+          setSelectedPointID(id);
+          flyToGeometry(info.object.geometry.coordinates);
+          setOpen(true);
+        }
+      },
+      onHover: (info, e) => {
+        if (info.object) {
+          const id = info.object.id;
+          setHoverPointID(id);
+        } else {
+          setHoverPointID(null);
+        }
+      },
+      getFillColor: [72, 123, 182],
+      pickable: true,
+      updateTriggers: {
+        getPointRadius: [selectedPointID, hoverPointID],
+      },
+      transitions: {
+        getPointRadius: 100,
+      },
+      autoHighlight: true,
+      parameters: {
+        depthTest: false,
+      },
+    }),
   ];
 
-  layers.push(temp[1]);
-  layers.push(temp[0]);
+  // layers.push(temp[1]);
+  // layers.push(temp[0]);
 
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={layers}
+          // layers={layers}
+          layers={temp}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -266,7 +272,10 @@ export default function MainMap() {
         side={"left"}
         data={"Line"}
       />
-      <CountrySelect />
+      {/* <CountrySelect
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      /> */}
     </>
   );
 }
