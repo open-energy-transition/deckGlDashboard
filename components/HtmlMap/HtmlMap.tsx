@@ -18,7 +18,7 @@ import { US_DATA, COLUMBIA_DATA, NIGERIA_DATA } from "./Links";
 import SimplePie from "./SimplePie";
 import "mapbox-gl/dist/mapbox-gl.css";
 // import { MapContext, MapController } from "react-map-gl";
-const mapController = new MapController();
+// const mapController = new MapController();
 
 const TOKEN =
   "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw";

@@ -12,7 +12,7 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { US_2021_DATA, US_2050_DATA } from "../SolarSection/Links";
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MyDropdown from "../SolarSection/MyDropdown";
+import MyDropdown from "./MyDropdown";
 import ModePannel, { Mode } from "./Mode";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
@@ -38,14 +38,16 @@ const RightMapStyle: React.CSSProperties = {
 
 export default function SideBySide() {
   const [viewState, setViewState] = useState({
-    longitude: -122.43,
-    latitude: 37.78,
-    zoom: 10,
+    latitude: 49.254,
+    longitude: -123.13,
+    zoom: 4,
     minZoom: 3,
     maxZoom: 20,
     pitch: 30,
+    bearing: 0,
   });
-  const [mode, setMode] = useState<Mode>("side-by-side");
+
+  const [mode, setMode] = useState<Mode>("split-screen");
 
   const [activeMap, setActiveMap] = useState<"left" | "right">("left");
 
@@ -124,8 +126,14 @@ export default function SideBySide() {
         </Map>
       </div>
       <ModePannel mode={mode} onModeChange={setMode} />
-      <MyDropdown className="absolute top-0 left-0 w-3/10  overflow-hidden z-50" />
-      <MyDropdown className="absolute top-0 right-0 w-3/10 overflow-hidden z-50" />
+      <MyDropdown
+        className="absolute top-0 left-0 w-3/10  overflow-hidden z-50 m-3"
+        year={2020}
+      />
+      <MyDropdown
+        className="absolute top-0 right-0 w-3/10 overflow-hidden z-50 m-3"
+        year={2050}
+      />
     </>
   );
 }

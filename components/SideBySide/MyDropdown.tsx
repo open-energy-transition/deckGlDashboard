@@ -4,7 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PieDonut from "../Charts/PieDonut";
 import BarChartSimple from "../Charts/BarChartSimple";
 import { ChartRadial } from "../Charts/ChartRadial";
-import { MainControls } from "../SideBySide/MainControls";
+import { MainControls } from "./MainControls";
+import { Card } from "../ui/card";
 
 export default function MyDropdown(props) {
   return (
@@ -16,16 +17,22 @@ export default function MyDropdown(props) {
         <TabsTrigger value="chart3">chart3</TabsTrigger>
       </TabsList>
       <TabsContent value="control">
-        <MainControls />
+        <MainControls year={props.year} />
       </TabsContent>
       <TabsContent value="chart1">
-        <PieDonut />
+        <Card>
+          <PieDonut />
+        </Card>
       </TabsContent>
       <TabsContent value="chart2">
-        <ChartRadial />
+        <Card>
+          <ChartRadial />
+        </Card>
       </TabsContent>
       <TabsContent value="chart3">
-        <PieDonut />
+        <Card>
+          <PieDonut />
+        </Card>
       </TabsContent>
     </Tabs>
   );

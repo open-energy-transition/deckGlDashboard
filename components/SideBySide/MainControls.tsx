@@ -21,27 +21,13 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function MainControls() {
+export function MainControls({ year }) {
   return (
     <>
       <Card className="flex flex-col justify-center align-middle items-center gap-2 p-4">
+        <h2 className="text-3xl">{year}</h2>
         <Select>
           <SelectTrigger className="w-3/5">
-            <SelectValue placeholder="Select a fruit" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger className="w-2/5">
             <SelectValue placeholder="Select a fruit" />
           </SelectTrigger>
           <SelectContent>
