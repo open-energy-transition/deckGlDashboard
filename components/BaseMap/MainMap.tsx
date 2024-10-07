@@ -6,12 +6,16 @@ import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
 import { FlyToInterpolator } from "deck.gl";
-import { MyCustomLayers } from "./Layer";
-import { US_DATA, COLUMBIA_DATA, NIGERIA_DATA } from "./Links";
-import { BlockProperties } from "./Layer";
+import { MyCustomLayers } from "./components/Layer";
+import { US_DATA, COLUMBIA_DATA, NIGERIA_DATA } from "./components/Links";
+import { BlockProperties } from "./components/Layer";
 import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
-import BottomDrawer from "./BottomDrawer";
-import MySideDrawer from "./SideDrawer";
+import BottomDrawer from "./popups/BottomDrawer";
+import MySideDrawer from "./popups/SideDrawer";
+import { useTheme } from "next-themes";
+import { Feature, Geometry } from "geojson";
+import type { PickingInfo } from "deck.gl";
+import CountrySelect from "./CountrySelect";
 
 const DATA_URL =
   "https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/geojson/vancouver-blocks.json"; // eslint-disable-line
@@ -26,13 +30,19 @@ const INITIAL_VIEW_STATE: MapViewState = {
   bearing: 0,
 };
 
-const MAP_STYLE =
-  // "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
+const MAP_STYLE_LIGHT =
+  "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
+
+const MAP_STYLE_DARK =
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
-export default function MainMap({ mapStyle = MAP_STYLE }) {
+export default function MainMap() {
+  const { theme, setTheme } = useTheme();
+
   const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
+
+  const [selectedCountry, setSelectedCountry] = useState(US_DATA);
 
   const [selectedPointID, setSelectedPointID] = useState(null);
   const [hoverPointID, setHoverPointID] = useState(null);
@@ -46,7 +56,7 @@ export default function MainMap({ mapStyle = MAP_STYLE }) {
 
   const [open, setOpen] = useState(false);
 
-  const flyToCity = useCallback((info: any) => {
+  const flyToGeometry = useCallback((info: any) => {
     const cords = info;
     console.log(cords);
     setInitialViewState({
@@ -72,83 +82,64 @@ export default function MainMap({ mapStyle = MAP_STYLE }) {
   }, [selectedPointID]);
 
   useEffect(() => {
-    console.log(open, selectedPointID);
-    if (!open && selectedPointID) {
-      setOpen(false);
-      setSelectedPointID(null);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    console.log(open, selectedLineID);
     if (!lineOpen && selectedLineID) {
       setLineOpen(false);
       setSelectedLineID(null);
     }
   }, [lineOpen]);
 
-  const layers = countries.flatMap((country) =>
-    MyCustomLayers(
-      country.substations,
-      country.buses,
-      country.lines,
-      country.polygon,
-      country.id
-    )
-  );
+  useEffect(() => {
+    if (!open && selectedPointID) {
+      setOpen(false);
+      setSelectedPointID(null);
+    }
+  }, [open]);
+
+  // useEffect(() => {
+  //   console.log(selectedCountry.coordinates);
+  //   flyToGeometry(selectedCountry.coordinates);
+  // }, [selectedCountry]);
+
+  // const layers = countries.flatMap((country) =>
+  //   MyCustomLayers(
+  //     country.substations,
+  //     country.buses,
+  //     country.lines,
+  //     country.polygon,
+  //     country.id
+  //   )
+  // );
+
+  // somehow export hese functions without type errors to some other file
+
+  // function onClickPoint(info: PickingInfo, e: React.MouseEvent<HTMLElement>) {
+  //   e.stopPropagation();
+  //   const id = info.object.id;
+  //   if (selectedPointID === id) {
+  //     setSelectedPointID(null);
+  //     setOpen(false);
+  //   } else {
+  //     setSelectedPointID(id);
+  //     flyToGeometry(info.object.geometry.coordinates);
+  //     setOpen(true);
+  //   }
+  // }
+  // function onHoverPoint() {}
+  // function getRadius(d: Feature<Geometry, BlockProperties>): number {
+  //   if (selectedPointID === d.id) {
+  //     return 1100;
+  //   } else if (hoverPointID === d.id) {
+  //     return 750;
+  //   } else {
+  //     return 500;
+  //   }
+  // }
+
+  // function onClickLine() {}
+  // function onHoverLine() {}
+  // function getLineWidth() {}
 
   const temp = [
-    new GeoJsonLayer<BlockProperties>({
-      id: `Buses${2}`,
-      data: US_DATA.buses,
-      opacity: 1,
-      stroked: false,
-      filled: true,
-      pointType: "circle",
-      wireframe: true,
-      getPointRadius: (d) => {
-        if (selectedPointID === d.id) {
-          return 1100;
-        } else if (hoverPointID === d.id) {
-          return 750;
-        } else {
-          return 500;
-        }
-      },
-      pointRadiusScale: 100,
-      onClick: (info, e) => {
-        e.stopPropagation();
-        const id = info.object.id;
-        if (selectedPointID === id) {
-          setSelectedPointID(null);
-          setOpen(false);
-        } else {
-          setSelectedPointID(id);
-          flyToCity(info.object.geometry.coordinates);
-          setOpen(true);
-        }
-      },
-      onHover: (info, e) => {
-        if (info.object) {
-          const id = info.object.id;
-          setHoverPointID(id);
-        } else {
-          setHoverPointID(null);
-        }
-      },
-      getFillColor: [72, 123, 182],
-      pickable: true,
-      updateTriggers: {
-        getPointRadius: [selectedPointID, hoverPointID],
-      },
-      transitions: {
-        getPointRadius: 100,
-      },
-      autoHighlight: true,
-      parameters: {
-        depthTest: false,
-      },
-    }),
     new GeoJsonLayer({
       id: `Linesus`,
       data: US_DATA.lines,
@@ -177,7 +168,7 @@ export default function MainMap({ mapStyle = MAP_STYLE }) {
           setLineOpen(false);
         } else {
           setSelectedLineID(id);
-          flyToCity(info.coordinate);
+          flyToGeometry(info.coordinate);
           setLineOpen(true);
         }
       },
@@ -201,24 +192,90 @@ export default function MainMap({ mapStyle = MAP_STYLE }) {
         depthTest: false,
       },
     }),
+    new GeoJsonLayer<BlockProperties>({
+      id: `Buses${2}`,
+      data: US_DATA.buses,
+      opacity: 1,
+      stroked: false,
+      filled: true,
+      pointType: "circle",
+      wireframe: true,
+      getPointRadius: (d) => {
+        if (selectedPointID === d.id) {
+          return 1100;
+        } else if (hoverPointID === d.id) {
+          return 750;
+        } else {
+          return 500;
+        }
+      },
+      pointRadiusScale: 100,
+      onClick: (info, e) => {
+        e.stopPropagation();
+        const id = info.object.id;
+        if (selectedPointID === id) {
+          setSelectedPointID(null);
+          setOpen(false);
+        } else {
+          setSelectedPointID(id);
+          flyToGeometry(info.object.geometry.coordinates);
+          setOpen(true);
+        }
+      },
+      onHover: (info, e) => {
+        if (info.object) {
+          const id = info.object.id;
+          setHoverPointID(id);
+        } else {
+          setHoverPointID(null);
+        }
+      },
+      getFillColor: [72, 123, 182],
+      pickable: true,
+      updateTriggers: {
+        getPointRadius: [selectedPointID, hoverPointID],
+      },
+      transitions: {
+        getPointRadius: 100,
+      },
+      autoHighlight: true,
+      parameters: {
+        depthTest: false,
+      },
+    }),
   ];
 
-  layers.push(temp[1]);
-  layers.push(temp[0]);
+  // layers.push(temp[1]);
+  // layers.push(temp[0]);
 
   return (
     <>
-      <DeckGL
-        layers={layers}
-        initialViewState={initialViewState}
-        controller={true}
-        ref={DeckRef}
-      >
-        <Map reuseMaps mapStyle={mapStyle} />
-      </DeckGL>
+      <div onContextMenu={(evt) => evt.preventDefault()}>
+        <DeckGL
+          // layers={layers}
+          layers={temp}
+          initialViewState={initialViewState}
+          controller={true}
+          ref={DeckRef}
+        >
+          <Map
+            reuseMaps
+            mapStyle={theme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK}
+          />
+        </DeckGL>
+      </div>
       <BottomDrawer />
-      <MySideDrawer open={open} setOpen={setOpen} side={"right"} />
-      <MySideDrawer open={lineOpen} setOpen={setLineOpen} side={"left"} />
+      <MySideDrawer open={open} setOpen={setOpen} side={"right"} data={"Bus"} />
+      <MySideDrawer
+        open={lineOpen}
+        setOpen={setLineOpen}
+        side={"left"}
+        data={"Line"}
+      />
+      <CountrySelect
+      // selectedCountry={selectedCountry}
+      // setSelectedCountry={setSelectedCountry}
+      />
     </>
   );
 }

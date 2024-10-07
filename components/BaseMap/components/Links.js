@@ -8,6 +8,9 @@ export const US_DATA = {
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Ageojson_network_lines_view_US&maxFeatures=10000&outputFormat=application%2Fjson",
   polygon:
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Ageojson_offshore_shapes_US&maxFeatures=10000&outputFormat=application%2Fjson",
+  // lat long
+  // 38.0 	-97.0
+  coordinates : [38.0,-97.0]
 };
 
 export const COLUMBIA_DATA = {
@@ -24,6 +27,8 @@ export const COLUMBIA_DATA = {
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Ageojson_network_lines_view_co_2&maxFeatures=10000&outputFormat=application%2Fjson",
   polygon:
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Ageojson_offshore_shapes_CO&maxFeatures=10000&outputFormat=application%2Fjson",
+  // lat long
+  coordinates: [4.0 ,- 72.0],
 };
 
 export const NIGERIA_DATA = {
@@ -40,4 +45,5 @@ export const NIGERIA_DATA = {
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Anetwork_lines_view&maxFeatures=10000&outputFormat=application%2Fjson",
   polygon:
     "http://34.31.13.149:8000/geoserver/PyPSAEarthDashboard/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=PyPSAEarthDashboard%3Aoffshore_shapes&maxFeatures=10000&outputFormat=application%2Fjson",
+    coordinates:[16.0,-8.0]
 };
