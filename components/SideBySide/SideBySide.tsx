@@ -128,7 +128,7 @@ export default function SideBySide() {
       <ModePannel mode={mode} onModeChange={setMode} />
       <MyDropdown
         className="absolute top-0 left-0 w-3/10  overflow-hidden z-50 m-3"
-        year={2020}
+        year={2021}
       />
       <MyDropdown
         className="absolute top-0 right-0 w-3/10 overflow-hidden z-50 m-3"

@@ -23,8 +23,10 @@ import FilledAreaChart from "@/components/Charts/FilledAreaChart";
 const BottomDrawer = () => {
   return (
     <Drawer modal={false}>
-      <DrawerTrigger className="absolute right-0 top-0 z-100 p-3">
-        <Button variant="outline">Show Network Statics</Button>
+      <DrawerTrigger asChild>
+        <div className="absolute right-0 top-0 z-100 p-3">
+          <Button variant="outline">Show Network Statics</Button>
+        </div>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <DrawerHeader className="pb-2">
