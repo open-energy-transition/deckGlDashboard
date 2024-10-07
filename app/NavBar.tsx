@@ -13,23 +13,23 @@ const NavBar = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="absolute z-20 left-0 bottom-0 bg-red-200">
-      <div className="flex flex-col flex-wrap justify-end">
+    <div className="fixed left-0 top-2/3 transform -translate-y-1/2 z-20 max-w-screen/4 bg-transparent p-3">
+      <div className="flex flex-col flex-wrap justify-end gap-1">
         <Button variant="outline" onClick={() => router.push("/")}>
           Home
         </Button>
         <Button variant="outline" onClick={() => router.push("/network")}>
           Network
         </Button>
-        <Button variant="outline" onClick={() => router.push("/polygon")}>
+        {/* <Button variant="outline" onClick={() => router.push("/polygon")}>
           Polygon
-        </Button>
+        </Button> */}
         <Button variant="outline" onClick={() => router.push("/sidebyside")}>
           Polygon version 2
         </Button>
-        <Button variant="outline" onClick={() => router.push("/mainbuspie")}>
+        {/* <Button variant="outline" onClick={() => router.push("/mainbuspie")}>
           network version 2
-        </Button>
+        </Button> */}
         <div className="flex items-center space-x-2">
           <Switch
             id="theme"
