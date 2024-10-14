@@ -15,7 +15,7 @@ import MySideDrawer from "./popups/SideDrawer";
 import { useTheme } from "next-themes";
 import { Feature, Geometry } from "geojson";
 import type { PickingInfo } from "deck.gl";
-import CountrySelect from "./CountrySelect";
+import CountrySelect from "./components/CountrySelect";
 
 const DATA_URL =
   "https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/geojson/vancouver-blocks.json"; // eslint-disable-line

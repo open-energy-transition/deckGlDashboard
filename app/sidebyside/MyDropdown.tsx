@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PieDonut from "../Charts/PieDonut";
-import BarChartSimple from "../Charts/BarChartSimple";
-import { ChartRadial } from "../Charts/ChartRadial";
+import PieDonut from "../../components/Charts/PieDonut";
+import BarChartSimple from "../../components/Charts/BarChartSimple";
+import { ChartRadial } from "../../components/Charts/ChartRadial";
 import { MainControls } from "./MainControls";
-import { Card } from "../ui/card";
+import { Card } from "../../components/ui/card";
 
 export default function MyDropdown(props) {
   return (

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Card } from "../ui/card";
+import { Card } from "../../components/ui/card";
 
 type Mode = "split-screen" | "side-by-side";
 

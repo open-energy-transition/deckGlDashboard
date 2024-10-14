@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 
 export default function CountrySelect() {
   return (

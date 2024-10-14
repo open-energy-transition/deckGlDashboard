@@ -1,4 +1,4 @@
-import SideBySide from "@/components/SideBySide/SideBySide";
+import SideBySide from "./SideBySide";
 import React from "react";
 
 const page = () => {
