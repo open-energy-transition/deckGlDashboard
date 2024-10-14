@@ -1,6 +1,6 @@
 import React from "react";
 import SolarPolygon from "./SolarPolygon";
-import MyDropdown from "../SideBySide/MyDropdown";
+import MyDropdown from "../../app/sidebyside/MyDropdown";
 
 const MainVeiw = () => {
   return (

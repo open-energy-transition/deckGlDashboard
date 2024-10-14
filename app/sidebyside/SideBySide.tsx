@@ -9,7 +9,10 @@ import Map, {
   GeolocateControl,
 } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { US_2021_DATA, US_2050_DATA } from "../SolarSection/Links";
+import {
+  US_2021_DATA,
+  US_2050_DATA,
+} from "../../components/SolarSection/Links";
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MyDropdown from "./MyDropdown";
