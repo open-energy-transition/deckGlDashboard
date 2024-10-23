@@ -33,13 +33,13 @@ const NavBar = () => {
           variant={pathname === "/network" ? "default" : "outline"}
           onClick={() => router.push("/network")}
         >
-          Network
+          Validation
         </Button>
         <Button
           variant={pathname === "/sidebyside" ? "default" : "outline"}
           onClick={() => router.push("/sidebyside")}
         >
-          Polygon
+          Scenarios
         </Button>
         <div className="flex items-center space-x-2">
           <Switch
