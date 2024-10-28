@@ -6,6 +6,7 @@ import BarChartSimple from "../../components/Charts/BarChartSimple";
 import { ChartRadial } from "../../components/Charts/ChartRadial";
 import { MainControls } from "./MainControls";
 import { Card } from "../../components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function MyDropdown(props) {
   return (
@@ -17,7 +18,11 @@ export default function MyDropdown(props) {
         <TabsTrigger value="chart3">chart3</TabsTrigger>
       </TabsList>
       <TabsContent value="control">
-        <MainControls year={props.year} />
+        <MainControls
+          year={props.year}
+          close={props.closeControls}
+          buttonPosition={props.buttonPosition}
+        />
       </TabsContent>
       <TabsContent value="chart1">
         <Card>

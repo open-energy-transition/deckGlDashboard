@@ -17,6 +17,7 @@ import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MyDropdown from "./MyDropdown";
 import ModePannel, { Mode } from "./Mode";
+import { Button } from "@/components/ui/button";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
   const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
@@ -53,6 +54,9 @@ export default function SideBySide() {
   const [mode, setMode] = useState<Mode>("split-screen");
 
   const [activeMap, setActiveMap] = useState<"left" | "right">("left");
+
+  const [leftConrolsClosed, setLeftControlsClosed] = useState(false);
+  const [rightConrolsClosed, setRightControlsClosed] = useState(false);
 
   const onLeftMoveStart = useCallback(() => setActiveMap("left"), []);
   const onRightMoveStart = useCallback(() => setActiveMap("right"), []);
@@ -98,7 +102,7 @@ export default function SideBySide() {
 
   return (
     <>
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative h-screen overflow-hidden w-screen no-scrollbar">
         <Map
           id="left-map"
           {...viewState}
@@ -130,12 +134,24 @@ export default function SideBySide() {
       </div>
       <ModePannel mode={mode} onModeChange={setMode} />
       <MyDropdown
-        className="absolute top-0 left-0 w-3/10  overflow-hidden z-50 m-3"
+        className={`fixed top-0 left-0 w-3/10  overflow-hidden z-50 m-3 ${
+          leftConrolsClosed ? "translate-x-[-90%]" : "translate-x-0"
+        }`}
         year={2021}
+        buttonPosition="right"
+        closeControls={() => {
+          setLeftControlsClosed((t) => !t);
+        }}
       />
       <MyDropdown
-        className="absolute top-0 right-0 w-3/10 overflow-hidden z-50 m-3"
+        className={`fixed top-[40%] md:top-0 right-0 w-3/10 overflow-hidden z-50 m-3 ${
+          rightConrolsClosed ? "translate-x-[90%]" : "translate-x-0"
+        }  `}
         year={2050}
+        buttonPosition="left"
+        closeControls={() => {
+          setRightControlsClosed((t) => !t);
+        }}
       />
     </>
   );

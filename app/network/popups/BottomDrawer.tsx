@@ -24,7 +24,7 @@ const BottomDrawer = ({ selectedCountry }) => {
   return (
     <Drawer modal={false}>
       <DrawerTrigger asChild>
-        <div className="absolute right-0 top-0 z-100 p-3">
+        <div className="absolute left-0 top-10 z-100 p-3">
           <Button variant="outline">
             Show Statics for country : {selectedCountry}
           </Button>

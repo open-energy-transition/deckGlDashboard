@@ -20,8 +20,19 @@ import {
 } from "@/components/ui/card";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
-export function MainControls({ year }) {
+type MainControlsProps = {
+  year: string;
+  buttonPosition: string;
+  close: () => void;
+};
+
+export function MainControls({
+  year,
+  buttonPosition,
+  close,
+}: MainControlsProps) {
   return (
     <>
       <Card className="flex flex-col justify-center align-middle items-center gap-2 p-4">
@@ -85,6 +96,15 @@ export function MainControls({ year }) {
             <div>five</div>
           </div>
         </div>
+        <Button
+          onClick={() => {
+            close();
+          }}
+          variant={"outline"}
+          className={`absolute ${buttonPosition}-0 top-11`}
+        >
+          Close
+        </Button>
       </Card>
     </>
   );

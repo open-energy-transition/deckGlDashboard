@@ -15,7 +15,7 @@ export default function ModePannel(props: {
   );
 
   return (
-    <Card className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-screen/2 z-30 bg-background p-3">
+    <Card className="absolute bottom-8 right-0 md:left-1/2 md:transform md:-translate-x-1/2 w-screen/2 md:w-52 z-30 bg-background p-3">
       <h3>Side by Side</h3>
       <p>Synchronize two maps.</p>
 
