@@ -20,7 +20,7 @@ const NavBar = () => {
   }, [pathname]);
 
   return (
-    <div className="fixed left-0 top-2/3 transform -translate-y-1/2 z-20 max-w-screen/4 bg-transparent p-3">
+    <div className="fixed left-0 bottom-0 transform md:translate-y-[-10rem] z-20 max-w-screen/4 bg-transparent p-3">
       <div className="flex flex-col flex-wrap justify-end gap-1">
         <div className="text-3xl align-text-top-middle">Navigation</div>
         <Button
