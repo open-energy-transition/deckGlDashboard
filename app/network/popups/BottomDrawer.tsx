@@ -20,12 +20,14 @@ import BarChartSimple from "@/components/Charts/BarChartSimple";
 import { Card } from "@/components/ui/card";
 import FilledAreaChart from "@/components/Charts/FilledAreaChart";
 
-const BottomDrawer = () => {
+const BottomDrawer = ({ selectedCountry }) => {
   return (
     <Drawer modal={false}>
       <DrawerTrigger asChild>
         <div className="absolute right-0 top-0 z-100 p-3">
-          <Button variant="outline">Show Network Statics</Button>
+          <Button variant="outline">
+            Show Statics for country : {selectedCountry}
+          </Button>
         </div>
       </DrawerTrigger>
       <DrawerContent className="top-0">
