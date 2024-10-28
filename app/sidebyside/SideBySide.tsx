@@ -41,12 +41,12 @@ const RightMapStyle: React.CSSProperties = {
 
 export default function SideBySide() {
   const [viewState, setViewState] = useState({
-    latitude: 49.254,
-    longitude: -123.13,
+    latitude: 37,
+    longitude: -95,
     zoom: 4,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: 20,
-    pitch: 30,
+    pitch: 10,
     bearing: 0,
   });
 
@@ -104,7 +104,7 @@ export default function SideBySide() {
           {...viewState}
           padding={leftMapPadding}
           onMoveStart={onLeftMoveStart}
-          onMove={activeMap === "left" && onMove}
+          onMove={activeMap === "left" ? onMove : undefined}
           style={LeftMapStyle}
           mapStyle="mapbox://styles/mapbox/light-v9"
           mapboxAccessToken={TOKEN}
@@ -119,7 +119,7 @@ export default function SideBySide() {
           {...viewState}
           padding={rightMapPadding}
           onMoveStart={onRightMoveStart}
-          onMove={activeMap === "right" && onMove}
+          onMove={activeMap === "right" ? onMove : undefined}
           style={RightMapStyle}
           mapStyle="mapbox://styles/mapbox/dark-v9"
           mapboxAccessToken={TOKEN}
