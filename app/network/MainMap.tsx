@@ -27,10 +27,10 @@ import { link } from "fs";
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
   longitude: -123.13,
-  zoom: 5,
+  zoom: 4,
   minZoom: 3,
   maxZoom: 20,
-  pitch: 30,
+  pitch: 0,
   bearing: 0,
 };
 
@@ -70,7 +70,7 @@ export default function MainMap() {
       zoom: 5,
       minZoom: 3,
       maxZoom: 20,
-      pitch: 30,
+      pitch: 0,
       bearing: 0,
       transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
       transitionDuration: 500,
@@ -82,10 +82,10 @@ export default function MainMap() {
     setInitialViewState({
       latitude: cords[0],
       longitude: cords[1],
-      zoom: 5,
+      zoom: 4,
       minZoom: 3,
       maxZoom: 20,
-      pitch: 30,
+      pitch: 0,
       bearing: 0,
       transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
       transitionDuration: 500,
@@ -140,7 +140,7 @@ export default function MainMap() {
         stroked: true,
         filled: true,
         pickable: true,
-        lineWidthScale: 20,
+        lineWidthScale: 22,
         getLineColor: [227, 26, 28],
         getFillColor: [227, 26, 28],
         getLineWidth: (d) => {
@@ -202,7 +202,7 @@ export default function MainMap() {
             return 500;
           }
         },
-        pointRadiusScale: 100,
+        pointRadiusScale: 70,
         onClick: (info, e) => {
           e.stopPropagation();
           const id = info.object.id;
@@ -229,7 +229,7 @@ export default function MainMap() {
           getPointRadius: [selectedPointID, hoverPointID],
         },
         transitions: {
-          getPointRadius: 100,
+          getPointRadius: 80,
         },
         autoHighlight: true,
         parameters: {
