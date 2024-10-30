@@ -11,7 +11,7 @@ export const GET = async (req) => {
   });
 
   try {
-    const result = await pool.query("SELECT * FROM information_schema.tables;");
+    const result = await pool.query("SELECT id, carrier, pypsa_model, eia, ember, country_code FROM public.generation_comparison WHERE country_code = 'US';");
     return NextResponse.json({ message: result.rows });
   } catch (error) {
     console.error("Error fetching data from PostgreSQL:", error);
