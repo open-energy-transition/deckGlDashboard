@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Card } from "../../components/ui/card";
 
-type Mode = "split-screen" | "side-by-side";
+export type Mode = "split-screen" | "side-by-side";
 
 export default function ModePannel(props: {
   mode: Mode;

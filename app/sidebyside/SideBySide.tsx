@@ -16,7 +16,8 @@ import {
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MyDropdown from "./MyDropdown";
-import ModePannel, { Mode } from "./Mode";
+import ModePannel from "./Mode";
+import { Mode } from "./Mode";
 import { Button } from "@/components/ui/button";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
