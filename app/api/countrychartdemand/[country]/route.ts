@@ -18,9 +18,9 @@ export async function GET(
   try {
     const result = await pool.query(
       `
-        SELECT "Generator", "p_nom", "p_nom_opt", "carrier", "bus", "country_code"
-        FROM public.generators
-        WHERE "carrier" != 'csp' AND "country_code" = $1;
+        SELECT *
+        FROM public.demand_comparison
+        WHERE country_code = $1;
       `,
       [country]
     );
