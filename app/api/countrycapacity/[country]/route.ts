@@ -18,8 +18,8 @@ export async function GET(
   try {
     const result = await pool.query(
       `
-        SELECT "Line", "length", "s_nom", "country_code"
-        FROM public.lines
+        SELECT *
+        FROM public.capacity_comparison
         WHERE country_code = $1;
       `,
       [country]
@@ -30,4 +30,4 @@ export async function GET(
     console.error("Error fetching data from PostgreSQL:", error);
     return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
-}
+} 
