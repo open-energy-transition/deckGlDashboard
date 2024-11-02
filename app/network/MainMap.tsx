@@ -6,12 +6,7 @@ import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
 import { FlyToInterpolator } from "deck.gl";
-import { MyCustomLayers } from "./components/Layer";
-import {
-  COUNTRY_S_NOM_RANGES,
-  COUNTRY_COORDINATES,
-  getGeoJsonData,
-} from "./components/Links";
+import { COUNTRY_COORDINATES, getGeoJsonData } from "./components/Links";
 import { BlockProperties } from "./components/Layer";
 import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
 import BottomDrawer from "./popups/BottomDrawer";
@@ -20,9 +15,20 @@ import { useTheme } from "next-themes";
 import { Feature, Geometry } from "geojson";
 import type { PickingInfo } from "deck.gl";
 import CountrySelect from "./components/CountrySelect";
+import {
+  getBusChartsData,
+  getCountryCapacityChartsData,
+  getCountryGenerationChartsData,
+  getCountryDemandChartsData,
+  getCountryGenerationMixChartsData,
+  getBusGenerationChartsData,
+  getInstalledCapacitiesChartsData,
+  getTotalDemandChartsData,
+} from "./chartData";
 import { count } from "console";
 import { get } from "http";
 import { link } from "fs";
+import { MyCustomLayers } from "./components/Layer";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -43,23 +49,27 @@ const MAP_STYLE_DARK =
 export default function MainMap() {
   const { theme } = useTheme();
 
+  const countryLevelChartData = useRef(null);
+  const busLevelChartData = useRef(null);
+  const lineLevelChartData = useRef(null);
+
   // const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
 
   const [selectedCountry, setSelectedCountry] =
     useState<keyof typeof COUNTRY_COORDINATES>("US");
 
-  const [selectedPointID, setSelectedPointID] = useState(null);
-  const [hoverPointID, setHoverPointID] = useState(null);
+  const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
+  const [hoverPointID, setHoverPointID] = useState<string | null>(null);
 
-  const [selectedLineID, setSelectedLineID] = useState(null);
-  const [hoverLineID, setHoverLineID] = useState(null);
-  const [lineOpen, setLineOpen] = useState(false);
+  const [selectedLineID, setSelectedLineID] = useState<string | null>(null);
+  const [hoverLineID, setHoverLineID] = useState<string | null>(null);
 
   const [initialViewState, setInitialViewState] =
     useState<MapViewState>(INITIAL_VIEW_STATE);
 
-  const [open, setOpen] = useState(false);
+  const [lineOpen, setLineOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const flyToGeometry = useCallback((info: any) => {
     const cords = info;
@@ -76,21 +86,6 @@ export default function MainMap() {
       transitionDuration: 500,
     });
   }, []);
-
-  const flyToCountry = (cords: [number, number]) => {
-    console.log(cords);
-    setInitialViewState({
-      latitude: cords[0],
-      longitude: cords[1],
-      zoom: 4,
-      minZoom: 3,
-      maxZoom: 20,
-      pitch: 0,
-      bearing: 0,
-      transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
-      transitionDuration: 500,
-    });
-  };
 
   useEffect(() => {
     console.log(DeckRef.current);
@@ -115,20 +110,6 @@ export default function MainMap() {
     }
   }, [open]);
 
-  useEffect(() => {
-    console.log("COUNTRY_COORDINATES:", COUNTRY_COORDINATES[selectedCountry]);
-    const countryCoordinates = COUNTRY_COORDINATES[selectedCountry] as [
-      number,
-      number
-    ];
-    flyToCountry(countryCoordinates);
-    console.log("link:", getGeoJsonData(selectedCountry));
-  }, [selectedCountry]);
-
-  // function onClickLine() {}
-  // function onHoverLine() {}
-  // function getLineWidth() {}
-
   const MakeLayers = useCallback(() => {
     const links = getGeoJsonData(selectedCountry);
 
@@ -144,16 +125,11 @@ export default function MainMap() {
         getLineColor: [227, 26, 28],
         getFillColor: [227, 26, 28],
         getLineWidth: (d) => {
-          if (selectedLineID === d.id) {
-            return 2300;
-          } else if (hoverLineID === d.id) {
-            return 1600;
-          } else {
-            return 700;
-          }
+          // console.log("d", d);
+          return d.properties.s_nom / 20;
+          // write a function to normalize line and use from links min and max line values
         },
         onClick: (info, e) => {
-          console.log(info, e);
           e.stopPropagation();
           const id = info.object.id;
           if (selectedLineID === id) {
@@ -166,7 +142,6 @@ export default function MainMap() {
           }
         },
         onHover: (info, e) => {
-          console.log(info);
           if (info.object) {
             const id = info.object.id;
             setHoverLineID(id);
@@ -241,14 +216,50 @@ export default function MainMap() {
     return temp;
   }, [selectedCountry]);
 
+  useEffect(() => {
+    const countryCoordinates = COUNTRY_COORDINATES[selectedCountry] as [
+      number,
+      number
+    ];
+    flyToGeometry([countryCoordinates[1], countryCoordinates[0]]);
+    getBusChartsData(selectedCountry);
+    getCountryCapacityChartsData(selectedCountry);
+    getCountryGenerationChartsData(selectedCountry);
+    getCountryDemandChartsData(selectedCountry);
+    getCountryGenerationMixChartsData(selectedCountry);
+    getBusGenerationChartsData(selectedCountry);
+    getInstalledCapacitiesChartsData(selectedCountry);
+    getTotalDemandChartsData(selectedCountry);
+  }, [selectedCountry]);
+
+  // function onClickLine() {}
+  // function onHoverLine() {}
+  // function getLineWidth() {}
+
   // layers.push(temp[1]);
   // layers.push(temp[0]);
+
+  // const layers = MyCustomLayers({
+  //   selectedCountry,
+  //   setSelectedCountry,
+  //   setSelectedPointID,
+  //   setHoverPointID,
+  //   setSelectedLineID,
+  //   setHoverLineID,
+  //   setLineOpen,
+  //   setOpen,
+  //   selectedPointID,
+  //   hoverPointID,
+  //   selectedLineID,
+  //   hoverLineID,
+  // });
 
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
           layers={MakeLayers()}
+          // layers={MyCustomLayers()}
           // layers={temp}
           initialViewState={initialViewState}
           controller={true}
@@ -269,7 +280,6 @@ export default function MainMap() {
         data={"Line"}
       />
       <CountrySelect
-        // pass a key of COUNTRY_COORDINATES as the selectedCountry
         selectedCountry={selectedCountry}
         onSelectCountry={setSelectedCountry}
       />
