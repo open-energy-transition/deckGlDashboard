@@ -6,7 +6,11 @@ import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
 import { FlyToInterpolator } from "deck.gl";
-import { COUNTRY_COORDINATES, getGeoJsonData } from "./components/Links";
+import {
+  COUNTRY_COORDINATES,
+  getGeoJsonData,
+  COUNTRY_S_NOM_RANGES,
+} from "./components/Links";
 import { BlockProperties } from "./components/Layer";
 import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
 import BottomDrawer from "./popups/BottomDrawer";
@@ -45,6 +49,26 @@ const MAP_STYLE_LIGHT =
 
 const MAP_STYLE_DARK =
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+
+function normalizeSnom(
+  value: number,
+  country: keyof typeof COUNTRY_S_NOM_RANGES
+) {
+  const minLineWidth = 200;
+  const maxLineWidth = 2000;
+
+  const minSnom = COUNTRY_S_NOM_RANGES[country].min;
+  const maxSnom = COUNTRY_S_NOM_RANGES[country].max;
+
+  return (
+    ((value - minSnom) / (maxSnom - minSnom)) * (maxLineWidth - minLineWidth) +
+    minLineWidth
+  );
+}
+
+function getBusSize(country: keyof typeof COUNTRY_S_NOM_RANGES) {
+  return COUNTRY_S_NOM_RANGES[country].bussize;
+}
 
 export default function MainMap() {
   const { theme } = useTheme();
@@ -122,17 +146,18 @@ export default function MainMap() {
       new GeoJsonLayer({
         id: `Linesus`,
         data: links.lines,
-        opacity: 0.8,
+        opacity: 1,
         stroked: true,
         filled: true,
         pickable: true,
-        lineWidthScale: 22,
+        lineWidthScale: 20,
         getLineColor: [227, 26, 28],
         getFillColor: [227, 26, 28],
         getLineWidth: (d) => {
           // console.log("d", d);
-          return d.properties.s_nom / 20;
+          // return d.properties.s_nom / 20;
           // write a function to normalize line and use from links min and max line values
+          return normalizeSnom(d.properties.s_nom, selectedCountry);
         },
         onClick: (info, e) => {
           e.stopPropagation();
@@ -175,15 +200,16 @@ export default function MainMap() {
         pointType: "circle",
         wireframe: true,
         getPointRadius: (d) => {
-          if (selectedPointID === d.id) {
-            return 1100;
-          } else if (hoverPointID === d.id) {
-            return 750;
-          } else {
-            return 500;
-          }
+          // if (selectedPointID === d.id) {
+          //   return 1100;
+          // } else if (hoverPointID === d.id) {
+          //   return 750;
+          // } else {
+          //   return 500;
+          // }
+          return getBusSize(selectedCountry);
         },
-        pointRadiusScale: 70,
+        pointRadiusScale: 1000,
         onClick: (info, e) => {
           e.stopPropagation();
           const id = info.object.id;
