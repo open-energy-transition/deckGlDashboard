@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import Map, {
   useControl,
   NavigationControl,
@@ -9,22 +9,25 @@ import Map, {
   GeolocateControl,
 } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import {
-  US_2021_DATA,
-  US_2050_DATA,
-} from "../../components/SolarSection/Links";
+import { MyCustomLayers } from "./components/Layer";
+
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MyDropdown from "./MyDropdown";
 import ModePannel from "./Mode";
 import { Mode } from "./Mode";
-import { Button } from "@/components/ui/button";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
   const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
   overlay.setProps(props);
   return null;
 }
+
+import {
+  getGeoJsonData,
+  COUNTRY_S_NOM_RANGES,
+  COUNTRY_COORDINATES,
+} from "./components/Links";
 
 const TOKEN =
   "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw"; // Set your mapbox token here
@@ -81,25 +84,23 @@ export default function SideBySide() {
     };
   }, [width, mode]);
 
-  const layers = [
-    new GeoJsonLayer({
-      id: `polygon-layer${US_2021_DATA.id}`,
-      data: US_2050_DATA.polygon,
-      stroked: true,
-      opacity: 0.25,
-      filled: true,
-      extruded: false,
-      wireframe: false,
-      getElevation: 0,
-      getLineColor: [75, 75, 75],
-      getFillColor: [225, 75, 75, 20],
-      lineWidthMinPixels: 2,
-      // lineWidthScale: 20,
-      dashArray: [10, 5],
-      getLineWidth: 10,
-      pickable: true,
-    }),
-  ];
+  const [country, selectedCountry] =
+    useState<keyof typeof COUNTRY_COORDINATES>("US");
+  const [layer2021, setLayer2021] = useState<GeoJsonLayer[]>([]);
+  const [layer2050, setLayer2050] = useState<GeoJsonLayer[]>([]);
+
+  useEffect(() => {
+    const layer2021 = MyCustomLayers({
+      id: "2021",
+      polygonData: getGeoJsonData(country.toLowerCase()).regions_2021,
+    });
+    const layer2050 = MyCustomLayers({
+      id: "2050",
+      polygonData: getGeoJsonData(country.toLowerCase()).regions_2050,
+    });
+    setLayer2021(layer2021);
+    setLayer2050(layer2050);
+  }, [country]);
 
   return (
     <>
@@ -118,6 +119,8 @@ export default function SideBySide() {
           <FullscreenControl position="top-right" />
           <NavigationControl position="top-right" />
           <ScaleControl />
+
+          <DeckGLOverlay layers={layer2021} />
         </Map>
         <Map
           id="right-map"
@@ -129,7 +132,7 @@ export default function SideBySide() {
           mapStyle="mapbox://styles/mapbox/dark-v9"
           mapboxAccessToken={TOKEN}
         >
-          <DeckGLOverlay layers={layers} />
+          <DeckGLOverlay layers={layer2050} />
           <FullscreenControl position="top-left" />
         </Map>
       </div>

@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useRef } from "react";
 import {
   Drawer,
   DrawerClose,
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 
-import React from "react";
 import { LongBar } from "@/components/Charts/LongBar";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ChartRadial } from "@/components/Charts/ChartRadial";
@@ -19,8 +19,22 @@ import PieDonut from "@/components/Charts/PieDonut";
 import BarChartSimple from "@/components/Charts/BarChartSimple";
 import { Card } from "@/components/ui/card";
 import FilledAreaChart from "@/components/Charts/FilledAreaChart";
+import { CountryCapacityComparision } from "@/components/Charts/CountryCapacityComparision";
+import { CountryCapacityPie } from "@/components/Charts/CountryCapacityPie";
 
-const BottomDrawer = ({ selectedCountry }) => {
+type Props = {
+  selectedCountry: string;
+  installedCapacities: React.MutableRefObject<any>;
+  totalDemand: React.MutableRefObject<any>;
+  generationMix: React.MutableRefObject<any>;
+};
+
+const BottomDrawer = ({
+  selectedCountry,
+  installedCapacities,
+  totalDemand,
+  generationMix,
+}: Props) => {
   return (
     <Drawer modal={false}>
       <DrawerTrigger asChild>
@@ -41,7 +55,11 @@ const BottomDrawer = ({ selectedCountry }) => {
           <FilledAreaChart />
           <div className="flex flex-wrap justify-around items-center pt-4 pb-4">
             <div className="scale-100">
-              <ChartRadial />
+              {/* <ChartRadial /> */}
+              {/* <CountryCapacityComparision
+                installedCapacities={installedCapacities}
+              /> */}
+              <CountryCapacityPie installedCapacities={installedCapacities} />
             </div>
             <div className="scale-100">
               <PieDonut withoutCard={true} />
