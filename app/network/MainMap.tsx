@@ -49,9 +49,14 @@ const MAP_STYLE_DARK =
 export default function MainMap() {
   const { theme } = useTheme();
 
-  const countryLevelChartData = useRef(null);
-  const busLevelChartData = useRef(null);
-  const lineLevelChartData = useRef(null);
+  const countryBus = useRef(null);
+  const countryCapacity = useRef(null);
+  const countryGeneration = useRef(null);
+  const countryDemand = useRef(null);
+  const countryGenerationMix = useRef(null);
+  const busGeneration = useRef(null);
+  const installedCapacities = useRef(null);
+  const totalDemand = useRef(null);
 
   // const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
@@ -148,6 +153,7 @@ export default function MainMap() {
           } else {
             setHoverLineID(null);
           }
+          // return <></>;
         },
         updateTriggers: {
           getLineWidth: [selectedLineID, hoverLineID],
@@ -210,6 +216,9 @@ export default function MainMap() {
         parameters: {
           depthTest: false,
         },
+        // getText: (d) => {
+        //   return d.id;
+        // },
       }),
     ];
 
@@ -222,15 +231,23 @@ export default function MainMap() {
       number
     ];
     flyToGeometry([countryCoordinates[1], countryCoordinates[0]]);
-    getBusChartsData(selectedCountry);
-    getCountryCapacityChartsData(selectedCountry);
-    getCountryGenerationChartsData(selectedCountry);
-    getCountryDemandChartsData(selectedCountry);
-    getCountryGenerationMixChartsData(selectedCountry);
-    getBusGenerationChartsData(selectedCountry);
-    getInstalledCapacitiesChartsData(selectedCountry);
-    getTotalDemandChartsData(selectedCountry);
+    getCountryCapacityChartsData(selectedCountry, countryCapacity);
+    getCountryGenerationChartsData(selectedCountry, countryGeneration);
+    getCountryDemandChartsData(selectedCountry, countryDemand);
+    getCountryGenerationMixChartsData(selectedCountry, countryGenerationMix);
+    getBusGenerationChartsData(selectedCountry, busGeneration);
+    getBusChartsData(selectedCountry, countryBus);
+    getInstalledCapacitiesChartsData(selectedCountry, installedCapacities);
+    getTotalDemandChartsData(selectedCountry, totalDemand);
   }, [selectedCountry]);
+
+  // installedCapacity, genrationmix , totaldemand countryCapacity,
+
+  // 1. Bar chart comparing installed capacity from PyPSA, EIA, EMBER in GW (getInstalledCapacitiesChartsData)
+  // 2. Pie chart of installed capacity of PyPSA in % (getInstalledCapacitiesChartsData)
+  // 3. Bar chart comparing generation mix from PyPSA, EIA, EMBER in TWh (getCountryGenerationMixChartsData)
+  // 4. Pie chart of generation mix of PyPSA in % (getCountryGenerationMixChartsData)
+  // 5. Bar chart comparing total demand from PyPSA, EIA, EMBER in TWh  im doing it again
 
   // function onClickLine() {}
   // function onHoverLine() {}
@@ -271,7 +288,12 @@ export default function MainMap() {
           />
         </DeckGL>
       </div>
-      <BottomDrawer selectedCountry={selectedCountry} />
+      <BottomDrawer
+        selectedCountry={selectedCountry}
+        installedCapacities={installedCapacities}
+        totalDemand={totalDemand}
+        generationMix={countryGenerationMix}
+      />
       <MySideDrawer open={open} setOpen={setOpen} side={"right"} data={"Bus"} />
       <MySideDrawer
         open={lineOpen}

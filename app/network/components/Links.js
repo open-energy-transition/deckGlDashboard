@@ -31,7 +31,6 @@ export const LINE_WIDTH_RANGE = {
   DE: { min: 245.7780095940237, max: 46094.54852658827 },
 };
 
-
 export const COUNTRY_COORDINATES = {
   // lat long
   AU: [-25.2744, 133.7751],
