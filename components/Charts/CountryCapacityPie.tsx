@@ -1,141 +1,137 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-
-import { TrendingUp } from "lucide-react";
-import { Label, Pie, PieChart } from "recharts";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useState, useEffect } from "react";
+const chartData = [
+  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+];
 
-export const description = "A donut chart with text";
+const chartConfig = {
+  visitors: {
+    label: "Visitors",
+  },
+  chrome: {
+    label: "Chrome it",
+    color: "hsl(var(--chart-1))",
+  },
+  safari: {
+    label: "Safari",
+    color: "hsl(var(--chart-2))",
+  },
+  firefox: {
+    label: "Firefox",
+    color: "hsl(var(--chart-3))",
+  },
+  edge: {
+    label: "Edge",
+    color: "hsl(var(--chart-4))",
+  },
+  other: {
+    label: "Other",
+    color: "hsl(var(--chart-5))",
+  },
+} satisfies ChartConfig;
 
 type Props = {
   installedCapacities: React.MutableRefObject<any>;
 };
 
+type Data = [
+  {
+    id: number;
+    capacity_gw: number;
+    carrier: string;
+  }
+];
+
+type PieData = Array<{
+  id: number;
+  capacity: number;
+  fill: string;
+}> | null;
+
 export function CountryCapacityPie({ installedCapacities }: Props) {
-  const [data, setData] = useState<[] | null>(null);
+  const [data, setData] = useState<PieData | null>(null);
   const [config, setConfig] = useState<{} | null>(null);
+
+  function prepareChartData(data: Data) {
+    const piedata: PieData = [];
+    const piechartConfig: ChartConfig = {};
+
+    data.forEach((value, index) => {
+      piedata.push({
+        id: value.id,
+        capacity: value.capacity_gw,
+        fill: `var(--color-${value.id})`,
+      });
+      piechartConfig[value.id] = {
+        label: value.carrier,
+        color: `hsl(var(--chart-${index}))`,
+      };
+    });
+
+    setData(piedata);
+    setConfig(piechartConfig);
+    console.log("data.......", piedata);
+    console.log("pie chart...", piechartConfig);
+
+    // return piechart;
+  }
 
   useEffect(() => {
     if (installedCapacities.current) {
       if (installedCapacities.current.data) {
         console.log("installedCapacities", installedCapacities.current.data);
-        // setData(chartData);
-        // setConfig(chartConfig);
-      }
-      //   console.log("chartConfig", chartConfig);
 
-      //   console.log("installedCapacities", installedCapacities.current.data);
+        prepareChartData(installedCapacities.current.data);
+      }
     }
   }, [installedCapacities.current]);
-
-  const chartData = [
-    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 190, fill: "var(--color-other)" },
-  ];
-
-  const chartConfig = {
-    visitors: {
-      label: "Visitors",
-    },
-    chrome: {
-      label: "Chrome",
-      color: "hsl(var(--chart-1))",
-    },
-    safari: {
-      label: "Safari",
-      color: "hsl(var(--chart-2))",
-    },
-    firefox: {
-      label: "Firefox",
-      color: "hsl(var(--chart-3))",
-    },
-    edge: {
-      label: "Edge",
-      color: "hsl(var(--chart-4))",
-    },
-    other: {
-      label: "Other",
-      color: "hsl(var(--chart-5))",
-    },
-  } satisfies ChartConfig;
 
   return (
     <>
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
+        <CardTitle>Pie Chart - Legend</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent>
         <ChartContainer
           config={config || chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>
+            <Pie data={data || chartData} dataKey="capacity" nameKey="id" />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie
-              data={data || chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-xl font-bold"
-                        >
-                          Country
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-xl font-bold"
-                        >
-                          Installed Capacity
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by 5.2% this month
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total visitors for the last 6 months
