@@ -20,7 +20,8 @@ export async function GET(
       `
         SELECT *
         FROM public.generation_mix
-        WHERE country_code = $1;
+        WHERE country_code = $1
+        AND carrier != 'load';
       `,
       [country]
     );

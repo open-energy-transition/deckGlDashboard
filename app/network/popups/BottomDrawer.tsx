@@ -21,6 +21,10 @@ import { Card } from "@/components/ui/card";
 import FilledAreaChart from "@/components/Charts/FilledAreaChart";
 import { CountryCapacityComparision } from "@/components/Charts/CountryCapacityComparision";
 import { CountryCapacityPie } from "@/components/Charts/CountryCapacityPie";
+import { GenerationMixBarChart } from "@/components/Charts/GenerationMixBarChart";
+// import { GenerationMixPieChart } from "@/components/Charts/GenerationMixPieChart";
+import { InstalledCapacityBarChart } from "@/components/Charts/InstalledCapacityBarChart";
+import { TotalDemandBarChart } from "@/components/Charts/TotalDemandBarChart";
 
 type Props = {
   selectedCountry: string;
@@ -52,15 +56,12 @@ const BottomDrawer = ({
           </DrawerDescription>
         </DrawerHeader>
         <ScrollArea className="h-full overflow-auto">
-          <FilledAreaChart />
+          <InstalledCapacityBarChart data={installedCapacities} />
+          <GenerationMixBarChart data={generationMix} />
+          <TotalDemandBarChart data={totalDemand} />
+          <CountryCapacityPie installedCapacities={installedCapacities} />
           <div className="flex flex-wrap justify-around items-center pt-4 pb-4">
-            <div className="scale-100">
-              {/* <ChartRadial /> */}
-              {/* <CountryCapacityComparision
-                installedCapacities={installedCapacities}
-              /> */}
-              <CountryCapacityPie installedCapacities={installedCapacities} />
-            </div>
+            <div className="scale-100"></div>
             <div className="scale-100">
               <PieDonut withoutCard={true} />
             </div>
@@ -73,10 +74,9 @@ const BottomDrawer = ({
             <div className="scale-100">
               <PieDonut withoutCard={true} />
             </div>
-            <div className="scale-100">
-              <PieDonut withoutCard={true} />
-            </div>
+            <div className="scale-100"></div>
           </div>
+
           <LongBar />
           <DrawerFooter>
             <DrawerClose>
