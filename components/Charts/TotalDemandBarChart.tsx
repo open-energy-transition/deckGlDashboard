@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 
 import {
   CardContent,
@@ -22,22 +22,22 @@ interface Props {
 
 type ChartDataType = {
   name: string;
-  pypsa: number;
-  eia: number;
-  ember: number;
+  EMBER: number;
+  PyPSA: number;
+  EIA: number;
 }[];
 
 const chartConfig = {
-  pypsa: {
-    label: "PyPSA",
+  EMBER: {
+    label: "EMBER",
     color: "hsl(var(--chart-1))",
   },
-  eia: {
-    label: "EIA",
+  PyPSA: {
+    label: "PyPSA",
     color: "hsl(var(--chart-2))",
   },
-  ember: {
-    label: "EMBER",
+  EIA: {
+    label: "EIA",
     color: "hsl(var(--chart-3))",
   },
 } satisfies ChartConfig;
@@ -46,61 +46,89 @@ export function TotalDemandBarChart({ data }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
 
   useEffect(() => {
-    if (data.current?.data?.[0]) {
+    if (data?.current?.data?.[0]) {
       const item = data.current.data[0];
-      const transformedData = [
-        {
-          name: "Total Demand",
-          pypsa: Number(item.total_demand_twh?.toFixed(2) || 0),
-          eia: Number(item.eia_demand_twh?.toFixed(2) || 0),
-          ember: Number(item.ember_demand_twh?.toFixed(2) || 0),
-        },
-      ];
+      const transformedData = [{
+        name: "Total Demand",
+        EMBER: Number(item.ember?.toFixed(2) || 0),
+        PyPSA: Number(item.pypsa_model?.toFixed(2) || 0),
+        EIA: Number(item.eia?.toFixed(2) || 0),
+      }];
 
       setChartData(transformedData);
     }
-  }, [data.current]);
+  }, [data?.current]);
+
+  if (!data?.current?.data) {
+    return (
+      <>
+        <CardHeader>
+          <CardTitle>Total Demand Comparison</CardTitle>
+          <CardDescription>Waiting for data...</CardDescription>
+        </CardHeader>
+      </>
+    );
+  }
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <>
+        <CardHeader>
+          <CardTitle>Total Demand Comparison</CardTitle>
+          <CardDescription>No data available to display</CardDescription>
+        </CardHeader>
+      </>
+    );
+  }
 
   return (
     <>
       <CardHeader>
         <CardTitle>Total Demand Comparison</CardTitle>
-        <CardDescription>PyPSA vs EIA vs EMBER (TWh)</CardDescription>
+        <CardDescription>Demand Validation (TWh)</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="min-h-[40vh] max-h-[30vh] w-[50%]"
+          className="w-full h-[400px]"
         >
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="name"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <YAxis
-              tickLine={false}
-              tickMargin={5}
-              axisLine={false}
-              label={{ value: "TWh", angle: -90, position: "insideLeft" }}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Bar
-              dataKey="pypsa"
-              fill="var(--color-pypsa)"
-              radius={4}
-              name="PyPSA"
-            />
-            <Bar dataKey="eia" fill="var(--color-eia)" radius={4} name="EIA" />
-            <Bar
-              dataKey="ember"
-              fill="var(--color-ember)"
-              radius={4}
-              name="EMBER"
-            />
-          </BarChart>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="name"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+              />
+              <YAxis
+                tickLine={false}
+                tickMargin={5}
+                axisLine={false}
+                label={{ value: "Demand (TWh)", angle: -90, position: "insideLeft" }}
+              />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <Legend />
+              <Bar
+                dataKey="EMBER"
+                fill="hsl(var(--chart-1))"
+                radius={[4, 4, 0, 0]}
+                name="EMBER"
+              />
+              <Bar
+                dataKey="PyPSA"
+                fill="hsl(var(--chart-2))"
+                radius={[4, 4, 0, 0]}
+                name="PyPSA"
+              />
+              <Bar
+                dataKey="EIA"
+                fill="hsl(var(--chart-3))"
+                radius={[4, 4, 0, 0]}
+                name="EIA"
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </>
