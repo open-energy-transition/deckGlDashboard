@@ -93,8 +93,8 @@ const BottomDrawer = ({
           <GenerationMixBarChart data={generationComparisonRef} />
           <GenerationMixPieChart data={generationComparisonRef} />
           <TotalDemandBarChart data={demandComparisonRef} />
-          <CountryCapacityPie installedCapacities={installedCapacities} />
-          <div className="flex flex-wrap justify-around items-center pt-4 pb-4">
+          {/* <CountryCapacityPie installedCapacities={installedCapacities} /> */}
+          {/* <div className="flex flex-wrap justify-around items-center pt-4 pb-4">
             <div className="scale-100"></div>
             <div className="scale-100">
               <PieDonut withoutCard={true} />
@@ -111,7 +111,7 @@ const BottomDrawer = ({
             <div className="scale-100"></div>
           </div>
 
-          <LongBar />
+          <LongBar /> */}
           <DrawerFooter>
             <DrawerClose>
               <Button>CLOSE</Button>
