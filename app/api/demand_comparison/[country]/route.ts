@@ -19,9 +19,8 @@ export async function GET(
     const result = await pool.query(
       `
         SELECT *
-        FROM public.generation_mix
-        WHERE country_code = $1
-        AND carrier != 'load';
+        FROM public.demand_comparison
+        WHERE country_code = $1;
       `,
       [country]
     );
