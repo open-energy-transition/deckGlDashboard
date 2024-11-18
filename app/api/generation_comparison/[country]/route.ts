@@ -19,7 +19,7 @@ export async function GET(
     const result = await pool.query(
       `
         SELECT *
-        FROM public.total_generation_by_ac_bus
+        FROM public.generation_comparison
         WHERE country_code = $1;
       `,
       [country]

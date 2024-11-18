@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -29,76 +28,132 @@ type ChartDataType = {
 }[];
 
 const chartConfig = {
+  ember: {
+    label: "EMBER",
+    color: "hsl(var(--chart-1))",
+  },
   pypsa: {
     label: "PyPSA",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-2))",
   },
   eia: {
     label: "EIA",
-    color: "hsl(var(--chart-2))",
-  },
-  ember: {
-    label: "EMBER",
     color: "hsl(var(--chart-3))",
   },
 } satisfies ChartConfig;
+
+const CARRIER_ORDER = [
+  "Biomass",
+  "Fossil fuels",
+  "Hydro",
+  "Nuclear",
+  "Solar",
+  "Wind",
+  "PHS"
+];
 
 export function InstalledCapacityBarChart({ data }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
 
   useEffect(() => {
-    if (data.current) {
-      const transformedData = data.current.data.map((item: any) => ({
-        carrier: item.carrier,
-        pypsa: Number(item.capacity_gw?.toFixed(2)),
-        eia: Number(item.eia_capacity_gw?.toFixed(2)),
-        ember: Number(item.ember_capacity_gw?.toFixed(2) || 0),
-      }));
-
+    if (data?.current?.data) {
+      const dataArray = Array.isArray(data.current.data) 
+        ? data.current.data 
+        : [];
+      
+      const transformedData = dataArray
+        .filter((item: any) => 
+          item && 
+          item.carrier && 
+          item.carrier !== "Total capacity" &&
+          item.carrier !== "Geothermal"
+        )
+        .map((item: any) => ({
+          carrier: item.carrier,
+          ember: Number(item.ember?.toFixed(2) || 0),
+          pypsa: Number(item.pypsa_model?.toFixed(2) || 0),
+          eia: Number(item.eia?.toFixed(2) || 0),
+        }))
+        .sort((a: { carrier: string }, b: { carrier: string }) => {
+          const indexA = CARRIER_ORDER.indexOf(a.carrier);
+          const indexB = CARRIER_ORDER.indexOf(b.carrier);
+          return indexA - indexB;
+        });
+      
       setChartData(transformedData);
     }
-  }, [data.current]);
+  }, [data?.current]);
+
+  if (!data?.current?.data) {
+    return (
+      <>
+        <CardHeader>
+          <CardTitle>Installed Capacity Comparison</CardTitle>
+          <CardDescription>Waiting for data...</CardDescription>
+        </CardHeader>
+      </>
+    );
+  }
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <>
+        <CardHeader>
+          <CardTitle>Installed Capacity Comparison</CardTitle>
+          <CardDescription>No data available to display</CardDescription>
+        </CardHeader>
+      </>
+    );
+  }
 
   return (
     <>
       <CardHeader>
         <CardTitle>Installed Capacity Comparison</CardTitle>
-        <CardDescription>PyPSA vs EIA vs EMBER (GW)</CardDescription>
+        <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="min-h-[40vh] max-h-[40vh] w-full mx-4"
+          className="w-full h-[400px]"
         >
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="carrier"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <YAxis
-              tickLine={false}
-              tickMargin={5}
-              axisLine={false}
-              label={{ value: "GW", angle: -90, position: "insideLeft" }}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Bar
-              dataKey="pypsa"
-              fill="var(--color-pypsa)"
-              radius={4}
-              name="PyPSA"
-            />
-            <Bar dataKey="eia" fill="var(--color-eia)" radius={4} name="EIA" />
-            <Bar
-              dataKey="ember"
-              fill="var(--color-ember)"
-              radius={4}
-              name="EMBER"
-            />
-          </BarChart>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="carrier"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+              />
+              <YAxis
+                tickLine={false}
+                tickMargin={5}
+                axisLine={false}
+                label={{ value: "GW", angle: -90, position: "insideLeft" }}
+              />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <Legend />
+              <Bar
+                dataKey="ember"
+                fill="hsl(var(--chart-1))"
+                radius={[4, 4, 0, 0]}
+                name="EMBER"
+              />
+              <Bar
+                dataKey="pypsa"
+                fill="hsl(var(--chart-2))"
+                radius={[4, 4, 0, 0]}
+                name="PyPSA"
+              />
+              <Bar
+                dataKey="eia"
+                fill="hsl(var(--chart-3))"
+                radius={[4, 4, 0, 0]}
+                name="EIA"
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </>
