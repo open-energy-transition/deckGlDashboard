@@ -33,6 +33,7 @@ import { count } from "console";
 import { get } from "http";
 import { link } from "fs";
 import { MyCustomLayers } from "./components/Layer";
+import { DeckGLParameters } from '@/app/types/deck';
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -100,6 +101,16 @@ export default function MainMap() {
   const [lineOpen, setLineOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
+  const [selectedBusData, setSelectedBusData] = useState<{
+    busId: string;
+    countryCode: string;
+  } | null>(null);
+
+  const [selectedLineData, setSelectedLineData] = useState<{
+    busId: string;
+    countryCode: string;
+  } | null>(null);
+
   const flyToGeometry = useCallback((info: any) => {
     const cords = info;
     // console.log(cords);
@@ -161,12 +172,23 @@ export default function MainMap() {
         },
         onClick: (info, e) => {
           e.stopPropagation();
-          const id = info.object.id;
-          if (selectedLineID === id) {
+          console.log("Bus clicked:", {
+            properties: info.object.properties,
+            busId: info.object.properties.Bus,
+            countryCode: selectedCountry
+          });
+          
+          const busId = info.object.properties.Bus;
+          if (selectedLineID === busId) {
             setSelectedLineID(null);
+            setSelectedLineData(null);
             setLineOpen(false);
           } else {
-            setSelectedLineID(id);
+            setSelectedLineID(busId);
+            setSelectedLineData({
+              busId: busId,
+              countryCode: selectedCountry
+            });
             flyToGeometry(info.coordinate);
             setLineOpen(true);
           }
@@ -189,7 +211,7 @@ export default function MainMap() {
         autoHighlight: true,
         parameters: {
           depthTest: false,
-        },
+        } as DeckGLParameters,
       }),
       new GeoJsonLayer<BlockProperties>({
         id: `Buses${2}`,
@@ -212,12 +234,17 @@ export default function MainMap() {
         pointRadiusScale: 1000,
         onClick: (info, e) => {
           e.stopPropagation();
-          const id = info.object.id;
-          if (selectedPointID === id) {
+          const busId = info.object.properties.Bus;
+          if (selectedPointID === busId) {
             setSelectedPointID(null);
+            setSelectedBusData(null);
             setOpen(false);
           } else {
-            setSelectedPointID(id);
+            setSelectedPointID(busId);
+            setSelectedBusData({
+              busId: busId,
+              countryCode: selectedCountry
+            });
             flyToGeometry(info.object.geometry.coordinates);
             setOpen(true);
           }
@@ -241,7 +268,7 @@ export default function MainMap() {
         autoHighlight: true,
         parameters: {
           depthTest: false,
-        },
+        } as DeckGLParameters,
         // getText: (d) => {
         //   return d.id;
         // },
@@ -320,12 +347,17 @@ export default function MainMap() {
         totalDemand={totalDemand}
         generationMix={countryGenerationMix}
       />
-      <MySideDrawer open={open} setOpen={setOpen} side={"right"} data={"Bus"} />
+      <MySideDrawer 
+        open={open} 
+        setOpen={setOpen} 
+        side={"right"} 
+        data={selectedBusData}
+      />
       <MySideDrawer
         open={lineOpen}
         setOpen={setLineOpen}
         side={"left"}
-        data={"Line"}
+        data={selectedLineData}
       />
       <CountrySelect
         selectedCountry={selectedCountry}
