@@ -1,9 +1,9 @@
 import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
 import { useCallback } from "react";
-import { getGeoJsonData } from "./Links";
 import { MapViewState } from "deck.gl";
 import { FlyToInterpolator } from "deck.gl";
-import { COUNTRY_COORDINATES, getGeoJsonData } from "./components/Links";
+import { COUNTRY_COORDINATES } from "../components/Links";
+import { getGeoJsonData } from "../components/Links";
 
 export type BlockProperties = {
   data: string;
@@ -107,8 +107,10 @@ export function MyCustomLayers({
         },
         autoHighlight: true,
         parameters: {
+          depth: false,
           depthTest: false,
-        },
+          blend: true
+        } as any,
       }),
       new GeoJsonLayer<BlockProperties>({
         id: `Buses${2}`,
