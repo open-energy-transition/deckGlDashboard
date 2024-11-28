@@ -13,6 +13,7 @@ import {
 import { Button } from "../../../components/ui/button";
 
 import { COUNTRY_COORDINATES } from "./Links";
+import { useTheme } from "next-themes";
 
 type CountryCode = keyof typeof COUNTRY_COORDINATES;
 
@@ -25,17 +26,32 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
   selectedCountry,
   onSelectCountry,
 }) => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <Select
       value={selectedCountry}
       onValueChange={(value) => onSelectCountry(value as CountryCode)}
     >
-      <Button variant={"outline"} asChild>
+      <Button
+        className={`${
+          theme === "dark"
+            ? "bg-foreground text-background"
+            : "bg-foreground text-background"
+        }`}
+        asChild
+      >
         <SelectTrigger className="w-[280px] absolute z-50 top-2 left-3">
           <SelectValue placeholder="Select a country" />
         </SelectTrigger>
       </Button>
-      <SelectContent>
+      <SelectContent
+        className={`${
+          theme === "dark"
+            ? "bg-foreground text-background"
+            : "bg-foreground text-background"
+        }`}
+      >
         <SelectGroup>
           <SelectLabel>North America</SelectLabel>
           <SelectItem value="US">United States</SelectItem>

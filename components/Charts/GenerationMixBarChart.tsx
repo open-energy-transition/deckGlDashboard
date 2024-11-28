@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
+  ChartLegendContent,
+  ChartLegend,
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -53,7 +56,7 @@ const CARRIER_ORDER = [
   "Wind",
   "Load shedding",
   "PHS",
-  "Oil"
+  "Oil",
 ];
 
 export function GenerationMixBarChart({ data }: Props) {
@@ -61,15 +64,14 @@ export function GenerationMixBarChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
-      const dataArray = Array.isArray(data.current.data) 
-        ? data.current.data 
+      const dataArray = Array.isArray(data.current.data)
+        ? data.current.data
         : [];
-      
+
       const transformedData = dataArray
-        .filter((item: any) => 
-          item && 
-          item.carrier && 
-          item.carrier !== "Total generation"
+        .filter(
+          (item: any) =>
+            item && item.carrier && item.carrier !== "Total generation"
         )
         .map((item: any) => ({
           carrier: item.carrier,
@@ -82,7 +84,7 @@ export function GenerationMixBarChart({ data }: Props) {
           const indexB = CARRIER_ORDER.indexOf(b.carrier);
           return indexA - indexB;
         });
-      
+
       setChartData(transformedData);
     }
   }, [data?.current]);
@@ -111,16 +113,13 @@ export function GenerationMixBarChart({ data }: Props) {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle>Generation Mix Comparison</CardTitle>
-        <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="w-full h-[400px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
+      <Card className="w-[90%] xl:w-[50%]">
+        <CardHeader>
+          <CardTitle>Generation Mix Comparison</CardTitle>
+          <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
@@ -134,31 +133,35 @@ export function GenerationMixBarChart({ data }: Props) {
                 tickMargin={5}
                 axisLine={false}
                 label={{ value: "TWh", angle: -90, position: "insideLeft" }}
+                startOffset={1250}
               />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <Legend />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartLegend content={<ChartLegendContent />} />
               <Bar
                 dataKey="ember"
                 fill="hsl(var(--chart-1))"
                 radius={[4, 4, 0, 0]}
                 name="EMBER"
+                stackId={"a"}
               />
               <Bar
                 dataKey="pypsa"
                 fill="hsl(var(--chart-2))"
                 radius={[4, 4, 0, 0]}
                 name="PyPSA"
+                stackId={"a"}
               />
               <Bar
                 dataKey="eia"
                 fill="hsl(var(--chart-3))"
                 radius={[4, 4, 0, 0]}
                 name="EIA"
+                stackId={"a"}
               />
             </BarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </>
   );
 }

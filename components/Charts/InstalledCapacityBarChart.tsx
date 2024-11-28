@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -13,7 +14,9 @@ import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
+  ChartLegendContent,
   ChartTooltipContent,
+  ChartLegend,
 } from "@/components/ui/chart";
 
 interface Props {
@@ -49,7 +52,7 @@ const CARRIER_ORDER = [
   "Nuclear",
   "Solar",
   "Wind",
-  "PHS"
+  "PHS",
 ];
 
 export function InstalledCapacityBarChart({ data }: Props) {
@@ -57,16 +60,17 @@ export function InstalledCapacityBarChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
-      const dataArray = Array.isArray(data.current.data) 
-        ? data.current.data 
+      const dataArray = Array.isArray(data.current.data)
+        ? data.current.data
         : [];
-      
+
       const transformedData = dataArray
-        .filter((item: any) => 
-          item && 
-          item.carrier && 
-          item.carrier !== "Total capacity" &&
-          item.carrier !== "Geothermal"
+        .filter(
+          (item: any) =>
+            item &&
+            item.carrier &&
+            item.carrier !== "Total capacity" &&
+            item.carrier !== "Geothermal"
         )
         .map((item: any) => ({
           carrier: item.carrier,
@@ -79,7 +83,7 @@ export function InstalledCapacityBarChart({ data }: Props) {
           const indexB = CARRIER_ORDER.indexOf(b.carrier);
           return indexA - indexB;
         });
-      
+
       setChartData(transformedData);
     }
   }, [data?.current]);
@@ -108,16 +112,13 @@ export function InstalledCapacityBarChart({ data }: Props) {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle>Installed Capacity Comparison</CardTitle>
-        <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="w-full h-[400px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
+      <Card className="w-[90%] xl:w-[50%]">
+        <CardHeader>
+          <CardTitle>Installed Capacity Comparison</CardTitle>
+          <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
@@ -132,11 +133,13 @@ export function InstalledCapacityBarChart({ data }: Props) {
                 axisLine={false}
                 label={{ value: "GW", angle: -90, position: "insideLeft" }}
               />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <Legend />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              {/* <Legend /> */}
+              <ChartLegend content={<ChartLegendContent />} />
               <Bar
                 dataKey="ember"
                 fill="hsl(var(--chart-1))"
+                stackId={1}
                 radius={[4, 4, 0, 0]}
                 name="EMBER"
               />
@@ -145,17 +148,19 @@ export function InstalledCapacityBarChart({ data }: Props) {
                 fill="hsl(var(--chart-2))"
                 radius={[4, 4, 0, 0]}
                 name="PyPSA"
+                stackId={1}
               />
               <Bar
                 dataKey="eia"
                 fill="hsl(var(--chart-3))"
                 radius={[4, 4, 0, 0]}
                 name="EIA"
+                stackId={1}
               />
             </BarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </>
   );
 }
