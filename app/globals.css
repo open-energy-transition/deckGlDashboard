@@ -63,19 +63,29 @@ body {
     --chart-18: 28 40% 40%;
     --chart-19: 31 41% 48%;
     --chart-CCGT: 12 76% 61%;
-    --chart-biomass: 173 58% 39%;
-    --chart-coal: 197 37% 24%;
+    --chart-biomass: 120 40% 45%;
+    --chart-coal: 0 0% 20%;
     --chart-csp: 43 74% 66%;
-    --chart-geothermal: 27 87% 67%;
-    --chart-lignite: 12 76% 61%;
-    --chart-nuclear: 173 58% 39%;
-    --chart-offwind-ac: 197 37% 24%;
-    --chart-offwind-dc: 27 87% 67%;
-    --chart-oil: 43 74% 66%;
-    --chart-onwind: 12 76% 61%;
-    --chart-ror: 43 74% 66%;
-    --chart-solar: 173 58% 39%;
+    --chart-geothermal: 340 70% 50%;
+    --chart-lignite: 30 60% 45%;
+    --chart-nuclear: 180 65% 45%;
+    --chart-offwind-ac: 200 70% 50%;
+    --chart-offwind-dc: 210 75% 55%;
+    --chart-oil: 0 70% 45%;
+    --chart-onwind: 195 85% 65%;
+    --chart-ror: 220 75% 60%;
+    --chart-solar: 45 100% 50%;
+    --chart-load: 280 50% 45%;
     --color-pypsa: hsl(var(--chart-1));
+    --color-ccgt: hsl(var(--chart-1));
+    --color-onwind: hsl(var(--chart-2));
+    --color-solar: hsl(var(--chart-3));
+    --color-coal: hsl(var(--chart-4));
+    --color-ror: hsl(var(--chart-5));
+    --color-biomass: hsl(var(--chart-6));
+    --color-oil: hsl(var(--chart-7));
+    --color-offwind-ac: hsl(var(--chart-8));
+    --color-offwind-dc: hsl(var(--chart-9));
   }
  
   .dark {
@@ -118,19 +128,20 @@ body {
     --chart-17: 26 36% 34%;
     --chart-18: 28 40% 40%;
     --chart-19: 31 41% 48%;
-    --chart-CCGT: 12 76% 61%;
-    --chart-biomass: 173 58% 39%;
-    --chart-coal: 197 37% 24%;
+    --chart-CCGT: 12 76% 65%;
+    --chart-biomass: 120 40% 55%;
+    --chart-coal: 0 0% 40%;
     --chart-csp: 43 74% 66%;
-    --chart-geothermal: 27 87% 67%;
-    --chart-lignite: 12 76% 61%;
-    --chart-nuclear: 173 58% 39%;
-    --chart-offwind-ac: 197 37% 24%;
-    --chart-offwind-dc: 27 87% 67%;
-    --chart-oil: 43 74% 66%;
-    --chart-onwind: 12 76% 61%;
-    --chart-ror: 43 74% 66%;
-    --chart-solar: 173 58% 39%;
+    --chart-geothermal: 340 70% 60%;
+    --chart-lignite: 30 60% 55%;
+    --chart-nuclear: 180 65% 55%;
+    --chart-offwind-ac: 200 70% 60%;
+    --chart-offwind-dc: 210 75% 65%;
+    --chart-oil: 0 70% 55%;
+    --chart-onwind: 195 85% 75%;
+    --chart-ror: 220 75% 70%;
+    --chart-solar: 45 100% 60%;
+    --chart-load: 280 50% 55%;
   }
 }
 

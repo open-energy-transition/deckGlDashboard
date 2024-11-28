@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
+import { Pie, PieChart, ResponsiveContainer, Legend, Label } from "recharts";
 
 import {
   CardContent,
@@ -151,8 +151,7 @@ export function GenerationMixPieChart({ data }: Props) {
                 nameKey="carrier"
                 innerRadius={100}
                 outerRadius={180}
-                label={(props) => {
-                  const { cx, cy, midAngle, outerRadius, percentage } = props;
+                label={({ cx, cy, midAngle, outerRadius, percentage }) => {
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius * 1.3;
                   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -165,35 +164,43 @@ export function GenerationMixPieChart({ data }: Props) {
                       fill="currentColor"
                       textAnchor={x > cx ? 'start' : 'end'}
                       dominantBaseline="central"
-                      className="text-sm font-medium"
+                      className="fill-muted-foreground text-sm font-medium"
                     >
                       {`${percentage.toFixed(1)}%`}
                     </text>
                   ) : null;
                 }}
-              />
-              <text
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-foreground"
               >
-                <tspan
-                  x="50%"
-                  y="48%"
-                  className="text-4xl font-bold"
-                >
-                  {totalGeneration.toLocaleString()}
-                </tspan>
-                <tspan
-                  x="50%"
-                  y="58%"
-                  className="text-base text-muted-foreground"
-                >
-                  TWh
-                </tspan>
-              </text>
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalGeneration.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            TWh
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </Pie>
               <Legend 
                 layout="horizontal"
                 verticalAlign="bottom"

@@ -1,13 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import { TrendingUp } from "lucide-react";
-import { PolarGrid, RadialBar, RadialBarChart } from "recharts";
+import { PolarGrid, RadialBar, RadialBarChart, ResponsiveContainer, Legend } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,75 +15,221 @@ import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
+import { GeneratorData } from "@/app/types";
 
-export const description = "A radial chart with a grid";
+type CarrierType = 
+  | "CCGT"
+  | "OCGT"
+  | "biomass"
+  | "coal"
+  | "geothermal"
+  | "lignite"
+  | "nuclear"
+  | "offwind-ac"
+  | "offwind-dc"
+  | "oil"
+  | "onwind"
+  | "ror"
+  | "solar"
+  | "load";
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
+interface ProcessedDataItem {
+  carrier: string;
+  value: string;
+  percentage: string;
+  fill: string;
+}
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
+const chartConfig: Record<CarrierType, { label: string; color: string }> = {
+  CCGT: {
+    label: "Combined Cycle Gas Turbine",
+    color: "hsl(var(--chart-CCGT))",
   },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
+  OCGT: {
+    label: "Open Cycle Gas Turbine",
+    color: "hsl(var(--chart-OCGT))",
   },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
+  biomass: {
+    label: "Biomass",
+    color: "hsl(var(--chart-biomass))",
   },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
+  coal: {
+    label: "Coal",
+    color: "hsl(var(--chart-coal))",
   },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
+  geothermal: {
+    label: "Geothermal",
+    color: "hsl(var(--chart-geothermal))",
   },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
+  lignite: {
+    label: "Lignite",
+    color: "hsl(var(--chart-lignite))",
   },
-} satisfies ChartConfig;
+  nuclear: {
+    label: "Nuclear",
+    color: "hsl(var(--chart-nuclear))",
+  },
+  "offwind-ac": {
+    label: "Offshore Wind AC",
+    color: "hsl(var(--chart-offwind-ac))",
+  },
+  "offwind-dc": {
+    label: "Offshore Wind DC",
+    color: "hsl(var(--chart-offwind-dc))",
+  },
+  oil: {
+    label: "Oil",
+    color: "hsl(var(--chart-oil))",
+  },
+  onwind: {
+    label: "Onshore Wind",
+    color: "hsl(var(--chart-onwind))",
+  },
+  ror: {
+    label: "Run of River",
+    color: "hsl(var(--chart-ror))",
+  },
+  solar: {
+    label: "Solar",
+    color: "hsl(var(--chart-solar))",
+  },
+  load: {
+    label: "Load",
+    color: "hsl(var(--chart-load))",
+  },
+} as const;
 
-export function ChartRadial() {
+interface ChartRadialProps {
+  data: GeneratorData[];
+  valueKey: 'p_nom' | 'p_nom_opt';
+  title: string;
+}
+
+export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
+  const processedData = useMemo(() => {
+    const groupedData = data
+      .filter(item => item.carrier !== 'load')
+      .reduce((acc: { [key: string]: number }, item) => {
+        const value = Number(item[valueKey]);
+        if (!isNaN(value)) {
+          if (!acc[item.carrier]) {
+            acc[item.carrier] = 0;
+          }
+          acc[item.carrier] += value;
+        }
+        return acc;
+      }, {});
+
+    const totalValue = Object.values(groupedData)
+      .reduce((sum, value) => sum + value, 0);
+
+    return Object.entries(groupedData)
+      .map(([carrier, value]) => {
+        const carrierKey = carrier.toLowerCase() as CarrierType;
+        const percentage = (value / totalValue) * 100;
+        
+        return {
+          carrier,
+          value: value.toFixed(2),
+          actualValue: value,
+          percentage: percentage.toFixed(1),
+          displayValue: percentage,
+          fill: chartConfig[carrierKey]?.color || "hsl(var(--chart-1))"
+        };
+      })
+      .sort((a, b) => b.actualValue - a.actualValue);
+  }, [data, valueKey]);
+
+  const totalValue = useMemo(() => {
+    return processedData.reduce((sum: number, item: ProcessedDataItem) => 
+      sum + Number(item.value), 0
+    );
+  }, [processedData]);
+
+  const totalPercentage = useMemo(() => {
+    return processedData.reduce((sum: number, item: ProcessedDataItem) => 
+      sum + Number(item.percentage), 0
+    );
+  }, [processedData]);
+
+  console.log("Total percentage:", totalPercentage);
+
   return (
     <>
       <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Grid</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>
+          Total: {totalValue.toFixed(2)} MW
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+        <ChartContainer 
+          config={chartConfig} 
+          className="mx-auto aspect-square max-h-[300px]"
         >
-          <RadialBarChart data={chartData} innerRadius={30} outerRadius={100}>
+          <RadialBarChart 
+            width={300}
+            height={300}
+            data={processedData} 
+            innerRadius="30%" 
+            outerRadius="90%"
+            startAngle={180}
+            endAngle={-180}
+            barSize={15}
+          >
             <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel nameKey="browser" />}
+              content={({ payload }) => {
+                if (payload && payload[0]) {
+                  const data = payload[0].payload as ProcessedDataItem;
+                  const carrierKey = data.carrier.toLowerCase() as CarrierType;
+                  return (
+                    <div className="bg-black bg-opacity-90 p-3 rounded shadow text-white">
+                      <p className="font-bold text-sm">{chartConfig[carrierKey]?.label || data.carrier}</p>
+                      <p className="text-sm">{data.value} MW</p>
+                      <p className="text-sm">{data.percentage}%</p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
             />
             <PolarGrid gridType="circle" />
-            <RadialBar dataKey="visitors" />
+            <RadialBar
+              dataKey="displayValue"
+              background
+              cornerRadius={5}
+              label={{
+                position: 'insideStart',
+                fill: '#fff',
+                fontSize: 10,
+                formatter: (value: number, entry: any) => {
+                  if (!entry?.payload?.percentage) return '';
+                  const percentage = Number(entry.payload.percentage);
+                  return percentage > 5 ? `${percentage.toFixed(1)}%` : '';
+                }
+              }}
+            />
+            <Legend 
+              layout="horizontal"
+              verticalAlign="bottom"
+              align="center"
+              wrapperStyle={{ paddingTop: '20px' }}
+              formatter={(value: string) => {
+                if (!value) return '';
+                const carrierKey = value.toLowerCase() as CarrierType;
+                return chartConfig[carrierKey]?.label || value;
+              }}
+              payload={processedData.map((item: ProcessedDataItem) => ({
+                value: item.carrier,
+                type: 'circle',
+                id: item.carrier,
+                color: item.fill
+              }))}
+            />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </>
   );
 }
