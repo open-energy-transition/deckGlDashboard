@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -14,6 +15,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegendContent,
+  ChartLegend,
 } from "@/components/ui/chart";
 
 interface Props {
@@ -48,12 +51,14 @@ export function TotalDemandBarChart({ data }: Props) {
   useEffect(() => {
     if (data?.current?.data?.[0]) {
       const item = data.current.data[0];
-      const transformedData = [{
-        name: "Total Demand",
-        EMBER: Number(item.ember?.toFixed(2) || 0),
-        PyPSA: Number(item.pypsa_model?.toFixed(2) || 0),
-        EIA: Number(item.eia?.toFixed(2) || 0),
-      }];
+      const transformedData = [
+        {
+          name: "Total Demand",
+          EMBER: Number(item.ember?.toFixed(2) || 0),
+          PyPSA: Number(item.pypsa_model?.toFixed(2) || 0),
+          EIA: Number(item.eia?.toFixed(2) || 0),
+        },
+      ];
 
       setChartData(transformedData);
     }
@@ -82,55 +87,54 @@ export function TotalDemandBarChart({ data }: Props) {
   }
 
   return (
-    <>
+    <Card className="w-[90%] md:w-[60%] lg:w-[40%] xl:w-[30%] 2xl:w-[25%]">
       <CardHeader>
         <CardTitle>Total Demand Comparison</CardTitle>
         <CardDescription>Demand Validation (TWh)</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="w-full h-[400px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <YAxis
-                tickLine={false}
-                tickMargin={5}
-                axisLine={false}
-                label={{ value: "Demand (TWh)", angle: -90, position: "insideLeft" }}
-              />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <Legend />
-              <Bar
-                dataKey="EMBER"
-                fill="hsl(var(--chart-1))"
-                radius={[4, 4, 0, 0]}
-                name="EMBER"
-              />
-              <Bar
-                dataKey="PyPSA"
-                fill="hsl(var(--chart-2))"
-                radius={[4, 4, 0, 0]}
-                name="PyPSA"
-              />
-              <Bar
-                dataKey="EIA"
-                fill="hsl(var(--chart-3))"
-                radius={[4, 4, 0, 0]}
-                name="EIA"
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        <ChartContainer config={chartConfig}>
+          <BarChart data={chartData}>
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+            />
+            <YAxis
+              tickLine={false}
+              tickMargin={5}
+              axisLine={false}
+              label={{
+                value: "Demand (TWh)",
+                angle: -90,
+                position: "insideLeft",
+              }}
+            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Bar
+              dataKey="EMBER"
+              fill="hsl(var(--chart-1))"
+              radius={[4, 4, 0, 0]}
+              name="EMBER"
+            />
+            <Bar
+              dataKey="PyPSA"
+              fill="hsl(var(--chart-2))"
+              radius={[4, 4, 0, 0]}
+              name="PyPSA"
+            />
+            <Bar
+              dataKey="EIA"
+              fill="hsl(var(--chart-3))"
+              radius={[4, 4, 0, 0]}
+              name="EIA"
+            />
+          </BarChart>
         </ChartContainer>
       </CardContent>
-    </>
+    </Card>
   );
 }

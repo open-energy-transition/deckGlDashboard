@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Legend, Label } from "recharts";
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -13,6 +14,7 @@ import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
+  ChartTooltipContent,
 } from "@/components/ui/chart";
 
 interface Props {
@@ -75,31 +77,36 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
-      const dataArray = Array.isArray(data.current.data) 
-        ? data.current.data 
+      const dataArray = Array.isArray(data.current.data)
+        ? data.current.data
         : [];
-      
+
       // Encontrar el total
-      const totalItem = dataArray.find((item: DataItem) => item.carrier === "Total capacity");
+      const totalItem = dataArray.find(
+        (item: DataItem) => item.carrier === "Total capacity"
+      );
       const total = Number(totalItem?.pypsa_model?.toFixed(2) || 0);
       setTotalCapacity(total);
 
       // Transformar datos para el pie chart
       const transformedData = dataArray
-        .filter((item: DataItem) => 
-          item && 
-          item.carrier && 
-          item.carrier !== "Total capacity" &&
-          item.carrier !== "Geothermal"
+        .filter(
+          (item: DataItem) =>
+            item &&
+            item.carrier &&
+            item.carrier !== "Total capacity" &&
+            item.carrier !== "Geothermal"
         )
         .map((item: DataItem) => {
           const value = Number(item.pypsa_model?.toFixed(2) || 0);
-          const percentage = total > 0 ? (value / total * 100) : 0;
+          const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
             value: value,
             percentage: Number(percentage.toFixed(1)),
-            fill: chartConfig[item.carrier as keyof typeof chartConfig]?.color || "hsl(var(--chart-1))"
+            fill:
+              chartConfig[item.carrier as keyof typeof chartConfig]?.color ||
+              "hsl(var(--chart-1))",
           };
         })
         .filter((item: ChartItem) => item.value > 0);
@@ -110,18 +117,21 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle>Installed Capacity Mix</CardTitle>
-        <CardDescription>PyPSA Installed Capacity by Technology</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square h-[600px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
+      <Card className="flex flex-col w-[90%] md:w-[60%] lg:w-[40%] xl:w-[40%] 2xl:w-[25%]">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Installed Capacity Mix</CardTitle>
+          <CardDescription>
+            PyPSA Installed Capacity by Technology
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0">
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square"
+          >
             <PieChart>
-              <ChartTooltip 
+              <ChartTooltip
+                cursor={false}
                 content={({ payload }) => {
                   if (payload && payload[0]) {
                     const data = payload[0].payload;
@@ -140,8 +150,9 @@ export function InstalledCapacityPieChart({ data }: Props) {
                 data={chartData}
                 dataKey="value"
                 nameKey="carrier"
-                innerRadius={100}
-                outerRadius={180}
+                innerRadius={70}
+                outerRadius={110}
+                strokeWidth={5}
                 label={({ cx, cy, midAngle, outerRadius, percentage }) => {
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius * 1.3;
@@ -153,7 +164,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
                       x={x}
                       y={y}
                       fill="currentColor"
-                      textAnchor={x > cx ? 'start' : 'end'}
+                      textAnchor={x > cx ? "start" : "end"}
                       dominantBaseline="central"
                       className="fill-muted-foreground text-sm font-medium"
                     >
@@ -192,16 +203,17 @@ export function InstalledCapacityPieChart({ data }: Props) {
                   }}
                 />
               </Pie>
-              <Legend 
+              <Legend
                 layout="horizontal"
                 verticalAlign="bottom"
                 align="center"
-                wrapperStyle={{ paddingTop: '20px' }}
+                wrapperStyle={{ paddingTop: "20px" }}
               />
             </PieChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
+            {/* </ResponsiveContainer> */}
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </>
   );
 }
