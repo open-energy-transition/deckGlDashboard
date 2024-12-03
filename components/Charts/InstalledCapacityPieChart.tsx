@@ -13,6 +13,8 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -117,18 +119,15 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
   return (
     <>
-      <Card className="flex flex-col w-[90%] md:w-[60%] lg:w-[40%] xl:w-[40%] 2xl:w-[25%]">
-        <CardHeader className="items-center pb-0">
+      <Card className="w-[95%] md:w-[51%] lg:w-[44%] xl:w-[30%] 2xl:w-[25%]">
+        <CardHeader>
           <CardTitle>Installed Capacity Mix</CardTitle>
           <CardDescription>
             PyPSA Installed Capacity by Technology
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 pb-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square"
-          >
+        <CardContent>
+          <ChartContainer config={chartConfig} className="aspect-square w-full">
             <PieChart>
               <ChartTooltip
                 cursor={false}
@@ -203,14 +202,11 @@ export function InstalledCapacityPieChart({ data }: Props) {
                   }}
                 />
               </Pie>
-              <Legend
-                layout="horizontal"
-                verticalAlign="bottom"
-                align="center"
-                wrapperStyle={{ paddingTop: "20px" }}
+              <ChartLegend
+                content={<ChartLegendContent />}
+                className="flex-wrap mt-5"
               />
             </PieChart>
-            {/* </ResponsiveContainer> */}
           </ChartContainer>
         </CardContent>
       </Card>

@@ -25,6 +25,8 @@ import { GenerationMixPieChart } from "@/components/Charts/GenerationMixPieChart
 import { InstalledCapacityPieChart } from "@/components/Charts/InstalledCapacityPieChart";
 import useSWR from 'swr';
 import { useTheme } from "next-themes";
+import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
+import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
 
 type Props = {
   selectedCountry: string;
@@ -97,17 +99,19 @@ const BottomDrawer = ({
           </DrawerDescription>
         </DrawerHeader>
         <ScrollArea className="overflow-y-scroll flex flex-wrap justify-center mt-8 gap-6">
-          <InstalledCapacityBarChart data={capacityComparisonRef} />
+          {/* <InstalledCapacityBarChart data={capacityComparisonRef} /> */}
+          <InstalledCapacityBarChartStacked data={capacityComparisonRef} />
           <InstalledCapacityPieChart data={capacityComparisonRef} />
           <GenerationMixPieChart data={generationComparisonRef} />
-          <GenerationMixBarChart data={generationComparisonRef} />
+          {/* <GenerationMixBarChart data={generationComparisonRef} /> */}
+          <GenerationMixBarChartStacked data={generationComparisonRef} />
           <TotalDemandBarChart data={demandComparisonRef} />
+          <DrawerFooter className="w-full border-t">
+            <DrawerClose>
+              <Button>CLOSE</Button>
+            </DrawerClose>
+          </DrawerFooter>
         </ScrollArea>
-        <DrawerFooter>
-          <DrawerClose>
-            <Button>CLOSE</Button>
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
