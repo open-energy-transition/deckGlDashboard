@@ -33,6 +33,7 @@ import {
 } from "./chartData";
 import { WebMercatorViewport } from '@deck.gl/core';
 import MapLegend from './components/MapLegend';
+import CountryStatics from "./popups/NavSideBar";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -141,7 +142,6 @@ export default function MainMap() {
   const [initialViewState, setInitialViewState] =
     useState<MapViewState>(INITIAL_VIEW_STATE);
 
-  const [lineOpen, setLineOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   const [selectedBusData, setSelectedBusData] = useState<{
@@ -156,28 +156,33 @@ export default function MainMap() {
 
   const [zoomLevel, setZoomLevel] = useState(4);
 
-  const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
+  const [busCapacities, setBusCapacities] = useState<Record<string, number>>(
+    {}
+  );
 
   const [isLoading, setIsLoading] = useState(true);
 
   const loadBusCapacities = useCallback(async (country: string) => {
     if (!country) return;
-    
+
     setIsLoading(true);
     try {
       const response = await fetch(`/api/bustotal/${country}`);
       const data = await response.json();
 
       if (!data.data || !Array.isArray(data.data)) {
-        throw new Error('Invalid API response format');
+        throw new Error("Invalid API response format");
       }
 
-      const capacities = data.data.reduce((acc: Record<string, number>, item: any) => {
-        if (item.bus && typeof item.total_capacity === 'number') {
-          acc[item.bus] = item.total_capacity / 1000000;
-        }
-        return acc;
-      }, {});
+      const capacities = data.data.reduce(
+        (acc: Record<string, number>, item: any) => {
+          if (item.bus && typeof item.total_capacity === "number") {
+            acc[item.bus] = item.total_capacity / 1000000;
+          }
+          return acc;
+        },
+        {}
+      );
 
       setBusCapacities(capacities);
     } catch (error) {
@@ -211,21 +216,21 @@ export default function MainMap() {
     const logMin = Math.log(minCapacity + 1) / Math.log(logBase);
     const logMax = Math.log(maxCapacity + 1) / Math.log(logBase);
     const logCurrent = Math.log(capacity + 1) / Math.log(logBase);
-    
+
     // Add dispersion factor to avoid similar sizes
     const normalizedSize = (logCurrent - logMin) / (logMax - logMin);
     const dispersedSize = Math.pow(normalizedSize, 0.4);
-    
+
     // Apply base radius with non-linear scale
     const baseRadius = minRadius + (maxRadius - minRadius) * dispersedSize;
-    
+
     // Adjust zoom factor
     const zoomFactor = Math.pow(zoomBase, zoom - 5);
-    
+
     // Add density-based separation factor
     const numBuses = capacityValues.length;
-    const densityFactor = Math.max(0.6, 1 - (numBuses / 200));
-    
+    const densityFactor = Math.max(0.6, 1 - numBuses / 200);
+
     return baseRadius * zoomFactor * densityFactor;
   };
 
@@ -245,13 +250,6 @@ export default function MainMap() {
   }, []);
 
   useEffect(() => {
-    if (!lineOpen && selectedLineID) {
-      setLineOpen(false);
-      setSelectedLineID(null);
-    }
-  }, [lineOpen]);
-
-  useEffect(() => {
     if (!open && selectedPointID) {
       setOpen(false);
       setSelectedPointID(null);
@@ -262,12 +260,12 @@ export default function MainMap() {
     if (isLoading || Object.keys(busCapacities).length === 0) {
       return [];
     }
-    
+
     const links = getGeoJsonData(selectedCountry);
 
     return [
       new GeoJsonLayer({
-        id: `Linesus`,
+        id: `Linebus`,
         data: links.lines,
         opacity: 1,
         stroked: true,
@@ -277,31 +275,18 @@ export default function MainMap() {
         getLineColor: [227, 26, 28],
         getFillColor: [227, 26, 28],
         getLineWidth: (d) => {
-          const baseWidth = normalizeSnom(d.properties.s_nom, selectedCountry, zoomLevel);
-          
+          const baseWidth = normalizeSnom(
+            d.properties.s_nom,
+            selectedCountry,
+            zoomLevel
+          );
+
           if (selectedLineID === d.properties.Bus) {
             return baseWidth * 1.5;
           } else if (hoverLineID === d.properties.Bus) {
             return baseWidth * 1.2;
           }
           return baseWidth;
-        },
-        onClick: (info, e) => {
-          e.stopPropagation();
-          const busId = info.object.properties.Bus;
-          if (selectedLineID === busId) {
-            setSelectedLineID(null);
-            setSelectedLineData(null);
-            setLineOpen(false);
-          } else {
-            setSelectedLineID(busId);
-            setSelectedLineData({
-              busId: busId,
-              countryCode: selectedCountry
-            });
-            flyToGeometry(info.coordinate);
-            setLineOpen(true);
-          }
         },
         onHover: (info) => {
           setHoverLineID(info.object ? info.object.id : null);
@@ -312,9 +297,8 @@ export default function MainMap() {
         transitions: {
           getLineWidth: 100,
         },
-        autoHighlight: true,
         parameters: {
-          depthTest: false
+          depthTest: false,
         } as CustomRenderParameters,
       }),
       new GeoJsonLayer<BusProperties>({
@@ -328,7 +312,7 @@ export default function MainMap() {
         pointRadiusScale: 2.0,
         getPointRadius: (d) => {
           const baseRadius = calculateBusRadius(d.properties.Bus, zoomLevel);
-          
+
           if (selectedPointID === d.properties.Bus) {
             return baseRadius * 1.5;
           } else if (hoverPointID === d.properties.Bus) {
@@ -347,7 +331,7 @@ export default function MainMap() {
             setSelectedPointID(busId);
             setSelectedBusData({
               busId: busId,
-              countryCode: selectedCountry
+              countryCode: selectedCountry,
             });
             flyToGeometry(info.object.geometry.coordinates);
             setOpen(true);
@@ -359,14 +343,20 @@ export default function MainMap() {
         getFillColor: [72, 123, 182],
         pickable: true,
         updateTriggers: {
-          getPointRadius: [selectedPointID, hoverPointID, zoomLevel, busCapacities, isLoading],
+          getPointRadius: [
+            selectedPointID,
+            hoverPointID,
+            zoomLevel,
+            busCapacities,
+            isLoading,
+          ],
         },
         transitions: {
           getPointRadius: 200,
         },
         autoHighlight: true,
         parameters: {
-          depthTest: false
+          depthTest: false,
         } as CustomRenderParameters,
       }),
     ];
@@ -375,13 +365,13 @@ export default function MainMap() {
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
     const viewConfig = COUNTRY_VIEW_CONFIG[selectedCountry];
-    
+
     // Calcular el viewport basado en los bounds del país
     const viewport = new WebMercatorViewport({
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     });
-    
+
     setInitialViewState({
       ...viewport,
       latitude: countryCoordinates[0],
@@ -392,11 +382,11 @@ export default function MainMap() {
       pitch: 0,
       bearing: 0,
       transitionInterpolator: new FlyToInterpolator({ speed: 1.5 }),
-      transitionDuration: 1500
+      transitionDuration: 1500,
     });
-    
+
     loadBusCapacities(selectedCountry);
-    
+
     getCountryCapacityChartsData(selectedCountry, countryCapacity);
     getCountryGenerationChartsData(selectedCountry, countryGeneration);
     getCountryDemandChartsData(selectedCountry, countryDemand);
@@ -426,7 +416,9 @@ export default function MainMap() {
         >
           <Map
             reuseMaps
-            mapStyle={currentTheme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK}
+            mapStyle={
+              currentTheme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK
+            }
           />
         </DeckGL>
       </div>
@@ -436,26 +428,29 @@ export default function MainMap() {
         totalDemand={totalDemand}
         generationMix={countryGenerationMix}
       />
-      <MySideDrawer 
-        open={open} 
-        setOpen={setOpen} 
-        side={"right"} 
-        data={selectedBusData}
+      <CountryStatics
+        selectedCountry={selectedCountry}
+        installedCapacities={installedCapacities}
+        totalDemand={totalDemand}
+        generationMix={countryGenerationMix}
       />
       <MySideDrawer
+        open={open}
+        setOpen={setOpen}
+        side={"right"}
+        data={selectedBusData}
+      />
+      {/* <MySideDrawer
         open={lineOpen}
         setOpen={setLineOpen}
         side={"left"}
         data={selectedLineData}
-      />
+      /> */}
       <CountrySelect
         selectedCountry={selectedCountry}
         onSelectCountry={setSelectedCountry}
       />
-      <MapLegend 
-        country={selectedCountry}
-        theme={currentTheme || 'light'}
-      />
+      <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
     </>
   );
 }

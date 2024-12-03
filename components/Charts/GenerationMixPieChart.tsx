@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Legend, Label } from "recharts";
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -12,6 +13,8 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
 } from "@/components/ui/chart";
 
@@ -87,28 +90,31 @@ export function GenerationMixPieChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
-      const dataArray = Array.isArray(data.current.data) 
-        ? data.current.data 
+      const dataArray = Array.isArray(data.current.data)
+        ? data.current.data
         : [];
-      
-      const totalItem = dataArray.find((item: DataItem) => item.carrier === "Total generation");
+
+      const totalItem = dataArray.find(
+        (item: DataItem) => item.carrier === "Total generation"
+      );
       const total = Number(totalItem?.pypsa_model?.toFixed(2) || 0);
       setTotalGeneration(total);
 
       const transformedData = dataArray
-        .filter((item: DataItem) => 
-          item && 
-          item.carrier && 
-          item.carrier !== "Total generation"
+        .filter(
+          (item: DataItem) =>
+            item && item.carrier && item.carrier !== "Total generation"
         )
         .map((item: DataItem) => {
           const value = Number(item.pypsa_model?.toFixed(2) || 0);
-          const percentage = total > 0 ? (value / total * 100) : 0;
+          const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
             value: value,
             percentage: Number(percentage.toFixed(1)),
-            fill: chartConfig[item.carrier as keyof typeof chartConfig]?.color || "hsl(var(--chart-1))"
+            fill:
+              chartConfig[item.carrier as keyof typeof chartConfig]?.color ||
+              "hsl(var(--chart-1))",
           };
         })
         .filter((item: ChartItem) => item.value > 0);
@@ -119,18 +125,15 @@ export function GenerationMixPieChart({ data }: Props) {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle>Generation Mix</CardTitle>
-        <CardDescription>PyPSA Generation by Technology</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square h-[600px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
+      <Card className="w-[95%] md:w-[51%] lg:w-[44%] xl:w-[30%] 2xl:w-[25%]">
+        <CardHeader>
+          <CardTitle>Generation Mix</CardTitle>
+          <CardDescription>PyPSA Generation by Technology</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig} className="aspect-square">
             <PieChart>
-              <ChartTooltip 
+              <ChartTooltip
                 content={({ payload }) => {
                   if (payload && payload[0]) {
                     const data = payload[0].payload;
@@ -149,8 +152,8 @@ export function GenerationMixPieChart({ data }: Props) {
                 data={chartData}
                 dataKey="value"
                 nameKey="carrier"
-                innerRadius={100}
-                outerRadius={180}
+                innerRadius={70}
+                outerRadius={110}
                 label={({ cx, cy, midAngle, outerRadius, percentage }) => {
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius * 1.3;
@@ -162,7 +165,7 @@ export function GenerationMixPieChart({ data }: Props) {
                       x={x}
                       y={y}
                       fill="currentColor"
-                      textAnchor={x > cx ? 'start' : 'end'}
+                      textAnchor={x > cx ? "start" : "end"}
                       dominantBaseline="central"
                       className="fill-muted-foreground text-sm font-medium"
                     >
@@ -201,16 +204,14 @@ export function GenerationMixPieChart({ data }: Props) {
                   }}
                 />
               </Pie>
-              <Legend 
-                layout="horizontal"
-                verticalAlign="bottom"
-                align="center"
-                wrapperStyle={{ paddingTop: '20px' }}
+              <ChartLegend
+                content={<ChartLegendContent />}
+                className="flex-wrap mt-5"
               />
             </PieChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </>
   );
 }
