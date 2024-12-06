@@ -23,26 +23,18 @@ import { InstalledCapacityBarChart } from "@/components/Charts/InstalledCapacity
 import { TotalDemandBarChart } from "@/components/Charts/TotalDemandBarChart";
 import { GenerationMixPieChart } from "@/components/Charts/GenerationMixPieChart";
 import { InstalledCapacityPieChart } from "@/components/Charts/InstalledCapacityPieChart";
-import useSWR from 'swr';
+import useSWR from "swr";
 import { useTheme } from "next-themes";
 import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
 import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
 
 type Props = {
   selectedCountry: string;
-  installedCapacities: React.MutableRefObject<any>;
-  totalDemand: React.MutableRefObject<any>;
-  generationMix: React.MutableRefObject<any>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const BottomDrawer = ({
-  selectedCountry,
-  installedCapacities,
-  totalDemand,
-  generationMix,
-}: Props) => {
+const BottomDrawer = ({ selectedCountry }: Props) => {
   const { data: capacityComparisonData } = useSWR(
     `/api/capacity_comparison/${selectedCountry}`,
     fetcher
@@ -75,21 +67,14 @@ const BottomDrawer = ({
   }, [demandComparisonData]);
 
   const { theme, setTheme } = useTheme();
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <Drawer modal={false}>
+    <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <div className="absolute left-0 top-10 z-100 p-3">
-          <Button
-            className={`${
-              theme === "dark"
-                ? "bg-foreground text-background"
-                : "bg-foreground text-background"
-            }`}
-          >
-            Show Statics for country : {selectedCountry}
-          </Button>
-        </div>
+        <Button onClick={() => setOpen(!open)}>
+          Show Statics for country : {selectedCountry}
+        </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <DrawerHeader className="pb-2">
@@ -106,12 +91,12 @@ const BottomDrawer = ({
           {/* <GenerationMixBarChart data={generationComparisonRef} /> */}
           <GenerationMixBarChartStacked data={generationComparisonRef} />
           <TotalDemandBarChart data={demandComparisonRef} />
-          <DrawerFooter className="w-full border-t">
-            <DrawerClose>
-              <Button>CLOSE</Button>
-            </DrawerClose>
-          </DrawerFooter>
         </ScrollArea>
+        <DrawerFooter className="w-full border-t">
+          <DrawerClose>
+            <Button>CLOSE</Button>
+          </DrawerClose>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

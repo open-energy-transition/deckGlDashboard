@@ -15,12 +15,11 @@ import {
 } from "./components/Links";
 import { BlockProperties } from "./components/Layer";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import BottomDrawer from "./popups/BottomDrawer";
+import BottomDrawer from "../../components/BottomDrawer";
 import MySideDrawer from "./popups/SideDrawer";
 import { useTheme } from "next-themes";
 import type { Feature, Geometry } from "geojson";
 import type { PickingInfo } from "deck.gl";
-import CountrySelect from "./components/CountrySelect";
 import {
   getBusChartsData,
   getCountryCapacityChartsData,
@@ -31,9 +30,9 @@ import {
   getInstalledCapacitiesChartsData,
   getTotalDemandChartsData,
 } from "./chartData";
-import { WebMercatorViewport } from '@deck.gl/core';
-import MapLegend from './components/MapLegend';
-import CountryStatics from "./popups/NavSideBar";
+import { WebMercatorViewport } from "@deck.gl/core";
+import MapLegend from "./components/MapLegend";
+import { useCountry } from "@/components/country-context";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -130,8 +129,7 @@ export default function MainMap() {
   // const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
 
-  const [selectedCountry, setSelectedCountry] =
-    useState<keyof typeof COUNTRY_COORDINATES>("US");
+  const { selectedCountry, setSelectedCountry } = useCountry();
 
   const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
@@ -422,33 +420,11 @@ export default function MainMap() {
           />
         </DeckGL>
       </div>
-      <BottomDrawer
-        selectedCountry={selectedCountry}
-        installedCapacities={installedCapacities}
-        totalDemand={totalDemand}
-        generationMix={countryGenerationMix}
-      />
-      <CountryStatics
-        selectedCountry={selectedCountry}
-        installedCapacities={installedCapacities}
-        totalDemand={totalDemand}
-        generationMix={countryGenerationMix}
-      />
       <MySideDrawer
         open={open}
         setOpen={setOpen}
         side={"right"}
         data={selectedBusData}
-      />
-      {/* <MySideDrawer
-        open={lineOpen}
-        setOpen={setLineOpen}
-        side={"left"}
-        data={selectedLineData}
-      /> */}
-      <CountrySelect
-        selectedCountry={selectedCountry}
-        onSelectCountry={setSelectedCountry}
       />
       <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
     </>
