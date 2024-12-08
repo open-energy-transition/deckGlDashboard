@@ -66,7 +66,6 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
     demandComparisonRef.current = demandComparisonData;
   }, [demandComparisonData]);
 
-  const { theme, setTheme } = useTheme();
   const [open, setOpen] = React.useState(false);
 
   return (

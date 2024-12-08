@@ -272,8 +272,8 @@ export default function MainMap() {
         stroked: true,
         filled: true,
         pickable: true,
-        getLineColor: [0, 0, 0],
-        getFillColor: [0, 0, 0],
+        getLineColor: [227, 26, 28],
+        getFillColor: [227, 26, 28],
         getLineWidth: 1,
         getRadius: 100,
         lineWidthScale: 20,
@@ -452,7 +452,7 @@ export default function MainMap() {
       />
       <Button
         onClick={() => setNetworkView(!networkVeiw)}
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 m-4"
       >
         Network View
       </Button>
