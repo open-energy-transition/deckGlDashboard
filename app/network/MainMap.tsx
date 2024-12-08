@@ -33,6 +33,7 @@ import {
 import { WebMercatorViewport } from "@deck.gl/core";
 import MapLegend from "./components/MapLegend";
 import { useCountry } from "@/components/country-context";
+import { Button } from "@/components/ui/button";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -130,6 +131,8 @@ export default function MainMap() {
   const DeckRef = useRef(null);
 
   const { selectedCountry, setSelectedCountry } = useCountry();
+
+  const [networkVeiw, setNetworkView] = useState(false);
 
   const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
@@ -263,6 +266,22 @@ export default function MainMap() {
 
     return [
       new GeoJsonLayer({
+        id: `Country${1}`,
+        data: links.countryView,
+        opacity: 1,
+        stroked: true,
+        filled: true,
+        pickable: true,
+        getLineColor: [0, 0, 0],
+        getFillColor: [0, 0, 0],
+        getLineWidth: 1,
+        getRadius: 100,
+        lineWidthScale: 20,
+        parameters: {
+          depthTest: false,
+        } as CustomRenderParameters,
+      }),
+      new GeoJsonLayer({
         id: `Linebus`,
         data: links.lines,
         opacity: 1,
@@ -360,6 +379,11 @@ export default function MainMap() {
     ];
   }, [selectedCountry, busCapacities, isLoading, zoomLevel]);
 
+  const visibleLayers = (networkVeiw: boolean) => {
+    const allLayers = MakeLayers();
+    return networkVeiw ? allLayers.slice(1) : [allLayers[0]];
+  };
+
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
     const viewConfig = COUNTRY_VIEW_CONFIG[selectedCountry];
@@ -406,7 +430,7 @@ export default function MainMap() {
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={MakeLayers()}
+          layers={visibleLayers(networkVeiw)}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -426,7 +450,15 @@ export default function MainMap() {
         side={"right"}
         data={selectedBusData}
       />
-      <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
+      <Button
+        onClick={() => setNetworkView(!networkVeiw)}
+        className="absolute top-0 right-0"
+      >
+        Network View
+      </Button>
+      {networkVeiw && (
+        <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
+      )}
     </>
   );
 }

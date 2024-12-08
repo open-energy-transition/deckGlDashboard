@@ -3,6 +3,7 @@ const BASE_URL = "http://34.31.13.149:8000/geoserver/GIS_Dashboard/ows";
 export const getGeoJsonData = (countryCode) => ({
   buses: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Abuses_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
   lines: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Alines_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
+  countryView: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3A${countryCode.toLowerCase()}_country_view&maxFeatures=10000&outputFormat=application%2Fjson`,
 });
 
 export const COUNTRY_S_NOM_RANGES = {
