@@ -86,10 +86,10 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
           {/* <InstalledCapacityBarChart data={capacityComparisonRef} /> */}
           <InstalledCapacityBarChartStacked data={capacityComparisonRef} />
           <InstalledCapacityPieChart data={capacityComparisonRef} />
+          <GenerationMixBarChartStacked data={generationComparisonRef} />
           <GenerationMixPieChart data={generationComparisonRef} />
           {/* <GenerationMixBarChart data={generationComparisonRef} /> */}
-          <GenerationMixBarChartStacked data={generationComparisonRef} />
-          <TotalDemandBarChart data={demandComparisonRef} />
+          {/* <TotalDemandBarChart data={demandComparisonRef} /> */}
         </ScrollArea>
         <DrawerFooter className="w-full border-t">
           <DrawerClose>
