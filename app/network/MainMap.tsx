@@ -454,7 +454,7 @@ export default function MainMap() {
         onClick={() => setNetworkView(!networkVeiw)}
         className="absolute top-0 right-0 m-4"
       >
-        Network View
+        {networkVeiw ? "Country View" : "Network View"}
       </Button>
       {networkVeiw && (
         <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
