@@ -15,12 +15,11 @@ import {
 } from "./components/Links";
 import { BlockProperties } from "./components/Layer";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import BottomDrawer from "./popups/BottomDrawer";
+import BottomDrawer from "../../components/BottomDrawer";
 import MySideDrawer from "./popups/SideDrawer";
 import { useTheme } from "next-themes";
 import type { Feature, Geometry } from "geojson";
 import type { PickingInfo } from "deck.gl";
-import CountrySelect from "./components/CountrySelect";
 import {
   getBusChartsData,
   getCountryCapacityChartsData,
@@ -31,9 +30,10 @@ import {
   getInstalledCapacitiesChartsData,
   getTotalDemandChartsData,
 } from "./chartData";
-import { WebMercatorViewport } from '@deck.gl/core';
-import MapLegend from './components/MapLegend';
-import CountryStatics from "./popups/NavSideBar";
+import { WebMercatorViewport } from "@deck.gl/core";
+import MapLegend from "./components/MapLegend";
+import { useCountry } from "@/components/country-context";
+import { Button } from "@/components/ui/button";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -130,8 +130,9 @@ export default function MainMap() {
   // const countries = [US_DATA, COLUMBIA_DATA, NIGERIA_DATA];
   const DeckRef = useRef(null);
 
-  const [selectedCountry, setSelectedCountry] =
-    useState<keyof typeof COUNTRY_COORDINATES>("US");
+  const { selectedCountry, setSelectedCountry } = useCountry();
+
+  const [networkVeiw, setNetworkView] = useState(false);
 
   const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
@@ -265,6 +266,22 @@ export default function MainMap() {
 
     return [
       new GeoJsonLayer({
+        id: `Country${1}`,
+        data: links.countryView,
+        opacity: 1,
+        stroked: true,
+        filled: true,
+        pickable: true,
+        getLineColor: [227, 26, 28],
+        getFillColor: [227, 26, 28],
+        getLineWidth: 1,
+        getRadius: 100,
+        lineWidthScale: 20,
+        parameters: {
+          depthTest: false,
+        } as CustomRenderParameters,
+      }),
+      new GeoJsonLayer({
         id: `Linebus`,
         data: links.lines,
         opacity: 1,
@@ -362,6 +379,11 @@ export default function MainMap() {
     ];
   }, [selectedCountry, busCapacities, isLoading, zoomLevel]);
 
+  const visibleLayers = (networkVeiw: boolean) => {
+    const allLayers = MakeLayers();
+    return networkVeiw ? allLayers.slice(1) : [allLayers[0]];
+  };
+
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
     const viewConfig = COUNTRY_VIEW_CONFIG[selectedCountry];
@@ -408,7 +430,7 @@ export default function MainMap() {
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={MakeLayers()}
+          layers={visibleLayers(networkVeiw)}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -422,35 +444,21 @@ export default function MainMap() {
           />
         </DeckGL>
       </div>
-      <BottomDrawer
-        selectedCountry={selectedCountry}
-        installedCapacities={installedCapacities}
-        totalDemand={totalDemand}
-        generationMix={countryGenerationMix}
-      />
-      <CountryStatics
-        selectedCountry={selectedCountry}
-        installedCapacities={installedCapacities}
-        totalDemand={totalDemand}
-        generationMix={countryGenerationMix}
-      />
       <MySideDrawer
         open={open}
         setOpen={setOpen}
         side={"right"}
         data={selectedBusData}
       />
-      {/* <MySideDrawer
-        open={lineOpen}
-        setOpen={setLineOpen}
-        side={"left"}
-        data={selectedLineData}
-      /> */}
-      <CountrySelect
-        selectedCountry={selectedCountry}
-        onSelectCountry={setSelectedCountry}
-      />
-      <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
+      <Button
+        onClick={() => setNetworkView(!networkVeiw)}
+        className="absolute top-0 right-0 m-4"
+      >
+        {networkVeiw ? "Country View" : "Network View"}
+      </Button>
+      {networkVeiw && (
+        <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
+      )}
     </>
   );
 }

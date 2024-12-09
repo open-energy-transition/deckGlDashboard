@@ -23,11 +23,7 @@ function DeckGLOverlay(props: MapboxOverlayProps) {
   return null;
 }
 
-import {
-  getGeoJsonData,
-  COUNTRY_S_NOM_RANGES,
-  COUNTRY_COORDINATES,
-} from "./components/Links";
+import { getGeoJsonData, COUNTRY_COORDINATES } from "./components/Links";
 
 const TOKEN =
   "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw"; // Set your mapbox token here
@@ -137,7 +133,7 @@ export default function SideBySide() {
         </Map>
       </div>
       <ModePannel mode={mode} onModeChange={setMode} />
-      <MyDropdown
+      {/* <MyDropdown
         className={`fixed top-0 left-0 w-3/10  overflow-hidden z-50 m-3 ${
           leftConrolsClosed ? "translate-x-[-90%]" : "translate-x-0"
         }`}
@@ -146,7 +142,7 @@ export default function SideBySide() {
         closeControls={() => {
           setLeftControlsClosed((t) => !t);
         }}
-      />
+      /> */}
       <MyDropdown
         className={`fixed top-[40%] md:top-0 right-0 w-3/10 overflow-hidden z-50 m-3 ${
           rightConrolsClosed ? "translate-x-[90%]" : "translate-x-0"
