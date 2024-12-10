@@ -23,3 +23,16 @@ export const COUNTRY_COORDINATES = {
   US: [37.0902, -95.7129],
   ZA: [-30.5595, 22.9375],
 };
+
+export const COUNTRY_VIEW_CONFIG = {
+  AU: { zoom: 3.2, bounds: 80 },   
+  BR: { zoom: 3.2, bounds: 80 }, 
+  CO: { zoom: 4.8, bounds: 40 },
+  DE: { zoom: 4.8, bounds: 30 },   
+  IN: { zoom: 3.8, bounds: 60 }, 
+  IT: { zoom: 4.5, bounds: 30 },
+  MX: { zoom: 4.0, bounds: 50 },
+  NG: { zoom: 4.8, bounds: 40 },     
+  US: { zoom: 2.5, bounds: 100 },    
+  ZA: { zoom: 4.5, bounds: 50 },    
+};
