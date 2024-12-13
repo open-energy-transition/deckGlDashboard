@@ -23,89 +23,140 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 type MainControlsProps = {
-  year: string;
   buttonPosition: string;
   close: () => void;
+  onRenewableTypeChange: (type: string) => void;
+  onParameterChange: (param: string) => void;
+  year?: string;
+};
+
+// Backup of original scales for reference
+const originalScales = {
+  cf: [
+    { color: "rgb(65, 182, 196)", label: "0%" },
+    { color: "rgb(160, 170, 120)", label: "25%" },
+    { color: "rgb(254, 153, 41)", label: "50%" },
+    { color: "rgb(245, 110, 40)", label: "75%" },
+    { color: "rgb(239, 59, 44)", label: "100%" }
+  ],
+  crt: [
+    { color: "rgb(65, 171, 93)", label: "0%" },
+    { color: "rgb(160, 170, 90)", label: "25%" },
+    { color: "rgb(254, 153, 41)", label: "50%" },
+    { color: "rgb(245, 110, 40)", label: "75%" },
+    { color: "rgb(239, 59, 44)", label: "100%" }
+  ],
+  usdpt: [
+    { color: "rgb(65, 182, 196)", label: "0%" },
+    { color: "rgb(65, 175, 150)", label: "25%" },
+    { color: "rgb(65, 171, 93)", label: "50%" },
+    { color: "rgb(50, 150, 80)", label: "75%" },
+    { color: "rgb(35, 139, 69)", label: "100%" }
+  ]
+};
+
+const getParameterInfo = (parameter: string) => {
+  const info = {
+    cf: {
+      title: "Capacity Factor (CF)",
+      tooltip: "Percentage of time that the resource is available at full capacity"
+    },
+    crt: {
+      title: "Curtailment",
+      tooltip: "Percentage of energy that must be discarded due to overproduction"
+    },
+    usdpt: {
+      title: "Used %",
+      tooltip: "Percentage of installed capacity that is being used"
+    }
+  };
+  return info[parameter as keyof typeof info] || info.cf;
+};
+
+const getColorScale = (parameter: string) => {
+  const scales = {
+    cf: [
+      { color: "rgb(65, 182, 196)", label: "0-10%", value: 10 },
+      { color: "rgb(160, 170, 120)", label: "10-25%", value: 25 },
+      { color: "rgb(254, 153, 41)", label: "25-40%", value: 40 },
+      { color: "rgb(245, 110, 40)", label: "40-60%", value: 60 },
+      { color: "rgb(239, 59, 44)", label: ">60%", value: 100 }
+    ],
+    crt: [
+      { color: "rgb(65, 171, 93)", label: "0-5%", value: 5 },
+      { color: "rgb(160, 170, 90)", label: "5-15%", value: 15 },
+      { color: "rgb(254, 153, 41)", label: "15-30%", value: 30 },
+      { color: "rgb(245, 110, 40)", label: "30-50%", value: 50 },
+      { color: "rgb(239, 59, 44)", label: ">50%", value: 100 }
+    ],
+    usdpt: [
+      { color: "rgb(239, 59, 44)", label: "0-20%", value: 20 },
+      { color: "rgb(254, 153, 41)", label: "20-40%", value: 40 },
+      { color: "rgb(160, 170, 90)", label: "40-60%", value: 60 },
+      { color: "rgb(65, 171, 93)", label: "60-80%", value: 80 },
+      { color: "rgb(65, 182, 196)", label: ">80%", value: 100 }
+    ]
+  };
+  return scales[parameter as keyof typeof scales] || scales.cf;
 };
 
 export function MainControls({
-  year,
   buttonPosition,
   close,
+  onRenewableTypeChange,
+  onParameterChange,
 }: MainControlsProps) {
+  const [selectedParameter, setSelectedParameter] = React.useState("cf");
+  const parameterInfo = getParameterInfo(selectedParameter);
+
+  const handleParameterChange = (value: string) => {
+    setSelectedParameter(value);
+    onParameterChange(value);
+  };
+
   return (
-    <>
-      <Card className="flex flex-col justify-center align-middle items-center gap-2 p-4">
-        <h2 className="text-3xl">{year}</h2>
-        <Select>
-          <SelectTrigger className="w-3/5">
-            <SelectValue placeholder="Renewable type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Renewable type</SelectLabel>
-              <SelectItem value="apple">solar</SelectItem>
-              <SelectItem value="banana">onwind</SelectItem>
-              <SelectItem value="blueberry">offwind-ac/dc</SelectItem>
-              <SelectItem value="grapes">ror</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger className="w-3/5">
-            <SelectValue placeholder="Parameters" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Parameters</SelectLabel>
-              <SelectItem value="apple">CF</SelectItem>
-              <SelectItem value="banana">curtailment</SelectItem>
-              <SelectItem value="blueberry">used %</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <div className="flex flex-wrap gap-5 pt-3">
-          <div className="flex flex-col justify-center align-middle items-center">
-            <Avatar>
-              <div className="bg-slate-200 w-full h-full"></div>
+    <div className="flex flex-col gap-4">
+      <div className="text-xl font-semibold">Visualization Controls</div>
+      <Select onValueChange={onRenewableTypeChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Renewable type" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Renewable type</SelectLabel>
+            <SelectItem value="solar">Solar</SelectItem>
+            <SelectItem value="onwind">Onshore Wind</SelectItem>
+            <SelectItem value="offwind">Offshore Wind</SelectItem>
+            <SelectItem value="ror">Run of River</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Select onValueChange={handleParameterChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Parameters" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Parameters</SelectLabel>
+            <SelectItem value="cf">{parameterInfo.title}</SelectItem>
+            <SelectItem value="crt">Curtailment</SelectItem>
+            <SelectItem value="usdpt">Used %</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <div className="text-sm text-muted-foreground">
+        {parameterInfo.tooltip}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {getColorScale(selectedParameter).map((scale, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <Avatar className="h-6 w-6">
+              <div className="w-full h-full" style={{ backgroundColor: scale.color }}></div>
             </Avatar>
-            <div>one</div>
+            <div className="text-xs mt-1">{scale.label}</div>
           </div>
-          <div className="flex flex-col justify-center align-middle items-center">
-            <Avatar>
-              <div className="bg-slate-400 w-full h-full"></div>
-            </Avatar>
-            <div>two</div>
-          </div>
-          <div className="flex flex-col justify-center align-middle items-center">
-            <Avatar>
-              <div className="bg-slate-600 w-full h-full"></div>
-            </Avatar>
-            <div>three</div>
-          </div>
-          <div className="flex flex-col justify-center align-middle items-center">
-            <Avatar>
-              <div className="bg-slate-800 w-full h-full"></div>
-            </Avatar>
-            <div>four</div>
-          </div>
-          <div className="flex flex-col justify-center align-middle items-center">
-            <Avatar>
-              <div className="bg-black w-full h-full"></div>
-            </Avatar>
-            <div>five</div>
-          </div>
-        </div>
-        <Button
-          onClick={() => {
-            close();
-          }}
-          variant={"outline"}
-          className={`absolute ${buttonPosition}-0 top-11`}
-        >
-          Close
-        </Button>
-      </Card>
-    </>
+        ))}
+      </div>
+    </div>
   );
 }

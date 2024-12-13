@@ -5,6 +5,7 @@ import { COUNTRY_S_NOM_RANGES } from './Links';
 interface MapLegendProps {
   country: string;
   theme: string;
+  type?: 'lines' | 'buses';
 }
 
 const LINE_COLOR = [227, 26, 28];
@@ -43,7 +44,7 @@ const roundToNiceNumber = (value: number): number => {
   return Math.round(normalized * 5) * magnitude / 5;
 };
 
-const MapLegend: React.FC<MapLegendProps> = ({ country = 'US', theme }) => {
+export default function MapLegend({ country, theme, type = 'all' }: MapLegendProps) {
   const validCountries = COUNTRY_S_NOM_RANGES ? Object.keys(COUNTRY_S_NOM_RANGES) : [];
   const isValidCountry = country && validCountries.includes(country);
   
@@ -109,46 +110,55 @@ const MapLegend: React.FC<MapLegendProps> = ({ country = 'US', theme }) => {
     }
   ];
 
-  return (
-    <div className={`absolute bottom-24 right-4 p-4 rounded-lg 
-      ${theme === 'dark' 
-        ? 'bg-foreground text-background' 
-        : 'bg-foreground text-background'
-      }`}
-    >
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold mb-2 px-2">Transmission Lines</h3>
+  // Renderizar solo las líneas de transmisión
+  const renderTransmissionLines = () => {
+    return (
+      <div className="w-full">
         {lineCategories.map((cat, idx) => (
-          <div key={idx} className="flex items-center mb-1 px-2 py-1 rounded-md">
+          <div key={idx} className="flex items-center mb-1 py-0.5">
             <div 
-              className="w-12 h-0 mr-2" 
+              className="w-8 h-0 mr-2" 
               style={{
-                borderTop: `${Math.max(2, cat.width * 8)}px solid rgba(${LINE_COLOR.join(',')}, 0.8)`,
+                borderTop: `${Math.max(1, cat.width * 6)}px solid rgba(${LINE_COLOR.join(',')}, 0.8)`,
               }}
             />
-            <span className="text-sm">{cat.label}</span>
+            <span className="text-xs">{cat.label}</span>
           </div>
         ))}
       </div>
+    );
+  };
 
-      <div>
-        <h3 className="text-sm font-semibold mb-2 px-2">Buses</h3>
+  // Renderizar solo los buses
+  const renderBuses = () => {
+    return (
+      <div className="w-full">
         {busCategories.map((bus, idx) => (
-          <div key={idx} className="flex items-center mb-1 px-2 py-1 rounded-md">
+          <div key={idx} className="flex items-center mb-1 py-0.5">
             <div 
-              className="mr-2 rounded-full"
+              className="mr-2 rounded-full flex-shrink-0"
               style={{
-                width: bus.size,
-                height: bus.size,
+                width: Math.max(4, bus.size * 0.75),
+                height: Math.max(4, bus.size * 0.75),
                 backgroundColor: `rgba(${bus.color.join(',')}, 1)`,
               }}
             />
-            <span className="text-sm">{bus.label}</span>
+            <span className="text-xs">{bus.label}</span>
           </div>
         ))}
       </div>
+    );
+  };
+
+  // Renderizar según el tipo especificado
+  if (type === 'lines') return renderTransmissionLines();
+  if (type === 'buses') return renderBuses();
+  
+  // Si no se especifica tipo, renderizar todo
+  return (
+    <div>
+      {renderTransmissionLines()}
+      {renderBuses()}
     </div>
   );
-};
-
-export default MapLegend; 
+} 

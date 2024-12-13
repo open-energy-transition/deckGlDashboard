@@ -4,6 +4,9 @@ import "./globals.css";
 import NavBar from "../components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CountryProvider } from "@/components/country-context";
+import MainLayout from "../components/layouts/MainLayout";
+import { VisualizationProvider } from "@/components/visualization-context";
+import { NetworkViewProvider } from "@/components/network-view-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,7 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
       >
         <ThemeProvider
           attribute="class"
@@ -40,9 +43,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <CountryProvider>
-            {children}
-
-            <NavBar />
+            <VisualizationProvider>
+              <NetworkViewProvider>
+                <MainLayout>
+                  {children}
+                </MainLayout>
+                <NavBar />
+              </NetworkViewProvider>
+            </VisualizationProvider>
           </CountryProvider>
         </ThemeProvider>
       </body>

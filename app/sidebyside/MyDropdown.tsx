@@ -9,6 +9,8 @@ interface MyDropdownProps {
   year: number;
   closeControls: () => void;
   buttonPosition: string;
+  onRenewableTypeChange: (type: string) => void;
+  onParameterChange: (param: string) => void;
 }
 
 export default function MyDropdown(props: MyDropdownProps) {
@@ -23,6 +25,8 @@ export default function MyDropdown(props: MyDropdownProps) {
           year={props.year.toString()}
           close={props.closeControls}
           buttonPosition={props.buttonPosition}
+          onRenewableTypeChange={props.onRenewableTypeChange}
+          onParameterChange={props.onParameterChange}
         />
       </TabsContent>
       <TabsContent value="chart1">
