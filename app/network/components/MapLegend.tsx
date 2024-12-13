@@ -5,6 +5,7 @@ import { COUNTRY_S_NOM_RANGES } from './Links';
 interface MapLegendProps {
   country: string;
   theme: string;
+  type?: 'lines' | 'buses';
 }
 
 const LINE_COLOR = [227, 26, 28];
@@ -22,7 +23,28 @@ const DEFAULT_BUS_CONFIG = {
   zoomBase: 1.2
 };
 
-const MapLegend: React.FC<MapLegendProps> = ({ country = 'US', theme }) => {
+const formatPowerValue = (value: number): string => {
+  const gva = value / 1000;
+  
+  if (gva >= 10) {
+    return `${Math.round(gva)} GVA`;
+  } else if (gva >= 1) {
+    return `${Number(gva.toFixed(1))} GVA`;
+  } else {
+    return `${Math.round(value)} MW`;
+  }
+};
+
+const roundToNiceNumber = (value: number): number => {
+  const magnitude = Math.pow(10, Math.floor(Math.log10(value)));
+  const normalized = value / magnitude;
+  
+  if (normalized >= 7.5) return Math.round(normalized) * magnitude;
+  if (normalized >= 2.5) return Math.round(normalized * 2) * magnitude / 2;
+  return Math.round(normalized * 5) * magnitude / 5;
+};
+
+export default function MapLegend({ country, theme, type = 'all' }: MapLegendProps) {
   const validCountries = COUNTRY_S_NOM_RANGES ? Object.keys(COUNTRY_S_NOM_RANGES) : [];
   const isValidCountry = country && validCountries.includes(country);
   
@@ -35,93 +57,108 @@ const MapLegend: React.FC<MapLegendProps> = ({ country = 'US', theme }) => {
     ? COUNTRY_BUS_CONFIGS[country as keyof typeof COUNTRY_BUS_CONFIGS] 
     : DEFAULT_BUS_CONFIG;
 
-  const LEGEND_BUS_SIZES = {
-    LARGE: 16,
-    MEDIUM: 12,
-    SMALL: 8
+  const calculateLegendBusSizes = (busConfig: typeof DEFAULT_BUS_CONFIG) => {
+    const scaleFactor = 16 / busConfig.maxRadius * 1000;
+    
+    return {
+      LARGE: Math.max(6, Math.min(20, busConfig.maxRadius * scaleFactor)),
+      MEDIUM: Math.max(4, Math.min(16, (busConfig.maxRadius + busConfig.minRadius) / 2 * scaleFactor)),
+      SMALL: Math.max(3, Math.min(12, busConfig.minRadius * scaleFactor))
+    };
   };
+
+  const legendBusSizes = calculateLegendBusSizes(busConfig);
   
   const lineCategories = [
     { 
-      label: `< ${Math.round(countryRanges.min)} MW`, 
+      label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.min))}`, 
       width: 0.2 
     },
     { 
-      label: `${Math.round(countryRanges.min)}-${Math.round(countryRanges.max/4)} MW`, 
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.min))}-${formatPowerValue(roundToNiceNumber(countryRanges.max/4))}`, 
       width: 0.4 
     },
     { 
-      label: `${Math.round(countryRanges.max/4)}-${Math.round(countryRanges.max/2)} MW`, 
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max/4))}-${formatPowerValue(roundToNiceNumber(countryRanges.max/2))}`, 
       width: 0.6 
     },
     { 
-      label: `${Math.round(countryRanges.max/2)}-${Math.round(countryRanges.max*0.75)} MW`, 
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max/2))}-${formatPowerValue(roundToNiceNumber(countryRanges.max*0.75))}`, 
       width: 0.8 
     },
     { 
-      label: `> ${Math.round(countryRanges.max*0.75)} MW`, 
+      label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max*0.75))}`, 
       width: 1.0 
     }
   ];
   
   const busCategories = [
     { 
-      label: `> ${Math.round(countryRanges.max * 0.7)} MW`, 
-      size: LEGEND_BUS_SIZES.LARGE,
+      label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.7))}`, 
+      size: legendBusSizes.LARGE,
       color: BUS_COLOR
     },
     { 
-      label: `${Math.round(countryRanges.max * 0.3)}-${Math.round(countryRanges.max * 0.7)} MW`, 
-      size: LEGEND_BUS_SIZES.MEDIUM,
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.3))}-${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.7))}`, 
+      size: legendBusSizes.MEDIUM,
       color: BUS_COLOR
     },
     { 
-      label: `< ${Math.round(countryRanges.max * 0.3)} MW`, 
-      size: LEGEND_BUS_SIZES.SMALL,
+      label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.3))}`, 
+      size: legendBusSizes.SMALL,
       color: BUS_COLOR
     }
   ];
 
-  return (
-    <div className={`absolute bottom-24 right-4 p-4 rounded-lg 
-      ${theme === 'dark' 
-        ? 'bg-foreground text-background' 
-        : 'bg-foreground text-background'
-      }`}
-    >
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold mb-2 px-2">Transmission Lines</h3>
+  // Renderizar solo las líneas de transmisión
+  const renderTransmissionLines = () => {
+    return (
+      <div className="w-full">
         {lineCategories.map((cat, idx) => (
-          <div key={idx} className="flex items-center mb-1 px-2 py-1 rounded-md">
+          <div key={idx} className="flex items-center mb-1 py-0.5">
             <div 
-              className="w-12 h-0 mr-2" 
+              className="w-8 h-0 mr-2" 
               style={{
-                borderTop: `${Math.max(2, cat.width * 8)}px solid rgba(${LINE_COLOR.join(',')}, 0.8)`,
+                borderTop: `${Math.max(1, cat.width * 6)}px solid rgba(${LINE_COLOR.join(',')}, 0.8)`,
               }}
             />
-            <span className="text-sm">{cat.label}</span>
+            <span className="text-xs">{cat.label}</span>
           </div>
         ))}
       </div>
+    );
+  };
 
-      <div>
-        <h3 className="text-sm font-semibold mb-2 px-2">Buses</h3>
+  // Renderizar solo los buses
+  const renderBuses = () => {
+    return (
+      <div className="w-full">
         {busCategories.map((bus, idx) => (
-          <div key={idx} className="flex items-center mb-1 px-2 py-1 rounded-md">
+          <div key={idx} className="flex items-center mb-1 py-0.5">
             <div 
-              className="mr-2 rounded-full"
+              className="mr-2 rounded-full flex-shrink-0"
               style={{
-                width: bus.size,
-                height: bus.size,
+                width: Math.max(4, bus.size * 0.75),
+                height: Math.max(4, bus.size * 0.75),
                 backgroundColor: `rgba(${bus.color.join(',')}, 1)`,
               }}
             />
-            <span className="text-sm">{bus.label}</span>
+            <span className="text-xs">{bus.label}</span>
           </div>
         ))}
       </div>
+    );
+  };
+
+  // Renderizar según el tipo especificado
+  if (type === 'lines') return renderTransmissionLines();
+  if (type === 'buses') return renderBuses();
+  
+  // Si no se especifica tipo, renderizar todo
+  return (
+    <div>
+      {renderTransmissionLines()}
+      {renderBuses()}
     </div>
   );
-};
-
-export default MapLegend; 
+} 
