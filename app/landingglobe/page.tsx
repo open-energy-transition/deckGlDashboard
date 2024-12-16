@@ -3,7 +3,6 @@
 import React, { useState, useEffect, use } from "react";
 import EarthNightUrl from "../../public/earth-night-light.jpg";
 import NightSkyUrl from "../../public/night-sky-light.png";
-import countries from "../../public/countries.json";
 import Globe from "react-globe.gl";
 import {
   getGeoJsonData,
