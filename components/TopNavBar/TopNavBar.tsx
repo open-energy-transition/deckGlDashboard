@@ -13,6 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
 const components: { title: string; href: string; description: string }[] = [
@@ -55,33 +56,76 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function NavigationMenuDemo() {
   return (
-    <NavigationMenu className="absolute top-0 left-0 right-0 z-10">
-      <NavigationMenuList>
+    <NavigationMenu className="absolute top-0 left-0 z-50 w-full bg-transparent">
+      <NavigationMenuList className="w-[100vw] p-4 flex justify-center">
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-              <NavigationMenuContent>Myinfo sgvdsv </NavigationMenuContent>
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuTrigger>
+            <NavigationMenuLink href="/">Overveiw</NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <li className="row-span-3">
+                <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6">
+                  <Icons.logo className="h-6 w-6" />
+                  <div className="mb-2 mt-4 text-lg font-medium">
+                    Project Summary
+                  </div>
+                  <p className="text-sm leading-tight text-muted-foreground">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    do eiusmod tempor incididunt ut labore.
+                  </p>
+                </div>
+              </li>
+              <div className="block p-3">
+                <div className="text-sm font-medium">Introduction</div>
+                <p className="text-sm text-muted-foreground">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </p>
+              </div>
+              <div className="block p-3">
+                <div className="text-sm font-medium">Details</div>
+                <p className="text-sm text-muted-foreground">
+                  Ut enim ad minim veniam, quis nostrud exercitation.
+                </p>
+              </div>
+              <div className="block p-3">
+                <div className="text-sm font-medium">Features</div>
+                <p className="text-sm text-muted-foreground">
+                  Duis aute irure dolor in reprehenderit in voluptate.
+                </p>
+              </div>
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-              <NavigationMenuContent>Myinfo sgvdsv </NavigationMenuContent>
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuTrigger>
+            <NavigationMenuLink href="/network">Network</NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {components.map((component) => (
+                <div key={component.title} className="block p-3">
+                  <div className="text-sm font-medium">{component.title}</div>
+                  <p className="text-sm text-muted-foreground">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </div>
+              ))}
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-              <NavigationMenuContent>Myinfo sgvdsv </NavigationMenuContent>
-            </NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink href="/landingglobe">
+            <div className={navigationMenuTriggerStyle()}>Globe</div>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="/sidebyside">
+            <div className={navigationMenuTriggerStyle()}>Polygon</div>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
+      <NavigationMenuViewport className="right-0 left-auto" />
     </NavigationMenu>
   );
 }
