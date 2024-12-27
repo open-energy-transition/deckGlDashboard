@@ -452,7 +452,7 @@ export default function MainMap() {
       />
       <Button
         onClick={() => setNetworkView(!networkVeiw)}
-        className="absolute top-20 right-0 m-4 z-[51]"
+        className="absolute top-20 right-0 m-4"
       >
         {networkVeiw ? "Country View" : "Network View"}
       </Button>
