@@ -44,7 +44,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <MainLayout> */}
           <CountryProvider>
             <VisualizationProvider>
               <NetworkViewProvider>
@@ -54,7 +53,6 @@ export default function RootLayout({
               </NetworkViewProvider>
             </VisualizationProvider>
           </CountryProvider>
-          {/* </MainLayout> */}
         </ThemeProvider>
       </body>
     </html>
