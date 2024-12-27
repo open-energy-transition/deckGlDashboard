@@ -8,7 +8,7 @@ export default function ModePannel(props: {
   onModeChange: (newMode: Mode) => void;
 }) {
   const onModeChange = useCallback(
-    (evt) => {
+    (evt: React.ChangeEvent<HTMLSelectElement>) => {
       props.onModeChange(evt.target.value as Mode);
     },
     [props.onModeChange]
