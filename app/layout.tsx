@@ -4,7 +4,7 @@ import "./globals.css";
 import NavBar from "../components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CountryProvider } from "@/components/country-context";
-import MainLayout from "../components/layouts/MainLayout";
+import { NavigationMenuDemo } from "@/components/TopNavBar/TopNavBar";
 import { VisualizationProvider } from "@/components/visualization-context";
 import { NetworkViewProvider } from "@/components/network-view-context";
 
@@ -34,8 +34,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar`}
       >
+        <NavigationMenuDemo />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -45,9 +46,8 @@ export default function RootLayout({
           <CountryProvider>
             <VisualizationProvider>
               <NetworkViewProvider>
-                <MainLayout>
-                  {children}
-                </MainLayout>
+                {children}
+
                 <NavBar />
               </NetworkViewProvider>
             </VisualizationProvider>

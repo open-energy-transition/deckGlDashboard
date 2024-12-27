@@ -208,7 +208,7 @@ export default function SideBySide() {
   }, [selectedCountry]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="absolute w-screen h-screen">
       <Map
         id="left-map"
         {...viewState}

@@ -1,16 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Map } from "react-map-gl";
-import {
-  NavigationControl,
-  FullscreenControl,
-  ScaleControl,
-  useControl
-} from "react-map-gl";
+import { Map } from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { MapboxOverlay } from '@deck.gl/mapbox';
 
 import type { MapViewState, ViewStateChangeParameters } from "@deck.gl/core";
 import type { RenderPassParameters } from "@luma.gl/core";
@@ -42,41 +34,22 @@ import { WebMercatorViewport } from "@deck.gl/core";
 import MapLegend from "./components/MapLegend";
 import { useCountry } from "@/components/country-context";
 import { Button } from "@/components/ui/button";
-import { useNetworkView } from "@/components/network-view-context";
-import type { ViewStateChangeEvent } from 'react-map-gl';
 
-interface ViewState {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-  bearing: number;
-  pitch: number;
-  padding: { top: number; bottom: number; left: number; right: number };
-  width: number;
-  height: number;
-  minZoom?: number;
-  maxZoom?: number;
-  transitionDuration?: number;
-  transitionInterpolator?: any;
-}
-
-const INITIAL_VIEW_STATE: ViewState = {
+const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
   longitude: -123.13,
   zoom: 4,
-  bearing: 0,
-  pitch: 0,
-  padding: { top: 0, bottom: 0, left: 0, right: 0 },
-  width: window.innerWidth,
-  height: window.innerHeight,
   minZoom: 3,
-  maxZoom: 20
+  maxZoom: 20,
+  pitch: 0,
+  bearing: 0,
 };
 
-const TOKEN = "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw";
+const MAP_STYLE_LIGHT =
+  "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
 
-const MAP_STYLE_LIGHT = "mapbox://styles/mapbox/light-v9";
-const MAP_STYLE_DARK = "mapbox://styles/mapbox/dark-v9";
+const MAP_STYLE_DARK =
+  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
 function normalizeSnom(
   value: number,
@@ -142,12 +115,6 @@ interface CustomRenderParameters extends RenderPassParameters {
   depthTest?: boolean;
 }
 
-function DeckGLOverlay(props: any) {
-  const overlay = useControl(() => new MapboxOverlay(props));
-  overlay.setProps(props);
-  return null;
-}
-
 export default function MainMap() {
   const { theme: currentTheme } = useTheme();
 
@@ -173,7 +140,8 @@ export default function MainMap() {
   const [selectedLineID, setSelectedLineID] = useState<string | null>(null);
   const [hoverLineID, setHoverLineID] = useState<string | null>(null);
 
-  const [viewState, setViewState] = useState<ViewState>(INITIAL_VIEW_STATE as ViewState);
+  const [initialViewState, setInitialViewState] =
+    useState<MapViewState>(INITIAL_VIEW_STATE);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -194,10 +162,6 @@ export default function MainMap() {
   );
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const [mapWidth, setMapWidth] = useState(window.innerWidth - 384);
-
-  const { networkView } = useNetworkView();
 
   const loadBusCapacities = useCallback(async (country: string) => {
     if (!country) return;
@@ -273,8 +237,7 @@ export default function MainMap() {
 
   const flyToGeometry = useCallback((info: any) => {
     const cords = info;
-    setViewState(currentViewState => ({
-      ...currentViewState,
+    setInitialViewState({
       latitude: cords[1],
       longitude: cords[0],
       zoom: 5,
@@ -282,12 +245,9 @@ export default function MainMap() {
       maxZoom: 20,
       pitch: 0,
       bearing: 0,
-      padding: currentViewState.padding,
-      width: window.innerWidth,
-      height: window.innerHeight,
       transitionInterpolator: new FlyToInterpolator({ speed: 2 }),
       transitionDuration: 500,
-    }));
+    });
   }, []);
 
   useEffect(() => {
@@ -319,8 +279,6 @@ export default function MainMap() {
         lineWidthScale: 20,
         parameters: {
           depthTest: false,
-          blend: true,
-          blendFunc: [770, 771],
         } as CustomRenderParameters,
       }),
       new GeoJsonLayer({
@@ -358,8 +316,6 @@ export default function MainMap() {
         },
         parameters: {
           depthTest: false,
-          blend: true,
-          blendFunc: [770, 771],
         } as CustomRenderParameters,
       }),
       new GeoJsonLayer<BusProperties>({
@@ -381,9 +337,8 @@ export default function MainMap() {
           }
           return baseRadius;
         },
-        onClick: (info) => {
-          if (!info.object) return;
-          
+        onClick: (info, e) => {
+          e.stopPropagation();
           const busId = info.object.properties.Bus;
           if (selectedPointID === busId) {
             setSelectedPointID(null);
@@ -419,72 +374,41 @@ export default function MainMap() {
         autoHighlight: true,
         parameters: {
           depthTest: false,
-          blend: true,
-          blendFunc: [770, 771],
         } as CustomRenderParameters,
       }),
     ];
   }, [selectedCountry, busCapacities, isLoading, zoomLevel]);
 
-  const visibleLayers = (networkView: boolean) => {
+  const visibleLayers = (networkVeiw: boolean) => {
     const allLayers = MakeLayers();
-    return networkView ? allLayers.slice(1) : [allLayers[0]];
+    return networkVeiw ? allLayers.slice(1) : [allLayers[0]];
   };
 
-  // Función para manejar la transición entre vistas
-  const handleViewTransition = useCallback((isNetworkView: boolean) => {
-    const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
-    const viewConfig = COUNTRY_VIEW_CONFIG[selectedCountry];
-
-    if (isNetworkView) {
-      setViewState(currentViewState => ({
-        ...currentViewState,
-        latitude: countryCoordinates[0],
-        longitude: countryCoordinates[1],
-        zoom: viewConfig.zoom,
-        padding: currentViewState.padding,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionDuration: 2000
-      }));
-    } else {
-      // Vista de país completo
-      setViewState(currentViewState => ({
-        ...currentViewState,
-        latitude: countryCoordinates[0],
-        longitude: countryCoordinates[1],
-        zoom: viewConfig.zoom - 1, 
-        padding: currentViewState.padding,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionDuration: 2000
-      }));
-    }
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    handleViewTransition(networkView);
-  }, [networkView, handleViewTransition]);
-
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
     const viewConfig = COUNTRY_VIEW_CONFIG[selectedCountry];
 
-    setViewState(currentViewState => ({
-      ...currentViewState,
+    // Calcular el viewport basado en los bounds del país
+    const viewport = new WebMercatorViewport({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
+    setInitialViewState({
+      ...viewport,
       latitude: countryCoordinates[0],
       longitude: countryCoordinates[1],
       zoom: viewConfig.zoom,
-      padding: currentViewState.padding,
-      width: window.innerWidth,
-      height: window.innerHeight,
+      minZoom: 3,
+      maxZoom: 20,
+      pitch: 0,
+      bearing: 0,
       transitionInterpolator: new FlyToInterpolator({ speed: 1.5 }),
       transitionDuration: 1500,
-    }));
+    });
 
     loadBusCapacities(selectedCountry);
+
     getCountryCapacityChartsData(selectedCountry, countryCapacity);
     getCountryGenerationChartsData(selectedCountry, countryGeneration);
     getCountryDemandChartsData(selectedCountry, countryDemand);
@@ -496,60 +420,29 @@ export default function MainMap() {
   }, [selectedCountry, loadBusCapacities]);
 
   const onViewStateChange = useCallback(
-    (evt: ViewStateChangeEvent) => {
-      if (!evt.viewState) return;
-      
-      setViewState({
-        ...evt.viewState,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        padding: viewState.padding,
-        minZoom: viewState.minZoom,
-        maxZoom: viewState.maxZoom,
-        transitionInterpolator: viewState.transitionInterpolator,
-        transitionDuration: viewState.transitionDuration
-      });
-      
-      setZoomLevel(evt.viewState.zoom);
+    (params: { viewState: MapViewState }) => {
+      setZoomLevel(params.viewState.zoom);
     },
     []
   );
 
-  useEffect(() => {
-    const handleResize = () => {
-      setMapWidth(window.innerWidth - 384);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <>
-      <div 
-        className="ml-96"
-        onContextMenu={(evt) => evt.preventDefault()}
-      >
-        <Map
-          reuseMaps
-          mapStyle={currentTheme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK}
-          mapboxAccessToken={TOKEN}
-          viewState={viewState}
-          onMove={onViewStateChange}
-          style={{ width: '100%', height: '100vh' }}
+      <div onContextMenu={(evt) => evt.preventDefault()}>
+        <DeckGL
+          layers={visibleLayers(networkVeiw)}
+          initialViewState={initialViewState}
+          controller={true}
+          ref={DeckRef}
+          onViewStateChange={onViewStateChange as any}
         >
-          <DeckGLOverlay
-            layers={visibleLayers(networkView)}
-            getCursor={({isDragging}: {isDragging: boolean}) => isDragging ? 'grabbing' : 'grab'}
+          <Map
+            reuseMaps
+            mapStyle={
+              currentTheme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK
+            }
           />
-          <NavigationControl 
-            position="top-right" 
-            showCompass={false}
-            visualizePitch={true}
-          />
-          <FullscreenControl position="top-right" />
-          <ScaleControl position="bottom-right" />
-        </Map>
+        </DeckGL>
       </div>
       <MySideDrawer
         open={open}
@@ -557,6 +450,15 @@ export default function MainMap() {
         side={"right"}
         data={selectedBusData}
       />
+      <Button
+        onClick={() => setNetworkView(!networkVeiw)}
+        className="absolute top-20 right-0 m-4 z-[51]"
+      >
+        {networkVeiw ? "Country View" : "Network View"}
+      </Button>
+      {networkVeiw && (
+        <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
+      )}
     </>
   );
 }
