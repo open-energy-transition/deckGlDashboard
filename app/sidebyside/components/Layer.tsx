@@ -1,11 +1,10 @@
-import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { GeoJsonLayer } from "@deck.gl/layers";
 
 export type BlockProperties = {
   name: string;
   coordinates: [longitude: number, latitude: number];
 };
 
-// data needed to prepare Geojson layer
 type Props = {
   id: string;
   polygonData: string;
@@ -14,22 +13,39 @@ type Props = {
 export function MyCustomLayers({ id, polygonData }: Props): GeoJsonLayer[] {
   const layers = [
     new GeoJsonLayer({
-      id: `polygon-layer${id}`,
+      id: `polygon-layer-${id}`,
       data: polygonData,
       stroked: true,
-      opacity: 0.25,
+      opacity: 0.6,
       filled: true,
       extruded: false,
       wireframe: false,
-      getElevation: 0,
-      getLineColor: [75, 75, 75],
-      getFillColor: [225, 75, 75, 20],
-      lineWidthMinPixels: 2,
-      // lineWidthScale: 20,
-      dashArray: [10, 5],
-      getLineWidth: 10,
-      pickable: true,
-    }),
+      getElevation: () => 0,
+      getLineColor: [255, 255, 255, 255],
+      getFillColor: [220, 20, 60, 80],
+      lineWidthMinPixels: 1,
+      getLineWidth: () => 1,
+      pickable: false,
+      parameters: {
+        depthTest: false,
+        blend: true,
+        blendFunc: [770, 771]
+      },
+      _dataDiff: () => [{
+        startRow: 0,
+        endRow: undefined
+      }],
+      autoHighlight: false,
+      updateTriggers: {
+        getFillColor: polygonData,
+        getLineColor: polygonData,
+        getPosition: polygonData
+      },
+      visible: true,
+      extensions: [],
+      beforeId: undefined
+    })
   ];
+  
   return layers;
 }

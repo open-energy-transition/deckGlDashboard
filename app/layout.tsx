@@ -5,6 +5,8 @@ import NavBar from "../components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CountryProvider } from "@/components/country-context";
 import { NavigationMenuDemo } from "@/components/TopNavBar/TopNavBar";
+import { VisualizationProvider } from "@/components/visualization-context";
+import { NetworkViewProvider } from "@/components/network-view-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,9 +44,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <CountryProvider>
-            {children}
+            <VisualizationProvider>
+              <NetworkViewProvider>
+                {children}
 
-            <NavBar />
+                <NavBar />
+              </NetworkViewProvider>
+            </VisualizationProvider>
           </CountryProvider>
         </ThemeProvider>
       </body>
