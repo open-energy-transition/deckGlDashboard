@@ -1,9 +1,14 @@
 const BASE_URL = "http://34.31.13.149:8000/geoserver/GIS_Dashboard/ows";
 
+// write a function to conver string to lower case
+export const toLowerCase = (str) => str.toLowerCase();
+
 export const getGeoJsonData = (countryCode) => ({
   buses: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Abuses_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
   lines: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Alines_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
   countryView: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3A${countryCode.toLowerCase()}_country_view&maxFeatures=10000&outputFormat=application%2Fjson`,
+  regions_2021: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Aregions_${countryCode.toLowerCase()}_2021&maxFeatures=10000&outputFormat=application%2Fjson`,
+  regions_2050: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Aregions_${countryCode.toLowerCase()}_2050&maxFeatures=10000&outputFormat=application%2Fjson`,
 });
 
 export const COUNTRY_S_NOM_RANGES = {
@@ -47,57 +52,57 @@ export const COUNTRY_COORDINATES = {
 };
 
 export const COUNTRY_VIEW_CONFIG = {
-  AU: { zoom: 3.2, bounds: 80 },     // Australia - más zoom out para ver todo el continente
-  BR: { zoom: 3.2, bounds: 80 },     // Brasil - ajustado para ver todo el territorio
-  CO: { zoom: 4.8, bounds: 40 },     // Colombia - reducido para ver mejor las conexiones
-  DE: { zoom: 4.8, bounds: 30 },     // Alemania - ajustado para ver países vecinos
-  IN: { zoom: 3.8, bounds: 60 },     // India - más zoom out para ver todo el subcontinente
-  IT: { zoom: 4.5, bounds: 30 },     // Italia - ajustado para ver conexiones con vecinos
-  MX: { zoom: 4.0, bounds: 50 },     // México - reducido para ver mejor las conexiones
-  NG: { zoom: 4.8, bounds: 40 },     // Nigeria - ajustado para ver contexto regional
-  US: { zoom: 2.5, bounds: 100 },    // USA - más zoom out para Alaska y Hawaii
-  ZA: { zoom: 4.5, bounds: 50 },     // Sudáfrica - ajustado para ver mejor el contexto
+  AU: { zoom: 3.2, bounds: 80 },
+  BR: { zoom: 3.2, bounds: 80 },
+  CO: { zoom: 4.8, bounds: 40 },
+  DE: { zoom: 4.8, bounds: 30 },
+  IN: { zoom: 3.8, bounds: 60 },
+  IT: { zoom: 4.5, bounds: 30 },
+  MX: { zoom: 4.0, bounds: 50 },
+  NG: { zoom: 4.8, bounds: 40 },
+  US: { zoom: 2.5, bounds: 100 },
+  ZA: { zoom: 4.5, bounds: 50 },
 };
 
 export const COUNTRY_BOUNDS = {
   AU: [
     [113.338953078, -43.6345972634],
-    [153.569469029, -10.6681857235]
+    [153.569469029, -10.6681857235],
   ],
   BR: [
     [-73.9872354804, -33.7683777809],
-    [-34.7299934555, 5.24448639569]
+    [-34.7299934555, 5.24448639569],
   ],
   CO: [
     [-78.9909352282, -4.29818694419],
-    [-66.8763258531, 12.4373031682]
+    [-66.8763258531, 12.4373031682],
   ],
   DE: [
     [5.98865807458, 47.3024876979],
-    [15.0169958839, 54.983104153]
+    [15.0169958839, 54.983104153],
   ],
   IN: [
     [68.1766451354, 7.96553477623],
-    [97.4025614766, 35.4940095078]
+    [97.4025614766, 35.4940095078],
   ],
   IT: [
     [6.7499552751, 36.619987291],
-    [18.4802470232, 47.1153931748]
+    [18.4802470232, 47.1153931748],
   ],
   MX: [
     [-118.3649820989, 14.5321824761],
-    [-86.7235489749, 32.7187629611]
+    [-86.7235489749, 32.7187629611],
   ],
   NG: [
     [2.6917863124, 4.2790553552],
-    [14.6800013683, 13.8659239771]
+    [14.6800013683, 13.8659239771],
   ],
   US: [
-    [-178.334698, 18.910361],     // Incluye Hawaii
-    [-66.945240, 71.352561]       // Incluye Alaska
+    [-178.334698, 18.910361],
+    [-66.94524, 71.352561],
   ],
   ZA: [
     [16.3449768409, -34.8191663551],
-    [32.830120477, -22.1265453832]
-  ]
+    [32.830120477, -22.1265453832],
+  ],
 };

@@ -14,11 +14,13 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
 } from "@/components/ui/chart";
 import { GeneratorData } from "@/app/types";
 
-type CarrierType = 
+type CarrierType =
   | "CCGT"
   | "OCGT"
   | "biomass"
@@ -102,14 +104,14 @@ const chartConfig: Record<CarrierType, { label: string; color: string }> = {
 
 interface ChartRadialProps {
   data: GeneratorData[];
-  valueKey: 'p_nom' | 'p_nom_opt';
+  valueKey: "p_nom" | "p_nom_opt";
   title: string;
 }
 
 export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
   const processedData = useMemo(() => {
     const groupedData = data
-      .filter(item => item.carrier !== 'load')
+      .filter((item) => item.carrier !== "load")
       .reduce((acc: { [key: string]: number }, item) => {
         const value = Number(item[valueKey]);
         if (!isNaN(value)) {
@@ -121,35 +123,39 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
         return acc;
       }, {});
 
-    const totalValue = Object.values(groupedData)
-      .reduce((sum, value) => sum + value, 0);
+    const totalValue = Object.values(groupedData).reduce(
+      (sum, value) => sum + value,
+      0
+    );
 
     return Object.entries(groupedData)
       .map(([carrier, value]) => {
         const carrierKey = carrier.toLowerCase() as CarrierType;
         const percentage = (value / totalValue) * 100;
-        
+
         return {
           carrier,
           value: value.toFixed(2),
           actualValue: value,
           percentage: percentage.toFixed(1),
           displayValue: percentage,
-          fill: chartConfig[carrierKey]?.color || "hsl(var(--chart-1))"
+          fill: chartConfig[carrierKey]?.color || "hsl(var(--chart-1))",
         };
       })
       .sort((a, b) => b.actualValue - a.actualValue);
   }, [data, valueKey]);
 
   const totalValue = useMemo(() => {
-    return processedData.reduce((sum: number, item: ProcessedDataItem) => 
-      sum + Number(item.value), 0
+    return processedData.reduce(
+      (sum: number, item: ProcessedDataItem) => sum + Number(item.value),
+      0
     );
   }, [processedData]);
 
   const totalPercentage = useMemo(() => {
-    return processedData.reduce((sum: number, item: ProcessedDataItem) => 
-      sum + Number(item.percentage), 0
+    return processedData.reduce(
+      (sum: number, item: ProcessedDataItem) => sum + Number(item.percentage),
+      0
     );
   }, [processedData]);
 
@@ -159,20 +165,15 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
     <>
       <CardHeader className="items-center pb-0">
         <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          Total: {totalValue.toFixed(2)} MW
-        </CardDescription>
+        <CardDescription>Total: {totalValue.toFixed(2)} MW</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer 
-          config={chartConfig} 
-          className="mx-auto aspect-square max-h-[300px]"
-        >
-          <RadialBarChart 
-            width={300}
-            height={300}
-            data={processedData} 
-            innerRadius="30%" 
+      <CardContent>
+        <ChartContainer config={chartConfig} className=" w-full aspect-square">
+          <RadialBarChart
+            width={400}
+            height={400}
+            data={processedData}
+            innerRadius="30%"
             outerRadius="90%"
             startAngle={180}
             endAngle={-180}
@@ -185,7 +186,9 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
                   const carrierKey = data.carrier.toLowerCase() as CarrierType;
                   return (
                     <div className="bg-black bg-opacity-90 p-3 rounded shadow text-white">
-                      <p className="font-bold text-sm">{chartConfig[carrierKey]?.label || data.carrier}</p>
+                      <p className="font-bold text-sm">
+                        {chartConfig[carrierKey]?.label || data.carrier}
+                      </p>
                       <p className="text-sm">{data.value} MW</p>
                       <p className="text-sm">{data.percentage}%</p>
                     </div>
@@ -200,32 +203,47 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
               background
               cornerRadius={5}
               label={{
-                position: 'insideStart',
-                fill: '#fff',
+                position: "insideStart",
+                fill: "#fff",
                 fontSize: 10,
                 formatter: (value: number, entry: any) => {
-                  if (!entry?.payload?.percentage) return '';
+                  if (!entry?.payload?.percentage) return "";
                   const percentage = Number(entry.payload.percentage);
-                  return percentage > 5 ? `${percentage.toFixed(1)}%` : '';
-                }
+                  return percentage > 5 ? `${percentage.toFixed(1)}%` : "";
+                },
               }}
             />
-            <Legend 
-              layout="horizontal"
-              verticalAlign="bottom"
-              align="center"
-              wrapperStyle={{ paddingTop: '20px' }}
+            {/* <ChartLegend
+              content={<ChartLegendContent />}
+              className="flex-wrap mt-5"
               formatter={(value: string) => {
-                if (!value) return '';
+                if (!value) return "";
                 const carrierKey = value.toLowerCase() as CarrierType;
                 return chartConfig[carrierKey]?.label || value;
               }}
               payload={processedData.map((item: ProcessedDataItem) => ({
                 value: item.carrier,
-                type: 'circle',
+                type: "circle",
                 id: item.carrier,
-                color: item.fill
+                color: item.fill,
               }))}
+            /> */}
+            <Legend
+              layout="horizontal"
+              verticalAlign="bottom"
+              align="center"
+              formatter={(value: string) => {
+                if (!value) return "";
+                const carrierKey = value.toLowerCase() as CarrierType;
+                return chartConfig[carrierKey]?.label || value;
+              }}
+              payload={processedData.map((item: ProcessedDataItem) => ({
+                value: item.carrier,
+                type: "circle",
+                id: item.carrier,
+                color: item.fill,
+              }))}
+              wrapperStyle={{ marginTop: "200px" }}
             />
           </RadialBarChart>
         </ChartContainer>

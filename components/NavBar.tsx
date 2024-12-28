@@ -33,7 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { COUNTRY_COORDINATES } from "@/app/network/components/Links";
+import { COUNTRY_COORDINATES } from "@/utilities/CountryConfig/Link";
 import BottomDrawer from "./BottomDrawer";
 import { useVisualization } from "./visualization-context";
 import { useNetworkView } from "./network-view-context";
@@ -104,36 +104,15 @@ const NavBar = () => {
             </SelectContent>
           </Select>
 
-          <div className="flex flex-col gap-2">
-            <div className="text-xl font-semibold">Navigation</div>
+          {pathname === "/network" && (
             <Button
-              variant={pathname === "/" ? "default" : "outline"}
-              onClick={() => router.push("/")}
+              variant="default"
+              onClick={() => setNetworkView(!networkView)}
+              className="mb-2"
             >
-              Home
+              {networkView ? "Country View" : "Network View"}
             </Button>
-            <Button
-              variant={pathname === "/network" ? "default" : "outline"}
-              onClick={() => router.push("/network")}
-            >
-              Validation
-            </Button>
-            {pathname === "/network" && (
-              <Button
-                variant="default"
-                onClick={() => setNetworkView(!networkView)}
-                className="mb-2"
-              >
-                {networkView ? "Country View" : "Network View"}
-              </Button>
-            )}
-            <Button
-              variant={pathname === "/sidebyside" ? "default" : "outline"}
-              onClick={() => router.push("/sidebyside")}
-            >
-              Scenarios
-            </Button>
-          </div>
+          )}
 
           {pathname === "/sidebyside" && (
             <MainControls
@@ -153,17 +132,19 @@ const NavBar = () => {
               <div className="text-lg font-semibold mb-2">Network Legend</div>
               <div className="grid grid-cols-2 gap-2 bg-secondary/10 rounded-lg p-2">
                 <div className="flex flex-col items-start p-2">
-                  <div className="text-sm font-medium mb-1">Transmission Lines</div>
-                  <MapLegend 
-                    country={selectedCountry} 
+                  <div className="text-sm font-medium mb-1">
+                    Transmission Lines
+                  </div>
+                  <MapLegend
+                    country={selectedCountry}
                     theme={theme || "light"}
                     type="lines"
                   />
                 </div>
                 <div className="flex flex-col items-start border-l border-border/50 p-2">
                   <div className="text-sm font-medium mb-1">Buses</div>
-                  <MapLegend 
-                    country={selectedCountry} 
+                  <MapLegend
+                    country={selectedCountry}
                     theme={theme || "light"}
                     type="buses"
                   />

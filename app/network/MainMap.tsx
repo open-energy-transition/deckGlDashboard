@@ -12,8 +12,7 @@ import {
   getGeoJsonData,
   COUNTRY_S_NOM_RANGES,
   COUNTRY_VIEW_CONFIG,
-} from "./components/Links";
-import { BlockProperties } from "./components/Layer";
+} from "@/utilities/CountryConfig/Link";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import BottomDrawer from "../../components/BottomDrawer";
 import MySideDrawer from "./popups/SideDrawer";
@@ -34,6 +33,7 @@ import { WebMercatorViewport } from "@deck.gl/core";
 import MapLegend from "./components/MapLegend";
 import { useCountry } from "@/components/country-context";
 import { Button } from "@/components/ui/button";
+import { useNetworkView } from "@/components/network-view-context";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -43,6 +43,10 @@ const INITIAL_VIEW_STATE: MapViewState = {
   maxZoom: 20,
   pitch: 0,
   bearing: 0,
+};
+
+type BlockProperties = {
+  data: string;
 };
 
 const MAP_STYLE_LIGHT =
@@ -132,7 +136,7 @@ export default function MainMap() {
 
   const { selectedCountry, setSelectedCountry } = useCountry();
 
-  const [networkVeiw, setNetworkView] = useState(false);
+  const { networkView, setNetworkView } = useNetworkView();
 
   const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
@@ -379,9 +383,9 @@ export default function MainMap() {
     ];
   }, [selectedCountry, busCapacities, isLoading, zoomLevel]);
 
-  const visibleLayers = (networkVeiw: boolean) => {
+  const visibleLayers = (networkView: boolean) => {
     const allLayers = MakeLayers();
-    return networkVeiw ? allLayers.slice(1) : [allLayers[0]];
+    return networkView ? allLayers.slice(1) : [allLayers[0]];
   };
 
   useEffect(() => {
@@ -430,7 +434,7 @@ export default function MainMap() {
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={visibleLayers(networkVeiw)}
+          layers={visibleLayers(networkView)}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -441,6 +445,7 @@ export default function MainMap() {
             mapStyle={
               currentTheme === "light" ? MAP_STYLE_LIGHT : MAP_STYLE_DARK
             }
+            styleDiffing={false}
           />
         </DeckGL>
       </div>
@@ -450,15 +455,6 @@ export default function MainMap() {
         side={"right"}
         data={selectedBusData}
       />
-      <Button
-        onClick={() => setNetworkView(!networkVeiw)}
-        className="absolute top-20 right-0 m-4 z-[51]"
-      >
-        {networkVeiw ? "Country View" : "Network View"}
-      </Button>
-      {networkVeiw && (
-        <MapLegend country={selectedCountry} theme={currentTheme || "light"} />
-      )}
     </>
   );
 }
