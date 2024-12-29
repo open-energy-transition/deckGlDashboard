@@ -7,7 +7,7 @@ import Globe from "react-globe.gl";
 import {
   getGeoJsonData,
   COUNTRY_COORDINATES,
-} from "../network/components/Links";
+} from "@/utilities/CountryConfig/Link";
 import useSWR from "swr";
 
 interface FetcherResponse {

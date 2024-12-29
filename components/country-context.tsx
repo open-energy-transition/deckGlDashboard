@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useState, useContext } from "react";
 
-import { COUNTRY_COORDINATES } from "@/app/network/components/Links";
+import { COUNTRY_COORDINATES } from "@/utilities/CountryConfig/Link";
 
 type CountryKey = keyof typeof COUNTRY_COORDINATES;
 

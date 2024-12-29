@@ -15,7 +15,11 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import ModePannel from "./Mode";
 import { Mode } from "./Mode";
 import { useCountry } from "@/components/country-context";
-import { getGeoJsonData, COUNTRY_COORDINATES, COUNTRY_VIEW_CONFIG } from "./components/Links";
+import {
+  getGeoJsonData,
+  COUNTRY_COORDINATES,
+  COUNTRY_VIEW_CONFIG,
+} from "@/utilities/CountryConfig/Link";
 import { useVisualization } from "@/components/visualization-context";
 
 function DeckGLOverlay(props: MapboxOverlayProps) {
