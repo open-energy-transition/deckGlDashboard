@@ -1,14 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, SetStateAction } from "react";
 import { MainControls } from "@/app/sidebyside/MainControls";
 
 import {
@@ -18,18 +16,19 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
-  SheetFooter,
 } from "@/components/ui/sheet";
 import { useCountry } from "@/components/country-context";
 
 import { useVisualization } from "@/components/visualization-context";
 import CountrySelectDropDown from "@/components/CountrySelectDropDown";
+import ModePannel, { Mode } from "./Mode";
 
-import ModePannel from "./Mode";
-import { Mode } from "./Mode";
+interface SideBySideNavProps {
+  mode: Mode;
+  setMode: React.Dispatch<SetStateAction<Mode>>;
+}
 
-const SideBySideNav = () => {
+const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry, setSelectedCountry } = useCountry();
@@ -53,6 +52,7 @@ const SideBySideNav = () => {
         <div className="flex flex-col gap-4 flex-1">
           <CountrySelectDropDown />
 
+          <ModePannel mode={mode} setMode={setMode} />
           <MainControls
             buttonPosition="right"
             close={() => {}}
@@ -73,8 +73,6 @@ const SideBySideNav = () => {
             </Label>
           </div>
         </div>
-
-        <ModePannel />
       </SheetContent>
     </Sheet>
   );

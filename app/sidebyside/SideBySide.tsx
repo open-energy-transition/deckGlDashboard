@@ -44,9 +44,12 @@ const RightMapStyle: React.CSSProperties = {
   left: "50%",
 };
 
-export default function SideBySide() {
+interface SideBySideProps {
+  mode: Mode;
+}
+
+export default function SideBySide({ mode }: SideBySideProps) {
   const { selectedCountry } = useCountry();
-  const [mode, setMode] = useState<Mode>("split-screen");
   const [activeMap, setActiveMap] = useState<"left" | "right">("left");
   const { selectedRenewableType, selectedParameter } = useVisualization();
 
@@ -229,9 +232,8 @@ export default function SideBySide() {
         mapStyle="mapbox://styles/mapbox/light-v9"
         mapboxAccessToken={TOKEN}
       >
-        <NavigationControl position="top-right" showCompass={false} />
-        <FullscreenControl position="top-right" />
-        <ScaleControl position="bottom-right" />
+        <NavigationControl position="bottom-right" showCompass={false} />
+        <FullscreenControl position="bottom-right" />
         <DeckGLOverlay layers={layer2021} />
       </Map>
 
@@ -245,8 +247,8 @@ export default function SideBySide() {
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxAccessToken={TOKEN}
       >
-        <NavigationControl position="top-right" showCompass={false} />
-        <FullscreenControl position="top-right" />
+        <NavigationControl position="bottom-right" showCompass={false} />
+        <FullscreenControl position="bottom-right" />
         <ScaleControl position="bottom-right" />
         <DeckGLOverlay layers={layer2050} />
       </Map>

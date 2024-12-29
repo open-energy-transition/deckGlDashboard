@@ -276,11 +276,9 @@ export default function MainMap() {
         stroked: true,
         filled: true,
         pickable: true,
-        // getLineColor: [205, 219, 181],
-        // getFillColor: [205, 219, 181],
 
-        getLineColor: [227, 230, 218],
-        getFillColor: [227, 230, 218],
+        getLineColor: [215, 229, 190],
+        getFillColor: [215, 229, 190],
 
         getLineWidth: 1,
         getRadius: 100,

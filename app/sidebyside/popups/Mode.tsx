@@ -1,7 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-
-export type Mode = "split-screen" | "side-by-side";
 
 import {
   Select,
@@ -9,21 +7,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { on } from "events";
+import { SelectContent } from "@radix-ui/react-select";
 
-export default function ModePannel() {
-  const [mode, setMode] = useState<Mode>("split-screen");
+export type Mode = "split-screen" | "side-by-side";
+export interface ModePannelProps {
+  mode: Mode;
+  setMode: (mode: Mode) => void;
+}
+
+export default function ModePannel({ mode, setMode }: ModePannelProps) {
+  useEffect(() => {
+    console.log(mode);
+  }, [mode]);
+
   return (
-    <>
-      <h3>Side by Side</h3>
-      <p>Synchronize two maps.</p>
-
-      <Select value={mode} onValueChange={(value) => setMode(value as Mode)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select View Mode`" />
-          <SelectItem value="split-screen">Split Screen</SelectItem>
-          <SelectItem value="side-by-side">Side by Side</SelectItem>
-        </SelectTrigger>
-      </Select>
-    </>
+    <Select value={mode} onValueChange={(value) => setMode(value as Mode)}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select View Mode" />
+      </SelectTrigger>
+      <SelectContent className="bg-white dark:bg-gray-800 text-black dark:text-white">
+        <SelectItem value="split-screen">Split Screen</SelectItem>
+        <SelectItem value="side-by-side">Side by Side</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }
