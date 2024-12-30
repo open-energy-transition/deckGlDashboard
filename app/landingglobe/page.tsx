@@ -3,7 +3,8 @@
 import React, { useState, useEffect, use } from "react";
 import EarthNightUrl from "../../public/earth-night-light.jpg";
 import NightSkyUrl from "../../public/night-sky-light.png";
-import Globe from "react-globe.gl";
+import dynamic from "next/dynamic";
+const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 import {
   getGeoJsonData,
   COUNTRY_COORDINATES,
@@ -40,23 +41,23 @@ const Page = () => {
     console.log(data);
   }, [data]);
 
-   useEffect(() => {
-     if (typeof window !== "undefined") {
-       const handleResize = () => {
-         setDimensions({
-           width: window.innerWidth,
-           height: window.innerHeight,
-         });
-       };
-       handleResize();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      };
+      handleResize();
 
-       window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", handleResize);
 
-       return () => {
-         window.removeEventListener("resize", handleResize);
-       };
-     }
-   }, []);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
 
   return (
     <Globe
