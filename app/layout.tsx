@@ -36,7 +36,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar`}
       >
-        <NavigationMenuDemo />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -44,12 +43,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <CountryProvider>
+            <NavigationMenuDemo />
             <VisualizationProvider>
-              <NetworkViewProvider>
-                {children}
-
-                <NavBar />
-              </NetworkViewProvider>
+              <NetworkViewProvider>{children}</NetworkViewProvider>
             </VisualizationProvider>
           </CountryProvider>
         </ThemeProvider>
