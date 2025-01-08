@@ -276,8 +276,10 @@ export default function MainMap() {
         stroked: true,
         filled: true,
         pickable: true,
-        getLineColor: [227, 26, 28],
-        getFillColor: [227, 26, 28],
+
+        getLineColor: [215, 229, 190],
+        getFillColor: [215, 229, 190],
+
         getLineWidth: 1,
         getRadius: 100,
         lineWidthScale: 20,
@@ -291,10 +293,10 @@ export default function MainMap() {
         opacity: 1,
         stroked: true,
         filled: true,
-        pickable: true,
+        pickable: false,
         lineWidthScale: 20,
-        getLineColor: [227, 26, 28],
-        getFillColor: [227, 26, 28],
+        getLineColor: [228, 30, 60],
+        getFillColor: [228, 30, 60],
         getLineWidth: (d) => {
           const baseWidth = normalizeSnom(
             d.properties.s_nom,
@@ -361,7 +363,9 @@ export default function MainMap() {
         onHover: (info) => {
           setHoverPointID(info.object ? info.object.id : null);
         },
-        getFillColor: [72, 123, 182],
+        // getFillColor: [72, 123, 182],
+        getLineColor: [124, 152, 133],
+        getFillColor: [124, 152, 133],
         pickable: true,
         updateTriggers: {
           getPointRadius: [
@@ -385,7 +389,7 @@ export default function MainMap() {
 
   const visibleLayers = (networkView: boolean) => {
     const allLayers = MakeLayers();
-    return networkView ? allLayers.slice(1) : [allLayers[0]];
+    return networkView ? allLayers.slice(5) : [...allLayers];
   };
 
   useEffect(() => {

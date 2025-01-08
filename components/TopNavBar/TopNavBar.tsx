@@ -16,6 +16,13 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
+import { Moon, Sun } from "lucide-react";
+
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+import { useTheme } from "next-themes";
+
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Alert Dialog",
@@ -55,6 +62,8 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export function NavigationMenuDemo() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <NavigationMenu className="absolute top-0 left-0 z-50 w-full bg-transparent">
       <NavigationMenuList className="w-[100vw] p-4 flex justify-center">
@@ -123,6 +132,28 @@ export function NavigationMenuDemo() {
           <NavigationMenuLink href="/sidebyside">
             <div className={navigationMenuTriggerStyle()}>Polygon</div>
           </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          <div
+            className={`${navigationMenuTriggerStyle()} flex items-center gap-1`}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {/* <div className=""> */}
+            <Switch
+              id="theme"
+              checked={theme === "light"}
+              onCheckedChange={() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              }
+            />
+            <Label htmlFor="theme">
+              {theme === "light" ? <Moon /> : <Sun />}
+            </Label>
+            {/* </div> */}
+          </div>
         </NavigationMenuItem>
       </NavigationMenuList>
       <NavigationMenuViewport className="right-0 left-auto" />
