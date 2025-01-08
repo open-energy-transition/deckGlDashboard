@@ -37,3 +37,5 @@ next-env.d.ts
 
 # pixi env
 pixi_env/
+
+.codegpt
