@@ -101,12 +101,6 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
             </>
           )}
         </div>
-
-        <SheetFooter className="mt-auto flex justify-center">
-          <SheetClose asChild>
-            <Button className="px-8">Close</Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
