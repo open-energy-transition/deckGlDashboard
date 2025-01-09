@@ -119,7 +119,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] px-4 sm:px-24 md:px-0 md:w-[40%] xl:w-[30%] 2xl:w-[25%]">
+      <Card className="w-[95%] px-4 sm:px-24 md:px-0 md:w-[47%] xl:w-[28%] 2xl:w-[25%]">
         <CardHeader>
           <CardTitle>Installed Capacity Mix</CardTitle>
           <CardDescription>

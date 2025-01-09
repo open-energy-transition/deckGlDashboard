@@ -176,7 +176,7 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%]">
+      <Card className="w-[95%] md:w-[80%] xl:w-[68%]">
         <CardHeader>
           <CardTitle>Installed Capacity Comparison</CardTitle>
           <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>

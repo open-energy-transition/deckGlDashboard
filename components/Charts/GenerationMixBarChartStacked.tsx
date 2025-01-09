@@ -223,7 +223,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%]">
+      <Card className="w-[95%] md:w-[80%] xl:w-[68%]">
         <CardHeader>
           <CardTitle>Generation Mix Comparison</CardTitle>
           <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
