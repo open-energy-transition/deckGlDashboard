@@ -49,27 +49,27 @@ type CarrierKey = (typeof carrierMap)[keyof typeof carrierMap];
 const chartConfig = {
   biomass: {
     label: "Biomass",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-biomass))",
   },
   fossilFuels: {
     label: "Fossil Fuels",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-coal))",
   },
   hydro: {
     label: "Hydro",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-ror))",
   },
   nuclear: {
     label: "Nuclear",
-    color: "hsl(var(--chart-4))",
+    color: "hsl(var(--chart-nuclear))",
   },
   solar: {
     label: "Solar",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-solar))",
   },
   wind: {
     label: "Wind",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-onwind))",
   },
   phs: {
     label: "PHS",
@@ -182,10 +182,7 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
           <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer
-            className="h-[30vh] 2xl:h-[40vh] w-full"
-            config={chartConfig}
-          >
+          <ChartContainer className="h-[40vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
@@ -199,11 +196,13 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
                 tickMargin={5}
                 axisLine={false}
                 label={{ value: "GW", angle: -90, position: "insideLeft" }}
+                type="number"
+                domain={[0, "dataMax"]}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend
-                content={<ChartLegendContent />}
-                className="flex-wrap"
+                content={<ChartLegendContent className="pb-0 pt-0" />}
+                className="flex-wrap pb-0 mt-3"
               />
               {Object.keys(chartConfig).map((key) => (
                 <Bar

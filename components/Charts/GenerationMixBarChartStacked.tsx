@@ -44,7 +44,6 @@ type ChartDataType = {
   phs: number;
   geothermal: number;
   loadShedding: number;
-  totalGeneration: number;
 }[];
 
 const carrierMap = {
@@ -59,7 +58,6 @@ const carrierMap = {
   PHS: "phs",
   Geothermal: "geothermal",
   "Load shedding": "loadShedding",
-  "Total generation": "totalGeneration",
 } as const;
 
 type CarrierKey = (typeof carrierMap)[keyof typeof carrierMap];
@@ -67,51 +65,51 @@ type CarrierKey = (typeof carrierMap)[keyof typeof carrierMap];
 const chartConfig = {
   biomass: {
     label: "Biomass",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-biomass))",
   },
   coal: {
     label: "Coal",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-coal))",
   },
   oil: {
     label: "Oil",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-oil))",
   },
   hydro: {
     label: "Hydro",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-ror))",
   },
   nuclear: {
     label: "Nuclear",
-    color: "hsl(var(--chart-4))",
+    color: "hsl(var(--chart-nuclear))",
   },
   solar: {
     label: "Solar",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-solar))",
   },
   wind: {
     label: "Wind",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-onwind))",
   },
   phs: {
     label: "PHS",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-offwind-ac))",
   },
   geothermal: {
     label: "Geothermal",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-geothermal))",
   },
   loadShedding: {
     label: "Load Shedding",
-    color: "hsl(var(--chart-4))",
+    color: "hsl(var(--chart-load))",
   },
   totalGeneration: {
     label: "Total Generation",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-csp))",
   },
   naturalGas: {
     label: "Natural Gas",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-CCGT))",
   },
 } satisfies ChartConfig;
 
@@ -145,7 +143,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           phs: 0,
           geothermal: 0,
           loadShedding: 0,
-          totalGeneration: 0,
         },
         {
           model: "PyPSA",
@@ -160,7 +157,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           phs: 0,
           geothermal: 0,
           loadShedding: 0,
-          totalGeneration: 0,
         },
         {
           model: "EIA",
@@ -175,7 +171,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           phs: 0,
           geothermal: 0,
           loadShedding: 0,
-          totalGeneration: 0,
         },
       ];
       for (let i = 0; i < dataArray.length; i++) {
@@ -234,10 +229,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer
-            className="h-[30vh] 2xl:h-[40vh] w-full"
-            config={chartConfig}
-          >
+          <ChartContainer className="h-[40vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
@@ -251,11 +243,13 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                 tickMargin={5}
                 axisLine={false}
                 label={{ value: "TWh", angle: -90, position: "insideLeft" }}
+                type="number"
+                domain={[0, "dataMax"]}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend
-                content={<ChartLegendContent />}
-                className="flex-wrap"
+                content={<ChartLegendContent className="pb-0 pt-0" />}
+                className="flex-wrap pb-0 mt-3"
               />
               {Object.keys(chartConfig).map((key) => (
                 <Bar
