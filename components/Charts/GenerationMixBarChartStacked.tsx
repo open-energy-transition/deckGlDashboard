@@ -232,6 +232,9 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           <ChartContainer className="h-[40vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
+
+              <ChartTooltip content={<ChartTooltipContent />} />
+
               <XAxis
                 dataKey="model"
                 tickLine={false}
@@ -246,7 +249,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                 type="number"
                 domain={[0, "dataMax"]}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+
               <ChartLegend
                 content={<ChartLegendContent className="pb-0 pt-0" />}
                 className="flex-wrap pb-0 mt-3"

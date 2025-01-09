@@ -32,13 +32,13 @@ body {
     --primary-foreground: 240 22% 14%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
-    --muted: 0 0% 98%;
+    --muted:139 12% 54% / 0.5;
     --muted-foreground: 25 5.3% 44.7%;
     --accent:  60 56% 91%;
     --accent-foreground: 24 9.8% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
-    --border: 139 12% 54%;
+    --border: 139 12% 54% / 0.15;
     --input: 20 5.9% 90%;
     --ring: 139 12% 54%;
     --radius: 0.5rem;
@@ -99,7 +99,7 @@ body {
     --primary-foreground: 60 56% 91%;
     --secondary: 139 12% 54%;
     --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
+    --muted: 240 22% 14% / 0.9;
     --muted-foreground: 60 56% 91%;
     --accent: 139 12% 54% /.5;
     --accent-foreground: 60 9.1% 97.8%;
