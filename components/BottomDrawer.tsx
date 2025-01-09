@@ -62,7 +62,7 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button onClick={() => setOpen(!open)}>
+        <Button className="w-full" onClick={() => setOpen(!open)}>
           Show Statistics for country : {selectedCountry}
         </Button>
       </DrawerTrigger>
