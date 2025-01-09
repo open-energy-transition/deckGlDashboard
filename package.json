@@ -30,6 +30,7 @@
     "d3-scale": "^4.0.0",
     "deck.gl": "^9.0.0",
     "dotenv": "^16.4.5",
+    "flag-icons": "^6.15.0",
     "gl-matrix": "^3.4.3",
     "lucide-react": "^0.445.0",
     "mapbox-gl": "^2.15.0",
