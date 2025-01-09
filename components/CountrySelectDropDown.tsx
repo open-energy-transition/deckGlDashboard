@@ -25,7 +25,7 @@ const CountrySelectDropDown = () => {
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a country" />
       </SelectTrigger>
-      <SelectContent className="bg-white dark:bg-gray-800 text-black dark:text-white">
+      <SelectContent>
         <SelectGroup>
           <SelectLabel>North America</SelectLabel>
           <SelectItem value="US">United States</SelectItem>

@@ -119,7 +119,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%] xl:w-[30%] 2xl:w-[25%]">
+      <Card className="w-[95%] px-4 sm:px-24 md:px-0 md:w-[40%] xl:w-[30%] 2xl:w-[25%]">
         <CardHeader>
           <CardTitle>Installed Capacity Mix</CardTitle>
           <CardDescription>
@@ -152,25 +152,25 @@ export function InstalledCapacityPieChart({ data }: Props) {
                 innerRadius={70}
                 outerRadius={110}
                 strokeWidth={5}
-                label={({ cx, cy, midAngle, outerRadius, percentage }) => {
-                  const RADIAN = Math.PI / 180;
-                  const radius = outerRadius * 1.3;
-                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                // label={({ cx, cy, midAngle, outerRadius, percentage }) => {
+                //   const RADIAN = Math.PI / 180;
+                //   const radius = outerRadius * 1.3;
+                //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-                  return percentage > 5 ? (
-                    <text
-                      x={x}
-                      y={y}
-                      fill="currentColor"
-                      textAnchor={x > cx ? "start" : "end"}
-                      dominantBaseline="central"
-                      className="fill-muted-foreground text-sm font-medium"
-                    >
-                      {`${percentage.toFixed(1)}%`}
-                    </text>
-                  ) : null;
-                }}
+                //   return percentage > 5 ? (
+                //     <text
+                //       x={x}
+                //       y={y}
+                //       fill="currentColor"
+                //       textAnchor={x > cx ? "start" : "end"}
+                //       dominantBaseline="central"
+                //       className="fill-muted-foreground text-sm font-medium"
+                //     >
+                //       {`${percentage.toFixed(1)}%`}
+                //     </text>
+                //   ) : null;
+                // }}
               >
                 <Label
                   content={({ viewBox }) => {
@@ -204,7 +204,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
               </Pie>
               <ChartLegend
                 content={<ChartLegendContent />}
-                className="flex-wrap mt-5"
+                className="flex-wrap"
               />
             </PieChart>
           </ChartContainer>
