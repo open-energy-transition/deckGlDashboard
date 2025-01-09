@@ -68,7 +68,7 @@ const NetworkNav = () => {
 
           <div className="mt-auto">
             <div className="text-lg font-semibold mb-2">Network Legend</div>
-            <div className="grid grid-cols-2 gap-2 bg-secondary/10 rounded-lg p-2">
+            <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">
               <div className="flex flex-col items-start p-2">
                 <div className="text-sm font-medium mb-1">
                   Transmission Lines

@@ -233,7 +233,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
 
               <XAxis
                 dataKey="model"

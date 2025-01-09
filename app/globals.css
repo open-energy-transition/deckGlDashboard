@@ -32,8 +32,8 @@ body {
     --primary-foreground: 240 22% 14%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
-    --muted:139 12% 54% / 0.5;
-    --muted-foreground: 25 5.3% 44.7%;
+    --muted:139 12% 54% / 0.35;
+    --muted-foreground: 20 14.3% 4.1%;
     --accent:  60 56% 91%;
     --accent-foreground: 24 9.8% 10%;
     --destructive: 0 84.2% 60.2%;
@@ -107,7 +107,7 @@ body {
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 351 79% 51% / 0.18;
     --input:  139 12% 54%;
-    --ring: 24 5.7% 82.9%;
+    --ring: 351 79% 51% / 0.18;
     --chart-0: 27 87% 67%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
