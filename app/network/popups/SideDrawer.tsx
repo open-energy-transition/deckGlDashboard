@@ -80,24 +80,20 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
             </div>
           ) : (
             <>
-              <div className="pb-4 pt-4">
-                <Card>
-                  <ChartRadial
-                    data={generatorData}
-                    valueKey="p_nom"
-                    title="Nominal Capacity"
-                  />
-                </Card>
-              </div>
-              <div className="pb-4 pt-4">
-                <Card>
-                  <ChartRadial
-                    data={generatorData}
-                    valueKey="p_nom_opt"
-                    title="Optimal Capacity"
-                  />
-                </Card>
-              </div>
+              <Card className="my-4 flex flex-col justify-between align-middle gap-2">
+                <ChartRadial
+                  data={generatorData}
+                  valueKey="p_nom"
+                  title="Nominal Capacity"
+                />
+              </Card>
+              <Card className="my-4 flex flex-col justify-between align-middle gap-2">
+                <ChartRadial
+                  data={generatorData}
+                  valueKey="p_nom_opt"
+                  title="Optimal Capacity"
+                />
+              </Card>
             </>
           )}
         </div>

@@ -223,17 +223,74 @@ export function GenerationMixBarChartStacked({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%]">
+      <Card className="w-[95%] md:w-[80%] xl:w-[68%] flex flex-col justify-between align-middle">
         <CardHeader>
           <CardTitle>Generation Mix Comparison</CardTitle>
           <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer className="h-[40vh] w-full" config={chartConfig}>
+          <ChartContainer className="h-[42vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                // cursor={false}
+                content={
+                  <ChartTooltipContent
+                    className="w-auto"
+                    labelFormatter={(label, item) => {
+                      let t = 0;
+                      for (let i = 0; i < item.length; i++) {
+                        t += Number(item[i]?.value || 0);
+                      }
+                      return `Model: ${label} ${t} TWh`;
+                    }}
+                    formatter={(value, name, item) => (
+                      <>
+                        {Number(value) > 0 && (
+                          <>
+                            <div
+                              className="h-10 w-3 shrink-0 rounded-[2px]"
+                              style={
+                                {
+                                  backgroundColor: item.color,
+                                } as React.CSSProperties
+                              }
+                            />
+                            <div className="flex flex-col gap-1">
+                              <div className="flex gap-2">
+                                <span className="font-bold">
+                                  {chartConfig[name as keyof typeof chartConfig]
+                                    ?.label || name}
+                                </span>
+                                <span>{`${value} TWh`}</span>
+                              </div>
+                              <div className="flex gap-2">
+                                <span>
+                                  {(
+                                    (item.payload[
+                                      name as keyof typeof item.payload
+                                    ] /
+                                      Object.values(item.payload).reduce(
+                                        (acc: number, val) =>
+                                          typeof val === "number"
+                                            ? acc + val
+                                            : acc,
+                                        0
+                                      )) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    )}
+                  />
+                }
+              />
 
               <XAxis
                 dataKey="model"
@@ -245,8 +302,8 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                 tickLine={false}
                 tickMargin={5}
                 axisLine={false}
-                label={{ value: "TWh", angle: -90, position: "insideLeft" }}
                 type="number"
+                unit={" TWh"}
                 domain={[0, "dataMax"]}
               />
 
@@ -259,7 +316,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                   key={key}
                   dataKey={key}
                   fill={chartConfig[key as keyof typeof chartConfig].color}
-                  stackId={1}
                 />
               ))}
             </BarChart>

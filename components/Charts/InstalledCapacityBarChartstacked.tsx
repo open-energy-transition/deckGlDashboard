@@ -176,18 +176,82 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%]">
+      <Card className="w-[95%] md:w-[80%] xl:w-[68%] flex flex-col justify-between align-middle">
         <CardHeader>
           <CardTitle>Installed Capacity Comparison</CardTitle>
           <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer className="h-[40vh] w-full" config={chartConfig}>
+          <ChartContainer className="h-[42vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    // indicator="dot"
+                    className="w-auto"
+                    // hideLabel={true}
+                    labelFormatter={(label, item) => {
+                      let t = 0;
+                      for (let i = 0; i < item.length; i++) {
+                        console.log(item[i]);
+                        t += Number(item[i]?.value || 0);
+                      }
+
+                      return `Model: ${label} ${t} GW`;
+                    }}
+                    formatter={(value, name, item, index) => {
+                      return (
+                        <>
+                          {Number(value) > 0 && (
+                            <>
+                              <div
+                                className="h-10 w-3 shrink-0 rounded-[2px]"
+                                style={
+                                  {
+                                    backgroundColor: item.color,
+                                  } as React.CSSProperties
+                                }
+                              ></div>
+                              <div className="flex flex-col gap-1">
+                                <div className="flex gap-2">
+                                  <span className="font-bold">
+                                    {chartConfig[
+                                      name as keyof typeof chartConfig
+                                    ]?.label || name}
+                                  </span>
+                                  <span>{`${value} GW`}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                  <span>
+                                    {(
+                                      (item.payload[
+                                        name as keyof typeof item.payload
+                                      ] /
+                                        Object.values(item.payload).reduce(
+                                          (acc: number, val) =>
+                                            typeof val === "number"
+                                              ? acc + val
+                                              : acc,
+                                          0
+                                        )) *
+                                      100
+                                    ).toFixed(2)}
+                                    %
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </>
+                      );
+                    }}
+                  />
+                }
+              />
               <XAxis
                 dataKey="model"
-                tickLine={false}
+                tickLine={true}
                 tickMargin={10}
                 axisLine={false}
               />
@@ -195,21 +259,20 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
                 tickLine={false}
                 tickMargin={5}
                 axisLine={false}
-                label={{ value: "GW", angle: -90, position: "insideLeft" }}
                 type="number"
                 domain={[0, "dataMax"]}
+                unit={" GW"}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+
               <ChartLegend
-                content={<ChartLegendContent className="pb-0 pt-0" />}
-                className="flex-wrap pb-0 mt-3"
+                content={<ChartLegendContent className="pb-0 pt-0 mb-0" />}
+                className="flex-wrap pb-0"
               />
               {Object.keys(chartConfig).map((key) => (
                 <Bar
                   key={key}
                   dataKey={key}
                   fill={chartConfig[key as keyof typeof chartConfig].color}
-                  stackId={1}
                 />
               ))}
             </BarChart>
