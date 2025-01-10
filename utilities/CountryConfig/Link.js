@@ -16,19 +16,6 @@ export const COUNTRY_COLORS = {
   za: '#7C9885'  // Secondary green (repeated as we need 10 colors)
 };
 
-export const COUNTRY_NAMES = {
-  au: 'Australia',
-  br: 'Brazil',
-  co: 'Colombia',
-  de: 'Germany',
-  in: 'India',
-  it: 'Italy',
-  mx: 'Mexico',
-  ng: 'Nigeria',
-  us: 'United States',
-  za: 'South Africa'
-};
-
 export const getGeoJsonData = (countryCode) => ({
   buses: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Abuses_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
   lines: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Alines_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,

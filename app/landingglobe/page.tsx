@@ -8,26 +8,15 @@ import {
   getGeoJsonData,
   COUNTRY_COORDINATES,
   COUNTRY_NAMES,
+  COUNTRY_COLORS,
 } from "@/utilities/CountryConfig/Link";
 import useSWR from "swr";
 import { useTheme } from "next-themes";
 import GlobeNav from "./popups/LandingGlobeNav";
 import { useCountry } from "@/components/country-context";
+import RightDrawer from "./popups/RightDrawer";
 
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
-
-const COUNTRY_COLORS: { [key: string]: string } = {
-  au: "#00008B", // Dark blue from Australian flag
-  br: "#009c3b", // Green from Brazilian flag
-  co: "#FCD116", // Yellow from Colombian flag
-  de: "#DD0000", // Red from German flag
-  in: "#FF9933", // Orange from Indian flag
-  it: "#009246", // Green from Italian flag
-  mx: "#006847", // Green from Mexican flag
-  ng: "#008751", // Green from Nigerian flag
-  us: "#3C3B6E", // Blue from US flag
-  za: "#007749", // Green from South African flag
-};
 
 interface GeoFeature {
   id: string;
@@ -89,14 +78,16 @@ const Page = () => {
   }, [selectedCountry]);
 
   const getPolygonColor = (d: any) => {
-    const countryCode = d.id?.split("_")[0]?.toLowerCase();
+    const countryCode = d.id
+      ?.split("_")[0]
+      ?.toLowerCase() as keyof typeof COUNTRY_COLORS;
     return COUNTRY_COLORS[countryCode] || "#cccccc";
   };
 
   const getPolygonSideColor = (d: any) => {
     const countryCode = d.id?.split("_")[0]?.toLowerCase();
-    const baseColor = COUNTRY_COLORS[countryCode] || "#cccccc";
-    // Convert hex color to rgba with 30% opacity
+    const baseColor =
+      COUNTRY_COLORS[countryCode as keyof typeof COUNTRY_COLORS] || "#cccccc";
     const r = parseInt(baseColor.slice(1, 3), 16);
     const g = parseInt(baseColor.slice(3, 5), 16);
     const b = parseInt(baseColor.slice(5, 7), 16);
@@ -106,6 +97,7 @@ const Page = () => {
   return (
     <>
       <GlobeNav />
+      <RightDrawer />
       <Globe
         ref={globeRef}
         width={dimensions.width}
