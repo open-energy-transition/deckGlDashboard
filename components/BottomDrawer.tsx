@@ -74,10 +74,10 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
               View all country level charts
             </DrawerDescription>
           </DrawerHeader>
-          <InstalledCapacityBarChartStacked data={capacityComparisonRef} />
-          <InstalledCapacityPieChart data={capacityComparisonRef} />
           <GenerationMixPieChart data={generationComparisonRef} />
           <GenerationMixBarChartStacked data={generationComparisonRef} />
+          <InstalledCapacityBarChartStacked data={capacityComparisonRef} />
+          <InstalledCapacityPieChart data={capacityComparisonRef} />
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
               <Button>CLOSE</Button>
