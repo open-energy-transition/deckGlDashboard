@@ -9,7 +9,7 @@ interface MapLegendProps {
 }
 
 const LINE_COLOR = [227, 26, 28];
-const BUS_COLOR = [72, 123, 182];
+const BUS_COLOR = [124, 152, 133];
 
 const DEFAULT_RANGES = {
   min: 500,

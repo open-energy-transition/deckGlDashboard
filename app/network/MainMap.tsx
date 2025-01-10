@@ -275,7 +275,7 @@ export default function MainMap() {
         opacity: 1,
         stroked: true,
         filled: true,
-        pickable: true,
+        pickable: false,
 
         getLineColor: [215, 229, 190],
         getFillColor: [215, 229, 190],
@@ -290,13 +290,13 @@ export default function MainMap() {
       new GeoJsonLayer({
         id: `Linebus`,
         data: links.lines,
-        opacity: 1,
+        // opacity: 0.8,
         stroked: true,
         filled: true,
         pickable: false,
         lineWidthScale: 20,
-        getLineColor: [228, 30, 60],
-        getFillColor: [228, 30, 60],
+        getLineColor: [228, 30, 60, 150], // Last value is alpha (0-255)
+        getFillColor: [228, 30, 60, 150], // Last value is alpha (0-255)
         getLineWidth: (d) => {
           const baseWidth = normalizeSnom(
             d.properties.s_nom,
@@ -311,9 +311,9 @@ export default function MainMap() {
           }
           return baseWidth;
         },
-        onHover: (info) => {
-          setHoverLineID(info.object ? info.object.id : null);
-        },
+        // onHover: (info) => {
+        //   setHoverLineID(info.object ? info.object.id : null);
+        // },
         updateTriggers: {
           getLineWidth: [selectedLineID, hoverLineID, zoomLevel],
         },

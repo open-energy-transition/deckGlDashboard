@@ -54,16 +54,18 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
 
   return (
     <Sheet modal={false} open={open} onOpenChange={setOpen}>
-      <SheetContent side={side} className="overflow-y-scroll no-scrollbar w-96 flex flex-col">
+      <SheetContent
+        side={side}
+        className="overflow-y-scroll no-scrollbar w-96 flex flex-col"
+      >
         <SheetHeader>
           <SheetTitle>
-            {data?.busId ? `Bus ${data.busId} Statistics` : 'Select a Bus'}
+            {data?.busId ? `Bus ${data.busId} Statistics` : "Select a Bus"}
           </SheetTitle>
           <SheetDescription>
-            {data?.busId 
-              ? 'Generation capacity by carrier type'
-              : 'Click on a bus to see its statistics'
-            }
+            {data?.busId
+              ? "Generation capacity by carrier type"
+              : "Click on a bus to see its statistics"}
           </SheetDescription>
         </SheetHeader>
 
@@ -78,37 +80,23 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
             </div>
           ) : (
             <>
-              <div className="pb-4 pt-4">
-                <Card>
-                  <ChartRadial 
-                    data={generatorData} 
-                    valueKey="p_nom"
-                    title="Nominal Capacity"
-                  />
-                </Card>
-              </div>
-              <div className="pb-4 pt-4">
-                <Card>
-                  <ChartRadial 
-                    data={generatorData} 
-                    valueKey="p_nom_opt"
-                    title="Optimal Capacity"
-                  />
-                </Card>
-              </div>
+              <Card className="my-4 flex flex-col justify-between align-middle gap-2">
+                <ChartRadial
+                  data={generatorData}
+                  valueKey="p_nom"
+                  title="Nominal Capacity"
+                />
+              </Card>
+              <Card className="my-4 flex flex-col justify-between align-middle gap-2">
+                <ChartRadial
+                  data={generatorData}
+                  valueKey="p_nom_opt"
+                  title="Optimal Capacity"
+                />
+              </Card>
             </>
           )}
         </div>
-
-        <SheetFooter className="mt-auto pt-4 flex justify-center">
-          <SheetClose asChild>
-            <Button 
-              className="bg-foreground text-background hover:bg-background hover:text-foreground px-8"
-            >
-              Close
-            </Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
