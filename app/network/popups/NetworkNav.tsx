@@ -68,7 +68,7 @@ const NetworkNav = () => {
 
           <div className="mt-auto">
             <div className="text-lg font-semibold mb-2">Network Legend</div>
-            <div className="grid grid-cols-2 gap-2 bg-secondary/10 rounded-lg p-2">
+            <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">
               <div className="flex flex-col items-start p-2">
                 <div className="text-sm font-medium mb-1">
                   Transmission Lines
@@ -79,7 +79,7 @@ const NetworkNav = () => {
                   type="lines"
                 />
               </div>
-              <div className="flex flex-col items-start border-l border-border/50 p-2">
+              <div className="flex flex-col items-start border-l border-border p-2">
                 <div className="text-sm font-medium mb-1">Buses</div>
                 <MapLegend
                   country={selectedCountry}
@@ -90,7 +90,7 @@ const NetworkNav = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 pt-4 border-t border-border/50">
+          <div className="flex items-center space-x-2 pt-4 border-t border-border">
             <Switch
               id="theme"
               checked={theme === "light"}

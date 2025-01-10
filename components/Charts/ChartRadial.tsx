@@ -17,6 +17,7 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
+  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { GeneratorData } from "@/app/types";
 
@@ -43,7 +44,7 @@ interface ProcessedDataItem {
   fill: string;
 }
 
-const chartConfig: Record<CarrierType, { label: string; color: string }> = {
+const chartConfig = {
   CCGT: {
     label: "Combined Cycle Gas Turbine",
     color: "hsl(var(--chart-CCGT))",
@@ -100,7 +101,7 @@ const chartConfig: Record<CarrierType, { label: string; color: string }> = {
     label: "Load",
     color: "hsl(var(--chart-load))",
   },
-} as const;
+} as ChartConfig;
 
 interface ChartRadialProps {
   data: GeneratorData[];
@@ -163,23 +164,25 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
 
   return (
     <>
-      <CardHeader className="items-center pb-0">
+      <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>Total: {totalValue.toFixed(2)} MW</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className=" w-full aspect-square">
+      <CardContent className="p-0">
+        <ChartContainer
+          config={chartConfig}
+          className="w-full min-h-[40vh] h-auto p-0 self-start"
+        >
           <RadialBarChart
-            width={400}
-            height={400}
             data={processedData}
-            innerRadius="30%"
-            outerRadius="90%"
+            innerRadius="20%"
+            outerRadius="100%"
             startAngle={180}
             endAngle={-180}
             barSize={15}
+            className="aspect-square self-start translate-y-[-15%]"
           >
-            <ChartTooltip
+            {/* <ChartTooltip
               content={({ payload }) => {
                 if (payload && payload[0]) {
                   const data = payload[0].payload as ProcessedDataItem;
@@ -196,8 +199,41 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
                 }
                 return null;
               }}
-            />
+            /> */}
             <PolarGrid gridType="circle" />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  labelKey="carrier"
+                  formatter={(value, name, item, index) => {
+                    console.log(
+                      "RadialBarChart - ChartTooltipContent - formatter:",
+                      { value, name, item, index }
+                    );
+                    return (
+                      <>
+                        <div
+                          className="h-10 w-2.5 shrink-0 rounded-[2px]"
+                          style={{
+                            backgroundColor: item.payload.fill,
+                          }}
+                        />
+                        <div className="flex flex-col gap-1">
+                          <div className="flex gap-2">
+                            <span>{`${
+                              typeof item.payload.actualValue === "number"
+                                ? item.payload.actualValue.toFixed(2)
+                                : Number(value).toFixed(2)
+                            } MW`}</span>
+                          </div>
+                          <span>{`${item.payload.percentage}%`}</span>
+                        </div>
+                      </>
+                    );
+                  }}
+                />
+              }
+            />
             <RadialBar
               dataKey="displayValue"
               background
@@ -213,37 +249,15 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
                 },
               }}
             />
-            {/* <ChartLegend
-              content={<ChartLegendContent />}
-              className="flex-wrap mt-5"
-              formatter={(value: string) => {
-                if (!value) return "";
-                const carrierKey = value.toLowerCase() as CarrierType;
-                return chartConfig[carrierKey]?.label || value;
-              }}
-              payload={processedData.map((item: ProcessedDataItem) => ({
-                value: item.carrier,
-                type: "circle",
-                id: item.carrier,
-                color: item.fill,
-              }))}
-            /> */}
-            <Legend
-              layout="horizontal"
-              verticalAlign="bottom"
-              align="center"
-              formatter={(value: string) => {
-                if (!value) return "";
-                const carrierKey = value.toLowerCase() as CarrierType;
-                return chartConfig[carrierKey]?.label || value;
-              }}
-              payload={processedData.map((item: ProcessedDataItem) => ({
-                value: item.carrier,
-                type: "circle",
-                id: item.carrier,
-                color: item.fill,
-              }))}
-              wrapperStyle={{ marginTop: "200px" }}
+
+            <ChartLegend
+              wrapperStyle={{ paddingBottom: 0, marginBottom: 0 }}
+              content={
+                <ChartLegendContent
+                  className="flex-wrap translate-y-10"
+                  nameKey="carrier"
+                ></ChartLegendContent>
+              }
             />
           </RadialBarChart>
         </ChartContainer>

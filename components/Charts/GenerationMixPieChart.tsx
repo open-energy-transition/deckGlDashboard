@@ -16,6 +16,7 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
+  ChartTooltipContent,
 } from "@/components/ui/chart";
 
 interface Props {
@@ -90,6 +91,7 @@ export function GenerationMixPieChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
+      console.log("data.current.data", data.current.data);
       const dataArray = Array.isArray(data.current.data)
         ? data.current.data
         : [];
@@ -125,7 +127,7 @@ export function GenerationMixPieChart({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[40%] xl:w-[30%] 2xl:w-[25%]">
+      <Card className="w-[95%] px-0 sm:px-24 md:px-0 md:w-[47%] xl:w-[28%] 2xl:w-[25%]">
         <CardHeader>
           <CardTitle>Generation Mix</CardTitle>
           <CardDescription>PyPSA Generation by Technology</CardDescription>
@@ -134,19 +136,41 @@ export function GenerationMixPieChart({ data }: Props) {
           <ChartContainer config={chartConfig} className="aspect-square">
             <PieChart>
               <ChartTooltip
-                content={({ payload }) => {
-                  if (payload && payload[0]) {
-                    const data = payload[0].payload;
-                    return (
-                      <div className="bg-black bg-opacity-90 p-3 rounded shadow text-white">
-                        <p className="font-bold text-sm">{data.carrier}</p>
-                        <p className="text-sm">{data.value.toFixed(2)} TWh</p>
-                        <p className="text-sm">{data.percentage.toFixed(1)}%</p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
+                content={
+                  <ChartTooltipContent
+                    indicator="dot"
+                    className="w-auto"
+                    formatter={(value, name, item, index) => (
+                      <>
+                        <div
+                          className="h-10 w-2.5 shrink-0 rounded-[2px]"
+                          style={{
+                            backgroundColor: item.payload.payload.fill,
+                          }}
+                        />
+                        <div className="flex flex-col gap-1">
+                          <div className="flex gap-2">
+                            <span className="font-bold">
+                              {chartConfig[name as keyof typeof chartConfig]
+                                ?.label || name}
+                            </span>
+                            <span>{`${
+                              typeof value === "number"
+                                ? value.toFixed(2)
+                                : Number(value).toFixed(2)
+                            } TWh`}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <span className="font-bold">percentage</span>
+                            <span>{`${item.payload.percentage.toFixed(
+                              1
+                            )}%`}</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  />
+                }
               />
               <Pie
                 data={chartData}
@@ -154,25 +178,6 @@ export function GenerationMixPieChart({ data }: Props) {
                 nameKey="carrier"
                 innerRadius={70}
                 outerRadius={110}
-                label={({ cx, cy, midAngle, outerRadius, percentage }) => {
-                  const RADIAN = Math.PI / 180;
-                  const radius = outerRadius * 1.3;
-                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                  return percentage > 5 ? (
-                    <text
-                      x={x}
-                      y={y}
-                      fill="currentColor"
-                      textAnchor={x > cx ? "start" : "end"}
-                      dominantBaseline="central"
-                      className="fill-muted-foreground text-sm font-medium"
-                    >
-                      {`${percentage.toFixed(1)}%`}
-                    </text>
-                  ) : null;
-                }}
               >
                 <Label
                   content={({ viewBox }) => {

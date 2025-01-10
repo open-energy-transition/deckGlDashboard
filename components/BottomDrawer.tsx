@@ -62,28 +62,28 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button onClick={() => setOpen(!open)}>
+        <Button className="w-full" onClick={() => setOpen(!open)}>
           Show Statistics for country : {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
-        <DrawerHeader className="pb-2">
-          <DrawerTitle className="text-4xl">Network Statistics</DrawerTitle>
-          <DrawerDescription className="">
-            View all country level charts
-          </DrawerDescription>
-        </DrawerHeader>
-        <ScrollArea className="overflow-y-scroll flex flex-wrap justify-center mt-8 gap-6">
+        <ScrollArea className="overflow-y-scroll flex flex-wrap justify-center gap-6 mt-3">
+          <DrawerHeader className="w-full pb-2">
+            <DrawerTitle className="text-4xl">Network Statistics</DrawerTitle>
+            <DrawerDescription className="">
+              View all country level charts
+            </DrawerDescription>
+          </DrawerHeader>
+          <GenerationMixPieChart data={generationComparisonRef} />
+          <GenerationMixBarChartStacked data={generationComparisonRef} />
           <InstalledCapacityBarChartStacked data={capacityComparisonRef} />
           <InstalledCapacityPieChart data={capacityComparisonRef} />
-          <GenerationMixBarChartStacked data={generationComparisonRef} />
-          <GenerationMixPieChart data={generationComparisonRef} />
+          <DrawerFooter className="w-full border-t">
+            <DrawerClose>
+              <Button>CLOSE</Button>
+            </DrawerClose>
+          </DrawerFooter>
         </ScrollArea>
-        <DrawerFooter className="w-full border-t">
-          <DrawerClose>
-            <Button>CLOSE</Button>
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
