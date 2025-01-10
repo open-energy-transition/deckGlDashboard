@@ -223,7 +223,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
 
   return (
     <>
-      <Card className="w-[95%] md:w-[80%] xl:w-[68%]">
+      <Card className="w-[95%] md:w-[80%] xl:w-[68%] flex flex-col justify-between align-middle">
         <CardHeader>
           <CardTitle>Generation Mix Comparison</CardTitle>
           <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
@@ -234,7 +234,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
               <ChartTooltip
-                cursor={false}
+                // cursor={false}
                 content={
                   <ChartTooltipContent
                     className="w-auto"
@@ -247,40 +247,45 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                     }}
                     formatter={(value, name, item) => (
                       <>
-                        <div
-                          className="h-10 w-3 shrink-0 rounded-[2px]"
-                          style={
-                            {
-                              backgroundColor: item.color,
-                            } as React.CSSProperties
-                          }
-                        />
-                        <div className="flex flex-col gap-1">
-                          <div className="flex gap-2">
-                            <span className="font-bold">
-                              {chartConfig[name as keyof typeof chartConfig]
-                                ?.label || name}
-                            </span>
-                            <span>{`${value} TWh`}</span>
-                          </div>
-                          <div className="flex gap-2">
-                            <span className="font-bold">percentage</span>
-                            <span>
-                              {(
-                                (item.payload[
-                                  name as keyof typeof item.payload
-                                ] /
-                                  Object.values(item.payload).reduce(
-                                    (acc: number, val) =>
-                                      typeof val === "number" ? acc + val : acc,
-                                    0
-                                  )) *
-                                100
-                              ).toFixed(2)}
-                              %
-                            </span>
-                          </div>
-                        </div>
+                        {Number(value) > 0 && (
+                          <>
+                            <div
+                              className="h-10 w-3 shrink-0 rounded-[2px]"
+                              style={
+                                {
+                                  backgroundColor: item.color,
+                                } as React.CSSProperties
+                              }
+                            />
+                            <div className="flex flex-col gap-1">
+                              <div className="flex gap-2">
+                                <span className="font-bold">
+                                  {chartConfig[name as keyof typeof chartConfig]
+                                    ?.label || name}
+                                </span>
+                                <span>{`${value} TWh`}</span>
+                              </div>
+                              <div className="flex gap-2">
+                                <span>
+                                  {(
+                                    (item.payload[
+                                      name as keyof typeof item.payload
+                                    ] /
+                                      Object.values(item.payload).reduce(
+                                        (acc: number, val) =>
+                                          typeof val === "number"
+                                            ? acc + val
+                                            : acc,
+                                        0
+                                      )) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </>
                     )}
                   />
