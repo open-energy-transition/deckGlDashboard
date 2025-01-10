@@ -1,7 +1,33 @@
 const BASE_URL = "http://34.31.13.149:8000/geoserver/GIS_Dashboard/ows";
 
-// write a function to conver string to lower case
+
 export const toLowerCase = (str) => str.toLowerCase();
+
+export const COUNTRY_COLORS = {
+  au: '#E41E3C', // Primary red
+  br: '#7C9885', // Secondary green
+  co: '#D7E5BE', // Tertiary light green
+  de: '#CDDBB5', // Tertiary muted green
+  in: '#E3E6DA', // Tertiary light gray-green
+  it: '#F5F5DC', // Tertiary beige
+  mx: '#E6E6E6', // Neutral light gray
+  ng: '#F2F5F3', // Neutral off-white
+  us: '#1C1C2C', // Neutral dark
+  za: '#7C9885'  // Secondary green (repeated as we need 10 colors)
+};
+
+export const COUNTRY_NAMES = {
+  au: 'Australia',
+  br: 'Brazil',
+  co: 'Colombia',
+  de: 'Germany',
+  in: 'India',
+  it: 'Italy',
+  mx: 'Mexico',
+  ng: 'Nigeria',
+  us: 'United States',
+  za: 'South Africa'
+};
 
 export const getGeoJsonData = (countryCode) => ({
   buses: `${BASE_URL}?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Dashboard%3Abuses_${countryCode.toLowerCase()}&maxFeatures=5000&outputFormat=application%2Fjson`,
