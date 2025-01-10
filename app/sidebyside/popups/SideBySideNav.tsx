@@ -59,8 +59,7 @@ const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
             onRenewableTypeChange={setSelectedRenewableType}
             onParameterChange={setSelectedParameter}
           />
-
-          <div className="flex items-center space-x-2 pt-4 border-t border-border/50">
+          <div className="flex items-center space-x-2 pt-4 border-t border-border/50 mt-auto">
             <Switch
               id="theme"
               checked={theme === "light"}

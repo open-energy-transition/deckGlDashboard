@@ -1,42 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import EarthNightUrl from "../../public/earth-night-light.jpg";
-import NightSkyUrl from "../../public/night-sky-light.png";
+import React, { useState, useEffect, useRef, forwardRef, use } from "react";
+import EarthLightUrl from "../../public/earth-night-light.jpg";
+import LightSkyUrl from "../../public/night-sky-light.png";
 import dynamic from "next/dynamic";
-const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 import {
   getGeoJsonData,
   COUNTRY_COORDINATES,
+  COUNTRY_NAMES,
 } from "@/utilities/CountryConfig/Link";
 import useSWR from "swr";
+import { useTheme } from "next-themes";
+import GlobeNav from "./popups/LandingGlobeNav";
+import { useCountry } from "@/components/country-context";
 
-// Project color palette implementation for countries
+const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
+
 const COUNTRY_COLORS: { [key: string]: string } = {
-  au: '#E41E3C', // Primary red
-  br: '#7C9885', // Secondary green
-  co: '#D7E5BE', // Tertiary light green
-  de: '#CDDBB5', // Tertiary muted green
-  in: '#E3E6DA', // Tertiary light gray-green
-  it: '#F5F5DC', // Tertiary beige
-  mx: '#E6E6E6', // Neutral light gray
-  ng: '#F2F5F3', // Neutral off-white
-  us: '#1C1C2C', // Neutral dark
-  za: '#7C9885'  // Secondary green (repeated as we need 10 colors)
-};
-
-// Country names in English
-const COUNTRY_NAMES: { [key: string]: string } = {
-  au: 'Australia',
-  br: 'Brazil',
-  co: 'Colombia',
-  de: 'Germany',
-  in: 'India',
-  it: 'Italy',
-  mx: 'Mexico',
-  ng: 'Nigeria',
-  us: 'United States',
-  za: 'South Africa'
+  au: "#00008B", // Dark blue from Australian flag
+  br: "#009c3b", // Green from Brazilian flag
+  co: "#FCD116", // Yellow from Colombian flag
+  de: "#DD0000", // Red from German flag
+  in: "#FF9933", // Orange from Indian flag
+  it: "#009246", // Green from Italian flag
+  mx: "#006847", // Green from Mexican flag
+  ng: "#008751", // Green from Nigerian flag
+  us: "#3C3B6E", // Blue from US flag
+  za: "#007749", // Green from South African flag
 };
 
 interface GeoFeature {
@@ -58,8 +48,12 @@ const fetcher = (url: string): Promise<FetcherResponse> =>
 
 const Page = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  const { selectedCountry, setSelectedCountry } = useCountry();
+
   const globeRef = useRef<any>();
 
+  const { theme, setTheme } = useTheme();
   const endpoints = Object.keys(COUNTRY_COORDINATES).map(
     (country) => getGeoJsonData(country).countryView
   );
@@ -88,14 +82,20 @@ const Page = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (selectedCountry) {
+      console.log("globeref", data);
+    }
+  }, [selectedCountry]);
+
   const getPolygonColor = (d: any) => {
-    const countryCode = d.id?.split('_')[0]?.toLowerCase();
-    return COUNTRY_COLORS[countryCode] || '#cccccc';
+    const countryCode = d.id?.split("_")[0]?.toLowerCase();
+    return COUNTRY_COLORS[countryCode] || "#cccccc";
   };
 
   const getPolygonSideColor = (d: any) => {
-    const countryCode = d.id?.split('_')[0]?.toLowerCase();
-    const baseColor = COUNTRY_COLORS[countryCode] || '#cccccc';
+    const countryCode = d.id?.split("_")[0]?.toLowerCase();
+    const baseColor = COUNTRY_COLORS[countryCode] || "#cccccc";
     // Convert hex color to rgba with 30% opacity
     const r = parseInt(baseColor.slice(1, 3), 16);
     const g = parseInt(baseColor.slice(3, 5), 16);
@@ -104,28 +104,62 @@ const Page = () => {
   };
 
   return (
-    <Globe
-      ref={globeRef}
-      width={dimensions.width}
-      height={dimensions.height}
-      globeImageUrl={EarthNightUrl.src}
-      backgroundImageUrl={NightSkyUrl.src}
-      polygonsData={data?.features || []}
-      polygonCapColor={getPolygonColor}
-      polygonSideColor={getPolygonSideColor}
-      polygonStrokeColor={getPolygonColor}
-      polygonAltitude={0.02}
-      polygonsTransitionDuration={300}
-      polygonLabel={(d: any) => {
-        const countryCode = d.id?.split('_')[0]?.toLowerCase();
-        const countryName = COUNTRY_NAMES[countryCode];
-        return `
+    <>
+      <GlobeNav />
+      <Globe
+        ref={globeRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        showAtmosphere={true}
+        globeImageUrl={
+          theme === "dark"
+            ? "//unpkg.com/three-globe/example/img/earth-dark.jpg"
+            : EarthLightUrl.src
+        }
+        backgroundImageUrl={
+          theme === "dark"
+            ? "//unpkg.com/three-globe/example/img/night-sky.png"
+            : LightSkyUrl.src
+        }
+        bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+        polygonsData={data?.features || []}
+        polygonCapColor={getPolygonColor}
+        polygonSideColor={getPolygonSideColor}
+        polygonStrokeColor={getPolygonColor}
+        polygonAltitude={(d: any) => {
+          const countryCode = d.id
+            ?.split("_")[0]
+            ?.substring(0, 2)
+            .toLowerCase();
+          if (selectedCountry === countryCode.toUpperCase()) {
+            return 0.1;
+          }
+
+          return 0.01;
+        }}
+        polygonsTransitionDuration={300}
+        polygonLabel={(d: any) => {
+          const countryCode = d.id?.split("_")[0]?.toLowerCase();
+          const countryName =
+            COUNTRY_NAMES[
+              countryCode.toUpperCase() as keyof typeof COUNTRY_NAMES
+            ];
+          return `
           <div style="background: white; padding: 5px; border-radius: 5px;">
-            <div>${countryName || 'Unknown Country'}</div>
+            <div>${countryName || "Unknown Country"}</div>
           </div>
         `;
-      }}
-    />
+        }}
+        onPolygonClick={(d: any) => {
+          const countryCode = d.id
+            ?.split("_")[0]
+            ?.substring(0, 2)
+            .toLowerCase();
+          console.log("polygon clicked", countryCode.toUpperCase());
+          setSelectedCountry(countryCode.toUpperCase());
+        }}
+      />
+    </>
   );
 };
 
