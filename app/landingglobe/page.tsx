@@ -11,18 +11,18 @@ import {
 } from "@/utilities/CountryConfig/Link";
 import useSWR from "swr";
 
-// Distinctive colors for each country based on their flags
+// Project color palette implementation for countries
 const COUNTRY_COLORS: { [key: string]: string } = {
-  au: '#00008B', // Dark blue from Australian flag
-  br: '#009c3b', // Green from Brazilian flag
-  co: '#FCD116', // Yellow from Colombian flag
-  de: '#DD0000', // Red from German flag
-  in: '#FF9933', // Orange from Indian flag
-  it: '#009246', // Green from Italian flag
-  mx: '#006847', // Green from Mexican flag
-  ng: '#008751', // Green from Nigerian flag
-  us: '#3C3B6E', // Blue from US flag
-  za: '#007749', // Green from South African flag
+  au: '#E41E3C', // Primary red
+  br: '#7C9885', // Secondary green
+  co: '#D7E5BE', // Tertiary light green
+  de: '#CDDBB5', // Tertiary muted green
+  in: '#E3E6DA', // Tertiary light gray-green
+  it: '#F5F5DC', // Tertiary beige
+  mx: '#E6E6E6', // Neutral light gray
+  ng: '#F2F5F3', // Neutral off-white
+  us: '#1C1C2C', // Neutral dark
+  za: '#7C9885'  // Secondary green (repeated as we need 10 colors)
 };
 
 // Country names in English
