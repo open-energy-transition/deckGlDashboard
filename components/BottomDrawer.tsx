@@ -18,6 +18,7 @@ import useSWR from 'swr';
 import { useTheme } from "next-themes";
 import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
 import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
+import { ScrollBar } from "./ui/scroll-area";
 
 type Props = {
   selectedCountry: string;
@@ -67,7 +68,7 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
-        <ScrollArea className="overflow-y-scroll flex flex-wrap justify-center gap-6 mt-3">
+        <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center gap-6 mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">Network Statistics</DrawerTitle>
             <DrawerDescription className="">
@@ -83,6 +84,7 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
               <Button>CLOSE</Button>
             </DrawerClose>
           </DrawerFooter>
+          {/* <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300" /> */}
         </ScrollArea>
       </DrawerContent>
     </Drawer>

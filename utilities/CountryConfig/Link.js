@@ -106,3 +106,16 @@ export const COUNTRY_BOUNDS = {
     [32.830120477, -22.1265453832],
   ],
 };
+
+export const COUNTRY_NAMES = {
+  AU: "Australia",
+  BR: "Brazil",
+  CO: "Colombia",
+  DE: "Germany",
+  IN: "India",
+  IT: "Italy",
+  MX: "Mexico",
+  NG: "Nigeria",
+  US: "United States",
+  ZA: "South Africa",
+};
