@@ -136,11 +136,11 @@ const Page = () => {
             COUNTRY_NAMES[
               countryCode.toUpperCase() as keyof typeof COUNTRY_NAMES
             ];
-          return `
-          <div style="background: white; padding: 5px; border-radius: 5px;">
-            <div>${countryName || "Unknown Country"}</div>
-          </div>
-        `;
+            return `
+            <div style="background: white; padding: 5px; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)">
+            <div style="color: black">${countryName || "Unknown Country"}</div>
+            </div>
+          `;
         }}
         onPolygonClick={(d: any) => {
           const countryCode = d.id
