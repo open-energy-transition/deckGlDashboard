@@ -37,7 +37,7 @@ import { useNetworkView } from "@/components/network-view-context";
 import MapLegend from "@/app/network/components/MapLegend";
 import CountrySelectDropDown from "@/components/CountrySelectDropDown";
 
-const GlobeNav = () => {
+const RightDrawer = () => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry, setSelectedCountry } = useCountry();
@@ -49,14 +49,13 @@ const GlobeNav = () => {
   return (
     <Sheet modal={false} open={true}>
       <SheetContent
-        side="left"
-        className="absolute top-0 left-0 w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+        side="right"
+        className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
       >
-        <SheetTitle>2020</SheetTitle>
+        <SheetTitle>2050</SheetTitle>
         <SheetDescription>
-          select a country and compare data between scenarios here
+          select a country and compare country level data between scenarios
         </SheetDescription>
-        <CountrySelectDropDown />
         <SheetFooter className="mt-auto">
           <div className="flex items-center space-x-2 pt-4 border-t border-border w-full">
             <Switch
@@ -76,4 +75,4 @@ const GlobeNav = () => {
   );
 };
 
-export default GlobeNav;
+export default RightDrawer;
