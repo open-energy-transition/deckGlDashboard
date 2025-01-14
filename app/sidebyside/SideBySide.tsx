@@ -232,7 +232,6 @@ export default function SideBySide({ mode }: SideBySideProps) {
         mapStyle="mapbox://styles/mapbox/light-v9"
         mapboxAccessToken={TOKEN}
       >
-        <NavigationControl position="bottom-right" showCompass={false} />
         <FullscreenControl position="bottom-right" />
         <DeckGLOverlay layers={layer2021} />
       </Map>
@@ -247,7 +246,7 @@ export default function SideBySide({ mode }: SideBySideProps) {
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxAccessToken={TOKEN}
       >
-        <NavigationControl position="bottom-right" showCompass={false} />
+        <NavigationControl position="bottom-right" showCompass={true} />
         <FullscreenControl position="bottom-right" />
         <ScaleControl position="bottom-right" />
         <DeckGLOverlay layers={layer2050} />

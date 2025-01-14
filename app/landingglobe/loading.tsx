@@ -3,8 +3,8 @@ import React from "react";
 
 const loading = () => {
   return (
-    <div>
-      <Skeleton className="w-full h-full"></Skeleton>
+    <div className="flex justify-center items-center h-screen w-screen">
+      Loading...
     </div>
   );
 };
