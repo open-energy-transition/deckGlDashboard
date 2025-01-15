@@ -65,7 +65,7 @@ export function NavigationMenuDemo() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <NavigationMenu className="absolute top-0 left-0 z-50 w-full bg-transparent">
+    <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent">
       <NavigationMenuList className="w-[100vw] p-4 flex justify-center">
         <NavigationMenuItem>
           <NavigationMenuTrigger>
