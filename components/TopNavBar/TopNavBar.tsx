@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-
+import OET_LOGO_TEXT from "../../public/OET_LOGO_1.svg";
+import OET_LOGO from "../../public/OET_LOGO_NO_TEXT.svg";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
+// import { Icons } from "@/components/icons";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -66,7 +68,7 @@ export function NavigationMenuDemo() {
 
   return (
     <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent">
-      <NavigationMenuList className="w-[100vw] p-4 flex justify-center">
+      <NavigationMenuList className="w-[100vw] p-4 flex justify-center gap-2">
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <NavigationMenuLink href="/">Overveiw</NavigationMenuLink>
@@ -75,7 +77,9 @@ export function NavigationMenuDemo() {
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6">
-                  <Icons.logo className="h-6 w-6" />
+                  <div className="relative h-full w-full">
+                    <Image src={OET_LOGO} alt="OET Logo" priority fill />
+                  </div>
                   <div className="mb-2 mt-4 text-lg font-medium">
                     Project Summary
                   </div>
@@ -85,20 +89,22 @@ export function NavigationMenuDemo() {
                   </p>
                 </div>
               </li>
-              <div className="block p-3">
-                <div className="text-sm font-medium">Introduction</div>
+              <div className="block p-1">
+                <div className="text-lg font-semibold text-[#E31937]">
+                  Open Energy Transition
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 </p>
               </div>
               <div className="block p-3">
-                <div className="text-sm font-medium">Details</div>
+                <div className="text-md font-medium">PyPSA-Earth</div>
                 <p className="text-sm text-muted-foreground">
                   Ut enim ad minim veniam, quis nostrud exercitation.
                 </p>
               </div>
               <div className="block p-3">
-                <div className="text-sm font-medium">Features</div>
+                <div className="text-md font-medium">PyPSA</div>
                 <p className="text-sm text-muted-foreground">
                   Duis aute irure dolor in reprehenderit in voluptate.
                 </p>
@@ -124,14 +130,64 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink href="/landingglobe">
-            <div className={navigationMenuTriggerStyle()}>Globe</div>
-          </NavigationMenuLink>
+          <NavigationMenuTrigger>
+            <NavigationMenuLink href="/landingglobe">Globe</NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <li className="row-span-3">
+                <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6">
+                  <div className="relative h-full w-full">
+                    <Image src={OET_LOGO} alt="OET Logo" priority fill />
+                  </div>
+                  <div className="mb-2 mt-4 text-lg font-medium">
+                    Project Summary
+                  </div>
+                  <p className="text-sm leading-tight text-muted-foreground">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    do eiusmod tempor incididunt ut labore.
+                  </p>
+                </div>
+              </li>
+              <div className="block p-1">
+                <div className="text-lg font-semibold text-[#E31937]">
+                  Open Energy Transition
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </p>
+              </div>
+              <div className="block p-3">
+                <div className="text-md font-medium">PyPSA-Earth</div>
+                <p className="text-sm text-muted-foreground">
+                  Ut enim ad minim veniam, quis nostrud exercitation.
+                </p>
+              </div>
+              <div className="block p-3">
+                <div className="text-md font-medium">PyPSA</div>
+                <p className="text-sm text-muted-foreground">
+                  Duis aute irure dolor in reprehenderit in voluptate.
+                </p>
+              </div>
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink href="/sidebyside">
-            <div className={navigationMenuTriggerStyle()}>Polygon</div>
-          </NavigationMenuLink>
+          <NavigationMenuTrigger>
+            <NavigationMenuLink href="/sidebyside">Polygon</NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {components.map((component) => (
+                <div key={component.title} className="block p-3">
+                  <div className="text-sm font-medium">{component.title}</div>
+                  <p className="text-sm text-muted-foreground">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </div>
+              ))}
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem
@@ -141,7 +197,6 @@ export function NavigationMenuDemo() {
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
-            {/* <div className=""> */}
             <Switch
               id="theme"
               checked={theme === "light"}
@@ -152,7 +207,6 @@ export function NavigationMenuDemo() {
             <Label htmlFor="theme">
               {theme === "light" ? <Moon /> : <Sun />}
             </Label>
-            {/* </div> */}
           </div>
         </NavigationMenuItem>
       </NavigationMenuList>
