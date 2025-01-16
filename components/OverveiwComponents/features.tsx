@@ -49,12 +49,8 @@ const featureList: FeaturesProps[] = [
 
 export const FeaturesSection = () => {
   return (
-    <section id="features" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-oet-red text-center mb-2 tracking-wider">
-        Capabilities
-      </h2>
-
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
+    <section id="features" className="container py-16 sm:py-20 lg:py-32">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 text-card-foreground">
         What This Dashboard Offers
       </h2>
 
@@ -78,7 +74,7 @@ export const FeaturesSection = () => {
                   />
                 </div>
 
-                <CardTitle>{title}</CardTitle>
+                <CardTitle className="lg:text-xl">{title}</CardTitle>
               </CardHeader>
 
               <CardContent className="text-muted-foreground text-center">

@@ -38,10 +38,13 @@ const benefitList: BenefitsProps[] = [
 
 const BenefitsSection = () => {
   return (
-    <section id="benefits" className="container py-24 sm:py-32">
-      <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
-        <div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+    <section
+      id="benefits"
+      className="max-w-screen py-16 sm:py-20 lg:py-32 mx-10"
+    >
+      <div className="grid md:grid-cols-3 xl:grid-cols-2 place-items-center">
+        <div className="md:col-span-1 xl:col-span-1">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-card-foreground">
             What the data represents
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
@@ -51,26 +54,20 @@ const BenefitsSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-4 w-full">
+        <div className="md:col-span-2 xl:col-span-1 grid lg:grid-cols-2 gap-4 w-full">
           {benefitList.map(({ icon, title, description }, index) => (
             <Card
               key={title}
-              className="bg-muted/90 dark:bg-card hover:bg-background transition-all delay-75 group/number"
+              className="bg-popover dark:bg-card hover:bg-background dark:hover:bg-background  transition-all delay-75 group/number"
             >
               <CardHeader>
                 <div className="flex justify-between">
-                  <span className="text-5xl text-destructive/60 font-medium transition-all delay-75 group-hover/number:text-destructive">
-                    {/* 0{index + 1} */}
-                    {title}
+                  <span className="text-5xl font-medium text-destructive">
+                    0{index + 1}
                   </span>
                 </div>
-
-                {/* <CardTitle>{title}</CardTitle> */}
               </CardHeader>
-
-              <CardContent className="text-muted-foreground">
-                {description}
-              </CardContent>
+              <CardContent>{description}</CardContent>
             </Card>
           ))}
         </div>

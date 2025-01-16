@@ -10,15 +10,15 @@ export const HeroSection = () => {
   const { theme } = useTheme();
   return (
     <section className="container w-full">
-      <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-32 md:py-60 pb-16">
+      <div className="grid place-items-center lg:max-w-screen-xl mt-28 sm:mt-16 md:mt-0 gap-8 mx-auto py-32 md:py-80 ">
         <div className="text-center space-y-8">
-          <div className="max-w-screen-md mx-auto text-center text-4xl md:text-6xl lg:text-8xl font-bold">
+          <div className="mx-auto text-center text-4xl md:text-6xl lg:text-8xl font-bold">
             <h1>
-              Welcome! To
+              Welcome! to
               <span className="text-transparent px-2 bg-gradient-to-r from-[#E31937] to-primary bg-clip-text">
                 PyPSA
               </span>
-              Earth Dashboard
+              Earth Explorer
             </h1>
           </div>
 
