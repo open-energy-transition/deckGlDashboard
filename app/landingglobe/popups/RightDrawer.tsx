@@ -80,7 +80,7 @@ const RightDrawer = () => {
     
     setLoading(true);
     try {
-      console.log('Fetching data for country:', selectedCountry);
+      
       
       const responses = await Promise.all([
         fetch(`/api/total_costs_by_techs/${selectedCountry}/2050`),
@@ -90,14 +90,17 @@ const RightDrawer = () => {
         fetch(`/api/installed_capacity/${selectedCountry}/2050`),
         fetch(`/api/capacity_expansion/${selectedCountry}/2050`),
         fetch(`/api/generation_mix/${selectedCountry}/2050`),
-        fetch(`/api/investment_per_co2_reduced/${selectedCountry}/2050`)
+        fetch(`/api/investment_per_co2_reduced/${selectedCountry}/2050`),
       ]);
 
       // Check if any response is not ok
-      const failedResponses = responses.filter(r => !r.ok);
+      const failedResponses = responses.filter((r) => !r.ok);
       if (failedResponses.length > 0) {
-        console.error('Failed responses:', failedResponses.map(r => r.url));
-        throw new Error('One or more API calls failed');
+        console.error(
+          "Failed responses:",
+          failedResponses.map((r) => r.url)
+        );
+        throw new Error("One or more API calls failed");
       }
 
       const [
@@ -108,10 +111,10 @@ const RightDrawer = () => {
         capacitiesData,
         capacityExpansionData,
         generationMixData,
-        investmentPerCO2Data
-      ] = await Promise.all(responses.map(r => r.json()));
+        investmentPerCO2Data,
+      ] = await Promise.all(responses.map((r) => r.json()));
 
-      console.log('Raw CO2 Emissions data for 2050:', co2EmissionsData);
+      
 
       const processedData: DrawerData = {
         totalCosts: totalCostsData.data?.map((item: any) => ({

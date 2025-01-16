@@ -119,7 +119,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
   useEffect(() => {
     if (data?.current?.data) {
       let dataArray = Array.isArray(data.current.data) ? data.current.data : [];
-      console.log("dataArray", dataArray);
+      
 
       dataArray = dataArray.filter(
         (item: any) =>
@@ -196,7 +196,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
       }
 
       setChartData(transformedData);
-      console.log("transformedData", transformedData);
+      
     }
   }, [data?.current]);
   if (!data?.current?.data) {

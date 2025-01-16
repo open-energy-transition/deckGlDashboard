@@ -91,7 +91,6 @@ export function GenerationMixPieChart({ data }: Props) {
 
   useEffect(() => {
     if (data?.current?.data) {
-      console.log("data.current.data", data.current.data);
       const dataArray = Array.isArray(data.current.data)
         ? data.current.data
         : [];

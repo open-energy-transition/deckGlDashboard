@@ -15,8 +15,6 @@ export async function GET(
 ) {
   const { country, horizon } = params;
 
-  console.log('Fetching installed capacity for country:', country, 'horizon:', horizon);
-
   try {
     const result = await pool.query(
       `
@@ -27,17 +25,17 @@ export async function GET(
       [country, horizon]
     );
 
-    console.log('Installed capacity query result:', {
+    console.log("Installed capacity query result:", {
       rowCount: result.rowCount,
       firstRow: result.rows[0],
-      allRows: result.rows
+      allRows: result.rows,
     });
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching installed capacity data:', error);
+    console.error("Error fetching installed capacity data:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch installed capacity data' },
+      { error: "Failed to fetch installed capacity data" },
       { status: 500 }
     );
   }

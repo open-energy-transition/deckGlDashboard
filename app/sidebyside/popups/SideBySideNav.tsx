@@ -35,7 +35,6 @@ const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
   const { setSelectedRenewableType, setSelectedParameter } = useVisualization();
 
   useEffect(() => {
-    console.log(pathname);
   }, [pathname]);
 
   return (

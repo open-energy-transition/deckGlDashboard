@@ -39,7 +39,6 @@ type Props = {
 
 export function CountryCapacityComparision({ installedCapacities }: Props) {
   useEffect(() => {
-    console.log("installedCapacities", installedCapacities.current);
   }, [installedCapacities.current]);
 
   const chartData = [

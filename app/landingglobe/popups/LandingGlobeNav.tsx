@@ -84,7 +84,6 @@ const GlobeNav = () => {
 
       // Log responses for debugging
       responses.forEach((res, index) => {
-        console.log(`API ${index} status:`, res.status, res.url);
       });
 
       const [

@@ -93,8 +93,6 @@ export function CountryCapacityPie({ installedCapacities }: Props) {
 
     setData(piedata);
     setConfig(piechartConfig);
-    console.log("data.......", piedata);
-    console.log("pie chart...", piechartConfig);
 
     // return piechart;
   }
@@ -102,8 +100,6 @@ export function CountryCapacityPie({ installedCapacities }: Props) {
   useEffect(() => {
     if (installedCapacities.current) {
       if (installedCapacities.current.data) {
-        console.log("installedCapacities", installedCapacities.current.data);
-
         prepareChartData(installedCapacities.current.data);
       }
     }

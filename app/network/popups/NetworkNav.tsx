@@ -30,7 +30,6 @@ const NetworkNav = () => {
   const { selectedCountry, setSelectedCountry } = useCountry();
 
   useEffect(() => {
-    console.log(pathname);
   }, [pathname]);
 
   return (
