@@ -10,8 +10,8 @@ import {
 
 export const CommunitySection = () => {
   return (
-    <section id="community" className="">
-      <div className="container py-20 sm:py-20">
+    <section id="community" className="mb-10">
+      <div className="container py-12 sm:py-24">
         <div className="lg:w-[60%] mx-auto">
           <Card className="bg-background border-none shadow-none text-center flex flex-col items-center justify-center">
             <CardHeader>
