@@ -253,7 +253,7 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
                 dataKey="model"
                 tickLine={true}
                 tickMargin={10}
-                axisLine={false}
+                axisLine={true}
               />
               <YAxis
                 tickLine={false}

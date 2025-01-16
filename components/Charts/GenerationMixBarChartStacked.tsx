@@ -231,8 +231,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
         <CardContent>
           <ChartContainer className="h-[42vh] w-full" config={chartConfig}>
             <BarChart data={chartData}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-
               <ChartTooltip
                 // cursor={false}
                 content={
@@ -294,10 +292,17 @@ export function GenerationMixBarChartStacked({ data }: Props) {
 
               <XAxis
                 dataKey="model"
-                tickLine={false}
+                tickLine={true}
                 tickMargin={10}
-                axisLine={false}
+                axisLine={true}
               />
+              {/* <CartesianGrid
+                vertical={false}
+                // opacity={1}
+                // className="bg-accent"
+                // fill="var(--card)"
+                strokeDasharray="3 3"
+              /> */}
               <YAxis
                 tickLine={false}
                 tickMargin={5}
