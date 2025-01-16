@@ -11,34 +11,24 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string; horizon: string } }
+  { params }: { params: { country: string } }
 ) {
-  const { country, horizon } = params;
-
-  console.log('Fetching capacity expansion for country:', country, 'horizon:', horizon);
+  const { country } = params;
+  const horizon = req.nextUrl.searchParams.get('horizon') || '2021';
 
   try {
     const result = await pool.query(
       `
         SELECT *
-        FROM public.capacity_expansion
+        FROM public.generation_mix
         WHERE country_code = $1 AND horizon = $2;
       `,
       [country, horizon]
     );
 
-    console.log('Capacity expansion query result:', {
-      rowCount: result.rowCount,
-      firstRow: result.rows[0],
-      allRows: result.rows
-    });
-
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching capacity expansion data:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch capacity expansion data' },
-      { status: 500 }
-    );
+    console.error("Error fetching data from PostgreSQL:", error);
+    return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
 } 

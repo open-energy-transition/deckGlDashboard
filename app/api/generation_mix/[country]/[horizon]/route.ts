@@ -15,19 +15,19 @@ export async function GET(
 ) {
   const { country, horizon } = params;
 
-  console.log('Fetching capacity expansion for country:', country, 'horizon:', horizon);
+  console.log('Fetching generation mix for country:', country, 'horizon:', horizon);
 
   try {
     const result = await pool.query(
       `
-        SELECT *
-        FROM public.capacity_expansion
+        SELECT id, carrier, generation, country_code, horizon, scenario_id
+        FROM public.generation_mix
         WHERE country_code = $1 AND horizon = $2;
       `,
       [country, horizon]
     );
 
-    console.log('Capacity expansion query result:', {
+    console.log('Generation mix query result:', {
       rowCount: result.rowCount,
       firstRow: result.rows[0],
       allRows: result.rows
@@ -35,9 +35,9 @@ export async function GET(
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching capacity expansion data:', error);
+    console.error('Error fetching generation mix data:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch capacity expansion data' },
+      { error: 'Failed to fetch generation mix data' },
       { status: 500 }
     );
   }
