@@ -1,20 +1,18 @@
+"use client";
+
 import { useState, useEffect, useCallback } from 'react';
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
-  SheetFooter,
 } from "@/components/ui/sheet";
 import { ChartRadial } from "@/components/Charts/ChartRadial";
-import { SideDrawerProps, GeneratorData } from "@/app/types";
 import { Card } from "@/components/ui/card";
+import { GeneratorData, SideDrawerProps } from "@/app/types";
 
-export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerProps) {
+export default function MySideDrawer({ open, setOpen, side = "right", data }: SideDrawerProps) {
   const [generatorData, setGeneratorData] = useState<GeneratorData[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,9 +28,16 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
       if (!response.ok) throw new Error('Network response was not ok');
       
       const result = await response.json();
-      const filteredData = result.data.filter(
-        (item: GeneratorData) => item.bus === data.busId
-      );
+      const filteredData = result.data
+        .filter((item: any) => item.bus === data.busId)
+        .map((item: any) => ({
+          Generator: item.Generator || item.generator || '',
+          p_nom: item.p_nom || 0,
+          p_nom_opt: item.p_nom_opt || 0,
+          carrier: item.carrier || '',
+          bus: item.bus || '',
+          country_code: data.countryCode
+        }));
       
       setGeneratorData(filteredData);
     } catch (error) {
@@ -47,16 +52,11 @@ export default function MySideDrawer({ open, setOpen, side, data }: SideDrawerPr
     fetchData();
   }, [fetchData]);
 
-  console.log("SideDrawer - Rendering with data:", { 
-    loading, 
-    dataLength: generatorData.length 
-  });
-
   return (
     <Sheet modal={false} open={open} onOpenChange={setOpen}>
       <SheetContent
         side={side}
-        className="overflow-y-scroll no-scrollbar w-96 flex flex-col"
+        className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
       >
         <SheetHeader>
           <SheetTitle>

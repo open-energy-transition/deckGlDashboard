@@ -1,26 +1,11 @@
-import * as React from "react";
+"use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import { CountryDropdown } from "@/components/ui/country-dropdown";
+import { useCountry } from "@/components/country-context";
+import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar } from "@/components/ui/avatar";
 
 type MainControlsProps = {
   buttonPosition: string;
@@ -28,31 +13,6 @@ type MainControlsProps = {
   onRenewableTypeChange: (type: string) => void;
   onParameterChange: (param: string) => void;
   year?: string;
-};
-
-// Backup of original scales for reference
-const originalScales = {
-  cf: [
-    { color: "rgb(65, 182, 196)", label: "0%" },
-    { color: "rgb(160, 170, 120)", label: "25%" },
-    { color: "rgb(254, 153, 41)", label: "50%" },
-    { color: "rgb(245, 110, 40)", label: "75%" },
-    { color: "rgb(239, 59, 44)", label: "100%" }
-  ],
-  crt: [
-    { color: "rgb(65, 171, 93)", label: "0%" },
-    { color: "rgb(160, 170, 90)", label: "25%" },
-    { color: "rgb(254, 153, 41)", label: "50%" },
-    { color: "rgb(245, 110, 40)", label: "75%" },
-    { color: "rgb(239, 59, 44)", label: "100%" }
-  ],
-  usdpt: [
-    { color: "rgb(65, 182, 196)", label: "0%" },
-    { color: "rgb(65, 175, 150)", label: "25%" },
-    { color: "rgb(65, 171, 93)", label: "50%" },
-    { color: "rgb(50, 150, 80)", label: "75%" },
-    { color: "rgb(35, 139, 69)", label: "100%" }
-  ]
 };
 
 const getParameterInfo = (parameter: string) => {
@@ -100,14 +60,15 @@ const getColorScale = (parameter: string) => {
   return scales[parameter as keyof typeof scales] || scales.cf;
 };
 
-export function MainControls({
+const MainControls = ({
   buttonPosition,
   close,
   onRenewableTypeChange,
   onParameterChange,
-}: MainControlsProps) {
+}: MainControlsProps) => {
   const [selectedParameter, setSelectedParameter] = React.useState("cf");
   const parameterInfo = getParameterInfo(selectedParameter);
+  const { selectedCountry } = useCountry();
 
   const handleParameterChange = (value: string) => {
     setSelectedParameter(value);
@@ -117,6 +78,11 @@ export function MainControls({
   return (
     <div className="flex flex-col gap-4">
       <div className="text-xl font-semibold">Visualization Controls</div>
+      
+      <div className="mb-4">
+        <CountryDropdown defaultValue={selectedCountry} />
+      </div>
+
       <Select onValueChange={onRenewableTypeChange}>
         <SelectTrigger>
           <SelectValue placeholder="Renewable type" />
@@ -131,6 +97,7 @@ export function MainControls({
           </SelectGroup>
         </SelectContent>
       </Select>
+
       <Select onValueChange={handleParameterChange}>
         <SelectTrigger>
           <SelectValue placeholder="Parameters" />
@@ -144,9 +111,11 @@ export function MainControls({
           </SelectGroup>
         </SelectContent>
       </Select>
+
       <div className="text-sm text-muted-foreground">
         {parameterInfo.tooltip}
       </div>
+
       <div className="flex flex-wrap gap-2">
         {getColorScale(selectedParameter).map((scale, index) => (
           <div key={index} className="flex flex-col items-center">
@@ -159,4 +128,6 @@ export function MainControls({
       </div>
     </div>
   );
-}
+};
+
+export default MainControls;
