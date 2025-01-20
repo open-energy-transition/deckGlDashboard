@@ -84,8 +84,8 @@ export function NavigationMenuDemo() {
                     Project Summary
                   </div>
                   <p className="text-sm leading-tight text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore.
+                    The Dashboard showcases building and application of the power system 
+                    modeling to several countries around the globe.
                   </p>
                 </div>
               </li>
@@ -94,19 +94,24 @@ export function NavigationMenuDemo() {
                   Open Energy Transition
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-              </div>
-              <div className="block p-3">
-                <div className="text-md font-medium">PyPSA-Earth</div>
-                <p className="text-sm text-muted-foreground">
-                  Ut enim ad minim veniam, quis nostrud exercitation.
+                  Aims to facilitate the energy transition around the globe in fair and 
+                  inclusive way by supporting open source software and open data.
                 </p>
               </div>
               <div className="block p-3">
                 <div className="text-md font-medium">PyPSA</div>
                 <p className="text-sm text-muted-foreground">
-                  Duis aute irure dolor in reprehenderit in voluptate.
+                  The most popular open source energy modeling framework with 
+                  state-of-the-art modeling and optimisation functionality. 
+                </p>
+              </div>
+              <div className="block p-3">
+                <div className="text-md font-medium">PyPSA-Earth</div>
+                <p className="text-sm text-muted-foreground">
+                  Making the latest-generation energy planning tools accessible 
+                  for every country of the world. PyPSA-Earth model integrates 
+                  a regionlly-tailored data-extraction workflow and automated 
+                  building an optimisation model.
                 </p>
               </div>
             </ul>
