@@ -27,39 +27,39 @@ import Image from "next/image";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
+    title: "Power Grid",
     href: "/docs/primitives/alert-dialog",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "Insights into the topology and transmission capacity of the power grid model.",
   },
   {
-    title: "Hover Card",
+    title: "Installed Capacity",
     href: "/docs/primitives/hover-card",
     description:
-      "For sighted users to preview content available behind a link.",
+      "Spatial distribution of the electricity generation capacity",
   },
   {
-    title: "Progress",
+    title: "Generaiton Mix",
     href: "/docs/primitives/progress",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "An electricity generaiton mix modeled for the present state of the national power system.",
   },
   {
-    title: "Scroll-area",
+    title: "Data Cross-Check",
     href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    description: "Comparison against independent third-parties data for the major inputs of the model.",
   },
   {
-    title: "Tabs",
+    title: "Model validation",
     href: "/docs/primitives/tabs",
     description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      "Validation of the simulated generation mix against the available statistics.",
   },
   {
-    title: "Tooltip",
+    title: "Spatial Navigation",
     href: "/docs/primitives/tooltip",
     description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "GIS-navigation across the whole spatial network structure.",
   },
 ];
 
