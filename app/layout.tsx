@@ -20,7 +20,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "PyPSA-Earth - Power System Analysis",
+  title: "PyPSA-Earth - Python for Power System Analysis",
   description:
     "Created by OET, this is a web-based tool for power system analysis.",
 };
