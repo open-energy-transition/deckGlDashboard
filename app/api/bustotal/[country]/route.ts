@@ -16,7 +16,7 @@ export async function GET(
   const country = params.country;
 
   try {
-    console.log('Fetching data for country:', country);
+    
 
     const result = await pool.query(
       `
@@ -30,8 +30,8 @@ export async function GET(
       [country]
     );
 
-    console.log('Query result rows:', result.rows.length);
-    console.log('Sample data:', result.rows.slice(0, 3));
+    
+    
 
     return NextResponse.json({ 
       data: result.rows,

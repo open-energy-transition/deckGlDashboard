@@ -160,8 +160,6 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
     );
   }, [processedData]);
 
-  console.log("Total percentage:", totalPercentage);
-
   return (
     <>
       <CardHeader>

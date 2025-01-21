@@ -76,6 +76,9 @@ const GlobeNav = () => {
         fetch(`/api/capacity_expansion/${selectedCountry}/2021`)
       ]);
 
+      responses.forEach((res, index) => {
+      });
+
       const [
         totalCostsData,
         investmentCostsData,

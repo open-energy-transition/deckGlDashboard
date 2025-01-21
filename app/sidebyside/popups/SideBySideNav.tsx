@@ -22,6 +22,13 @@ interface SideBySideNavProps {
 
 const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const { selectedCountry, setSelectedCountry } = useCountry();
+  const { setSelectedRenewableType, setSelectedParameter } = useVisualization();
+
+  useEffect(() => {
+  }, [pathname]);
+
 
   return (
     <Sheet modal={false} open={true}>

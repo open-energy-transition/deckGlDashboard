@@ -105,14 +105,14 @@ const GlobeViz = () => {
         return 0.01;
       }}
       onHover={useCallback((...args: unknown[]) => {
-        console.log("hover", args);
+        
       }, [])}
       onClick={useCallback((...args: unknown[]) => {
         const countryCode = (args[1] as { id: string }).id
           ?.split("_")[0]
           ?.substring(0, 2)
           .toLowerCase();
-        console.log("polygon clicked", countryCode.toUpperCase());
+
         setSelectedCountry(
           countryCode.toUpperCase() as
             | "AU"
@@ -126,7 +126,6 @@ const GlobeViz = () => {
             | "US"
             | "ZA"
         );
-        console.log("click", ...args);
       }, [])}
     />
   );

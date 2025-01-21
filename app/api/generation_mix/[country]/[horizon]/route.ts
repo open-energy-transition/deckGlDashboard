@@ -15,8 +15,6 @@ export async function GET(
 ) {
   const { country, horizon } = params;
 
-  console.log('Fetching generation mix for country:', country, 'horizon:', horizon);
-
   try {
     const result = await pool.query(
       `
@@ -27,17 +25,17 @@ export async function GET(
       [country, horizon]
     );
 
-    console.log('Generation mix query result:', {
+    console.log("Generation mix query result:", {
       rowCount: result.rowCount,
       firstRow: result.rows[0],
-      allRows: result.rows
+      allRows: result.rows,
     });
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching generation mix data:', error);
+    console.error("Error fetching generation mix data:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch generation mix data' },
+      { error: "Failed to fetch generation mix data" },
       { status: 500 }
     );
   }
