@@ -26,7 +26,7 @@ type Props = {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const GlobeBottomDrawer = ({ selectedCountry }: Props) => {
+const GenerationMixBottomDrawer = ({ selectedCountry }: Props) => {
   const { data: generationComparisonData2050 } = useSWR(
     `/api/generation_mix/${selectedCountry}/2050`,
     fetcher,
@@ -63,27 +63,27 @@ const GlobeBottomDrawer = ({ selectedCountry }: Props) => {
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          Show Statistics for country : {selectedCountry}
+          compare generation mix for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              2050 Net Zero Analysis
+              Compare Generation Mix for {selectedCountry}
             </DrawerTitle>
             <DrawerDescription className="">
               compare data for {selectedCountry} from now to net zero carbon
               emissions in 2050
             </DrawerDescription>
           </DrawerHeader>
-          <div className="w-[50%] min-h-screen border-t-2 mt-4 border-r-2">
+          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 border-r-2 py-5">
             <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
               2021
             </h2>
             <GenerationMixGeneral data={generationComparisonState2021} />
           </div>
-          <div className="w-[50%] min-h-screen border-t-2 mt-4">
+          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 py-5">
             <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
               2050
             </h2>
@@ -91,7 +91,7 @@ const GlobeBottomDrawer = ({ selectedCountry }: Props) => {
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button>CLOSE</Button>
+              <Button className="w-[80%]">CLOSE</Button>
             </DrawerClose>
           </DrawerFooter>
         </ScrollArea>
@@ -100,4 +100,4 @@ const GlobeBottomDrawer = ({ selectedCountry }: Props) => {
   );
 };
 
-export default GlobeBottomDrawer;
+export default GenerationMixBottomDrawer;

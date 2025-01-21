@@ -19,16 +19,17 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
 
 interface Props {
   data: any;
+  costField: string;
 }
 
 interface DataItem {
   carrier: string;
   pypsa_model: number;
-  generation: number;
+  total_costs: number;
 }
 
 type ChartDataType = {
@@ -45,7 +46,7 @@ interface ChartItem {
   fill: string;
 }
 
-export function GenerationMixGeneral({ data }: Props) {
+export function CarrierCostGeneral({ data, costField }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -53,25 +54,27 @@ export function GenerationMixGeneral({ data }: Props) {
     if (data) {
       const dataArray = Array.isArray(data) ? data : [];
       const total = dataArray.reduce((acc: number, item: DataItem) => {
-        return acc + (item.generation || 0);
+        return acc + (Number(item[costField as keyof DataItem]) || 0);
       }, 0);
       setTotalGeneration(Number(total.toFixed(2)));
 
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== "Total generation"
+            item && item.carrier && item.carrier !== `Total ${costField}`
         )
         .map((item: DataItem) => {
-          const value = Number(item.generation?.toFixed(2) || 0);
+          const value = Number(
+            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
+          );
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
             value: value,
             percentage: Number(percentage.toFixed(1)),
             fill:
-              GenerationMixchartConfigSmall[
-                item.carrier as keyof typeof GenerationMixchartConfigSmall
+              GenerationMixchartConfig[
+                item.carrier as keyof typeof GenerationMixchartConfig
               ]?.color || "hsl(var(--chart-1))",
           };
         });
@@ -81,18 +84,18 @@ export function GenerationMixGeneral({ data }: Props) {
 
       setChartData(transformedData);
     }
-  }, [data]);
+  }, [data, costField]);
 
   return (
     <>
-      <Card className="w-[30rem] mx-auto">
+      <Card className="w-[26rem]">
         <CardHeader>
-          <CardTitle>Generation Mix</CardTitle>
-          <CardDescription>PyPSA Generation by Technology</CardDescription>
+          <CardTitle>System and Investment cost</CardTitle>
+          <CardDescription>how much euros for each</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer
-            config={GenerationMixchartConfigSmall}
+            config={GenerationMixchartConfig}
             className="aspect-square"
           >
             <PieChart>
@@ -112,15 +115,15 @@ export function GenerationMixGeneral({ data }: Props) {
                         <div className="flex flex-col gap-1">
                           <div className="flex gap-2">
                             <span className="font-bold">
-                              {GenerationMixchartConfigSmall[
-                                name as keyof typeof GenerationMixchartConfigSmall
+                              {GenerationMixchartConfig[
+                                name as keyof typeof GenerationMixchartConfig
                               ]?.label || name}
                             </span>
                             <span>{`${
                               typeof value === "number"
                                 ? value.toFixed(2)
                                 : Number(value).toFixed(2)
-                            } TWh`}</span>
+                            } euros`}</span>
                           </div>
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
@@ -163,7 +166,7 @@ export function GenerationMixGeneral({ data }: Props) {
                             y={(viewBox.cy || 0) + 24}
                             className="fill-muted-foreground"
                           >
-                            TWh
+                            euros
                           </tspan>
                         </text>
                       );

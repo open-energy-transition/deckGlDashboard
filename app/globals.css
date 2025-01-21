@@ -77,6 +77,7 @@ body {
     --chart-ror: 220 75% 60%;
     --chart-solar: 45 100% 50%;
     --chart-load: 280 50% 45%;
+    --chart-load-shedding:25 34% 28%;
     --color-pypsa: hsl(var(--chart-1));
     --color-ccgt: hsl(var(--chart-1));
     --color-onwind: hsl(var(--chart-2));
@@ -87,6 +88,7 @@ body {
     --color-oil: hsl(var(--chart-7));
     --color-offwind-ac: hsl(var(--chart-8));
     --color-offwind-dc: hsl(var(--chart-9));
+    --chart-tl: 35 43% 53%;
   }
  
   .dark {
@@ -144,6 +146,9 @@ body {
     --chart-ror: 220 75% 70%;
     --chart-solar: 45 100% 60%;
     --chart-load: 280 50% 55%;
+    --chart-load-shedding:25 34% 28%;
+    --chart-tl: 35 43% 53%;
+
   }
 }
 

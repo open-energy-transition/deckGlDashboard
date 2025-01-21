@@ -47,9 +47,38 @@ export const GenerationMixchartConfig = {
   },
   "Load shedding": {
     label: "Load shedding",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-load-shedding))",
+  },
+  Csp: {
+    label: "CSP",
+    color: "hsl(var(--chart-csp))",
+  },
+  CCGT: {
+    label: "CCGT",
+    color: "hsl(var(--chart-CCGT))",
+  },
+  "Offshore wind": {
+    label: "Offshore Wind",
+    color: "hsl(var(--chart-offwind-dc))",
+  },
+  "Onshore wind": {
+    label: "Onshore Wind",
+    color: "hsl(var(--chart-offwind-ac))",
+  },
+  "Solar PV": {
+    label: "Solar PV",
+    color: "hsl(var(--chart-solar))",
+  },
+  "Transmission lines": {
+    label: "Transmission Lines",
+    color: "hsl(var(--chart-tl))",
+  },
+  Hydroelectricity: {
+    label: "Hydroelectricity",
+    color: "hsl(var(--chart-onwind))",
   },
 } satisfies ChartConfig;
+
 
 export const GenerationMixchartConfigSmall = {
   biomass: {

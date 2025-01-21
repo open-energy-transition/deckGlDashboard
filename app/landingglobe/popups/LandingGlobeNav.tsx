@@ -18,7 +18,8 @@ import { useCountry } from "@/components/country-context";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Card } from "@/components/ui/card";
 import { DonutChart } from "@/components/Charts/DonutChart";
-import GlobeBottomDrawer from "./BottomDrawer";
+import SystemCostDrawer from "./SystemCostDrawer";
+import GenerationMixBottomDrawer from "./BottomDrawer";
 
 interface DataItem {
   carrier: string;
@@ -181,8 +182,8 @@ const GlobeNav = () => {
 
           <div className="flex flex-col gap-4 flex-1">
             <CountryDropdown defaultValue={selectedCountry} />
-            <GlobeBottomDrawer selectedCountry={selectedCountry} />
-
+            <GenerationMixBottomDrawer selectedCountry={selectedCountry} />
+            <SystemCostDrawer selectedCountry={selectedCountry} />
             <div className="flex-1 space-y-4">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
