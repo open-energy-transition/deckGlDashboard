@@ -2,32 +2,26 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
-  SheetFooter,
 } from "@/components/ui/sheet";
 import { useCountry } from "@/components/country-context";
-
 import BottomDrawer from "@/components/BottomDrawer";
 import MapLegend from "@/app/network/components/MapLegend";
-import CountrySelectDropDown from "@/components/CountrySelectDropDown";
+import { CountryDropdown } from "@/components/ui/country-dropdown";
 
 const NetworkNav = () => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
-  const { selectedCountry, setSelectedCountry } = useCountry();
+  const { selectedCountry } = useCountry();
 
   useEffect(() => {
   }, [pathname]);
@@ -38,13 +32,15 @@ const NetworkNav = () => {
         side="left"
         className="fixed top-0 left-0 w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
       >
-        <SheetTitle>Network Statistics</SheetTitle>
-        <SheetDescription>
-          select a country and view all country level charts
-        </SheetDescription>
+        <SheetHeader>
+          <SheetTitle>Network Statistics</SheetTitle>
+          <SheetDescription>
+            select a country and view all country level charts
+          </SheetDescription>
+        </SheetHeader>
 
         <div className="flex flex-col gap-4 flex-1">
-          <CountrySelectDropDown />
+          <CountryDropdown defaultValue={selectedCountry} />
 
           <div className="flex-1">
             <BottomDrawer selectedCountry={selectedCountry} />

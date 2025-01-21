@@ -27,39 +27,118 @@ import Image from "next/image";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
+    title: "Network View",
+    href: "/network",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "Interactive visualization of country's power grid showing transmission lines and bus connections across different regions.",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
+    title: "Country Statistics",
+    href: "/network",
     description:
-      "For sighted users to preview content available behind a link.",
+      "Select a country to view comprehensive statistics and charts about its power system infrastructure and performance.",
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
+    title: "Bus Analysis",
+    href: "/network",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "Detailed statistics for each bus node, showing generation capacity distribution across different energy sources.",
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    title: "Transmission Lines",
+    href: "/network",
+    description: 
+      "View and analyze power transmission lines with different capacity ranges shown through an interactive network visualization.",
   },
   {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
+    title: "Generation Capacity",
+    href: "/network",
     description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      "Compare nominal and optimal generation capacities across different energy carriers in the selected region.",
   },
   {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
+    title: "Network Legend",
+    href: "/network",
     description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "Guide to interpret the network visualization, including transmission line categories and bus representations.",
+  },
+];
+
+const globeComponents: { title: string; href: string; description: string }[] = [
+  {
+    title: "Scenario Comparison",
+    href: "/landingglobe",
+    description:
+      "Side-by-side visualization of energy scenarios: light map shows 2021 baseline, dark map displays 2050 sustainable transition targets.",
+  },
+  {
+    title: "System Costs",
+    href: "/landingglobe",
+    description:
+      "Analyze total system costs and investment costs by carrier type, tracking financial aspects of energy transition.",
+  },
+  {
+    title: "Emissions Analysis",
+    href: "/landingglobe",
+    description:
+      "Monitor CO2 emissions by carrier and track progress towards emission reduction goals, including investment per CO2 reduced.",
+  },
+  {
+    title: "Electricity Prices",
+    href: "/landingglobe",
+    description:
+      "Track electricity price changes between scenarios, understanding the economic implications of energy transition.",
+  },
+  {
+    title: "Generation Capacity",
+    href: "/landingglobe",
+    description:
+      "Compare installed capacities and capacity expansion by carrier type between current and future scenarios.",
+  },
+  {
+    title: "Generation Mix",
+    href: "/landingglobe",
+    description:
+      "Visualize the evolution of power generation mix, showing the transition from conventional to renewable energy sources.",
+  },
+];
+
+const polygonComponents: { title: string; href: string; description: string }[] = [
+  {
+    title: "Side by Side Comparison",
+    href: "/sidebyside",
+    description:
+      "Compare and analyze different renewable energy sources side by side, with detailed visualization controls.",
+  },
+  {
+    title: "Renewable Sources",
+    href: "/sidebyside",
+    description:
+      "Explore various renewable energy types including Solar, Onshore Wind, Offshore Wind, and Run of River.",
+  },
+  {
+    title: "Parameter Analysis",
+    href: "/sidebyside",
+    description:
+      "Analyze key parameters like Capacity Factor (CF), Curtailment, and Usage percentage for each renewable source.",
+  },
+  {
+    title: "Geographic Distribution",
+    href: "/sidebyside",
+    description:
+      "Visualize the geographical distribution and potential of different renewable energy sources across regions.",
+  },
+  {
+    title: "Resource Availability",
+    href: "/sidebyside",
+    description:
+      "View the percentage of time that each renewable resource is available at full capacity, from 0-10% to >60%.",
+  },
+  {
+    title: "Comparative Tools",
+    href: "/sidebyside",
+    description:
+      "Interactive tools for comparing and contrasting different renewable energy parameters and performance metrics.",
   },
 ];
 
@@ -84,8 +163,7 @@ export function NavigationMenuDemo() {
                     Project Summary
                   </div>
                   <p className="text-sm leading-tight text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore.
+                    Explore power system scenarios and energy transitions across different countries using PyPSA-Earth's advanced modeling capabilities.
                   </p>
                 </div>
               </li>
@@ -94,19 +172,19 @@ export function NavigationMenuDemo() {
                   Open Energy Transition
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  A collaborative initiative to accelerate the global transition to sustainable energy through open-source tools and data.
                 </p>
               </div>
               <div className="block p-3">
                 <div className="text-md font-medium">PyPSA-Earth</div>
                 <p className="text-sm text-muted-foreground">
-                  Ut enim ad minim veniam, quis nostrud exercitation.
+                  A global-scale energy system model that helps analyze and optimize power systems for a sustainable future.
                 </p>
               </div>
               <div className="block p-3">
                 <div className="text-md font-medium">PyPSA</div>
                 <p className="text-sm text-muted-foreground">
-                  Duis aute irure dolor in reprehenderit in voluptate.
+                  Python for Power System Analysis - An open-source toolbox for simulating and optimizing modern power systems.
                 </p>
               </div>
             </ul>
@@ -122,7 +200,7 @@ export function NavigationMenuDemo() {
                 <div key={component.title} className="block p-3">
                   <div className="text-sm font-medium">{component.title}</div>
                   <p className="text-sm text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    {component.description}
                   </p>
                 </div>
               ))}
@@ -134,41 +212,15 @@ export function NavigationMenuDemo() {
             <NavigationMenuLink href="/landingglobe">Globe</NavigationMenuLink>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6">
-                  <div className="relative h-full w-full">
-                    <Image src={OET_LOGO} alt="OET Logo" priority fill />
-                  </div>
-                  <div className="mb-2 mt-4 text-lg font-medium">
-                    Project Summary
-                  </div>
-                  <p className="text-sm leading-tight text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore.
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {globeComponents.map((component) => (
+                <div key={component.title} className="block p-3">
+                  <div className="text-sm font-medium">{component.title}</div>
+                  <p className="text-sm text-muted-foreground">
+                    {component.description}
                   </p>
                 </div>
-              </li>
-              <div className="block p-1">
-                <div className="text-lg font-semibold text-[#E31937]">
-                  Open Energy Transition
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-              </div>
-              <div className="block p-3">
-                <div className="text-md font-medium">PyPSA-Earth</div>
-                <p className="text-sm text-muted-foreground">
-                  Ut enim ad minim veniam, quis nostrud exercitation.
-                </p>
-              </div>
-              <div className="block p-3">
-                <div className="text-md font-medium">PyPSA</div>
-                <p className="text-sm text-muted-foreground">
-                  Duis aute irure dolor in reprehenderit in voluptate.
-                </p>
-              </div>
+              ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -178,11 +230,11 @@ export function NavigationMenuDemo() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {components.map((component) => (
+              {polygonComponents.map((component) => (
                 <div key={component.title} className="block p-3">
                   <div className="text-sm font-medium">{component.title}</div>
                   <p className="text-sm text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    {component.description}
                   </p>
                 </div>
               ))}
