@@ -54,6 +54,8 @@ const GlobeNav = () => {
         fetch(`/api/electricity_prices/${selectedCountry}/2021`),
       ]);
 
+      responses.forEach((res, index) => {});
+
       const [electricityPricesData] = await Promise.all(
         responses.map((r) => r.json())
       );

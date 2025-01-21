@@ -137,7 +137,6 @@ export function InstalledCapacityPieChart({ data }: Props) {
                     indicator="dot"
                     className="w-auto"
                     formatter={(value, name, item, index) => {
-                      console.log("item", item);
                       return (
                         <>
                           <div

@@ -48,7 +48,6 @@ const NavBar = () => {
   const { networkView, setNetworkView } = useNetworkView();
 
   useEffect(() => {
-    console.log(pathname);
   }, [pathname]);
 
   return (

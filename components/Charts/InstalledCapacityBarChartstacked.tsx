@@ -83,7 +83,6 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
   useEffect(() => {
     if (data?.current?.data) {
       let dataArray = Array.isArray(data.current.data) ? data.current.data : [];
-      console.log("dataArray", dataArray);
 
       dataArray = dataArray.filter(
         (item: any) =>
@@ -148,7 +147,6 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
       }
 
       setChartData(transformedData);
-      console.log("transformedData", transformedData);
     }
   }, [data?.current]);
 
@@ -194,7 +192,6 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
                     labelFormatter={(label, item) => {
                       let t = 0;
                       for (let i = 0; i < item.length; i++) {
-                        console.log(item[i]);
                         t += Number(item[i]?.value || 0);
                       }
 

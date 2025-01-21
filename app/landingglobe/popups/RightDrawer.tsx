@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { ScrollSyncPane } from 'react-scroll-sync';
+import { ScrollSyncPane } from "react-scroll-sync";
 import {
   Sheet,
   SheetContent,
@@ -47,7 +47,6 @@ const RightDrawer = () => {
     setMounted(true);
   }, []);
 
-
   const fetchData = useCallback(async () => {
     if (!selectedCountry) {
       setData({
@@ -60,28 +59,19 @@ const RightDrawer = () => {
 
     setLoading(true);
     try {
-      console.log("Fetching data for country:", selectedCountry);
-
       const responses = await Promise.all([
         fetch(`/api/electricity_prices/${selectedCountry}/2050`),
-        fetch(`/api/investment_per_co2_reduced/${selectedCountry}/2050`),
       ]);
 
       // Check if any response is not ok
       const failedResponses = responses.filter((r) => !r.ok);
       if (failedResponses.length > 0) {
-        console.error(
-          "Failed responses:",
-          failedResponses.map((r) => r.url)
-        );
         throw new Error("One or more API calls failed");
       }
 
-      const [
-        electricityPricesData,
-        investmentPerCO2Data,
-      ] = await Promise.all(responses.map((r) => r.json()));
-
+      const [electricityPricesData, investmentPerCO2Data] = await Promise.all(
+        responses.map((r) => r.json())
+      );
 
       const processedData: DrawerData = {
         electricityPrice:

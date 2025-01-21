@@ -18,7 +18,6 @@ export interface ModePannelProps {
 
 export default function ModePannel({ mode, setMode }: ModePannelProps) {
   useEffect(() => {
-    console.log(mode);
   }, [mode]);
 
   return (

@@ -173,8 +173,6 @@ export default function SideBySide({ mode }: SideBySideProps) {
       },
       onHover: (info: any) => {
         if (info.object) {
-          console.log("Region:", info.object.properties.name);
-          console.log("Value:", info.object.properties[selectedParameter]);
         }
       },
     };
