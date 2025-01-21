@@ -101,6 +101,14 @@ export const GenerationMixchartConfigSmall = {
     label: "Natural Gas",
     color: "hsl(var(--chart-CCGT))",
   },
+  PHS: {
+    label: "PHS",
+    color: "hsl(var(--chart-phs))",
+  },
+  OCGT: {
+    label: "OCGT",
+    color: "hsl(var(--chart-ocgt))",
+  },
   nuclear: {
     label: "Nuclear",
     color: "hsl(var(--chart-nuclear))",

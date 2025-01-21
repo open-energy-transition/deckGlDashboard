@@ -90,6 +90,8 @@ body {
     --color-offwind-dc: hsl(var(--chart-9));
     --chart-tl: 35 43% 53%;
     --chart-bs: 197 37% 24%;
+    --chart-phs: 12 76% 61%;
+    --chart-ocgt:  139 12% 54%;
   }
  
   .dark {
@@ -150,6 +152,8 @@ body {
     --chart-load-shedding:25 34% 28%;
     --chart-tl: 35 43% 53%;
     --chart-bs: 197 37% 24%;
+    --chart-phs: 12 76% 61%;
+    --chart-ocgt:  139 12% 54%;
   }
 }
 
