@@ -19,15 +19,17 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
+import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
 
 interface Props {
-  data: React.MutableRefObject<any>;
+  data: any;
+  costField: string;
 }
 
 interface DataItem {
   carrier: string;
   pypsa_model: number;
+  total_costs: number;
 }
 
 type ChartDataType = {
@@ -44,58 +46,59 @@ interface ChartItem {
   fill: string;
 }
 
-//
-
-export function GenerationMixPieChart({ data }: Props) {
+export function CarrierCapacityGeneralPie({ data, costField }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
   useEffect(() => {
-    if (data?.current?.data) {
-      const dataArray = Array.isArray(data.current.data)
-        ? data.current.data
-        : [];
-
-      const totalItem = dataArray.find(
-        (item: DataItem) => item.carrier === "Total generation"
-      );
-      const total = Number(totalItem?.pypsa_model?.toFixed(2) || 0);
-      setTotalGeneration(total);
+    if (data) {
+      const dataArray = Array.isArray(data) ? data : [];
+      const total = dataArray.reduce((acc: number, item: DataItem) => {
+        return acc + (Number(item[costField as keyof DataItem]) || 0);
+      }, 0);
+      setTotalGeneration(Number(total.toFixed(2)));
 
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== "Total generation"
+            item && item.carrier && item.carrier !== `Total ${costField}`
         )
         .map((item: DataItem) => {
-          const value = Number(item.pypsa_model?.toFixed(2) || 0);
+          const value = Number(
+            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
+          );
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
             value: value,
             percentage: Number(percentage.toFixed(1)),
             fill:
-              GenerationMixchartConfig[
-                item.carrier as keyof typeof GenerationMixchartConfig
+              GenerationMixchartConfigSmall[
+                item.carrier as keyof typeof GenerationMixchartConfigSmall
               ]?.color || "hsl(var(--chart-1))",
           };
-        })
-        .filter((item: ChartItem) => item.value > 0);
+        });
+
+      console.log("dataArray", dataArray);
+      console.log("transformedData", transformedData);
 
       setChartData(transformedData);
     }
-  }, [data?.current]);
+  }, [data, costField]);
 
   return (
     <>
-      <Card className="w-[95%] px-0 sm:px-24 md:px-0 md:w-[47%] xl:w-[28%] 2xl:w-[25%]">
+      <Card className="w-[26rem]">
         <CardHeader>
-          <CardTitle>Generation Mix</CardTitle>
-          <CardDescription>PyPSA Generation by Technology</CardDescription>
+          <CardTitle>Capacity and Capacity Expansion</CardTitle>
+          <CardDescription>
+            what the distributed installed capacity will look like and how it
+            will be extended
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer
-            config={GenerationMixchartConfig}
+            config={GenerationMixchartConfigSmall}
             className="aspect-square"
           >
             <PieChart>
@@ -115,15 +118,15 @@ export function GenerationMixPieChart({ data }: Props) {
                         <div className="flex flex-col gap-1">
                           <div className="flex gap-2">
                             <span className="font-bold">
-                              {GenerationMixchartConfig[
-                                name as keyof typeof GenerationMixchartConfig
+                              {GenerationMixchartConfigSmall[
+                                name as keyof typeof GenerationMixchartConfigSmall
                               ]?.label || name}
                             </span>
                             <span>{`${
                               typeof value === "number"
                                 ? value.toFixed(2)
                                 : Number(value).toFixed(2)
-                            } TWh`}</span>
+                            } MW`}</span>
                           </div>
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
@@ -166,7 +169,7 @@ export function GenerationMixPieChart({ data }: Props) {
                             y={(viewBox.cy || 0) + 24}
                             className="fill-muted-foreground"
                           >
-                            TWh
+                            MW
                           </tspan>
                         </text>
                       );

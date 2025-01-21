@@ -68,10 +68,22 @@ const CountryDropdownComponent = (
 
   const handleSelect = useCallback(
     (value: string) => {
-      const country = countryOptions.find(c => c.alpha3 === value);
+      const country = countryOptions.find((c) => c.alpha3 === value);
       if (country) {
         setSelected(country);
-        setSelectedCountry(country.alpha3);
+        setSelectedCountry(
+          country.alpha3 as
+            | "AU"
+            | "BR"
+            | "CO"
+            | "DE"
+            | "IN"
+            | "IT"
+            | "MX"
+            | "NG"
+            | "US"
+            | "ZA"
+        );
         onChange?.(country);
       }
     },
@@ -107,13 +119,7 @@ const CountryDropdownComponent = (
               )}
             </div>
           ) : (
-            <span>
-              {slim ? (
-                <Globe size={20} />
-              ) : (
-                placeholder
-              )}
-            </span>
+            <span>{slim ? <Globe size={20} /> : placeholder}</span>
           )}
         </SelectValue>
       </SelectTrigger>
@@ -124,15 +130,15 @@ const CountryDropdownComponent = (
             <SelectItem
               key={option.alpha3}
               value={option.alpha3}
-              className="flex items-center gap-2"
+              className="w-full"
             >
-              <div className="inline-flex items-center justify-center w-5 h-5 shrink-0 overflow-hidden rounded-full">
+              <div className="inline-block w-5 h-5">
                 <CircleFlag
                   countryCode={option.alpha2.toLowerCase()}
                   height={20}
                 />
               </div>
-              <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="inline-block my-auto translate-x-2 -translate-y-1">
                 {option.name}
               </span>
             </SelectItem>
