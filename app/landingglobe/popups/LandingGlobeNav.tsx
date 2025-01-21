@@ -18,8 +18,6 @@ import { useCountry } from "@/components/country-context";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Card } from "@/components/ui/card";
 import { DonutChart } from "@/components/Charts/DonutChart";
-import SystemCostDrawer from "./SystemCostDrawer";
-import GenerationMixBottomDrawer from "./BottomDrawer";
 
 interface DataItem {
   carrier: string;
@@ -182,8 +180,6 @@ const GlobeNav = () => {
 
           <div className="flex flex-col gap-4 flex-1">
             <CountryDropdown defaultValue={selectedCountry} />
-            <GenerationMixBottomDrawer selectedCountry={selectedCountry} />
-            <SystemCostDrawer selectedCountry={selectedCountry} />
             <div className="flex-1 space-y-4">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
@@ -195,39 +191,6 @@ const GlobeNav = () => {
                 </div>
               ) : (
                 <>
-                  {/* System Costs */}
-                  <Card className="p-4 min-h-[400px] section-system-costs">
-                    <h3 className="font-semibold mb-4">System Costs</h3>
-                    {data.totalCosts.length > 0 ? (
-                      <DonutChart
-                        data={data.totalCosts.map((item) => ({
-                          ...item,
-                          fill: getCarrierColor(item.carrier),
-                        }))}
-                        title="Total System Cost by Carrier"
-                        unit="€"
-                      />
-                    ) : (
-                      <div className="text-center py-4">No data available</div>
-                    )}
-                    <div className="mt-4">
-                      {data.investmentCosts.length > 0 ? (
-                        <DonutChart
-                          data={data.investmentCosts.map((item) => ({
-                            ...item,
-                            fill: getCarrierColor(item.carrier),
-                          }))}
-                          title="Investment Cost by Carrier"
-                          unit="€"
-                        />
-                      ) : (
-                        <div className="text-center py-4">
-                          No data available
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-
                   {/* CO2 Emissions */}
                   <Card className="p-4 min-h-[300px] section-emissions">
                     <h3 className="font-semibold mb-4">Emissions</h3>
@@ -245,7 +208,6 @@ const GlobeNav = () => {
                     )}
                   </Card>
 
-                  {/* Electricity Prices */}
                   <Card className="p-4 min-h-[150px] section-electricity-prices">
                     <h3 className="font-semibold mb-4">Electricity Prices</h3>
                     <div className="p-4 bg-muted rounded-md">
@@ -254,64 +216,6 @@ const GlobeNav = () => {
                         {data.electricityPrice.toFixed(2)} €/MWh
                       </p>
                     </div>
-                  </Card>
-
-                  {/* Capacity */}
-                  <Card className="p-4 min-h-[400px] section-capacity">
-                    <h3 className="font-semibold mb-4">Capacity</h3>
-                    {data.capacities.length > 0 ? (
-                      <DonutChart
-                        data={data.capacities.map((item) => ({
-                          ...item,
-                          fill: getCarrierColor(item.carrier),
-                        }))}
-                        title="Installed Capacities by Carrier"
-                        unit="MW"
-                      />
-                    ) : (
-                      <div className="text-center py-4">No data available</div>
-                    )}
-                    <div className="mt-4">
-                      {data.capacityExpansion.length > 0 ? (
-                        data.capacityExpansion.every(
-                          (item) => item.value === 0
-                        ) ? (
-                          <div className="text-sm text-muted-foreground text-center mb-4">
-                            No capacity expansion in 2021
-                          </div>
-                        ) : (
-                          <DonutChart
-                            data={data.capacityExpansion.map((item) => ({
-                              ...item,
-                              fill: getCarrierColor(item.carrier),
-                            }))}
-                            title="Capacity Expansion by Carrier"
-                            unit="MW"
-                          />
-                        )
-                      ) : (
-                        <div className="text-center py-4">
-                          No data available
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-
-                  {/* Generation Mix */}
-                  <Card className="p-4 min-h-[300px] section-generation-mix">
-                    <h3 className="font-semibold mb-4">Generation Mix</h3>
-                    {data.generationMix.length > 0 ? (
-                      <DonutChart
-                        data={data.generationMix.map((item) => ({
-                          ...item,
-                          fill: getCarrierColor(item.carrier),
-                        }))}
-                        title="Generation Mix by Carrier"
-                        unit="MWh"
-                      />
-                    ) : (
-                      <div className="text-center py-4">No data available</div>
-                    )}
                   </Card>
                 </>
               )}

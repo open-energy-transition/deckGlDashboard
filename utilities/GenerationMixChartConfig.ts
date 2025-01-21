@@ -1,4 +1,5 @@
 import { ChartConfig } from "@/components/ui/chart";
+import { off } from "process";
 
 export const GenerationMixchartConfig = {
   Biomass: {
@@ -77,8 +78,11 @@ export const GenerationMixchartConfig = {
     label: "Hydroelectricity",
     color: "hsl(var(--chart-onwind))",
   },
+  "Battery storage": {
+    label: "Battery Storage",
+    color: "hsl(var(--chart-bs))",
+  },
 } satisfies ChartConfig;
-
 
 export const GenerationMixchartConfigSmall = {
   biomass: {
@@ -132,5 +136,21 @@ export const GenerationMixchartConfigSmall = {
   csp: {
     label: "CSP",
     color: "hsl(var(--chart-csp))",
+  },
+  lignite: {
+    label: "Lignite",
+    color: "hsl(var(--chart-lignite))",
+  },
+  ror: {
+    label: "Run of River",
+    color: "hsl(var(--chart-ror))",
+  },
+  "offwind-ac": {
+    label: "off wind ac",
+    color: "hsl(var(--chart-offwind-ac))",
+  },
+  "offwind-dc": {
+    label: "off wind dc",
+    color: "hsl(var(--chart-offwind-dc))",
   },
 } satisfies ChartConfig;

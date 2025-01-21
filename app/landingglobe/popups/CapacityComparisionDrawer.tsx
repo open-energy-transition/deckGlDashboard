@@ -15,6 +15,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
 import useSWR from "swr";
 import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
+import { CarrierCapacityGeneralPie } from "@/components/Charts/CapacityGlobeChart";
 
 type Props = {
   selectedCountry: string;
@@ -22,110 +23,108 @@ type Props = {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const SystemCostDrawer = ({ selectedCountry }: Props) => {
-  const { data: totalCostsData2021 } = useSWR(
-    `/api/total_costs_by_techs/${selectedCountry}/2021`,
+const CapacityComparisionDrawer = ({ selectedCountry }: Props) => {
+  const { data: installedCapacityData2021 } = useSWR(
+    `/api/installed_capacity/${selectedCountry}/2021`,
     fetcher,
     { suspense: false }
   );
 
-  const { data: investmentCostsData2021 } = useSWR(
-    `/api/investment_costs_by_techs/${selectedCountry}/2021`,
+  const { data: capacityExpansionData2021 } = useSWR(
+    `/api/capacity_expansion/${selectedCountry}/2021`,
     fetcher,
     { suspense: false }
   );
 
-  const { data: totalCostsData2050 } = useSWR(
-    `/api/total_costs_by_techs/${selectedCountry}/2050`,
+  const { data: installedCapacityData2050 } = useSWR(
+    `/api/installed_capacity/${selectedCountry}/2050`,
     fetcher,
     { suspense: false }
   );
 
-  const { data: investmentCostsData2050 } = useSWR(
-    `/api/investment_costs_by_techs/${selectedCountry}/2050`,
+  const { data: capacityExpansionData2050 } = useSWR(
+    `/api/capacity_expansion/${selectedCountry}/2050`,
     fetcher,
     { suspense: false }
   );
 
-  const [totalCostsState2021, setTotalCostsState2021] =
-    React.useState<typeof totalCostsData2021>(null);
+  const [installedCapacityState2021, setInstalledCapacityState2021] =
+    React.useState<typeof installedCapacityData2021>(null);
 
-  const [investmentCostsState2021, setInvestmentCostsState2021] =
-    React.useState<typeof investmentCostsData2021>(null);
+  const [capacityExpansionState2021, setCapacityExpansionState2021] =
+    React.useState<typeof capacityExpansionData2021>(null);
 
-  const [totalCostsState2050, setTotalCostsState2050] =
-    React.useState<typeof totalCostsData2050>(null);
+  const [installedCapacityState2050, setInstalledCapacityState2050] =
+    React.useState<typeof installedCapacityData2050>(null);
 
-  const [investmentCostsState2050, setInvestmentCostsState2050] =
-    React.useState<typeof investmentCostsData2050>(null);
+  const [capacityExpansionState2050, setCapacityExpansionState2050] =
+    React.useState<typeof capacityExpansionData2050>(null);
 
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    if (totalCostsData2021?.data) {
-      setTotalCostsState2021(totalCostsData2021.data);
+    if (installedCapacityData2021?.data) {
+      setInstalledCapacityState2021(installedCapacityData2021.data);
     }
-  }, [totalCostsData2021]);
+  }, [installedCapacityData2021]);
 
   useEffect(() => {
-    if (investmentCostsData2021?.data) {
-      setInvestmentCostsState2021(investmentCostsData2021.data);
+    if (capacityExpansionData2021?.data) {
+      setCapacityExpansionState2021(capacityExpansionData2021.data);
     }
-  }, [investmentCostsData2021]);
+  }, [capacityExpansionData2021]);
 
   useEffect(() => {
-    if (totalCostsData2050?.data) {
-      setTotalCostsState2050(totalCostsData2050.data);
+    if (installedCapacityData2050?.data) {
+      setInstalledCapacityState2050(installedCapacityData2050.data);
     }
-  }, [totalCostsData2050]);
+  }, [installedCapacityData2050]);
 
   useEffect(() => {
-    if (investmentCostsData2050?.data) {
-      setInvestmentCostsState2050(investmentCostsData2050.data);
+    if (capacityExpansionData2050?.data) {
+      setCapacityExpansionState2050(capacityExpansionData2050.data);
     }
-  }, [investmentCostsData2050]);
+  }, [capacityExpansionData2050]);
 
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          compare system cost for {selectedCountry}
+          compare capacities for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
-        <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
+        <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center align-middle mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              2021 System Cost analysis for {selectedCountry}
+              Capacity Expasion Comparision : {selectedCountry}
             </DrawerTitle>
             <DrawerDescription className="">
               Compare total costs and investment costs by technologies
             </DrawerDescription>
           </DrawerHeader>
+          {/* left 2021 */}
           <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4 border-r-2">
             <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              System Costs 2021
+              capacity distribution 2021
             </h2>
-            <CarrierCostGeneral
-              data={totalCostsState2021}
-              costField="total_costs"
-            />
-            <CarrierCostGeneral
-              data={investmentCostsState2021}
-              costField="investment_cost"
+            <CarrierCapacityGeneralPie
+              data={installedCapacityState2021}
+              costField="installed_capacity"
             />
           </div>
+          {/* right 2050 */}
           <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4">
             <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
               Investment Cost 2050
             </h2>
-            <CarrierCostGeneral
-              data={totalCostsState2050}
-              costField="total_costs"
+            <CarrierCapacityGeneralPie
+              data={installedCapacityState2050}
+              costField="installed_capacity"
             />
-            <CarrierCostGeneral
-              data={investmentCostsState2050}
-              costField="investment_cost"
+            <CarrierCapacityGeneralPie
+              data={capacityExpansionState2050}
+              costField="capacity_expansion"
             />
           </div>
           <DrawerFooter className="w-full border-t">
@@ -139,4 +138,4 @@ const SystemCostDrawer = ({ selectedCountry }: Props) => {
   );
 };
 
-export default SystemCostDrawer;
+export default CapacityComparisionDrawer;
