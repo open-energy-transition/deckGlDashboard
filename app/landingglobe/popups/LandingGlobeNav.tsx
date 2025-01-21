@@ -18,6 +18,7 @@ import { useCountry } from "@/components/country-context";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Card } from "@/components/ui/card";
 import { DonutChart } from "@/components/Charts/DonutChart";
+import GlobeBottomDrawer from "./BottomDrawer";
 
 interface DataItem {
   carrier: string;
@@ -46,7 +47,7 @@ const GlobeNav = () => {
     electricityPrice: 0,
     capacities: [],
     generationMix: [],
-    capacityExpansion: []
+    capacityExpansion: [],
   });
 
   const fetchData = useCallback(async () => {
@@ -58,12 +59,12 @@ const GlobeNav = () => {
         electricityPrice: 0,
         capacities: [],
         generationMix: [],
-        capacityExpansion: []
+        capacityExpansion: [],
       });
       setLoading(false);
       return;
     }
-    
+
     setLoading(true);
     try {
       const responses = await Promise.all([
@@ -73,7 +74,7 @@ const GlobeNav = () => {
         fetch(`/api/electricity_prices/${selectedCountry}/2021`),
         fetch(`/api/installed_capacity/${selectedCountry}/2021`),
         fetch(`/api/generation_mix/${selectedCountry}/2021`),
-        fetch(`/api/capacity_expansion/${selectedCountry}/2021`)
+        fetch(`/api/capacity_expansion/${selectedCountry}/2021`),
       ]);
 
       const [
@@ -83,38 +84,45 @@ const GlobeNav = () => {
         electricityPricesData,
         capacitiesData,
         generationMixData,
-        capacityExpansionData
-      ] = await Promise.all(responses.map(r => r.json()));
+        capacityExpansionData,
+      ] = await Promise.all(responses.map((r) => r.json()));
 
       setData({
-        totalCosts: totalCostsData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.total_costs) || 0
-        })) || [],
-        investmentCosts: investmentCostsData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.investment_cost) || 0
-        })) || [],
-        co2Emissions: co2EmissionsData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.co2_emission) || 0
-        })) || [],
-        electricityPrice: parseFloat(electricityPricesData.data?.[0]?.electricity_price) || 0,
-        capacities: capacitiesData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.installed_capacity) || 0
-        })) || [],
-        generationMix: generationMixData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.generation) || 0
-        })) || [],
-        capacityExpansion: capacityExpansionData.data?.map((item: any) => ({
-          carrier: item.carrier,
-          value: parseFloat(item.capacity_expansion) || 0
-        })) || []
+        totalCosts:
+          totalCostsData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.total_costs) || 0,
+          })) || [],
+        investmentCosts:
+          investmentCostsData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.investment_cost) || 0,
+          })) || [],
+        co2Emissions:
+          co2EmissionsData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.co2_emission) || 0,
+          })) || [],
+        electricityPrice:
+          parseFloat(electricityPricesData.data?.[0]?.electricity_price) || 0,
+        capacities:
+          capacitiesData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.installed_capacity) || 0,
+          })) || [],
+        generationMix:
+          generationMixData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.generation) || 0,
+          })) || [],
+        capacityExpansion:
+          capacityExpansionData.data?.map((item: any) => ({
+            carrier: item.carrier,
+            value: parseFloat(item.capacity_expansion) || 0,
+          })) || [],
       });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setData({
         totalCosts: [],
         investmentCosts: [],
@@ -122,7 +130,7 @@ const GlobeNav = () => {
         electricityPrice: 0,
         capacities: [],
         generationMix: [],
-        capacityExpansion: []
+        capacityExpansion: [],
       });
     } finally {
       setLoading(false);
@@ -147,9 +155,12 @@ const GlobeNav = () => {
       onwind: "hsl(var(--chart-onwind))",
       ror: "hsl(var(--chart-ror))",
       solar: "hsl(var(--chart-solar))",
-      load: "hsl(var(--chart-load))"
+      load: "hsl(var(--chart-load))",
     };
-    return colorMap[carrier.toLowerCase()] || `hsl(var(--chart-${Math.floor(Math.random() * 5)}))`;
+    return (
+      colorMap[carrier.toLowerCase()] ||
+      `hsl(var(--chart-${Math.floor(Math.random() * 5)}))`
+    );
   };
 
   return (
@@ -162,18 +173,25 @@ const GlobeNav = () => {
           <SheetHeader>
             <SheetTitle>2021 Scenario</SheetTitle>
             <SheetDescription>
-              {selectedCountry ? `Analyzing data for ${selectedCountry}` : 'Select a country to view data'}
+              {selectedCountry
+                ? `Analyzing data for ${selectedCountry}`
+                : "Select a country to view data"}
             </SheetDescription>
           </SheetHeader>
 
           <div className="flex flex-col gap-4 flex-1">
             <CountryDropdown defaultValue={selectedCountry} />
+            <GlobeBottomDrawer selectedCountry={selectedCountry} />
 
             <div className="flex-1 space-y-4">
               {loading ? (
-                <div className="flex items-center justify-center py-8">Loading...</div>
+                <div className="flex items-center justify-center py-8">
+                  Loading...
+                </div>
               ) : !selectedCountry ? (
-                <div className="flex items-center justify-center py-8">Select a country to view data</div>
+                <div className="flex items-center justify-center py-8">
+                  Select a country to view data
+                </div>
               ) : (
                 <>
                   {/* System Costs */}
@@ -181,9 +199,9 @@ const GlobeNav = () => {
                     <h3 className="font-semibold mb-4">System Costs</h3>
                     {data.totalCosts.length > 0 ? (
                       <DonutChart
-                        data={data.totalCosts.map(item => ({
+                        data={data.totalCosts.map((item) => ({
                           ...item,
-                          fill: getCarrierColor(item.carrier)
+                          fill: getCarrierColor(item.carrier),
                         }))}
                         title="Total System Cost by Carrier"
                         unit="€"
@@ -194,15 +212,17 @@ const GlobeNav = () => {
                     <div className="mt-4">
                       {data.investmentCosts.length > 0 ? (
                         <DonutChart
-                          data={data.investmentCosts.map(item => ({
+                          data={data.investmentCosts.map((item) => ({
                             ...item,
-                            fill: getCarrierColor(item.carrier)
+                            fill: getCarrierColor(item.carrier),
                           }))}
                           title="Investment Cost by Carrier"
                           unit="€"
                         />
                       ) : (
-                        <div className="text-center py-4">No data available</div>
+                        <div className="text-center py-4">
+                          No data available
+                        </div>
                       )}
                     </div>
                   </Card>
@@ -212,9 +232,9 @@ const GlobeNav = () => {
                     <h3 className="font-semibold mb-4">Emissions</h3>
                     {data.co2Emissions.length > 0 ? (
                       <DonutChart
-                        data={data.co2Emissions.map(item => ({
+                        data={data.co2Emissions.map((item) => ({
                           ...item,
-                          fill: getCarrierColor(item.carrier)
+                          fill: getCarrierColor(item.carrier),
                         }))}
                         title="CO2 Emissions by Carrier"
                         unit="tCO2"
@@ -229,7 +249,9 @@ const GlobeNav = () => {
                     <h3 className="font-semibold mb-4">Electricity Prices</h3>
                     <div className="p-4 bg-muted rounded-md">
                       <p className="text-sm font-medium">Price</p>
-                      <p className="text-2xl font-bold">{data.electricityPrice.toFixed(2)} €/MWh</p>
+                      <p className="text-2xl font-bold">
+                        {data.electricityPrice.toFixed(2)} €/MWh
+                      </p>
                     </div>
                   </Card>
 
@@ -238,9 +260,9 @@ const GlobeNav = () => {
                     <h3 className="font-semibold mb-4">Capacity</h3>
                     {data.capacities.length > 0 ? (
                       <DonutChart
-                        data={data.capacities.map(item => ({
+                        data={data.capacities.map((item) => ({
                           ...item,
-                          fill: getCarrierColor(item.carrier)
+                          fill: getCarrierColor(item.carrier),
                         }))}
                         title="Installed Capacities by Carrier"
                         unit="MW"
@@ -250,22 +272,26 @@ const GlobeNav = () => {
                     )}
                     <div className="mt-4">
                       {data.capacityExpansion.length > 0 ? (
-                        data.capacityExpansion.every(item => item.value === 0) ? (
+                        data.capacityExpansion.every(
+                          (item) => item.value === 0
+                        ) ? (
                           <div className="text-sm text-muted-foreground text-center mb-4">
                             No capacity expansion in 2021
                           </div>
                         ) : (
                           <DonutChart
-                            data={data.capacityExpansion.map(item => ({
+                            data={data.capacityExpansion.map((item) => ({
                               ...item,
-                              fill: getCarrierColor(item.carrier)
+                              fill: getCarrierColor(item.carrier),
                             }))}
                             title="Capacity Expansion by Carrier"
                             unit="MW"
                           />
                         )
                       ) : (
-                        <div className="text-center py-4">No data available</div>
+                        <div className="text-center py-4">
+                          No data available
+                        </div>
                       )}
                     </div>
                   </Card>
@@ -275,9 +301,9 @@ const GlobeNav = () => {
                     <h3 className="font-semibold mb-4">Generation Mix</h3>
                     {data.generationMix.length > 0 ? (
                       <DonutChart
-                        data={data.generationMix.map(item => ({
+                        data={data.generationMix.map((item) => ({
                           ...item,
-                          fill: getCarrierColor(item.carrier)
+                          fill: getCarrierColor(item.carrier),
                         }))}
                         title="Generation Mix by Carrier"
                         unit="MWh"
