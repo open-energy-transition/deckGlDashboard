@@ -27,7 +27,7 @@ export function TransitionProvider({
             { y: "100%" },
             {
               y: 0,
-              duration: 0.5,
+              duration: 1,
               ease: "circ.inOut",
             }
           )
@@ -38,7 +38,7 @@ export function TransitionProvider({
             },
             {
               y: 0,
-              duration: 0.5,
+              duration: 1,
               ease: "circ.inOut",
             },
             "<50%"
@@ -56,7 +56,7 @@ export function TransitionProvider({
             { y: 0 },
             {
               y: "-100%",
-              duration: 0.5,
+              duration: 1,
               ease: "circ.inOut",
             }
           )
@@ -65,7 +65,7 @@ export function TransitionProvider({
             { y: 0 },
             {
               y: "-100%",
-              duration: 0.5,
+              duration: 1,
               ease: "circ.inOut",
             },
             "<50%"
