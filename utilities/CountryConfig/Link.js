@@ -4,16 +4,15 @@ const BASE_URL = "http://34.31.13.149:8000/geoserver/GIS_Dashboard/ows";
 export const toLowerCase = (str) => str.toLowerCase();
 
 export const COUNTRY_COLORS = {
-  au: '#E41E3C', // Primary red
-  br: '#7C9885', // Secondary green
-  co: '#D7E5BE', // Tertiary light green
-  de: '#CDDBB5', // Tertiary muted green
-  in: '#E3E6DA', // Tertiary light gray-green
-  it: '#F5F5DC', // Tertiary beige
-  mx: '#E6E6E6', // Neutral light gray
-  ng: '#F2F5F3', // Neutral off-white
-  us: '#1C1C2C', // Neutral dark
-  za: '#7C9885'  // Secondary green (repeated as we need 10 colors)
+  br: "#D41E3C", // Bright red
+  co: "#E4351F", // Red-orange
+  de: "#E42D4F", // Deep pink
+  in: "#E41F2A", // Pure red
+  it: "#D82836", // Cherry red
+  mx: "#C1272D", // Dark red
+  ng: "#FF1E3C", // Vivid red
+  us: "#E63946", // American red
+  za: "#DC143C", // Crimson
 };
 
 export const getGeoJsonData = (countryCode) => ({

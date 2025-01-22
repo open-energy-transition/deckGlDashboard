@@ -22,48 +22,10 @@ export const HeroSection = () => {
               </h1>
             </div>
             <p className="max-w-screen-sm mx-auto text-xl text-muted-foreground">
-              Have you ever wondered what exactly could look like the energy transition for your country? 
-              With the modern open source energy planning tools, you can design it yourself.
+              Have you ever wondered what exactly could look like the energy
+              transition for your country? With the modern open source energy
+              planning tools, you can design it yourself.
             </p>
-          </div>
-
-          {/* Capabilities Section */}
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 text-card-foreground">
-              Capabilities
-            </h2>
-            <p className="max-w-screen-sm mx-auto text-lg text-muted-foreground">
-              The project provides insights into application of state-of-the-art power system modeling 
-              for a few countries distributed across the globe. The Dashboard provides tools to examine 
-              the inputs and investigate the results.
-            </p>
-          </div>
-
-          {/* Glossary Section */}
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 text-card-foreground">
-              Glossary
-            </h2>
-            <p className="max-w-screen-sm mx-auto text-lg text-muted-foreground">
-              Power system models aim for emulating operation of the real power systems to explore 
-              implications of different versions of the future. That implies a detailed representation 
-              of the constraints substantial for operation of a real power system which are partially 
-              quite technical. To give you some guidance in this journey, we have explained the major 
-              terms in the glossary.
-            </p>
-          </div>
-
-          {/* Sources Section */}
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 text-card-foreground">
-              Sources
-            </h2>
-            <div className="max-w-screen-sm mx-auto text-lg text-muted-foreground space-y-2">
-              <p>PyPSA-Earth is the model used to obtain the results presented in the Dashboard.</p>
-              <p>PyPSA-Earth-Status is the project consolidating efforts to increase accuracy of the data 
-                provided by PyPSA-Earth modeling workflow for all countries of the world.</p>
-              {/* <p className="text-[#E31937]">PyPSA-Earth Regional Studies [TODO The input from the coordinators is needed]</p> */}
-            </div>
           </div>
 
           <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
