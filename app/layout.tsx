@@ -7,6 +7,7 @@ import { CountryProvider } from "@/components/country-context";
 import { NavigationMenuDemo } from "@/components/TopNavBar/TopNavBar";
 import { VisualizationProvider } from "@/components/visualization-context";
 import { NetworkViewProvider } from "@/components/network-view-context";
+import { TransitionProvider } from "@/components/TransitionProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,19 +37,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <CountryProvider>
-            <NavigationMenuDemo />
-            <VisualizationProvider>
-              <NetworkViewProvider>{children}</NetworkViewProvider>
-            </VisualizationProvider>
-          </CountryProvider>
-        </ThemeProvider>
+        <TransitionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <CountryProvider>
+              <NavigationMenuDemo />
+              <VisualizationProvider>
+                <NetworkViewProvider>{children}</NetworkViewProvider>
+              </VisualizationProvider>
+            </CountryProvider>
+          </ThemeProvider>
+        </TransitionProvider>
       </body>
     </html>
   );

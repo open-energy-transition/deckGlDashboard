@@ -24,6 +24,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -47,7 +48,7 @@ const components: { title: string; href: string; description: string }[] = [
   {
     title: "Transmission Lines",
     href: "/network",
-    description: 
+    description:
       "View and analyze power transmission lines with different capacity ranges shown through an interactive network visualization.",
   },
   {
@@ -64,46 +65,51 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-const globeComponents: { title: string; href: string; description: string }[] = [
-  {
-    title: "Scenario Comparison",
-    href: "/landingglobe",
-    description:
-      "Side-by-side visualization of energy scenarios: light map shows 2021 baseline, dark map displays 2050 sustainable transition targets.",
-  },
-  {
-    title: "System Costs",
-    href: "/landingglobe",
-    description:
-      "Analyze total system costs and investment costs by carrier type, tracking financial aspects of energy transition.",
-  },
-  {
-    title: "Emissions Analysis",
-    href: "/landingglobe",
-    description:
-      "Monitor CO2 emissions by carrier and track progress towards emission reduction goals, including investment per CO2 reduced.",
-  },
-  {
-    title: "Electricity Prices",
-    href: "/landingglobe",
-    description:
-      "Track electricity price changes between scenarios, understanding the economic implications of energy transition.",
-  },
-  {
-    title: "Generation Capacity",
-    href: "/landingglobe",
-    description:
-      "Compare installed capacities and capacity expansion by carrier type between current and future scenarios.",
-  },
-  {
-    title: "Generation Mix",
-    href: "/landingglobe",
-    description:
-      "Visualize the evolution of power generation mix, showing the transition from conventional to renewable energy sources.",
-  },
-];
+const globeComponents: { title: string; href: string; description: string }[] =
+  [
+    {
+      title: "Scenario Comparison",
+      href: "/landingglobe",
+      description:
+        "Side-by-side visualization of energy scenarios: light map shows 2021 baseline, dark map displays 2050 sustainable transition targets.",
+    },
+    {
+      title: "System Costs",
+      href: "/landingglobe",
+      description:
+        "Analyze total system costs and investment costs by carrier type, tracking financial aspects of energy transition.",
+    },
+    {
+      title: "Emissions Analysis",
+      href: "/landingglobe",
+      description:
+        "Monitor CO2 emissions by carrier and track progress towards emission reduction goals, including investment per CO2 reduced.",
+    },
+    {
+      title: "Electricity Prices",
+      href: "/landingglobe",
+      description:
+        "Track electricity price changes between scenarios, understanding the economic implications of energy transition.",
+    },
+    {
+      title: "Generation Capacity",
+      href: "/landingglobe",
+      description:
+        "Compare installed capacities and capacity expansion by carrier type between current and future scenarios.",
+    },
+    {
+      title: "Generation Mix",
+      href: "/landingglobe",
+      description:
+        "Visualize the evolution of power generation mix, showing the transition from conventional to renewable energy sources.",
+    },
+  ];
 
-const polygonComponents: { title: string; href: string; description: string }[] = [
+const polygonComponents: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Side by Side Comparison",
     href: "/sidebyside",
@@ -144,6 +150,7 @@ const polygonComponents: { title: string; href: string; description: string }[] 
 
 export function NavigationMenuDemo() {
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
   return (
     <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent max-w-[100vw]">
@@ -163,7 +170,9 @@ export function NavigationMenuDemo() {
                     Project Summary
                   </div>
                   <p className="text-sm leading-tight text-muted-foreground">
-                    Explore power system scenarios and energy transitions across different countries using PyPSA-Earth's advanced modeling capabilities.
+                    Explore power system scenarios and energy transitions across
+                    different countries using PyPSA-Earth's advanced modeling
+                    capabilities.
                   </p>
                 </div>
               </li>
@@ -172,19 +181,22 @@ export function NavigationMenuDemo() {
                   Open Energy Transition
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  A collaborative initiative to accelerate the global transition to sustainable energy through open-source tools and data.
+                  A collaborative initiative to accelerate the global transition
+                  to sustainable energy through open-source tools and data.
                 </p>
               </div>
               <div className="block p-3">
                 <div className="text-md font-medium">PyPSA-Earth</div>
                 <p className="text-sm text-muted-foreground">
-                  A global-scale energy system model that helps analyze and optimize power systems for a sustainable future.
+                  A global-scale energy system model that helps analyze and
+                  optimize power systems for a sustainable future.
                 </p>
               </div>
               <div className="block p-3">
                 <div className="text-md font-medium">PyPSA</div>
                 <p className="text-sm text-muted-foreground">
-                  Python for Power System Analysis - An open-source toolbox for simulating and optimizing modern power systems.
+                  Python for Power System Analysis - An open-source toolbox for
+                  simulating and optimizing modern power systems.
                 </p>
               </div>
             </ul>

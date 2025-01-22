@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/sheet";
 import MainControls from "../MainControls";
 import { Mode } from "./Mode";
+import { usePathname } from "next/navigation";
+import { useVisualization } from "@/components/visualization-context";
+import { useCountry } from "@/components/country-context";
 
 interface SideBySideNavProps {
   mode: Mode;
@@ -26,9 +29,7 @@ const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
   const { selectedCountry, setSelectedCountry } = useCountry();
   const { setSelectedRenewableType, setSelectedParameter } = useVisualization();
 
-  useEffect(() => {
-  }, [pathname]);
-
+  React.useEffect(() => {}, [pathname]);
 
   return (
     <Sheet modal={false} open={true}>
