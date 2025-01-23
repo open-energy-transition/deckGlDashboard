@@ -4,7 +4,7 @@ import { Moon, Sun, X, ChevronRight, ChevronLeft } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -23,19 +23,14 @@ import { Button } from "@/components/ui/button";
 interface SideBySideNavProps {
   mode: Mode;
   setMode: (mode: Mode) => void;
-  onDrawerOpenChange?: (open: boolean) => void;
 }
 
-const SideBySideNav = ({ mode, setMode, onDrawerOpenChange }: SideBySideNavProps) => {
+const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry, setSelectedCountry } = useCountry();
   const { setSelectedRenewableType, setSelectedParameter } = useVisualization();
   const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    onDrawerOpenChange?.(open);
-  }, [open, onDrawerOpenChange]);
 
   React.useEffect(() => {}, [pathname]);
 
@@ -49,30 +44,13 @@ const SideBySideNav = ({ mode, setMode, onDrawerOpenChange }: SideBySideNavProps
       >
         {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
       </Button>
-      <Sheet 
-        modal={true} 
-        open={open} 
-        onOpenChange={(newOpen) => {
-          // Only allow closing through the X button or chevron
-          if (!newOpen && open) {
-            return;
-          }
-          setOpen(newOpen);
-          onDrawerOpenChange?.(newOpen);
-        }}
-      >
+      <Sheet modal={false} open={open} onOpenChange={setOpen}>
         <SheetContent
           side="left"
           className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
         >
           <SheetHeader className="relative">
-            <SheetClose 
-              className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
-              onClick={() => {
-                setOpen(false);
-                onDrawerOpenChange?.(false);
-              }}
-            >
+            <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </SheetClose>

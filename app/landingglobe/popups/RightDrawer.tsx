@@ -33,22 +33,21 @@ interface DrawerData {
   investmentPerCO2: number;
 }
 
-const RightDrawer = () => {
+interface DrawerProps {
+  open: boolean;
+  setIsOpen: (open: boolean) => void;
+}
+
+const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState(true);
   const [data, setData] = useState<DrawerData>({
     electricityPrice: 0,
     investmentPerCO2: 0,
   });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const fetchData = useCallback(async () => {
     if (!selectedCountry) {
@@ -105,25 +104,31 @@ const RightDrawer = () => {
     fetchData();
   }, [fetchData]);
 
+  if (!selectedCountry) {
+    return null;
+  }
+
   return (
     <>
       <Button
         variant="ghost"
         size="icon"
         className={`fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-1/2"}`}
-        onClick={() => setOpen(!open)}
+        onClick={() => setIsOpen(!open)}
       >
         {open ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
       </Button>
-      <Sheet modal={false} open={open} onOpenChange={setOpen}>
+      <Sheet modal={false} open={true}>
         <ScrollSyncPane>
           <SheetContent
             ref={contentRef}
             side="right"
-            className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+            className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
+              open ? "translate-x-0" : "translate-x-full"
+            } transition-transform duration-200`}
           >
             <SheetHeader className="relative">
-              <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+              <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary" onClick={() => setIsOpen(false)}>
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </SheetClose>
@@ -161,7 +166,7 @@ const RightDrawer = () => {
             </Card>
 
             <SheetFooter className="mt-auto">
-              {mounted && (
+              {selectedCountry && (
                 <div className="flex items-center space-x-2 pt-4 border-t border-border w-full">
                   <Switch
                     id="theme"
