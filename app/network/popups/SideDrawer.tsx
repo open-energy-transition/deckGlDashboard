@@ -54,12 +54,6 @@ export default function MySideDrawer({ open, setOpen, side = "right", data }: Si
 
   return (
     <>
-      <div
-        className="absolute top-0 right-0 w-20 h-20 bg-red-50"
-        onClick={() => {
-          setOpen(true);
-        }}
-      ></div>
       <Sheet modal={false} open={open} onOpenChange={setOpen}>
         <SheetContent
           side={side}

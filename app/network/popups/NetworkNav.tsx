@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -18,20 +18,34 @@ import BottomDrawer from "@/components/BottomDrawer";
 import MapLegend from "@/app/network/components/MapLegend";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 
-const NetworkNav = () => {
+type Props = {
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const NetworkNav = ({ show, setShow }: Props) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
 
-  useEffect(() => {
-  }, [pathname]);
+  useEffect(() => {}, [pathname]);
 
   return (
     <Sheet modal={false} open={true}>
       <SheetContent
         side="left"
-        className="fixed top-0 left-0 w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+        className={`fixed top-0 left-0 w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
+          show ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
+        <div
+          className="absolute t-0 right-2 h-8 w-8 bg-background cursor-pointer"
+          onClick={() => {
+            setShow(false);
+          }}
+        >
+          <X className="h-full w-full" />
+        </div>
         <SheetHeader>
           <SheetTitle>Network Statistics</SheetTitle>
           <SheetDescription>
@@ -42,9 +56,11 @@ const NetworkNav = () => {
         <div className="flex flex-col gap-4 flex-1">
           <CountryDropdown defaultValue={selectedCountry} />
 
-          <div className="flex-1">
-            <BottomDrawer selectedCountry={selectedCountry} />
-          </div>
+          <BottomDrawer
+            selectedCountry={selectedCountry}
+            showparent={show}
+            setShowParent={setShow}
+          />
 
           <div className="mt-auto">
             <div className="text-lg font-semibold mb-2">Network Legend</div>

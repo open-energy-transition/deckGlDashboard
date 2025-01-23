@@ -22,11 +22,17 @@ import { ScrollBar } from "./ui/scroll-area";
 
 type Props = {
   selectedCountry: string;
+  showparent: boolean;
+  setShowParent: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const BottomDrawer = ({ selectedCountry }: Props) => {
+const BottomDrawer = ({
+  selectedCountry,
+  showparent,
+  setShowParent,
+}: Props) => {
   const { data: capacityComparisonData } = useSWR(
     `/api/capacity_comparison/${selectedCountry}`,
     fetcher
@@ -59,6 +65,14 @@ const BottomDrawer = ({ selectedCountry }: Props) => {
   }, [demandComparisonData]);
 
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setShowParent(false);
+    } else {
+      setShowParent(true);
+    }
+  }, [open]);
 
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>

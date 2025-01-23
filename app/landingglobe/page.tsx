@@ -51,7 +51,7 @@ const Page = () => {
     setHeight(window.innerHeight);
   }, []);
 
-  const [drawerOpen, setdrawerOpen] = useState(true);
+  const [drawerOpen, setdrawerOpen] = useState(false);
 
   useEffect(() => {
     // setdrawerOpen(true);
@@ -61,7 +61,7 @@ const Page = () => {
   return (
     <>
       <div
-        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 h-20 w-20"
+        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 h-20 w-20 cursor-pointer"
         onClick={() => {
           setdrawerOpen(true);
         }}
