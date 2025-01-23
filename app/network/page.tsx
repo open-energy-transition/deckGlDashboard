@@ -10,15 +10,7 @@ const Page = () => {
     <div>
       <div className="absolute w-full h-full z-0 left-0 top-0 overflow-hidden ">
         <MainMap />
-        <NetworkNav show={show} setShow={setShow} />
-        <div
-          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 h-20 w-20 cursor-pointer"
-          onClick={() => {
-            setShow(true);
-          }}
-        >
-          <LucideArrowRightSquare className="h-full w-full" />
-        </div>
+        <NetworkNav />
       </div>
     </div>
   );
