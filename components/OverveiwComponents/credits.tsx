@@ -21,10 +21,6 @@ export const CreditsSection = () => {
         <Link href="https://openenergytransition.org/" target="_blank" className="text-[#E31937] hover:text-[#E31937]/80 transition-colors font-medium">
           Open Energy Transition (OET)
         </Link>
-        , and{" "}
-        <Link href="https://www.hft-stuttgart.com/" target="_blank" className="text-[#E31937] hover:text-[#E31937]/80 transition-colors font-medium">
-          Stuttgart University of Applied Sciences
-        </Link>
         .
       </p>
 
