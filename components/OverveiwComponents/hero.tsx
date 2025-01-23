@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
@@ -8,11 +8,11 @@ export const HeroSection = () => {
   const { theme } = useTheme();
   return (
     <section className="container w-full">
-      <div className="grid place-items-center lg:max-w-screen-xl mt-28 sm:mt-16 md:mt-0 gap-8 mx-auto py-32 md:py-80">
+      <div className="grid place-items-center lg:max-w-screen-xl mt-24 sm:mt-14 md:mt-0 gap-8 mx-auto py-32 md:py-80">
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto text-center text-4xl md:text-6xl lg:text-8xl font-bold">
+            <div className="mx-auto text-center text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
                 Welcome! to
                 <span className="text-transparent px-2 bg-gradient-to-r from-[#E31937] to-primary bg-clip-text">
