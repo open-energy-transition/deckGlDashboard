@@ -22,15 +22,11 @@ import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
 
 type Props = {
   selectedCountry: string;
-  setParentIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const GenerationMixBottomDrawer = ({
-  selectedCountry,
-  setParentIsOpen,
-}: Props) => {
+const GenerationMixBottomDrawer = ({ selectedCountry }: Props) => {
   const { data: generationComparisonData2050 } = useSWR(
     `/api/generation_mix/${selectedCountry}/2050`,
     fetcher,
@@ -62,14 +58,6 @@ const GenerationMixBottomDrawer = ({
       setGenerationComparisonState2021(generationComparisonData2021.data);
     }
   }, [generationComparisonData2021]);
-
-  useEffect(() => {
-    if (open) {
-      setParentIsOpen(false);
-    } else {
-      setParentIsOpen(true);
-    }
-  }, [open]);
 
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>

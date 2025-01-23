@@ -18,12 +18,11 @@ import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
 
 type Props = {
   selectedCountry: string;
-  setParentIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const SystemCostDrawer = ({ selectedCountry, setParentIsOpen }: Props) => {
+const SystemCostDrawer = ({ selectedCountry }: Props) => {
   const { data: totalCostsData2021 } = useSWR(
     `/api/total_costs_by_techs/${selectedCountry}/2021`,
     fetcher,
@@ -85,14 +84,6 @@ const SystemCostDrawer = ({ selectedCountry, setParentIsOpen }: Props) => {
       setInvestmentCostsState2050(investmentCostsData2050.data);
     }
   }, [investmentCostsData2050]);
-
-  useEffect(() => {
-    if (open) {
-      setParentIsOpen(false);
-    } else {
-      setParentIsOpen(true);
-    }
-  }, [open]);
 
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>

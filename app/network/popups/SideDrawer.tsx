@@ -1,18 +1,27 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { ChartRadial } from "@/components/Charts/ChartRadial";
 import { Card } from "@/components/ui/card";
 import { GeneratorData, SideDrawerProps } from "@/app/types";
+import { X, ChevronRight, ChevronLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default function MySideDrawer({ open, setOpen, side = "right", data }: SideDrawerProps) {
+export default function MySideDrawer({
+  open,
+  setOpen,
+  side = "right",
+  data,
+}: SideDrawerProps) {
   const [generatorData, setGeneratorData] = useState<GeneratorData[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,23 +34,23 @@ export default function MySideDrawer({ open, setOpen, side = "right", data }: Si
     try {
       setLoading(true);
       const response = await fetch(`/api/buseschart/${data.countryCode}`);
-      if (!response.ok) throw new Error('Network response was not ok');
-      
+      if (!response.ok) throw new Error("Network response was not ok");
+
       const result = await response.json();
       const filteredData = result.data
         .filter((item: any) => item.bus === data.busId)
         .map((item: any) => ({
-          Generator: item.Generator || item.generator || '',
+          Generator: item.Generator || item.generator || "",
           p_nom: item.p_nom || 0,
           p_nom_opt: item.p_nom_opt || 0,
-          carrier: item.carrier || '',
-          bus: item.bus || '',
-          country_code: data.countryCode
+          carrier: item.carrier || "",
+          bus: item.bus || "",
+          country_code: data.countryCode,
         }));
-      
+
       setGeneratorData(filteredData);
     } catch (error) {
-      console.error('Error fetching bus data:', error);
+      console.error("Error fetching bus data:", error);
       setGeneratorData([]);
     } finally {
       setLoading(false);
@@ -54,18 +63,42 @@ export default function MySideDrawer({ open, setOpen, side = "right", data }: Si
 
   return (
     <>
-      <div
-        className="absolute top-0 right-0 w-20 h-20 bg-red-50"
-        onClick={() => {
-          setOpen(true);
-        }}
-      ></div>
+      <Button
+        variant="ghost"
+        size="icon"
+        className={`fixed ${
+          side === "right" ? "right-0" : "left-0"
+        } top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${
+          open
+            ? "translate-x-0"
+            : side === "right"
+            ? "-translate-x-1/2"
+            : "translate-x-1/2"
+        }`}
+        onClick={() => setOpen(!open)}
+      >
+        {side === "right" ? (
+          open ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )
+        ) : open ? (
+          <ChevronLeft className="h-4 w-4" />
+        ) : (
+          <ChevronRight className="h-4 w-4" />
+        )}
+      </Button>
       <Sheet modal={false} open={open} onOpenChange={setOpen}>
         <SheetContent
           side={side}
           className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
         >
-          <SheetHeader>
+          <SheetHeader className="relative">
+            <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
             <SheetTitle>
               {data?.busId ? `Bus ${data.busId} Statistics` : "Select a Bus"}
             </SheetTitle>

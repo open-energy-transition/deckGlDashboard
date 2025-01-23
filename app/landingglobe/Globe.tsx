@@ -50,8 +50,8 @@ const fetcher = (url: string): Promise<FetcherResponse> =>
 
 const GlobeViz = () => {
   const { selectedCountry, setSelectedCountry } = useCountry();
-
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
+  const globeRef = useRef<any>(null);
 
   const endpoints = Object.keys(COUNTRY_COORDINATES).map(
     (country) => getGeoJsonData(country).countryView
@@ -67,14 +67,22 @@ const GlobeViz = () => {
     }, {} as FetcherResponse);
   });
 
-  const getPolygonColor = (d: any) => {
+  useEffect(() => {
+    return () => {
+      if (globeRef.current?.__kapsuleInstance) {
+        globeRef.current.__kapsuleInstance = null;
+      }
+    };
+  }, []);
+
+  const getPolygonColor = useCallback((d: any) => {
     const countryCode = d.id
       ?.split("_")[0]
       ?.toLowerCase() as keyof typeof COUNTRY_COLORS;
     return COUNTRY_COLORS[countryCode] || "#cccccc";
-  };
+  }, []);
 
-  const getPolygonSideColor = (d: any) => {
+  const getPolygonSideColor = useCallback((d: any) => {
     const countryCode = d.id?.split("_")[0]?.toLowerCase();
     const baseColor =
       COUNTRY_COLORS[countryCode as keyof typeof COUNTRY_COLORS] || "#cccccc";
@@ -82,52 +90,69 @@ const GlobeViz = () => {
     const g = parseInt(baseColor.slice(3, 5), 16);
     const b = parseInt(baseColor.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, 0.3)`;
-  };
+  }, []);
+
+  const handleClick = useCallback((...args: unknown[]) => {
+    const countryCode = (args[1] as { id: string }).id
+      ?.split("_")[0]
+      ?.substring(0, 2)
+      .toLowerCase();
+
+    setSelectedCountry(
+      countryCode.toUpperCase() as
+        | "AU"
+        | "BR"
+        | "CO"
+        | "DE"
+        | "IN"
+        | "IT"
+        | "MX"
+        | "NG"
+        | "US"
+        | "ZA"
+    );
+  }, [setSelectedCountry]);
 
   return (
-    <R3fGlobe
-      bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-      globeImageUrl={
-        theme === "dark"
-          ? "//unpkg.com/three-globe/example/img/earth-dark.jpg"
-          : EarthLightUrl.src
-      }
-      polygonsData={data?.features || []}
-      polygonCapColor={getPolygonColor}
-      polygonSideColor={getPolygonSideColor}
-      polygonStrokeColor={getPolygonColor}
-      polygonAltitude={(d: any) => {
-        const countryCode = d.id?.split("_")[0]?.substring(0, 2).toLowerCase();
-        if (selectedCountry === countryCode.toUpperCase()) {
-          return 0.1;
+    <Canvas camera={{ position: [0, 0, 250] }}>
+      <OrbitControls
+        minDistance={101}
+        maxDistance={1e4}
+        dampingFactor={0.1}
+        zoomSpeed={0.3}
+        rotateSpeed={0.3}
+      />
+      <color attach="background" args={[0, 0, 0]} />
+      <ambientLight intensity={Math.PI} />
+      <directionalLight intensity={0.6 * Math.PI} />
+      <R3fGlobe
+        ref={globeRef}
+        bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+        globeImageUrl={
+          theme === "dark"
+            ? "//unpkg.com/three-globe/example/img/earth-dark.jpg"
+            : EarthLightUrl.src
         }
-
-        return 0.01;
-      }}
-      onHover={useCallback((...args: unknown[]) => {
-        
-      }, [])}
-      onClick={useCallback((...args: unknown[]) => {
-        const countryCode = (args[1] as { id: string }).id
-          ?.split("_")[0]
-          ?.substring(0, 2)
-          .toLowerCase();
-
-        setSelectedCountry(
-          countryCode.toUpperCase() as
-            | "AU"
-            | "BR"
-            | "CO"
-            | "DE"
-            | "IN"
-            | "IT"
-            | "MX"
-            | "NG"
-            | "US"
-            | "ZA"
-        );
-      }, [])}
-    />
+        polygonsData={data?.features || []}
+        polygonCapColor={getPolygonColor}
+        polygonSideColor={getPolygonSideColor}
+        polygonStrokeColor={getPolygonColor}
+        polygonAltitude={(d: any) => {
+          const countryCode = d.id?.split("_")[0]?.substring(0, 2).toLowerCase();
+          return selectedCountry === countryCode.toUpperCase() ? 0.1 : 0.01;
+        }}
+        onClick={handleClick}
+      />
+      <Stars
+        radius={100}
+        depth={50}
+        count={5000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={1}
+      />
+    </Canvas>
   );
 };
 
