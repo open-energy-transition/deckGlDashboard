@@ -60,7 +60,7 @@ const Menu = () => {
         Menu
       </div>
       <div
-        className="absolute left-0 top-0 z-10 hidden h-0 w-screen flex-col items-center justify-center gap-4 bg-background font-mono text-3xl opacity-0"
+        className="absolute left-0 top-0 z-10 hidden h-0 w-screen flex-col items-center justify-center gap-4 bg-card font-mono text-3xl opacity-0"
         ref={menuContainer}
       >
         <X

@@ -44,10 +44,12 @@ const NetworkNav = () => {
           <ChevronRight className="h-4 w-4" />
         )}
       </Button>
-      <Sheet modal={false} open={open} onOpenChange={setOpen}>
+      <Sheet modal={false} open={true} onOpenChange={setOpen}>
         <SheetContent
           side="left"
-          className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+          className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
+            open ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-200`}
         >
           <SheetHeader>
             <SheetTitle>Network Statistics</SheetTitle>
@@ -59,7 +61,11 @@ const NetworkNav = () => {
           <div className="flex flex-col gap-4 flex-1">
             <CountryDropdown defaultValue={selectedCountry} />
 
-            <BottomDrawer selectedCountry={selectedCountry} />
+            <BottomDrawer
+              selectedCountry={selectedCountry}
+              isParentOpen={open}
+              setIsParentOpen={setOpen}
+            />
 
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
