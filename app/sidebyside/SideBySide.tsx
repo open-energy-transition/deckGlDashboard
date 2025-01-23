@@ -27,28 +27,14 @@ function DeckGLOverlay(props: MapboxOverlayProps) {
   return null;
 }
 
-const TOKEN =
-  "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw";
-
-const LeftMapStyle: React.CSSProperties = {
-  position: "absolute",
-  width: "50%",
-  height: "100%",
-  left: 0,
-};
-
-const RightMapStyle: React.CSSProperties = {
-  position: "absolute",
-  width: "50%",
-  height: "100%",
-  left: "50%",
-};
+const TOKEN = "pk.eyJ1IjoiYWtzaGF0bWl0dGFsMDAwNyIsImEiOiJjbTFoemJiaHAwa3BoMmpxMWVyYjY1MTM3In0.4XAyidtzk9SRyiyfonIvdw";
 
 interface SideBySideProps {
   mode: Mode;
+  isDrawerOpen: boolean;
 }
 
-export default function SideBySide({ mode }: SideBySideProps) {
+export default function SideBySide({ mode, isDrawerOpen }: SideBySideProps) {
   const { selectedCountry } = useCountry();
   const [activeMap, setActiveMap] = useState<"left" | "right">("left");
   const { selectedRenewableType, selectedParameter } = useVisualization();
@@ -63,7 +49,7 @@ export default function SideBySide({ mode }: SideBySideProps) {
     bearing: 0,
   });
 
-  const width = typeof window === "undefined" ? 100 : window.innerWidth;
+  const width = typeof window === "undefined" ? 100 : window.innerWidth - (isDrawerOpen ? 384 : 0);
   const leftMapPadding = useMemo(() => {
     return {
       left: mode === "split-screen" ? width / 2 : 0,
@@ -97,7 +83,7 @@ export default function SideBySide({ mode }: SideBySideProps) {
   const [layer2021, setLayer2021] = useState<GeoJsonLayer[]>([]);
   const [layer2050, setLayer2050] = useState<GeoJsonLayer[]>([]);
 
-  const getColorForParameter = (value: number, parameter: string) => {
+  const getColorForParameter = useCallback((value: number, parameter: string) => {
     type ColorScale = Array<[number, [number, number, number, number]]>;
 
     const scales: Record<string, ColorScale> = {
@@ -126,39 +112,36 @@ export default function SideBySide({ mode }: SideBySideProps) {
 
     const scale = scales[parameter as keyof typeof scales] || scales.cf;
 
-    // Linear interpolation between colors
     for (let i = 1; i < scale.length; i++) {
       if (value <= scale[i][0]) {
         const t = (value - scale[i - 1][0]) / (scale[i][0] - scale[i - 1][0]);
-        const startColor = scale[i - 1][1] as [number, number, number, number];
-        const endColor = scale[i][1] as [number, number, number, number];
+        const startColor = scale[i - 1][1];
+        const endColor = scale[i][1];
         return startColor.map((start, j) =>
           Math.round(start + t * (endColor[j] - start))
         ) as [number, number, number, number];
       }
     }
     return scale[scale.length - 1][1];
-  };
+  }, []);
 
-  const filterAndColorFeatures = (
-    feature: any
-  ): [number, number, number, number] => {
+  const filterAndColorFeatures = useCallback((feature: any): [number, number, number, number] => {
     const generator = feature.properties.Generator?.toLowerCase() || "";
     const type = generator.split(" ").slice(-1)[0];
 
     if (type !== selectedRenewableType) {
-      return [0, 0, 0, 0]; // Transparent if not selected type
+      return [0, 0, 0, 0];
     }
 
     const paramValue = feature.properties[selectedParameter];
     return getColorForParameter(paramValue || 0, selectedParameter);
-  };
+  }, [selectedRenewableType, selectedParameter, getColorForParameter]);
 
   useEffect(() => {
     const commonProps = {
       stroked: true,
       filled: true,
-      getFillColor: filterAndColorFeatures as any,
+      getFillColor: filterAndColorFeatures,
       getLineColor: [255, 255, 255] as [number, number, number],
       getLineWidth: 1,
       lineWidthMinPixels: 1,
@@ -171,15 +154,10 @@ export default function SideBySide({ mode }: SideBySideProps) {
       updateTriggers: {
         getFillColor: [selectedRenewableType, selectedParameter],
       },
-      onHover: (info: any) => {
-        if (info.object) {
-        }
-      },
     };
 
     const urls = getGeoJsonData(selectedCountry);
 
-    // Fetch 2021 data
     fetch(urls.regions_2021)
       .then((response) => response.json())
       .then((data) => {
@@ -192,7 +170,6 @@ export default function SideBySide({ mode }: SideBySideProps) {
         ]);
       });
 
-    // Fetch 2050 data
     fetch(urls.regions_2050)
       .then((response) => response.json())
       .then((data) => {
@@ -204,29 +181,36 @@ export default function SideBySide({ mode }: SideBySideProps) {
           }),
         ]);
       });
-  }, [selectedCountry, selectedRenewableType, selectedParameter]);
+  }, [selectedCountry, selectedRenewableType, selectedParameter, filterAndColorFeatures]);
 
   useEffect(() => {
-    // Update viewState when country changes
     setViewState({
       ...viewState,
       latitude: COUNTRY_COORDINATES[selectedCountry][0],
       longitude: COUNTRY_COORDINATES[selectedCountry][1],
       zoom: COUNTRY_VIEW_CONFIG[selectedCountry].zoom,
-      bearing: 0,
-      pitch: 0,
     });
   }, [selectedCountry]);
 
+  const containerStyle = useMemo(() => ({
+    position: 'absolute' as const,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: isDrawerOpen ? '384px' : '96px',
+    transition: 'all 300ms ease',
+    width: `calc(100% - ${isDrawerOpen ? '384px' : '96px'})`,
+    overflow: 'hidden'
+  }), [isDrawerOpen]);
+
   return (
-    <div className="absolute top-0 right-0 w-[80vw] h-screen">
+    <div style={containerStyle}>
       <Map
         id="left-map"
         {...viewState}
-        padding={leftMapPadding}
         onMoveStart={onLeftMoveStart}
         onMove={activeMap === "left" ? onMove : undefined}
-        style={LeftMapStyle}
+        style={{ position: 'absolute', width: '50%', height: '100%', left: 0 }}
         mapStyle="mapbox://styles/mapbox/light-v9"
         mapboxAccessToken={TOKEN}
       >
@@ -237,10 +221,9 @@ export default function SideBySide({ mode }: SideBySideProps) {
       <Map
         id="right-map"
         {...viewState}
-        padding={rightMapPadding}
         onMoveStart={onRightMoveStart}
         onMove={activeMap === "right" ? onMove : undefined}
-        style={RightMapStyle}
+        style={{ position: 'absolute', width: '50%', height: '100%', left: '50%' }}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxAccessToken={TOKEN}
       >

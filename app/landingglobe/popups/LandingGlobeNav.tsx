@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, X, ChevronRight, ChevronLeft } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -12,10 +12,12 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { useCountry } from "@/components/country-context";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import useSWR from "swr";
 import { Co2EmmisionsPie } from "@/components/Charts/Co2EmmisionsPie";
 
@@ -35,6 +37,7 @@ const GlobeNav = () => {
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(true);
   const [data, setData] = useState<DrawerData>({
     electricityPrice: 0,
   });
@@ -93,44 +96,58 @@ const GlobeNav = () => {
   }, [fetchData]);
 
   return (
-    <Sheet modal={false} open={true}>
-      <SheetContent
-        side="left"
-        className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${open ? "translate-x-0" : "translate-x-1/2"}`}
+        onClick={() => setOpen(!open)}
       >
-        <SheetHeader>
-          <SheetTitle>2021 Scenario</SheetTitle>
-          <SheetDescription>
-            {selectedCountry
-              ? `Analyzing data for ${selectedCountry}`
-              : "Select a country to view data"}
-          </SheetDescription>
-        </SheetHeader>
+        {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+      </Button>
+      <Sheet modal={false} open={open} onOpenChange={setOpen}>
+        <SheetContent
+          side="left"
+          className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+        >
+          <SheetHeader className="relative">
+            <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
+            <SheetTitle>2021 Scenario</SheetTitle>
+            <SheetDescription>
+              {selectedCountry
+                ? `Analyzing data for ${selectedCountry}`
+                : "Select a country to view data"}
+            </SheetDescription>
+          </SheetHeader>
 
-        <div className="flex flex-col gap-4 flex-1">
-          <CountryDropdown defaultValue={selectedCountry} />
-          <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
-          <Card className="p-4 min-h-[150px] section-electricity-prices">
-            <h3 className="text-2xl font-semibold mb-4">Electricity Prices</h3>
-            <p className="text-2xl font-semibold mb-4">
-              {data.electricityPrice.toFixed(2)} €/MWh
-            </p>
-          </Card>
-          <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
-            <Switch
-              id="theme"
-              checked={theme === "light"}
-              onCheckedChange={() =>
-                setTheme(theme === "dark" ? "light" : "dark")
-              }
-            />
-            <Label htmlFor="theme">
-              {theme === "light" ? <Moon /> : <Sun />}
-            </Label>
+          <div className="flex flex-col gap-4 flex-1">
+            <CountryDropdown defaultValue={selectedCountry} />
+            <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
+            <Card className="p-4 min-h-[150px] section-electricity-prices">
+              <h3 className="text-2xl font-semibold mb-4">Electricity Prices</h3>
+              <p className="text-2xl font-semibold mb-4">
+                {data.electricityPrice.toFixed(2)} €/MWh
+              </p>
+            </Card>
+            <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
+              <Switch
+                id="theme"
+                checked={theme === "light"}
+                onCheckedChange={() =>
+                  setTheme(theme === "dark" ? "light" : "dark")
+                }
+              />
+              <Label htmlFor="theme">
+                {theme === "light" ? <Moon /> : <Sun />}
+              </Label>
+            </div>
           </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 
