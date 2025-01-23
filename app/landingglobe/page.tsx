@@ -13,7 +13,7 @@ const Globe = dynamic(() => import("./Globe"), {
 
 interface DrawerProps {
   open: boolean;
-  setIsOpen: (open: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function LandingGlobe() {

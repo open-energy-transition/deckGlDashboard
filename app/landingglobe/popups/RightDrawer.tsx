@@ -35,7 +35,7 @@ interface DrawerData {
 
 interface DrawerProps {
   open: boolean;
-  setIsOpen: (open: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
@@ -149,9 +149,21 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
               </SheetDescription>
             </SheetHeader>
 
-            <GenerationMixBottomDrawer selectedCountry={selectedCountry} />
-            <SystemCostDrawer selectedCountry={selectedCountry} />
-            <CapacityComparisionDrawer selectedCountry={selectedCountry} />
+            <GenerationMixBottomDrawer
+              selectedCountry={selectedCountry}
+              isParentOpen={open}
+              setIsParentOpen={setIsOpen}
+            />
+            <SystemCostDrawer
+              selectedCountry={selectedCountry}
+              isParentOpen={open}
+              setIsParentOpen={setIsOpen}
+            />
+            <CapacityComparisionDrawer
+              selectedCountry={selectedCountry}
+              isParentOpen={open}
+              setIsParentOpen={setIsOpen}
+            />
 
             <Card className="p-4 min-h-[300px] section-emissions">
               <h3 className="font-semibold mb-4">Emissions</h3>
