@@ -111,7 +111,8 @@ body {
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 60 9.1% 97.8%;
-    --border: 351 79% 51% / 0.18;
+    /* --border: 351 79% 51% / 0.18; */
+    --border: 0 0% 20%;
     --input:  139 12% 54%;
     --ring: 351 79% 51% / 0.18;
     --oet-red: 0 84.2% 60.2%;

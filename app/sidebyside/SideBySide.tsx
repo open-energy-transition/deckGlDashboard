@@ -219,7 +219,7 @@ export default function SideBySide({ mode }: SideBySideProps) {
   }, [selectedCountry]);
 
   return (
-    <div className="absolute top-0 right-0 w-[80vw] h-screen">
+    <div className="absolute top-0 right-0 w-screen h-screen">
       <Map
         id="left-map"
         {...viewState}
