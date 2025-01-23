@@ -24,21 +24,21 @@ export function TransitionProvider({
           })
           .fromTo(
             firstLayer.current,
-            { y: "100%" },
+            { x: "-100%" },
             {
-              y: 0,
-              duration: 1,
+              x: 0,
+              duration: 0.5,
               ease: "circ.inOut",
             }
           )
           .fromTo(
             secondLayer.current,
             {
-              y: "100%",
+              x: "-100%",
             },
             {
-              y: 0,
-              duration: 1,
+              x: 0,
+              duration: 0.5,
               ease: "circ.inOut",
             },
             "<50%"
@@ -53,19 +53,19 @@ export function TransitionProvider({
           .timeline()
           .fromTo(
             secondLayer.current,
-            { y: 0 },
+            { x: 0 },
             {
-              y: "-100%",
-              duration: 1,
+              x: "100%",
+              duration: 0.5,
               ease: "circ.inOut",
             }
           )
           .fromTo(
             firstLayer.current,
-            { y: 0 },
+            { x: 0 },
             {
-              y: "-100%",
-              duration: 1,
+              x: "100%",
+              duration: 0.5,
               ease: "circ.inOut",
             },
             "<50%"
@@ -81,11 +81,11 @@ export function TransitionProvider({
 
       <div
         ref={firstLayer}
-        className="absolute inset-0 z-[1000] translate-y-full bg-background"
+        className="absolute inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
       />
       <div
         ref={secondLayer}
-        className="absolute inset-0 z-[1000] translate-y-full bg-background"
+        className="absolute inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
       />
     </TransitionRouter>
   );
