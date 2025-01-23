@@ -258,7 +258,6 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="hidden lg:block"
         >
           <div
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1`}
