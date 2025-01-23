@@ -19,11 +19,15 @@ import { CarrierCapacityGeneralPie } from "@/components/Charts/CapacityGlobeChar
 
 type Props = {
   selectedCountry: string;
+  setParentIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const CapacityComparisionDrawer = ({ selectedCountry }: Props) => {
+const CapacityComparisionDrawer = ({
+  selectedCountry,
+  setParentIsOpen,
+}: Props) => {
   const { data: installedCapacityData2021 } = useSWR(
     `/api/installed_capacity/${selectedCountry}/2021`,
     fetcher,
@@ -85,6 +89,14 @@ const CapacityComparisionDrawer = ({ selectedCountry }: Props) => {
       setCapacityExpansionState2050(capacityExpansionData2050.data);
     }
   }, [capacityExpansionData2050]);
+
+  useEffect(() => {
+    if (open) {
+      setParentIsOpen(false);
+    } else {
+      setParentIsOpen(true);
+    }
+  }, [open]);
 
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -31,7 +31,12 @@ interface DrawerData {
   investmentPerCO2: number;
 }
 
-const RightDrawer = () => {
+interface DrawerProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const RightDrawer = ({ isOpen, setIsOpen }: DrawerProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
@@ -108,8 +113,18 @@ const RightDrawer = () => {
         <SheetContent
           ref={contentRef}
           side="right"
-          className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+          className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50  ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
+          <div
+            className="absolute t-0 right-2 h-8 w-8 bg-background cursor-pointer"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            <X className="h-full w-full" />
+          </div>
           <SheetHeader>
             <SheetTitle>2050 Scenario</SheetTitle>
             <SheetDescription>
@@ -119,9 +134,18 @@ const RightDrawer = () => {
             </SheetDescription>
           </SheetHeader>
 
-          <GenerationMixBottomDrawer selectedCountry={selectedCountry} />
-          <SystemCostDrawer selectedCountry={selectedCountry} />
-          <CapacityComparisionDrawer selectedCountry={selectedCountry} />
+          <GenerationMixBottomDrawer
+            selectedCountry={selectedCountry}
+            setParentIsOpen={setIsOpen}
+          />
+          <SystemCostDrawer
+            selectedCountry={selectedCountry}
+            setParentIsOpen={setIsOpen}
+          />
+          <CapacityComparisionDrawer
+            selectedCountry={selectedCountry}
+            setParentIsOpen={setIsOpen}
+          />
 
           <Card className="p-4 min-h-[300px] section-emissions">
             <h3 className="font-semibold mb-4">Emissions</h3>
