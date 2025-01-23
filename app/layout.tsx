@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip font-sans`}
       >
         <TransitionProvider>
           <ThemeProvider

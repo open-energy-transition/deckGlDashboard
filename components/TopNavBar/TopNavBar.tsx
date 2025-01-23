@@ -155,7 +155,7 @@ export function NavigationMenuDemo() {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent max-w-[100vw]">
+    <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent max-w-[100vw] font-mono">
       <Menu />
       <NavigationMenuList className="max-w-[100vw] w-full p-4 flex justify-center gap-2 flex-wrap">
         <NavigationMenuItem className="hidden lg:block">

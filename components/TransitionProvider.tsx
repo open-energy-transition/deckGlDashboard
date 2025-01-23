@@ -81,11 +81,11 @@ export function TransitionProvider({
 
       <div
         ref={firstLayer}
-        className="absolute inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
+        className="fixed inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
       />
       <div
         ref={secondLayer}
-        className="absolute inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
+        className="fixed inset-0 z-[999] -translate-x-full bg-white dark:bg-black"
       />
     </TransitionRouter>
   );
