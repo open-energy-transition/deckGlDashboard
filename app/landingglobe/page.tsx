@@ -23,6 +23,7 @@ import { useTheme } from "next-themes";
 import GlobeNav from "./popups/LandingGlobeNav";
 import { useCountry } from "@/components/country-context";
 import RightDrawer from "./popups/RightDrawer";
+import { LucideArrowRightSquare } from "lucide-react";
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls, Sparkles, Stars } from "@react-three/drei";
@@ -43,9 +44,6 @@ interface FetcherResponse {
   [key: string]: any;
 }
 
-const fetcher = (url: string): Promise<FetcherResponse> =>
-  fetch(url).then((res) => res.json());
-
 const Page = () => {
   const [height, setHeight] = useState(0);
 
@@ -53,10 +51,25 @@ const Page = () => {
     setHeight(window.innerHeight);
   }, []);
 
+  const [drawerOpen, setdrawerOpen] = useState(true);
+
+  useEffect(() => {
+    // setdrawerOpen(true);
+    console.log("drawerOpen", drawerOpen);
+  }, [drawerOpen]);
+
   return (
     <>
-      <GlobeNav />
-      <RightDrawer />
+      <div
+        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 h-20 w-20"
+        onClick={() => {
+          setdrawerOpen(true);
+        }}
+      >
+        <LucideArrowRightSquare className="h-full w-full" />
+      </div>
+      <GlobeNav open={drawerOpen} setIsOpen={setdrawerOpen} />
+      <RightDrawer isOpen={drawerOpen} setIsOpen={setdrawerOpen} />
       <div style={{ height: height || "100vh" }}>
         <Canvas camera={useMemo(() => ({ position: [0, 0, 250] }), [])}>
           <OrbitControls

@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -30,7 +30,12 @@ interface DrawerData {
   electricityPrice: number;
 }
 
-const GlobeNav = () => {
+type prop = {
+  open: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const GlobeNav = ({ open, setIsOpen }: prop) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
@@ -96,8 +101,18 @@ const GlobeNav = () => {
     <Sheet modal={false} open={true}>
       <SheetContent
         side="left"
-        className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
+        className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
+        <div
+          className="absolute t-0 right-2 h-8 w-8 bg-background cursor-pointer"
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <X className="h-full w-full" />
+        </div>
         <SheetHeader>
           <SheetTitle>2021 Scenario</SheetTitle>
           <SheetDescription>
