@@ -63,7 +63,7 @@ export default function MySideDrawer({ open, setOpen, side = "right", data }: Si
       <Sheet modal={false} open={open} onOpenChange={setOpen}>
         <SheetContent
           side={side}
-          className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background  border-r z-50 "
+          className="w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50"
         >
           <SheetHeader>
             <SheetTitle>
