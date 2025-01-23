@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import NavBar from "../components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CountryProvider } from "@/components/country-context";
 import { NavigationMenuDemo } from "@/components/TopNavBar/TopNavBar";
@@ -35,7 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip font-sans`}
       >
         <TransitionProvider>
           <ThemeProvider
