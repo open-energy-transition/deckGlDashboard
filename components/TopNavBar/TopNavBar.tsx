@@ -19,6 +19,8 @@ import {
 
 import { Moon, Sun } from "lucide-react";
 
+import Menu from "./Menu";
+
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
@@ -154,8 +156,9 @@ export function NavigationMenuDemo() {
 
   return (
     <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent max-w-[100vw]">
+      <Menu />
       <NavigationMenuList className="max-w-[100vw] w-full p-4 flex justify-center gap-2 flex-wrap">
-        <NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger>
             <NavigationMenuLink href="/">Overveiw</NavigationMenuLink>
           </NavigationMenuTrigger>
@@ -202,7 +205,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger>
             <NavigationMenuLink href="/network">Network</NavigationMenuLink>
           </NavigationMenuTrigger>
@@ -219,7 +222,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger>
             <NavigationMenuLink href="/landingglobe">Globe</NavigationMenuLink>
           </NavigationMenuTrigger>
@@ -236,7 +239,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger>
             <NavigationMenuLink href="/sidebyside">Polygon</NavigationMenuLink>
           </NavigationMenuTrigger>
@@ -253,9 +256,9 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-
         <NavigationMenuItem
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="hidden md:block"
         >
           <div
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1`}

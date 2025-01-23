@@ -113,10 +113,16 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
       <Button
         variant="ghost"
         size="icon"
-        className={`fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-1/2"}`}
+        className={`fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${
+          open ? "translate-x-0" : "-translate-x-1/2"
+        }`}
         onClick={() => setIsOpen(!open)}
       >
-        {open ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        {open ? (
+          <ChevronRight className="h-4 w-4" />
+        ) : (
+          <ChevronLeft className="h-4 w-4" />
+        )}
       </Button>
       <Sheet modal={false} open={true}>
         <ScrollSyncPane>
@@ -128,7 +134,10 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
             } transition-transform duration-200`}
           >
             <SheetHeader className="relative">
-              <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary" onClick={() => setIsOpen(false)}>
+              <SheetClose
+                className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
+                onClick={() => setIsOpen(false)}
+              >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </SheetClose>

@@ -104,10 +104,16 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
       <Button
         variant="ghost"
         size="icon"
-        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${open ? "translate-x-0" : "translate-x-1/2"}`}
+        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${
+          open ? "translate-x-0" : "translate-x-1/2"
+        }`}
         onClick={() => setIsOpen(!open)}
       >
-        {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        {open ? (
+          <ChevronLeft className="h-4 w-4" />
+        ) : (
+          <ChevronRight className="h-4 w-4" />
+        )}
       </Button>
       <Sheet modal={false} open={true}>
         <SheetContent
@@ -117,7 +123,10 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
           } transition-transform duration-200`}
         >
           <SheetHeader className="relative">
-            <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary" onClick={() => setIsOpen(false)}>
+            <SheetClose
+              className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
+              onClick={() => setIsOpen(false)}
+            >
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </SheetClose>
@@ -133,7 +142,9 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
             <CountryDropdown defaultValue={selectedCountry} />
             <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
             <Card className="p-4 min-h-[150px] section-electricity-prices">
-              <h3 className="text-2xl font-semibold mb-4">Electricity Prices</h3>
+              <h3 className="text-2xl font-semibold mb-4">
+                Electricity Prices
+              </h3>
               <p className="text-2xl font-semibold mb-4">
                 {data.electricityPrice.toFixed(2)} €/MWh
               </p>

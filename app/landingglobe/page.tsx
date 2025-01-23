@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import GlobeNav from "./popups/LandingGlobeNav";
 import RightDrawer from "./popups/RightDrawer";
+import { LucideArrowRightSquare } from "lucide-react";
 
 const Globe = dynamic(() => import("./Globe"), {
   ssr: false,
-  loading: () => <div className="w-full h-screen bg-background" />
+  loading: () => <div className="w-full h-screen bg-background" />,
 });
 
 interface DrawerProps {

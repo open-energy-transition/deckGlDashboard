@@ -39,10 +39,16 @@ const SideBySideNav = ({ mode, setMode }: SideBySideNavProps) => {
       <Button
         variant="ghost"
         size="icon"
-        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${open ? "translate-x-0" : "translate-x-1/2"}`}
+        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background shadow-md hover:bg-accent hover:text-accent-foreground transition-transform duration-200 ${
+          open ? "translate-x-0" : "translate-x-1/2"
+        }`}
         onClick={() => setOpen(!open)}
       >
-        {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        {open ? (
+          <ChevronLeft className="h-4 w-4" />
+        ) : (
+          <ChevronRight className="h-4 w-4" />
+        )}
       </Button>
       <Sheet modal={false} open={open} onOpenChange={setOpen}>
         <SheetContent
