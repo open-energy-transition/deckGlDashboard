@@ -55,7 +55,7 @@ const Menu = () => {
         onClick={() => {
           tl.current.play();
         }}
-        className={`${navigationMenuTriggerStyle()} cursor-pointer hover:text-hover md:hidden mt-4`}
+        className={`${navigationMenuTriggerStyle()} cursor-pointer hover:text-accent md:hidden mt-4`}
       >
         Menu
       </div>
