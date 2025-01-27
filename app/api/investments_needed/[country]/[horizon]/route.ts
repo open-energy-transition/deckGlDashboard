@@ -11,22 +11,25 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string; horizon: string } }
 ) {
-  const country = params.country;
+  const { country, horizon } = params;
 
   try {
     const result = await pool.query(
       `
         SELECT *
-        FROM public.demand_comparison
-        WHERE country_code = $1;
+        FROM public.investments_needed
+        WHERE country_code = $1 AND horizon = $2;
       `,
-      [country]
+      [country, horizon]
     );
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch investments needed data" },
+      { status: 500 }
+    );
   }
 } 

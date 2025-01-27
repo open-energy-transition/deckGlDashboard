@@ -30,6 +30,7 @@ interface DataItem {
   carrier: string;
   pypsa_model: number;
   total_costs: number;
+  co2_emission: number;
 }
 
 type ChartDataType = {
@@ -54,7 +55,7 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
     if (data) {
       const dataArray = Array.isArray(data) ? data : [];
       const total = dataArray.reduce((acc: number, item: DataItem) => {
-        return acc + (Number(item[costField as keyof DataItem]) || 0);
+        return acc + (Number(item.co2_emission) || 0);
       }, 0);
       setTotalGeneration(Number(total.toFixed(2)));
 
@@ -63,12 +64,10 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
           (item: DataItem) =>
             item &&
             item.carrier &&
-            Number(item[costField as keyof DataItem]) > 0
+            Number(item.co2_emission) > 0
         )
         .map((item: DataItem) => {
-          const value = Number(
-            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
-          );
+          const value = Number(item.co2_emission) || 0;
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
@@ -81,29 +80,19 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
           };
         });
 
-      console.log("dataArray", dataArray);
-      console.log("transformedData", transformedData);
-
       setChartData(transformedData);
     }
   }, [data, costField]);
 
   return (
     <>
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>co2 emmissions by carrirer</CardTitle>
-          <CardTitle>{totalGeneration.toLocaleString() + " tC02"}</CardTitle>
-          <CardDescription>
-            how much whcih carrier contibutes to the total co2 emmissions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer
-            config={GenerationMixchartConfigSmall}
-            className="w-full h-72 mx-0 px-0"
-          >
-            <PieChart>
+      <div className="w-full">
+        <ChartContainer
+          config={GenerationMixchartConfigSmall}
+          className="w-full aspect-[4/3]"
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
               <ChartTooltip
                 content={
                   <ChartTooltipContent
@@ -119,22 +108,22 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
                         />
                         <div className="flex flex-col gap-1">
                           <div className="flex gap-2">
-                            <span className="font-bold">
-                              {GenerationMixchartConfigSmall[
-                                name as keyof typeof GenerationMixchartConfigSmall
-                              ]?.label || name}
-                            </span>
+                            <span className="font-bold">Technology</span>
+                            <span>{GenerationMixchartConfigSmall[
+                              name as keyof typeof GenerationMixchartConfigSmall
+                            ]?.label || name}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <span className="font-bold">Emissions</span>
                             <span>{`${
                               typeof value === "number"
                                 ? value.toFixed(2)
                                 : Number(value).toFixed(2)
-                            } tCo2`}</span>
+                            } MtCO₂`}</span>
                           </div>
                           <div className="flex gap-2">
-                            <span className="font-bold">percentage</span>
-                            <span>{`${item.payload.percentage.toFixed(
-                              1
-                            )}%`}</span>
+                            <span className="font-bold">Share</span>
+                            <span>{`${item.payload.percentage.toFixed(1)}%`}</span>
                           </div>
                         </div>
                       </>
@@ -147,19 +136,19 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
                 dataKey="value"
                 nameKey="carrier"
                 innerRadius={0}
-                outerRadius={110}
-                className="aspect-square px-0 mx-0"
-              ></Pie>
-
+                outerRadius="90%"
+                paddingAngle={2}
+              />
               <ChartLegend
-                type="diamond"
                 content={<ChartLegendContent />}
-                className="flex-wrap mt-5"
+                className="flex-wrap mt-2"
+                verticalAlign="bottom"
+                align="center"
               />
             </PieChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
+          </ResponsiveContainer>
+        </ChartContainer>
+      </div>
     </>
   );
 }

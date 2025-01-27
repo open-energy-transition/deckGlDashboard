@@ -93,10 +93,20 @@ const GlobeViz = () => {
   }, []);
 
   const handleClick = useCallback((...args: unknown[]) => {
-    const countryCode = (args[1] as { id: string }).id
-      ?.split("_")[0]
+    if (args.length < 2) return;
+    
+    const secondArg = args[1];
+    if (!secondArg || typeof secondArg !== 'object' || secondArg === null) return;
+
+    const polygonData = secondArg as { id?: string };
+    if (!polygonData.id) return;
+
+    const countryCode = polygonData.id
+      .split("_")[0]
       ?.substring(0, 2)
-      .toLowerCase();
+      ?.toLowerCase();
+
+    if (!countryCode) return;
 
     setSelectedCountry(
       countryCode.toUpperCase() as

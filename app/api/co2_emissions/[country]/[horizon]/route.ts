@@ -27,7 +27,6 @@ export async function GET(
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching CO2 emissions data:', error);
     return NextResponse.json(
       { error: 'Failed to fetch CO2 emissions data' },
       { status: 500 }

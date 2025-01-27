@@ -25,15 +25,8 @@ export async function GET(
       [country, horizon]
     );
 
-    console.log("Installed capacity query result:", {
-      rowCount: result.rowCount,
-      firstRow: result.rows[0],
-      allRows: result.rows,
-    });
-
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error("Error fetching installed capacity data:", error);
     return NextResponse.json(
       { error: "Failed to fetch installed capacity data" },
       { status: 500 }

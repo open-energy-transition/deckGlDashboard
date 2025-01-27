@@ -47,8 +47,8 @@ const SystemCostDrawer = ({
     { suspense: false }
   );
 
-  const { data: investmentCostsData2050 } = useSWR(
-    `/api/investment_costs_by_techs/${selectedCountry}/2050`,
+  const { data: investmentsNeededData2050 } = useSWR(
+    `/api/investments_needed/${selectedCountry}/2050`,
     fetcher,
     { suspense: false }
   );
@@ -62,8 +62,8 @@ const SystemCostDrawer = ({
   const [totalCostsState2050, setTotalCostsState2050] =
     React.useState<typeof totalCostsData2050>(null);
 
-  const [investmentCostsState2050, setInvestmentCostsState2050] =
-    React.useState<typeof investmentCostsData2050>(null);
+  const [investmentsNeededState2050, setInvestmentsNeededState2050] =
+    React.useState<typeof investmentsNeededData2050>(null);
 
   const [open, setOpen] = React.useState(false);
 
@@ -86,10 +86,10 @@ const SystemCostDrawer = ({
   }, [totalCostsData2050]);
 
   useEffect(() => {
-    if (investmentCostsData2050?.data) {
-      setInvestmentCostsState2050(investmentCostsData2050.data);
+    if (investmentsNeededData2050?.data) {
+      setInvestmentsNeededState2050(investmentsNeededData2050.data);
     }
-  }, [investmentCostsData2050]);
+  }, [investmentsNeededData2050]);
 
   useEffect(() => {
     if (open) {
@@ -110,41 +110,59 @@ const SystemCostDrawer = ({
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              2021 System Cost analysis for {selectedCountry}
+              System Cost Analysis
             </DrawerTitle>
-            <DrawerDescription className="">
-              Compare total costs and investment costs by technologies
+            <DrawerDescription className="text-base">
+              Comparing system costs and investments between current state and net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
-          <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4 border-r-2">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              System Costs 2021
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+              Current System Costs (2021)
             </h2>
-            <CarrierCostGeneral
-              data={totalCostsState2021}
-              costField="total_costs"
-            />
-            <CarrierCostGeneral
-              data={investmentCostsState2021}
-              costField="investment_cost"
-            />
+            <p className="text-muted-foreground text-center mb-6 w-full">
+              Distribution of total operational and investment costs across technologies
+            </p>
+            <div className="w-full max-w-2xl">
+              <h3 className="text-xl font-medium mb-4 text-center">Total Operational Costs</h3>
+              <CarrierCostGeneral
+                data={totalCostsState2021}
+                costField="total_costs"
+              />
+            </div>
+            <div className="w-full max-w-2xl">
+              <h3 className="text-xl font-medium mb-4 text-center">Investment Requirements</h3>
+              <CarrierCostGeneral
+                data={investmentCostsState2021}
+                costField="investment_cost"
+              />
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              Investment Cost 2050
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+              Net-Zero Target Costs (2050)
             </h2>
-            <CarrierCostGeneral
-              data={totalCostsState2050}
-              costField="total_costs"
-            />
-            <CarrierCostGeneral
-              data={investmentCostsState2050}
-              costField="investment_cost"
-            />
+            <p className="text-muted-foreground text-center mb-6 w-full">
+              Projected costs and investments needed to achieve carbon neutrality
+            </p>
+            <div className="w-full max-w-2xl">
+              <h3 className="text-xl font-medium mb-4 text-center">Total System Costs</h3>
+              <CarrierCostGeneral
+                data={totalCostsState2050}
+                costField="total_costs"
+              />
+            </div>
+            <div className="w-full max-w-2xl">
+              <h3 className="text-xl font-medium mb-4 text-center">Required Investments</h3>
+              <CarrierCostGeneral
+                data={investmentsNeededState2050}
+                costField="investment_needed"
+              />
+            </div>
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button className="w-[80%]">CLOSE</Button>
+              <Button className="w-[80%]">Close Analysis</Button>
             </DrawerClose>
           </DrawerFooter>
         </ScrollArea>

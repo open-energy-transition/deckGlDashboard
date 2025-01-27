@@ -25,15 +25,8 @@ export async function GET(
       [country, horizon]
     );
 
-    console.log("Capacity expansion query result:", {
-      rowCount: result.rowCount,
-      firstRow: result.rows[0],
-      allRows: result.rows,
-    });
-
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error("Error fetching capacity expansion data:", error);
     return NextResponse.json(
       { error: "Failed to fetch capacity expansion data" },
       { status: 500 }
