@@ -37,7 +37,7 @@ type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const GlobeNav = ({ open, setIsOpen }: Props) => {
+const MainPageNav = ({ open, setIsOpen }: Props) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
@@ -168,4 +168,4 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
   );
 };
 
-export default GlobeNav;
+export default MainPageNav;

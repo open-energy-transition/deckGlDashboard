@@ -20,7 +20,7 @@ import {
 } from "@/utilities/CountryConfig/Link";
 import useSWR from "swr";
 import { useTheme } from "next-themes";
-import GlobeNav from "./popups/LandingGlobeNav";
+import MainPageNav from "./popups/LandingGlobeNav";
 import { useCountry } from "@/components/country-context";
 import RightDrawer from "./popups/RightDrawer";
 // import R3fGlobe from "r3f-globe";
