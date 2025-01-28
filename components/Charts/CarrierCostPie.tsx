@@ -24,15 +24,14 @@ import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
 interface Props {
   data: any;
   costField: string;
+  heading?: string;
+  description?: string;
 }
 
 interface DataItem {
   carrier: string;
-  pypsa_model?: number;
-  total_costs?: number;
-  investment_needed?: number;
-  country_code?: string;
-  horizon?: string;
+  pypsa_model: number;
+  total_costs: number;
 }
 
 type ChartDataType = {
@@ -49,7 +48,12 @@ interface ChartItem {
   fill: string;
 }
 
-export function CarrierCostGeneral({ data, costField }: Props) {
+export function CarrierCostGeneral({
+  data,
+  costField,
+  heading,
+  description,
+}: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -82,6 +86,9 @@ export function CarrierCostGeneral({ data, costField }: Props) {
           };
         });
 
+      console.log("dataArray", dataArray);
+      console.log("transformedData", transformedData);
+
       setChartData(transformedData);
     }
   }, [data, costField]);
@@ -90,107 +97,98 @@ export function CarrierCostGeneral({ data, costField }: Props) {
     <>
       <Card className="w-[26rem]">
         <CardHeader>
-          <CardTitle>Required Investments</CardTitle>
+          <CardTitle>{heading || "System and Investment cost"}</CardTitle>
           <CardDescription>
-            Breakdown of investments needed by technology for net-zero transition
+            {description || "how much euros for each"}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="w-full">
-            <ChartContainer
-              config={GenerationMixchartConfig}
-              className="aspect-square"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        indicator="dot"
-                        className="w-auto"
-                        formatter={(value, name, item, index) => (
-                          <>
-                            <div
-                              className="h-10 w-2.5 shrink-0 rounded-[2px]"
-                              style={{
-                                backgroundColor: item.payload.payload.fill,
-                              }}
-                            />
-                            <div className="flex flex-col gap-1">
-                              <div className="flex gap-2">
-                                <span className="font-bold">Technology</span>
-                                <span>{GenerationMixchartConfig[
-                                  name as keyof typeof GenerationMixchartConfig
-                                ]?.label || name}</span>
-                              </div>
-                              <div className="flex gap-2">
-                                <span className="font-bold">Investment</span>
-                                <span>{`${
-                                  typeof value === "number"
-                                    ? value.toFixed(2)
-                                    : Number(value).toFixed(2)
-                                } B€`}</span>
-                              </div>
-                              <div className="flex gap-2">
-                                <span className="font-bold">Share</span>
-                                <span>{`${item.payload.percentage.toFixed(1)}%`}</span>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      />
+          <ChartContainer
+            config={GenerationMixchartConfig}
+            className="aspect-square"
+          >
+            <PieChart>
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    indicator="dot"
+                    className="w-auto"
+                    formatter={(value, name, item, index) => (
+                      <>
+                        <div
+                          className="h-10 w-2.5 shrink-0 rounded-[2px]"
+                          style={{
+                            backgroundColor: item.payload.payload.fill,
+                          }}
+                        />
+                        <div className="flex flex-col gap-1">
+                          <div className="flex gap-2">
+                            <span className="font-bold">
+                              {GenerationMixchartConfig[
+                                name as keyof typeof GenerationMixchartConfig
+                              ]?.label || name}
+                            </span>
+                            <span>{`${
+                              typeof value === "number"
+                                ? value.toFixed(2)
+                                : Number(value).toFixed(2)
+                            } euros`}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <span className="font-bold">percentage</span>
+                            <span>{`${item.payload.percentage.toFixed(
+                              1
+                            )}%`}</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  />
+                }
+              />
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="carrier"
+                innerRadius={70}
+                outerRadius={110}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalGeneration.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            euros
+                          </tspan>
+                        </text>
+                      );
                     }
-                  />
-                  <Pie
-                    data={chartData}
-                    dataKey="value"
-                    nameKey="carrier"
-                    innerRadius="45%"
-                    outerRadius="75%"
-                    paddingAngle={2}
-                  >
-                    <Label
-                      content={({ viewBox }) => {
-                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                          const cy = viewBox.cy || 0;
-                          return (
-                            <text
-                              x={viewBox.cx}
-                              y={cy}
-                              textAnchor="middle"
-                              dominantBaseline="middle"
-                              className="fill-foreground"
-                            >
-                              <tspan
-                                x={viewBox.cx}
-                                y={cy - 12}
-                                className="text-2xl font-bold"
-                              >
-                                {totalGeneration.toLocaleString()}
-                              </tspan>
-                              <tspan
-                                x={viewBox.cx}
-                                y={cy + 12}
-                                className="text-base"
-                              >
-                                B€ Total
-                              </tspan>
-                            </text>
-                          );
-                        }
-                      }}
-                    />
-                  </Pie>
-                  <ChartLegend
-                    content={<ChartLegendContent />}
-                    className="flex-wrap mt-4"
-                    verticalAlign="bottom"
-                    align="center"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </div>
+                  }}
+                />
+              </Pie>
+              <ChartLegend
+                content={<ChartLegendContent />}
+                className="flex-wrap mt-5"
+              />
+            </PieChart>
+          </ChartContainer>
         </CardContent>
       </Card>
     </>

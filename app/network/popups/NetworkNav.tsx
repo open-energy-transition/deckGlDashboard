@@ -44,7 +44,7 @@ const NetworkNav = () => {
           <ChevronRight className="h-4 w-4" />
         )}
       </Button>
-      <Sheet modal={false} open={open} onOpenChange={setOpen}>
+      <Sheet modal={false} open={true} onOpenChange={setOpen}>
         <SheetContent
           side="left"
           className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
