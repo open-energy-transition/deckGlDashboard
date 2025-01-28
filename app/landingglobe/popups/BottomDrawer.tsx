@@ -77,7 +77,7 @@ const GenerationMixBottomDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          compare generation mix for {selectedCountry}
+          Generation Mix for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
@@ -87,7 +87,8 @@ const GenerationMixBottomDrawer = ({
               Generation Mix Analysis
             </DrawerTitle>
             <DrawerDescription className="text-base">
-              Comparing energy generation distribution between current state and net-zero target for {selectedCountry}
+              Comparing energy generation distribution between current state and
+              net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
           <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 border-r-2 p-8">
@@ -95,7 +96,8 @@ const GenerationMixBottomDrawer = ({
               Current Generation (2021)
             </h2>
             <p className="text-muted-foreground text-center mb-6">
-              Distribution of energy generation by technology type in {selectedCountry}'s current energy mix
+              Distribution of energy generation by technology type in{" "}
+              {selectedCountry}'s current energy mix
             </p>
             <div className="w-full max-w-3xl mx-auto">
               <GenerationMixGeneral data={generationComparisonState2021} />
@@ -106,7 +108,8 @@ const GenerationMixBottomDrawer = ({
               Net-Zero Target (2050)
             </h2>
             <p className="text-muted-foreground text-center mb-6">
-              Projected energy generation distribution to achieve carbon neutrality
+              Projected energy generation distribution to achieve carbon
+              neutrality
             </p>
             <div className="w-full max-w-3xl mx-auto">
               <GenerationMixGeneral data={generationComparisonState2050} />

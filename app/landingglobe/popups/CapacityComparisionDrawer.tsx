@@ -104,7 +104,7 @@ const CapacityComparisionDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          compare capacities for {selectedCountry}
+          Capacity Distribution for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
@@ -114,46 +114,48 @@ const CapacityComparisionDrawer = ({
               Installed Capacity Analysis
             </DrawerTitle>
             <DrawerDescription className="text-base">
-              Comparing installed capacity and expansion requirements between current state and net-zero target for {selectedCountry}
+              Comparing installed capacity and expansion requirements between
+              current state and net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
           {/* left 2021 */}
-          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+          <div className="flex flex-wrap justify-center items-start w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 lg:h-fit gap-6">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center self-start">
               Current Capacity (2021)
             </h2>
-            <p className="text-muted-foreground text-center mb-6 w-full">
-              Distribution of currently installed power generation capacity by technology
+            <p className="text-muted-foreground text-center w-full self-start">
+              Distribution of currently installed power generation capacity by
+              technology
             </p>
-            <div className="w-full max-w-2xl mx-auto">
-              <CarrierCapacityGeneralPie
-                data={installedCapacityState2021}
-                costField="installed_capacity"
-              />
-            </div>
+            <CarrierCapacityGeneralPie
+              data={installedCapacityState2021}
+              costField="installed_capacity"
+              heading="Total Installed Capacity"
+              description="Distribution of currently installed power generation capacity by
+              technology"
+            />
           </div>
           {/* right 2050 */}
-          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+          <div className="flex flex-wrap gap-6 justify-center items-start w-[100%] lg:w-[50%] p-8 border-t-2 border-l-2  mt-4 ">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
-            <p className="text-muted-foreground text-center mb-6 w-full">
-              Required capacity distribution and expansion to achieve carbon neutrality
+            <p className="text-muted-foreground text-center w-full">
+              Required capacity distribution and expansion to achieve carbon
+              neutrality
             </p>
-            <div className="w-full max-w-2xl mx-auto">
-              <h3 className="text-xl font-medium mb-4 text-center">Total Installed Capacity</h3>
-              <CarrierCapacityGeneralPie
-                data={installedCapacityState2050}
-                costField="installed_capacity"
-              />
-            </div>
-            <div className="w-full max-w-2xl mx-auto">
-              <h3 className="text-xl font-medium mb-4 text-center">Required Capacity Expansion</h3>
-              <CarrierCapacityGeneralPie
-                data={capacityExpansionState2050}
-                costField="capacity_expansion"
-              />
-            </div>
+            <CarrierCapacityGeneralPie
+              data={installedCapacityState2050}
+              costField="installed_capacity"
+              heading="Total Installed Capacity"
+              description="Distribution of currently installed power generation capacity by"
+            />
+            <CarrierCapacityGeneralPie
+              data={capacityExpansionState2050}
+              costField="capacity_expansion"
+              heading="Required Capacity Expansion"
+              description="Distribution of power generation capacity expansion requirements by technology"
+            />
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>

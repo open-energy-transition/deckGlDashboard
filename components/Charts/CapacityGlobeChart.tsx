@@ -24,6 +24,8 @@ import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartCon
 interface Props {
   data: any;
   costField: string;
+  heading?: string;
+  description?: string;
 }
 
 interface DataItem {
@@ -46,7 +48,12 @@ interface ChartItem {
   fill: string;
 }
 
-export function CarrierCapacityGeneralPie({ data, costField }: Props) {
+export function CarrierCapacityGeneralPie({
+  data,
+  costField,
+  heading,
+  description,
+}: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -90,10 +97,9 @@ export function CarrierCapacityGeneralPie({ data, costField }: Props) {
     <>
       <Card className="w-[26rem]">
         <CardHeader>
-          <CardTitle>Capacity and Capacity Expansion</CardTitle>
+          <CardTitle>{heading || "default heading"}</CardTitle>
           <CardDescription>
-            what the distributed installed capacity will look like and how it
-            will be extended
+            {description || "default description"}
           </CardDescription>
         </CardHeader>
         <CardContent>

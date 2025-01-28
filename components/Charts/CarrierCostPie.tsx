@@ -24,6 +24,8 @@ import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
 interface Props {
   data: any;
   costField: string;
+  heading?: string;
+  description?: string;
 }
 
 interface DataItem {
@@ -46,7 +48,12 @@ interface ChartItem {
   fill: string;
 }
 
-export function CarrierCostGeneral({ data, costField }: Props) {
+export function CarrierCostGeneral({
+  data,
+  costField,
+  heading,
+  description,
+}: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -90,8 +97,10 @@ export function CarrierCostGeneral({ data, costField }: Props) {
     <>
       <Card className="w-[26rem]">
         <CardHeader>
-          <CardTitle>System and Investment cost</CardTitle>
-          <CardDescription>how much euros for each</CardDescription>
+          <CardTitle>{heading || "System and Investment cost"}</CardTitle>
+          <CardDescription>
+            {description || "how much euros for each"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer

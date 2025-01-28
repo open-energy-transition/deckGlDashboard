@@ -103,62 +103,59 @@ const SystemCostDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          compare system cost for {selectedCountry}
+          System Cost for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
           <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">
-              System Cost Analysis
-            </DrawerTitle>
+            <DrawerTitle className="text-4xl">System Cost Analysis</DrawerTitle>
             <DrawerDescription className="text-base">
-              Comparing system costs and investments between current state and net-zero target for {selectedCountry}
+              Comparing system costs and investments between current state and
+              net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
-          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center ">
               Current System Costs (2021)
             </h2>
-            <p className="text-muted-foreground text-center mb-6 w-full">
-              Distribution of total operational and investment costs across technologies
+            <p className="text-muted-foreground text-center  w-full">
+              Distribution of total operational and investment costs across
+              technologies
             </p>
-            <div className="w-full max-w-2xl">
-              <h3 className="text-xl font-medium mb-4 text-center">Total Operational Costs</h3>
-              <CarrierCostGeneral
-                data={totalCostsState2021}
-                costField="total_costs"
-              />
-            </div>
-            <div className="w-full max-w-2xl">
-              <h3 className="text-xl font-medium mb-4 text-center">Investment Requirements</h3>
-              <CarrierCostGeneral
-                data={investmentCostsState2021}
-                costField="investment_cost"
-              />
-            </div>
+            <CarrierCostGeneral
+              heading="Total Operational Costs"
+              data={totalCostsState2021}
+              costField="total_costs"
+              description="Total operational costs for 2021"
+            />
+            <CarrierCostGeneral
+              heading="Current Investment Costs"
+              data={investmentCostsState2021}
+              costField="investment_cost"
+              description="Investment costs for 2021"
+            />
           </div>
-          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 mx-auto">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center ">
               Net-Zero Target Costs (2050)
             </h2>
-            <p className="text-muted-foreground text-center mb-6 w-full">
-              Projected costs and investments needed to achieve carbon neutrality
+            <p className="text-muted-foreground text-center  w-full">
+              Projected costs and investments needed to achieve carbon
+              neutrality
             </p>
-            <div className="w-full max-w-2xl">
-              <h3 className="text-xl font-medium mb-4 text-center">Total System Costs</h3>
-              <CarrierCostGeneral
-                data={totalCostsState2050}
-                costField="total_costs"
-              />
-            </div>
-            <div className="w-full max-w-2xl">
-              <h3 className="text-xl font-medium mb-4 text-center">Required Investments</h3>
-              <CarrierCostGeneral
-                data={investmentsNeededState2050}
-                costField="investment_needed"
-              />
-            </div>
+            <CarrierCostGeneral
+              heading="Total System Costs"
+              data={totalCostsState2050}
+              costField="total_costs"
+              description="Total System cost 2050"
+            />
+            <CarrierCostGeneral
+              heading="Investments Needed"
+              data={investmentsNeededState2050}
+              costField="investment_needed"
+              description="Investments needed 2050"
+            />
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
