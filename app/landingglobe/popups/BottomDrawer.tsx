@@ -84,28 +84,37 @@ const GenerationMixBottomDrawer = ({
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              Compare Generation Mix for {selectedCountry}
+              Generation Mix Analysis
             </DrawerTitle>
-            <DrawerDescription className="">
-              compare data for {selectedCountry} from now to net zero carbon
-              emissions in 2050
+            <DrawerDescription className="text-base">
+              Comparing energy generation distribution between current state and net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
-          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 border-r-2 py-5">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              2021
+          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 border-r-2 p-8">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-8">
+              Current Generation (2021)
             </h2>
-            <GenerationMixGeneral data={generationComparisonState2021} />
+            <p className="text-muted-foreground text-center mb-6">
+              Distribution of energy generation by technology type in {selectedCountry}'s current energy mix
+            </p>
+            <div className="w-full max-w-3xl mx-auto">
+              <GenerationMixGeneral data={generationComparisonState2021} />
+            </div>
           </div>
-          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 py-5">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              2050
+          <div className="w-[100%] lg:w-[50%] border-t-2 mt-4 p-8">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-8">
+              Net-Zero Target (2050)
             </h2>
-            <GenerationMixGeneral data={generationComparisonState2050} />
+            <p className="text-muted-foreground text-center mb-6">
+              Projected energy generation distribution to achieve carbon neutrality
+            </p>
+            <div className="w-full max-w-3xl mx-auto">
+              <GenerationMixGeneral data={generationComparisonState2050} />
+            </div>
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button className="w-[80%]">CLOSE</Button>
+              <Button className="w-[80%]">Close Comparison</Button>
             </DrawerClose>
           </DrawerFooter>
         </ScrollArea>

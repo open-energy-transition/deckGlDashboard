@@ -27,7 +27,6 @@ export async function GET(
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching investment costs data:', error);
     return NextResponse.json(
       { error: 'Failed to fetch investment costs data' },
       { status: 500 }

@@ -25,7 +25,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface DataItem {
   carrier: string;
-  value: number;
+  co2_emission: string;
 }
 
 interface DrawerData {
@@ -37,7 +37,7 @@ type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const GlobeNav = ({ open, setIsOpen }: Props) => {
+const MainPageNav = ({ open, setIsOpen }: Props) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
@@ -72,7 +72,6 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
           parseFloat(electricityPricesData.data?.[0]?.electricity_price) || 0,
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
       setData({
         electricityPrice: 0,
       });
@@ -140,14 +139,56 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
 
           <div className="flex flex-col gap-4 flex-1">
             <CountryDropdown defaultValue={selectedCountry} />
-            <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
-            <Card className="p-4 min-h-[150px] section-electricity-prices">
-              <h3 className="text-2xl font-semibold mb-4">
-                Electricity Prices
-              </h3>
-              <p className="text-2xl font-semibold mb-4">
-                {data.electricityPrice.toFixed(2)} €/MWh
-              </p>
+            <Card className="p-6 space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold">CO2 Emissions (2021)</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Current emissions by energy carrier
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Total Emissions</p>
+                  <p className="text-3xl font-bold tracking-tight">
+                    {(co2Emissions?.reduce((acc, curr) => acc + (Number(curr.co2_emission) || 0), 0))
+                      .toLocaleString('en-US', {
+                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 2
+                      })}
+                    <span className="text-lg font-normal ml-2">tCO2</span>
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Distribution by Carrier</p>
+                  <div className="pt-2">
+                    <Co2EmmisionsPie 
+                      data={co2Emissions} 
+                      costField="co2_emission" 
+                    />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold">Electricity Prices (2021)</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Current electricity price for {selectedCountry}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">Average Price</p>
+                <p className="text-3xl font-bold tracking-tight">
+                  {data.electricityPrice.toFixed(2)} <span className="text-lg font-normal ml-2">€/MWh</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Based on current market conditions
+                </p>
+              </div>
             </Card>
             <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
               <Switch
@@ -168,4 +209,4 @@ const GlobeNav = ({ open, setIsOpen }: Props) => {
   );
 };
 
-export default GlobeNav;
+export default MainPageNav;

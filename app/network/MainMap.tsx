@@ -191,7 +191,6 @@ export default function MainMap() {
 
       setBusCapacities(capacities);
     } catch (error) {
-      console.error(`Error loading bus capacities for ${country}:`, error);
       setBusCapacities({});
     } finally {
       setIsLoading(false);

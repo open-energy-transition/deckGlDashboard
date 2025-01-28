@@ -207,11 +207,11 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
           <NavigationMenuTrigger>
-            <NavigationMenuLink href="/network">Network</NavigationMenuLink>
+            <NavigationMenuLink href="/landingglobe">Main Page</NavigationMenuLink>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {components.map((component) => (
+              {globeComponents.map((component) => (
                 <div key={component.title} className="block p-3">
                   <div className="text-sm font-medium">{component.title}</div>
                   <p className="text-sm text-muted-foreground">
@@ -224,11 +224,11 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
           <NavigationMenuTrigger>
-            <NavigationMenuLink href="/landingglobe">Globe</NavigationMenuLink>
+            <NavigationMenuLink href="/network">Network</NavigationMenuLink>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {globeComponents.map((component) => (
+              {components.map((component) => (
                 <div key={component.title} className="block p-3">
                   <div className="text-sm font-medium">{component.title}</div>
                   <p className="text-sm text-muted-foreground">

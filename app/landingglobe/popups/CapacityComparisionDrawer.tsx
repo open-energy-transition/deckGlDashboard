@@ -111,39 +111,53 @@ const CapacityComparisionDrawer = ({
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center align-middle mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              Capacity Expasion Comparision : {selectedCountry}
+              Installed Capacity Analysis
             </DrawerTitle>
-            <DrawerDescription className="">
-              Compare total costs and investment costs by technologies
+            <DrawerDescription className="text-base">
+              Comparing installed capacity and expansion requirements between current state and net-zero target for {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
           {/* left 2021 */}
-          <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4 border-r-2">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              capacity distribution 2021
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+              Current Capacity (2021)
             </h2>
-            <CarrierCapacityGeneralPie
-              data={installedCapacityState2021}
-              costField="installed_capacity"
-            />
+            <p className="text-muted-foreground text-center mb-6 w-full">
+              Distribution of currently installed power generation capacity by technology
+            </p>
+            <div className="w-full max-w-2xl mx-auto">
+              <CarrierCapacityGeneralPie
+                data={installedCapacityState2021}
+                costField="installed_capacity"
+              />
+            </div>
           </div>
           {/* right 2050 */}
-          <div className="flex flex-wrap gap-2 justify-center align-middle w-[100%] lg:w-[50%] py-6 border-t-2 mt-4">
-            <h2 className="w-full text-5xl font-semibold text-card-foreground text-center my-5">
-              Investment Cost 2050
+          <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center mb-4">
+              Net-Zero Target (2050)
             </h2>
-            <CarrierCapacityGeneralPie
-              data={installedCapacityState2050}
-              costField="installed_capacity"
-            />
-            <CarrierCapacityGeneralPie
-              data={capacityExpansionState2050}
-              costField="capacity_expansion"
-            />
+            <p className="text-muted-foreground text-center mb-6 w-full">
+              Required capacity distribution and expansion to achieve carbon neutrality
+            </p>
+            <div className="w-full max-w-2xl mx-auto">
+              <h3 className="text-xl font-medium mb-4 text-center">Total Installed Capacity</h3>
+              <CarrierCapacityGeneralPie
+                data={installedCapacityState2050}
+                costField="installed_capacity"
+              />
+            </div>
+            <div className="w-full max-w-2xl mx-auto">
+              <h3 className="text-xl font-medium mb-4 text-center">Required Capacity Expansion</h3>
+              <CarrierCapacityGeneralPie
+                data={capacityExpansionState2050}
+                costField="capacity_expansion"
+              />
+            </div>
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button className="w-[80%]">CLOSE</Button>
+              <Button className="w-[80%]">Close Analysis</Button>
             </DrawerClose>
           </DrawerFooter>
         </ScrollArea>
