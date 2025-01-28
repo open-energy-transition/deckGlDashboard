@@ -27,7 +27,6 @@ export async function GET(
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error('Error fetching electricity prices data:', error);
     return NextResponse.json(
       { error: 'Failed to fetch electricity prices data' },
       { status: 500 }

@@ -27,7 +27,6 @@ export async function GET(
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error("Error fetching data from PostgreSQL:", error);
     return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
 } 

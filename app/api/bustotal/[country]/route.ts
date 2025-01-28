@@ -41,10 +41,8 @@ export async function GET(
       }
     });
   } catch (error) {
-    console.error("Error fetching data from PostgreSQL:", error);
     return NextResponse.json({ 
-      error: "Error fetching data",
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Error fetching data"
     }, { status: 500 });
   }
 } 

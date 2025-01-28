@@ -63,9 +63,9 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
     try {
       const responses = await Promise.all([
         fetch(`/api/electricity_prices/${selectedCountry}/2050`),
+        fetch(`/api/investment_per_co2_reduced/${selectedCountry}/2050`)
       ]);
 
-      // Check if any response is not ok
       const failedResponses = responses.filter((r) => !r.ok);
       if (failedResponses.length > 0) {
         throw new Error("One or more API calls failed");
@@ -78,19 +78,12 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
       const processedData: DrawerData = {
         electricityPrice:
           parseFloat(electricityPricesData.data?.[0]?.electricity_price) || 0,
-
         investmentPerCO2:
-          parseFloat(
-            investmentPerCO2Data.data?.[0]?.investment_per_co2_reduced
-          ) || 0,
+          parseFloat(investmentPerCO2Data.data?.[0]?.investment_per_co2_reduced) || 0,
       };
 
       setData(processedData);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      if (error instanceof Error) {
-        console.error("Error details:", error.message);
-      }
       setData({
         electricityPrice: 0,
         investmentPerCO2: 0,
@@ -165,25 +158,45 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
               setIsParentOpen={setIsOpen}
             />
 
-            <Card className="p-4 min-h-[300px] section-emissions">
-              <h3 className="font-semibold mb-4">Emissions</h3>
-
-              <div className="text-sm text-muted-foreground text-center mb-4">
-                All CO2 emissions are zero in this 2050 scenario
+            <Card className="p-6 space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold">CO2 Emissions Target (2050)</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Net-zero emissions scenario investment metrics
+                </p>
               </div>
-              <p className="text-sm font-medium">Investment per CO2 reduced</p>
-              <p className="text-2xl font-bold">
-                {data.investmentPerCO2.toFixed(2)} €/tCO2
-              </p>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Investment Required</p>
+                  <p className="text-3xl font-bold tracking-tight">
+                    {data.investmentPerCO2.toFixed(2)} <span className="text-lg font-normal ml-2">€/tCO2</span>
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Investment needed per ton of CO2 reduced to achieve net-zero emissions
+                  </p>
+                </div>
+              </div>
             </Card>
 
             {/* Electricity Prices */}
-            <Card className="p-4 min-h-[150px] section-electricity-prices">
-              <h3 className="font-semibold mb-4">Electricity Prices</h3>
-              <p className="text-sm font-medium">Price</p>
-              <p className="text-2xl font-bold">
-                {data.electricityPrice.toFixed(2)} €/MWh
-              </p>
+            <Card className="p-6 space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold">Electricity Prices (2050)</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Projected electricity price for {selectedCountry}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">Average Price</p>
+                <p className="text-3xl font-bold tracking-tight">
+                  {data.electricityPrice.toFixed(2)} <span className="text-lg font-normal ml-2">€/MWh</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Estimated electricity price in net-zero scenario
+                </p>
+              </div>
             </Card>
 
             <SheetFooter className="mt-auto">

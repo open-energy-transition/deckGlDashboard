@@ -25,15 +25,8 @@ export async function GET(
       [country, horizon]
     );
 
-    console.log("Generation mix query result:", {
-      rowCount: result.rowCount,
-      firstRow: result.rows[0],
-      allRows: result.rows,
-    });
-
     return NextResponse.json({ data: result.rows });
   } catch (error) {
-    console.error("Error fetching generation mix data:", error);
     return NextResponse.json(
       { error: "Failed to fetch generation mix data" },
       { status: 500 }
