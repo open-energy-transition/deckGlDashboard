@@ -58,28 +58,6 @@ interface FetcherResponse {
 const fetcher = (url: string): Promise<FetcherResponse> =>
   fetch(url).then((res) => res.json());
 
-function lonLatToVector3(countryCode: string) {
-  const arr =
-    COUNTRY_COORDINATES[countryCode as keyof typeof COUNTRY_COORDINATES];
-
-  let lat = arr[0];
-  const lng = arr[1];
-
-  const out = new Vector3();
-
-  //flips the Y axis
-  lat = Math.PI / 2 - lat;
-
-  //distribute to sphere
-  out.set(
-    Math.cos(lat) * Math.cos(lng),
-    Math.cos(lat) * Math.sin(lng),
-    Math.sin(lat)
-  );
-
-  return out;
-}
-
 const GlobeViz = () => {
   const { selectedCountry, setSelectedCountry } = useCountry();
   const { theme } = useTheme();
