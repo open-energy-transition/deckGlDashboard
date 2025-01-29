@@ -114,6 +114,20 @@ export const COUNTRY_BUS_CONFIGS = {
   NG: { minRadius: 3000, maxRadius: 5000, zoomBase: 1.2 },
 } as const;
 
+// Después de COUNTRY_BUS_CONFIGS y antes de CustomRenderParameters
+const COUNTRY_SCALE_CONFIG = {
+  US: { baseScale: 0.6, maxWidth: 800 },
+  BR: { baseScale: 0.7, maxWidth: 900 },
+  IN: { baseScale: 0.7, maxWidth: 900 },
+  AU: { baseScale: 0.7, maxWidth: 900 },
+  MX: { baseScale: 0.8, maxWidth: 1000 },
+  CO: { baseScale: 1.2, maxWidth: 1200 },
+  DE: { baseScale: 1.2, maxWidth: 1200 },
+  ZA: { baseScale: 1.0, maxWidth: 1100 },
+  IT: { baseScale: 1.3, maxWidth: 1200 },
+  NG: { baseScale: 1.1, maxWidth: 1100 }
+} as const;
+
 // Define render parameters interface
 interface CustomRenderParameters extends RenderPassParameters {
   depthTest?: boolean;
@@ -260,6 +274,10 @@ export default function MainMap() {
     }
   }, [open]);
 
+  const memoizedInterpolateColor = useCallback((colorA: number[], colorB: number[], t: number) => {
+    return colorA.map((a, i) => Math.round(a + (colorB[i] - a) * t));
+  }, []);
+
   const MakeLayers = useCallback(() => {
     if (isLoading || Object.keys(busCapacities).length === 0) {
       return [];
@@ -267,25 +285,84 @@ export default function MainMap() {
 
     const links = getGeoJsonData(selectedCountry);
 
+    const colors = currentTheme === "light" 
+      ? {
+          primary: [255, 0, 51],      // Rojo brillante para light
+          secondary: [0, 0, 128]      // Azul marino para light
+        }
+      : {
+          primary: [227, 230, 218],   // Beige claro para dark
+          secondary: [205, 219, 181]  // Verde claro para dark
+        };
+
+    const generateGradientLayers = () => {
+      const numLayers = 75;
+      const countryConfig = COUNTRY_SCALE_CONFIG[selectedCountry] || { baseScale: 1.0, maxWidth: 1000 };
+      const maxWidth = currentTheme === "light" ? countryConfig.maxWidth : countryConfig.maxWidth * 0.8;
+      const minWidth = 50;
+      const baseOpacity = currentTheme === "light" ? 0.035 : 0.002;
+
+      const zoomFactor = Math.max(
+        currentTheme === "light" ? 0.08 : 0.06,
+        Math.pow(
+          currentTheme === "light" ? 0.35 : 0.4,
+          Math.max(0, zoomLevel - 3) * (1.1 * countryConfig.baseScale)
+        )
+      );
+
+      return Array.from({ length: numLayers }, (_, i) => {
+        const t = i / (numLayers - 1);
+        const width = maxWidth - (maxWidth - minWidth) * t;
+        
+        const zoomAdjustment = Math.pow(0.8, Math.max(0, zoomLevel - 4)) * 
+                              (1 + Math.sin(Math.PI * Math.max(0, zoomLevel - 4) / 8) * 0.1) *
+                              countryConfig.baseScale;
+
+        const scaledWidth = width * zoomFactor * zoomAdjustment;
+        
+        const color = memoizedInterpolateColor(colors.primary, colors.secondary, t);
+        
+        const opacityFactor = Math.sin((t * Math.PI));
+        const zoomOpacityFactor = 1 + Math.sin(Math.PI * Math.max(0, zoomLevel - 4) / 8) * 0.2;
+        const opacity = baseOpacity * opacityFactor * 
+                       Math.pow(0.8, Math.max(0, zoomLevel - 2)) * 
+                       zoomOpacityFactor * 
+                       (countryConfig.baseScale * 0.9);
+
+        const finalOpacity = currentTheme === "light" 
+          ? opacity * (1 + Math.sin(t * Math.PI) * 0.7 * (1 - Math.max(0, zoomLevel - 4) / 10))
+          : opacity;
+
+        return new GeoJsonLayer({
+          id: `CountryHalo${i}`,
+          data: links.countryView,
+          opacity: finalOpacity,
+          stroked: true,
+          filled: true,
+          pickable: false,
+          getLineColor: color,
+          getFillColor: [...color, 0],
+          getLineWidth: scaledWidth,
+          getRadius: 100,
+          lineWidthScale: 20,
+          transitions: {
+            getLineWidth: 300,
+            opacity: 300
+          },
+          parameters: {
+            depthTest: false,
+            blend: true,
+            blendFunc: [
+              WebGLRenderingContext.SRC_ALPHA,
+              WebGLRenderingContext.ONE_MINUS_SRC_ALPHA
+            ]
+          } as CustomRenderParameters,
+        });
+      });
+    };
+
     return [
-      new GeoJsonLayer({
-        id: `Country${1}`,
-        data: links.countryView,
-        opacity: 1,
-        stroked: true,
-        filled: true,
-        pickable: false,
-
-        getLineColor: [215, 229, 190],
-        getFillColor: [215, 229, 190],
-
-        getLineWidth: 1,
-        getRadius: 100,
-        lineWidthScale: 20,
-        parameters: {
-          depthTest: false,
-        } as CustomRenderParameters,
-      }),
+      ...generateGradientLayers(),
       new GeoJsonLayer({
         id: `Linebus`,
         data: links.lines,
