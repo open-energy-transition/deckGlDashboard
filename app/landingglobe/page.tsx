@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import MainPageNav from "./popups/LandingGlobeNav";
 import RightDrawer from "./popups/RightDrawer";
-import { LucideArrowRightSquare } from "lucide-react";
 
-const Globe = dynamic(() => import("./Globe"), {
+const Globe = dynamic(() => import("./R3fGlobeScene"), {
   ssr: false,
   loading: () => <div className="w-full h-screen bg-background" />,
 });

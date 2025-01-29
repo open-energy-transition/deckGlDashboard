@@ -24,12 +24,22 @@ import MainPageNav from "./popups/LandingGlobeNav";
 import { useCountry } from "@/components/country-context";
 import RightDrawer from "./popups/RightDrawer";
 // import R3fGlobe from "r3f-globe";
+import { GlobeMethods } from "r3f-globe";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls, Sparkles, Stars } from "@react-three/drei";
-import { Color } from "three";
+import {
+  Box,
+  CameraControls,
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+  Sparkles,
+  Stars,
+} from "@react-three/drei";
+import { Color, Vector3 } from "three";
+import GlobeOnly from "./JustGlobe";
 
-const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
+// const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
 
 interface GeoFeature {
   id: string;
@@ -51,7 +61,13 @@ const fetcher = (url: string): Promise<FetcherResponse> =>
 const GlobeViz = () => {
   const { selectedCountry, setSelectedCountry } = useCountry();
   const { theme } = useTheme();
-  const globeRef = useRef<any>(null);
+  const globeRef = useRef<GlobeMethods>(null);
+  const cameraRef = useRef<any>(null);
+  const boxRef = useRef<any>(null);
+
+  const [position, setPosition] = useState<Vector3>(new Vector3(60, 60, 60));
+
+  const [globeReady, setGlobeReady] = useState(false);
 
   const endpoints = Object.keys(COUNTRY_COORDINATES).map(
     (country) => getGeoJsonData(country).countryView
@@ -66,14 +82,6 @@ const GlobeViz = () => {
       return acc;
     }, {} as FetcherResponse);
   });
-
-  useEffect(() => {
-    return () => {
-      if (globeRef.current?.__kapsuleInstance) {
-        globeRef.current.__kapsuleInstance = null;
-      }
-    };
-  }, []);
 
   const getPolygonColor = useCallback((d: any) => {
     const countryCode = d.id
@@ -92,39 +100,58 @@ const GlobeViz = () => {
     return `rgba(${r}, ${g}, ${b}, 0.3)`;
   }, []);
 
-  const handleClick = useCallback((...args: unknown[]) => {
-    if (args.length < 2) return;
-    
-    const secondArg = args[1];
-    if (!secondArg || typeof secondArg !== 'object' || secondArg === null) return;
+  const handleClick = useCallback(
+    (...args: unknown[]) => {
+      if (args.length < 2) return;
 
-    const polygonData = secondArg as { id?: string };
-    if (!polygonData.id) return;
+      const secondArg = args[1];
+      if (!secondArg || typeof secondArg !== "object" || secondArg === null)
+        return;
 
-    const countryCode = polygonData.id
-      .split("_")[0]
-      ?.substring(0, 2)
-      ?.toLowerCase();
+      const polygonData = secondArg as { id?: string };
+      if (!polygonData.id) return;
 
-    if (!countryCode) return;
+      const countryCode = polygonData.id
+        .split("_")[0]
+        ?.substring(0, 2)
+        ?.toLowerCase();
 
-    setSelectedCountry(
-      countryCode.toUpperCase() as
-        | "AU"
-        | "BR"
-        | "CO"
-        | "DE"
-        | "IN"
-        | "IT"
-        | "MX"
-        | "NG"
-        | "US"
-        | "ZA"
-    );
-  }, [setSelectedCountry]);
+      if (!countryCode) return;
+
+      setSelectedCountry(
+        countryCode.toUpperCase() as
+          | "AU"
+          | "BR"
+          | "CO"
+          | "DE"
+          | "IN"
+          | "IT"
+          | "MX"
+          | "NG"
+          | "US"
+          | "ZA"
+      );
+    },
+    [setSelectedCountry]
+  );
+
+  useEffect(() => {
+    if (globeReady && globeRef.current) {
+      console.log("globeRef.current", globeRef.current);
+      const t = globeRef.current.getCoords(
+        COUNTRY_COORDINATES[selectedCountry][0],
+        COUNTRY_COORDINATES[selectedCountry][1],
+        1
+      );
+      const vec2 = new Vector3(t.x, t.y, t.z);
+      setPosition(new Vector3(t.x, t.y, t.z));
+      cameraRef.current.setLookAt(vec2.x, vec2.y, vec2.z, 0, 0, 0, true);
+    }
+  }, [selectedCountry]);
 
   return (
     <Canvas camera={{ position: [0, 0, 250] }}>
+      <CameraControls ref={cameraRef} />
       <OrbitControls
         minDistance={101}
         maxDistance={1e4}
@@ -135,7 +162,7 @@ const GlobeViz = () => {
       <color attach="background" args={[0, 0, 0]} />
       <ambientLight intensity={Math.PI} />
       <directionalLight intensity={0.6 * Math.PI} />
-      <R3fGlobe
+      <GlobeOnly
         ref={globeRef}
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         globeImageUrl={
@@ -148,10 +175,14 @@ const GlobeViz = () => {
         polygonSideColor={getPolygonSideColor}
         polygonStrokeColor={getPolygonColor}
         polygonAltitude={(d: any) => {
-          const countryCode = d.id?.split("_")[0]?.substring(0, 2).toLowerCase();
-          return selectedCountry === countryCode.toUpperCase() ? 0.1 : 0.01;
+          const countryCode = d.id
+            ?.split("_")[0]
+            ?.substring(0, 2)
+            .toLowerCase();
+          return selectedCountry === countryCode.toUpperCase() ? 0.03 : 0.01;
         }}
         onClick={handleClick}
+        onGlobeReady={() => setGlobeReady(true)}
       />
       <Stars
         radius={100}
