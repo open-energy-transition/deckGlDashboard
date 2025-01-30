@@ -146,48 +146,37 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
                   Current emissions by energy carrier
                 </p>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Total Emissions</p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Emissions
+                  </p>
                   <p className="text-3xl font-bold tracking-tight">
-                    {(co2Emissions?.reduce((acc, curr) => acc + (Number(curr.co2_emission) || 0), 0))
-                      .toLocaleString('en-US', {
+                    {co2Emissions
+                      ?.reduce(
+                        (acc, curr) => acc + (Number(curr.co2_emission) || 0),
+                        0
+                      )
+                      .toLocaleString("en-US", {
                         maximumFractionDigits: 2,
-                        minimumFractionDigits: 2
+                        minimumFractionDigits: 2,
                       })}
                     <span className="text-lg font-normal ml-2">tCO2</span>
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Distribution by Carrier</p>
+                  <p className="text-sm text-muted-foreground">
+                    Distribution by Carrier
+                  </p>
                   <div className="pt-2">
-                    <Co2EmmisionsPie 
-                      data={co2Emissions} 
-                      costField="co2_emission" 
+                    <Co2EmmisionsPie
+                      data={co2Emissions}
+                      costField="co2_emission"
                     />
                   </div>
                 </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold">Electricity Prices (2021)</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Current electricity price for {selectedCountry}
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Average Price</p>
-                <p className="text-3xl font-bold tracking-tight">
-                  {data.electricityPrice.toFixed(2)} <span className="text-lg font-normal ml-2">€/MWh</span>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Based on current market conditions
-                </p>
               </div>
             </Card>
             <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">

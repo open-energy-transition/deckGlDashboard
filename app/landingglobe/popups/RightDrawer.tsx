@@ -158,47 +158,6 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
               setIsParentOpen={setIsOpen}
             />
 
-            <Card className="p-6 space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold">CO2 Emissions Target (2050)</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Net-zero emissions scenario investment metrics
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Investment Required</p>
-                  <p className="text-3xl font-bold tracking-tight">
-                    {data.investmentPerCO2.toFixed(2)} <span className="text-lg font-normal ml-2">€/tCO2</span>
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Investment needed per ton of CO2 reduced to achieve net-zero emissions
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Electricity Prices */}
-            <Card className="p-6 space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold">Electricity Prices (2050)</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Projected electricity price for {selectedCountry}
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Average Price</p>
-                <p className="text-3xl font-bold tracking-tight">
-                  {data.electricityPrice.toFixed(2)} <span className="text-lg font-normal ml-2">€/MWh</span>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Estimated electricity price in net-zero scenario
-                </p>
-              </div>
-            </Card>
-
             <SheetFooter className="mt-auto">
               {selectedCountry && (
                 <div className="flex items-center space-x-2 pt-4 border-t border-border w-full">
