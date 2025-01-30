@@ -129,12 +129,14 @@ const ElectricityPriceComponent = ({
       ref={contentRef}
     >
       {!loading && (
-        <div className="w-full h-full grid grid-cols-10">
-          <CircleFlag
-            countryCode={hoveredCountry.toLowerCase()}
-            height={50}
-            className="absolute h-20 w-20"
-          />
+        <div className="w-full h-full grid grid-cols-12">
+          <div className="col-span-2 flex flex-col justify-center my-5 pl-3">
+            <CircleFlag
+              countryCode={hoveredCountry.toLowerCase()}
+              height={50}
+              className="h-18 w-18"
+            />
+          </div>
           <div className="col-span-3 px-2 flex flex-col justify-center my-5">
             <p className="text-2xl  font-bold tracking-tight">
               {data.electricityPrice2021.toFixed(2)}{" "}
