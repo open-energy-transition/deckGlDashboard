@@ -129,11 +129,9 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </SheetClose>
-            <SheetTitle>2021 Scenario</SheetTitle>
+            <SheetTitle className="text-4xl">2021</SheetTitle>
             <SheetDescription>
-              {selectedCountry
-                ? `Analyzing data for ${selectedCountry}`
-                : "Select a country to view data"}
+              current co2 emmisions by energy carrier
             </SheetDescription>
           </SheetHeader>
 

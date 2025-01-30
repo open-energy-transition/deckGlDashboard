@@ -134,11 +134,10 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </SheetClose>
-              <SheetTitle>2050 Scenario</SheetTitle>
+              <SheetTitle className="text-4xl">2050</SheetTitle>
               <SheetDescription>
-                {selectedCountry
-                  ? `Analyzing data for ${selectedCountry}`
-                  : "Select a country to view data"}
+                All emmission are asssumed to be net-zero by 2050 you can have a
+                detailed look on how this transition can happen
               </SheetDescription>
             </SheetHeader>
 
@@ -157,7 +156,6 @@ const RightDrawer = ({ open, setIsOpen }: DrawerProps) => {
               isParentOpen={open}
               setIsParentOpen={setIsOpen}
             />
-
             <SheetFooter className="mt-auto">
               {selectedCountry && (
                 <div className="flex items-center space-x-2 pt-4 border-t border-border w-full">

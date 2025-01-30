@@ -102,39 +102,38 @@ const ElectricityPriceComponent = () => {
     return null;
   }
   return (
-    <Card className="absolute bottom-12 h-[20vh] w-[40vw] z-40 left-0 right-0 mx-auto  bg-background text-accent-foreground text-center">
-      <CardContent className="w-full h-full grid grid-cols-10">
-        <div className="col-span-3 p-2">
+    <Card className="absolute bottom-12 h-[20vh] w-[40vw] z-40 left-0 right-0 mx-auto text-accent-foreground bg-background text-center">
+      <div className="w-full h-full grid grid-cols-10">
+        <div className="col-span-3 px-2 flex flex-col justify-between my-5">
           <h1 className="text-2xl font-bold">2021</h1>
           <p className="text-sm">Projected electricity price </p>
-          <p className="text-3xl  font-bold tracking-tight">
+          <p className="text-2xl  font-bold tracking-tight">
             {data.electricityPrice2021.toFixed(2)}{" "}
             <span className="text-lg font-normal ml-2">€/MWh</span>
           </p>
         </div>
-        <div className="col-span-4 border-x-2 p-2">
+        <div className="col-span-4 border-x-2 px-3 flex flex-col justify-between my-5">
           <h1 className="text-2xl font-bold">Investment Required</h1>
           <p className="text-sm">
             Investment needed per ton of CO2 reduced to achieve net-zero
             emissions
           </p>
-          <p className="text-3xl font-bold tracking-tight">
+          <p className="text-2xl font-bold tracking-tight">
             {data.investmentPerCO2.toFixed(2)}{" "}
             <span className="text-lg font-normal ml-2">€/tCO2</span>
           </p>
         </div>
-        <div className="col-span-3 p-2">
+        <div className="col-span-3 px-2 flex flex-col justify-between my-5">
           <h1 className="text-2xl font-bold">2050</h1>
-          <p className="text-sm">Projected electricity price </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm">
             Estimated electricity price in net-zero scenario
           </p>
-          <p className="text-3xl font-bold tracking-tight">
+          <p className="text-2xl font-bold tracking-tight">
             {data.electricityPrice2050.toFixed(2)}{" "}
             <span className="text-lg font-normal ml-2">€/MWh</span>
           </p>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
