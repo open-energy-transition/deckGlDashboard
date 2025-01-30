@@ -22,7 +22,7 @@ export default function LandingGlobe() {
     <div className="relative w-full h-screen">
       <Globe />
       <MainPageNav open={isOpen} setIsOpen={setIsOpen} />
-      <ElectricityPriceComponent />
+      {/* <ElectricityPriceComponent /> */}
     </div>
   );
 }

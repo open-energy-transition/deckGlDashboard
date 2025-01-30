@@ -1,25 +1,12 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Moon, Sun, X, ChevronRight, ChevronLeft } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useTheme } from "next-themes";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { ScrollSyncPane } from "react-scroll-sync";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetClose,
-} from "@/components/ui/sheet";
+import { useMouse } from "@uidotdev/usehooks";
 import { useCountry } from "@/components/country-context";
-import { Button } from "@/components/ui/button";
-import CapacityComparisionDrawer from "./CapacityComparisionDrawer";
-import SystemCostDrawer from "./SystemCostDrawer";
-import GenerationMixBottomDrawer from "./BottomDrawer";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { CircleFlag } from "react-circle-flags";
 
 interface DrawerData {
   electricityPrice2050: number;
@@ -27,20 +14,36 @@ interface DrawerData {
   electricityPrice2021: number;
 }
 
-const ElectricityPriceComponent = () => {
+const ElectricityPriceComponent = ({
+  hoveredCountry,
+}: {
+  hoveredCountry: string;
+}) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
-  const { selectedCountry } = useCountry();
   const contentRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DrawerData>({
     electricityPrice2050: 0,
     investmentPerCO2: 0,
     electricityPrice2021: 0,
   });
 
+  const [mouse, ref] = useMouse();
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const { x, y } = mouse;
+    gsap.to(contentRef.current, {
+      delay: 0.08,
+      x: x * 0.5,
+      y: y * 0.5,
+    });
+  }, [mouse]);
+
   const fetchData = useCallback(async () => {
-    if (!selectedCountry) {
+    if (!hoveredCountry && hoveredCountry !== "null") {
       setData({
         electricityPrice2050: 0,
         investmentPerCO2: 0,
@@ -53,9 +56,9 @@ const ElectricityPriceComponent = () => {
     setLoading(true);
     try {
       const responses = await Promise.all([
-        fetch(`/api/electricity_prices/${selectedCountry}/2050`),
-        fetch(`/api/investment_per_co2_reduced/${selectedCountry}/2050`),
-        fetch(`/api/electricity_prices/${selectedCountry}/2021`),
+        fetch(`/api/electricity_prices/${hoveredCountry}/2050`),
+        fetch(`/api/investment_per_co2_reduced/${hoveredCountry}/2050`),
+        fetch(`/api/electricity_prices/${hoveredCountry}/2021`),
       ]);
 
       const failedResponses = responses.filter((r) => !r.ok);
@@ -92,40 +95,70 @@ const ElectricityPriceComponent = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCountry]);
+  }, [hoveredCountry]);
+
+  useEffect(() => {
+    if (hoveredCountry === "null") {
+      console.log('hoveredCountry === "null"');
+      gsap.to(contentRef.current, {
+        width: 0,
+        height: 0,
+        opacity: 0,
+        duration: 0.4,
+        delay: 0.08,
+      });
+    } else {
+      console.log(hoveredCountry);
+      gsap.to(contentRef.current, {
+        width: "35vw",
+        height: "15vh",
+        opacity: 1,
+        duration: 0.3,
+        delay: 0.08,
+      });
+    }
+  }, [hoveredCountry]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  if (!selectedCountry) {
-    return null;
-  }
   return (
-    <Card className="absolute bottom-12 h-[14vh] w-[35vw] z-40 left-0 right-0 mx-auto text-accent-foreground bg-background text-center">
-      <div className="w-full h-full grid grid-cols-10">
-        <div className="col-span-3 px-2 flex flex-col justify-center my-5">
-          <p className="text-2xl  font-bold tracking-tight">
-            {data.electricityPrice2021.toFixed(2)}{" "}
-            <span className="text-lg font-normal ml-2">€/MWh</span>
-          </p>
-          <h1 className="text-2xl font-bold">2021</h1>
+    <Card
+      className={`fixed top-0 left-0  h-0 w-0 z-40  mx-auto text-accent-foreground bg-background text-center opacity-1 overflow-hidden`}
+      ref={contentRef}
+    >
+      {!loading && (
+        <div className="w-full h-full grid grid-cols-10">
+          <CircleFlag
+            countryCode={hoveredCountry.toLowerCase()}
+            height={50}
+            className="absolute h-20 w-20"
+          />
+          <div className="col-span-3 px-2 flex flex-col justify-center my-5">
+            <p className="text-2xl  font-bold tracking-tight">
+              {data.electricityPrice2021.toFixed(2)}{" "}
+              <span className="text-lg font-normal ml-2">€/MWh</span>
+            </p>
+            <h1 className="text-2xl font-bold">2021</h1>
+          </div>
+          <div className="col-span-4 border-x-2 px-3 flex flex-col justify-center my-5">
+            <p className="text-2xl font-bold tracking-tight">
+              {data.investmentPerCO2.toFixed(2)}{" "}
+              <span className="text-lg font-normal ml-2">€/tCO2</span>
+            </p>
+            <h1 className="text-2xl font-bold">Investment Required</h1>
+          </div>
+          <div className="col-span-3 px-2 flex flex-col justify-center my-5">
+            <p className="text-2xl font-bold tracking-tight">
+              {data.electricityPrice2050.toFixed(2)}{" "}
+              <span className="text-lg font-normal ml-2">€/MWh</span>
+            </p>
+            <h1 className="text-2xl font-bold">2050</h1>
+          </div>
         </div>
-        <div className="col-span-4 border-x-2 px-3 flex flex-col justify-center my-5">
-          <p className="text-2xl font-bold tracking-tight">
-            {data.investmentPerCO2.toFixed(2)}{" "}
-            <span className="text-lg font-normal ml-2">€/tCO2</span>
-          </p>
-          <h1 className="text-2xl font-bold">Investment Required</h1>
-        </div>
-        <div className="col-span-3 px-2 flex flex-col justify-center my-5">
-          <p className="text-2xl font-bold tracking-tight">
-            {data.electricityPrice2050.toFixed(2)}{" "}
-            <span className="text-lg font-normal ml-2">€/MWh</span>
-          </p>
-          <h1 className="text-2xl font-bold">2050</h1>
-        </div>
-      </div>
+      )}
+      {loading && <p>Loading...</p>}
     </Card>
   );
 };
