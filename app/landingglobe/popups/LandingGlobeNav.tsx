@@ -20,6 +20,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useSWR from "swr";
 import { Co2EmmisionsPie } from "@/components/Charts/Co2EmmisionsPie";
+import GenerationMixBottomDrawer from "./BottomDrawer";
+import SystemCostDrawer from "./SystemCostDrawer";
+import CapacityComparisionDrawer from "./CapacityComparisionDrawer";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -134,61 +137,66 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
               current co2 emmisions by energy carrier
             </SheetDescription>
           </SheetHeader>
+          <CountryDropdown defaultValue={selectedCountry} />
+          <GenerationMixBottomDrawer
+            selectedCountry={selectedCountry}
+            isParentOpen={open}
+            setIsParentOpen={setIsOpen}
+          />
+          <SystemCostDrawer
+            selectedCountry={selectedCountry}
+            isParentOpen={open}
+            setIsParentOpen={setIsOpen}
+          />
+          <CapacityComparisionDrawer
+            selectedCountry={selectedCountry}
+            isParentOpen={open}
+            setIsParentOpen={setIsOpen}
+          />
 
-          <div className="flex flex-col gap-4 flex-1">
-            <CountryDropdown defaultValue={selectedCountry} />
-            <Card className="p-6 space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold">CO2 Emissions (2021)</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Current emissions by energy carrier
+          <Card className="p-6 space-y-6">
+            <h3 className="text-2xl font-semibold">CO2 Emissions (2021)</h3>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-3xl font-bold tracking-tight">
+                  {co2Emissions
+                    ?.reduce(
+                      (acc, curr) => acc + (Number(curr.co2_emission) || 0),
+                      0
+                    )
+                    .toLocaleString("en-US", {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })}
+                  <span className="text-lg font-normal ml-2">tCO2</span>
                 </p>
               </div>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">
-                    Total Emissions
-                  </p>
-                  <p className="text-3xl font-bold tracking-tight">
-                    {co2Emissions
-                      ?.reduce(
-                        (acc, curr) => acc + (Number(curr.co2_emission) || 0),
-                        0
-                      )
-                      .toLocaleString("en-US", {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2,
-                      })}
-                    <span className="text-lg font-normal ml-2">tCO2</span>
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">
-                    Distribution by Carrier
-                  </p>
-                  <div className="pt-2">
-                    <Co2EmmisionsPie
-                      data={co2Emissions}
-                      costField="co2_emission"
-                    />
-                  </div>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Distribution by Carrier
+                </p>
+                <div className="pt-2">
+                  <Co2EmmisionsPie
+                    data={co2Emissions}
+                    costField="co2_emission"
+                  />
                 </div>
               </div>
-            </Card>
-            <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
-              <Switch
-                id="theme"
-                checked={theme === "light"}
-                onCheckedChange={() =>
-                  setTheme(theme === "dark" ? "light" : "dark")
-                }
-              />
-              <Label htmlFor="theme">
-                {theme === "light" ? <Moon /> : <Sun />}
-              </Label>
             </div>
+          </Card>
+          <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
+            <Switch
+              id="theme"
+              checked={theme === "light"}
+              onCheckedChange={() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              }
+            />
+            <Label htmlFor="theme">
+              {theme === "light" ? <Moon /> : <Sun />}
+            </Label>
           </div>
         </SheetContent>
       </Sheet>
