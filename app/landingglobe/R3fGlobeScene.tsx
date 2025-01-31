@@ -161,30 +161,6 @@ const GlobeViz = () => {
     }
   }, []);
 
-  const handleHover = useCallback((...args: unknown[]) => {
-    if (args.length < 2) {
-      setHoveredCountry("null");
-      return;
-    }
-    if (args[0] === "globe") {
-      setHoveredCountry("null");
-      return;
-    }
-    if (args[0] === "polygon") {
-      const polygonData = args[1] as { id?: string };
-      if (!polygonData.id) return;
-
-      const countryCode = polygonData.id
-        .split("_")[0]
-        ?.substring(0, 2)
-        ?.toLowerCase();
-
-      if (!countryCode) return;
-
-      setHoveredCountry(countryCode.toUpperCase() as "in" | "out");
-    }
-  }, []);
-
   const handleClick = useCallback(
     (...args: unknown[]) => {
       if (args.length < 2) {
@@ -263,6 +239,7 @@ const GlobeViz = () => {
           polygonSideColor={getPolygonSideColor}
           polygonStrokeColor={getPolygonColor}
           polygonAltitude={getPolygonAltitude}
+          polygonsTransitionDuration={300}
           onClick={handleClick}
           onHover={handleHover}
           onGlobeReady={() => setGlobeReady(true)}
