@@ -37,7 +37,7 @@ import {
 import { Color, Vector3 } from "three";
 import GlobeOnly from "./JustGlobe";
 import ElectricityPriceComponent from "./popups/ElectricityPriceComponent";
-import { get } from "http";
+
 
 // const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
 
@@ -136,6 +136,30 @@ const GlobeViz = () => {
     },
     [selectedCountry, hoveredCountry]
   );
+
+  const handleHover = useCallback((...args: unknown[]) => {
+    if (args.length < 2) {
+      setHoveredCountry("null");
+      return;
+    }
+    if (args[0] === "globe") {
+      setHoveredCountry("null");
+      return;
+    }
+    if (args[0] === "polygon") {
+      const polygonData = args[1] as { id?: string };
+      if (!polygonData.id) return;
+
+      const countryCode = polygonData.id
+        .split("_")[0]
+        ?.substring(0, 2)
+        ?.toLowerCase();
+
+      if (!countryCode) return;
+
+      setHoveredCountry(countryCode.toUpperCase() as "in" | "out");
+    }
+  }, []);
 
   const handleHover = useCallback((...args: unknown[]) => {
     if (args.length < 2) {
