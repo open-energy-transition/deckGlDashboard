@@ -37,6 +37,7 @@ import {
 import { Color, Vector3 } from "three";
 import GlobeOnly from "./JustGlobe";
 import ElectricityPriceComponent from "./popups/ElectricityPriceComponent";
+import { get } from "http";
 
 // const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
 
@@ -85,22 +86,56 @@ const GlobeViz = () => {
     }, {} as FetcherResponse);
   });
 
-  const getPolygonColor = useCallback((d: any) => {
-    const countryCode = d.id
-      ?.split("_")[0]
-      ?.toLowerCase() as keyof typeof COUNTRY_COLORS;
-    return COUNTRY_COLORS[countryCode] || "#cccccc";
-  }, []);
+  const getPolygonColor = useCallback(
+    (d: any) => {
+      const countryCode = d.id
+        ?.split("_")[0]
+        ?.toLowerCase() as keyof typeof COUNTRY_COLORS;
+      if (selectedCountry === countryCode.toUpperCase()) {
+        return "#E41E3C";
+      }
+      if (hoveredCountry === countryCode.toUpperCase()) {
+        return "#D7E5A0";
+      }
+      return "#7C9885";
+      // return COUNTRY_COLORS[countryCode] || "#cccccc";
+    },
+    [selectedCountry, hoveredCountry]
+  );
 
-  const getPolygonSideColor = useCallback((d: any) => {
-    const countryCode = d.id?.split("_")[0]?.toLowerCase();
-    const baseColor =
-      COUNTRY_COLORS[countryCode as keyof typeof COUNTRY_COLORS] || "#cccccc";
-    const r = parseInt(baseColor.slice(1, 3), 16);
-    const g = parseInt(baseColor.slice(3, 5), 16);
-    const b = parseInt(baseColor.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, 0.3)`;
-  }, []);
+  const getPolygonAltitude = useCallback(
+    (d: any) => {
+      const countryCode = d.id
+        ?.split("_")[0]
+        ?.toLowerCase() as keyof typeof COUNTRY_COLORS;
+      if (selectedCountry === countryCode.toUpperCase()) {
+        return 0.04;
+      }
+      if (hoveredCountry === countryCode.toUpperCase()) {
+        return 0.02;
+      }
+      return 0.01;
+      // return COUNTRY_COLORS[countryCode] || "#cccccc";
+    },
+    [selectedCountry, hoveredCountry]
+  );
+
+  const getPolygonSideColor = useCallback(
+    (d: any) => {
+      const countryCode = d.id?.split("_")[0]?.toLowerCase();
+      let baseColor = "#7C9885";
+      if (selectedCountry === countryCode.toUpperCase()) {
+        baseColor = "#E41E3C";
+      } else if (hoveredCountry === countryCode.toUpperCase()) {
+        baseColor = "#D7E5A0";
+      }
+      const r = parseInt(baseColor.slice(1, 3), 16);
+      const g = parseInt(baseColor.slice(3, 5), 16);
+      const b = parseInt(baseColor.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, 0.3)`;
+    },
+    [selectedCountry, hoveredCountry]
+  );
 
   const handleHover = useCallback((...args: unknown[]) => {
     if (args.length < 2) {
@@ -203,13 +238,7 @@ const GlobeViz = () => {
           polygonCapColor={getPolygonColor}
           polygonSideColor={getPolygonSideColor}
           polygonStrokeColor={getPolygonColor}
-          // polygonAltitude={(d: any) => {
-          //   const countryCode = d.id
-          //     ?.split("_")[0]
-          //     ?.substring(0, 2)
-          //     .toLowerCase();
-          //   return selectedCountry === countryCode.toUpperCase() ? 0.03 : 0.01;
-          // }}
+          polygonAltitude={getPolygonAltitude}
           onClick={handleClick}
           onHover={handleHover}
           onGlobeReady={() => setGlobeReady(true)}
