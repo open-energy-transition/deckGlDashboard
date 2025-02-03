@@ -138,17 +138,17 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
             </SheetDescription>
           </SheetHeader>
           <CountryDropdown defaultValue={selectedCountry} />
-          <GenerationMixBottomDrawer
-            selectedCountry={selectedCountry}
-            isParentOpen={open}
-            setIsParentOpen={setIsOpen}
-          />
           <SystemCostDrawer
             selectedCountry={selectedCountry}
             isParentOpen={open}
             setIsParentOpen={setIsOpen}
           />
           <CapacityComparisionDrawer
+            selectedCountry={selectedCountry}
+            isParentOpen={open}
+            setIsParentOpen={setIsOpen}
+          />
+          <GenerationMixBottomDrawer
             selectedCountry={selectedCountry}
             isParentOpen={open}
             setIsParentOpen={setIsOpen}
@@ -160,16 +160,16 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <p className="text-3xl font-bold tracking-tight">
-                  {co2Emissions
+                  {(co2Emissions
                     ?.reduce(
                       (acc, curr) => acc + (Number(curr.co2_emission) || 0),
                       0
-                    )
+                    ) / 1e6)
                     .toLocaleString("en-US", {
                       maximumFractionDigits: 2,
                       minimumFractionDigits: 2,
                     })}
-                  <span className="text-lg font-normal ml-2">tCO2</span>
+                  <span className="text-lg font-normal ml-2">billion tCO2</span>
                 </p>
               </div>
 
