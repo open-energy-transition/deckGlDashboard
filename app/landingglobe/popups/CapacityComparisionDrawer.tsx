@@ -30,20 +30,8 @@ const CapacityComparisionDrawer = ({
   isParentOpen,
   setIsParentOpen,
 }: Props) => {
-  const { data: installedCapacityData2021 } = useSWR(
-    `/api/installed_capacity/${selectedCountry}/2021`,
-    fetcher,
-    { suspense: false }
-  );
-
-  const { data: capacityExpansionData2021 } = useSWR(
-    `/api/capacity_expansion/${selectedCountry}/2021`,
-    fetcher,
-    { suspense: false }
-  );
-
-  const { data: installedCapacityData2050 } = useSWR(
-    `/api/installed_capacity/${selectedCountry}/2050`,
+  const { data: optimalCapacityData2021 } = useSWR(
+    `/api/optimal_capacity/${selectedCountry}/2021`,
     fetcher,
     { suspense: false }
   );
@@ -54,43 +42,40 @@ const CapacityComparisionDrawer = ({
     { suspense: false }
   );
 
-  const [installedCapacityState2021, setInstalledCapacityState2021] =
-    React.useState<typeof installedCapacityData2021>(null);
+  const { data: optimalCapacityData2050 } = useSWR(
+    `/api/optimal_capacity/${selectedCountry}/2050`,
+    fetcher,
+    { suspense: false }
+  );
 
-  const [capacityExpansionState2021, setCapacityExpansionState2021] =
-    React.useState<typeof capacityExpansionData2021>(null);
-
-  const [installedCapacityState2050, setInstalledCapacityState2050] =
-    React.useState<typeof installedCapacityData2050>(null);
+  const [optimalCapacityState2021, setOptimalCapacityState2021] =
+    React.useState<typeof optimalCapacityData2021>(null);
 
   const [capacityExpansionState2050, setCapacityExpansionState2050] =
     React.useState<typeof capacityExpansionData2050>(null);
 
+  const [optimalCapacityState2050, setOptimalCapacityState2050] =
+    React.useState<typeof optimalCapacityData2050>(null);
+
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    if (installedCapacityData2021?.data) {
-      setInstalledCapacityState2021(installedCapacityData2021.data);
+    if (optimalCapacityData2021?.data) {
+      setOptimalCapacityState2021(optimalCapacityData2021.data);
     }
-  }, [installedCapacityData2021]);
-
-  useEffect(() => {
-    if (capacityExpansionData2021?.data) {
-      setCapacityExpansionState2021(capacityExpansionData2021.data);
-    }
-  }, [capacityExpansionData2021]);
-
-  useEffect(() => {
-    if (installedCapacityData2050?.data) {
-      setInstalledCapacityState2050(installedCapacityData2050.data);
-    }
-  }, [installedCapacityData2050]);
+  }, [optimalCapacityData2021]);
 
   useEffect(() => {
     if (capacityExpansionData2050?.data) {
       setCapacityExpansionState2050(capacityExpansionData2050.data);
     }
   }, [capacityExpansionData2050]);
+
+  useEffect(() => {
+    if (optimalCapacityData2050?.data) {
+      setOptimalCapacityState2050(optimalCapacityData2050.data);
+    }
+  }, [optimalCapacityData2050]);
 
   useEffect(() => {
     if (open) {
@@ -104,14 +89,14 @@ const CapacityComparisionDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          Capacity Distribution for {selectedCountry}
+          Capacity Expansion for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center align-middle mt-3">
           <DrawerHeader className="w-full pb-2">
             <DrawerTitle className="text-4xl">
-              Installed Capacity Analysis
+              Capacity Expansion Analysis
             </DrawerTitle>
             <DrawerDescription className="text-base">
               Comparing installed capacity and expansion requirements between
@@ -128,8 +113,8 @@ const CapacityComparisionDrawer = ({
               technology
             </p>
             <CarrierCapacityGeneralPie
-              data={installedCapacityState2021}
-              costField="installed_capacity"
+              data={optimalCapacityState2021}
+              costField="optimal_capacity"
               heading="Total Installed Capacity"
               description="Distribution of currently installed power generation capacity by
               technology"
@@ -145,10 +130,10 @@ const CapacityComparisionDrawer = ({
               neutrality
             </p>
             <CarrierCapacityGeneralPie
-              data={installedCapacityState2050}
-              costField="installed_capacity"
+              data={optimalCapacityState2050}
+              costField="optimal_capacity"
               heading="Total Installed Capacity"
-              description="Distribution of currently installed power generation capacity by"
+              description="Distribution of total installed power generation capacity"
             />
             <CarrierCapacityGeneralPie
               data={capacityExpansionState2050}

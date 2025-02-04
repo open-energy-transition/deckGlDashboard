@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { Link } from "next-transition-router";
 import { usePathname } from "next/navigation";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
-import { X } from "lucide-react";
+import { AlignJustify, X } from "lucide-react";
 gsap.registerPlugin(useGSAP);
 
 const Menu = () => {
@@ -57,7 +57,7 @@ const Menu = () => {
         }}
         className={`${navigationMenuTriggerStyle()} cursor-pointer hover:text-accent lg:hidden`}
       >
-        Menu
+        <AlignJustify />
       </div>
       <div
         className="absolute left-0 top-0 z-10 hidden h-0 w-screen flex-col items-center justify-center gap-4 bg-card font-mono text-3xl opacity-0"
@@ -70,10 +70,9 @@ const Menu = () => {
           className="absolute top-8 right-8 scale-125 cursor-pointer"
         />
         {[
-          { href: "/", text: "Overview" },
-          { href: "/landingglobe", text: "Main Page" },
-          { href: "/network", text: "Network" },
-          { href: "/sidebyside", text: "Polygon" },
+          { href: "/", text: "About" },
+          { href: "/network", text: "Now" },
+          { href: "/landingglobe", text: "2050" },
         ].map(({ href, text }) => (
           <Link
             key={href}
