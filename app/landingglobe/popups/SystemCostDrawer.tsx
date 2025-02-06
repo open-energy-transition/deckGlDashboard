@@ -35,12 +35,6 @@ const SystemCostDrawer = ({
     { suspense: false }
   );
 
-  const { data: investmentCostsData2021 } = useSWR(
-    `/api/investment_costs_by_techs/${selectedCountry}/2021`,
-    fetcher,
-    { suspense: false }
-  );
-
   const { data: totalCostsData2050 } = useSWR(
     `/api/total_costs_by_techs/${selectedCountry}/2050`,
     fetcher,
@@ -56,9 +50,6 @@ const SystemCostDrawer = ({
   const [totalCostsState2021, setTotalCostsState2021] =
     React.useState<typeof totalCostsData2021>(null);
 
-  const [investmentCostsState2021, setInvestmentCostsState2021] =
-    React.useState<typeof investmentCostsData2021>(null);
-
   const [totalCostsState2050, setTotalCostsState2050] =
     React.useState<typeof totalCostsData2050>(null);
 
@@ -72,12 +63,6 @@ const SystemCostDrawer = ({
       setTotalCostsState2021(totalCostsData2021.data);
     }
   }, [totalCostsData2021]);
-
-  useEffect(() => {
-    if (investmentCostsData2021?.data) {
-      setInvestmentCostsState2021(investmentCostsData2021.data);
-    }
-  }, [investmentCostsData2021]);
 
   useEffect(() => {
     if (totalCostsData2050?.data) {
@@ -103,58 +88,49 @@ const SystemCostDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          System Cost for {selectedCountry}
+          Investment Costs for {selectedCountry}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
           <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">System Cost Analysis</DrawerTitle>
+            <DrawerTitle className="text-4xl">Investment Costs Analysis</DrawerTitle>
             <DrawerDescription className="text-base">
-              Comparing system costs and investments between current state and
-              net-zero target for {selectedCountry}
+              Comparing total system costs and required investments for net-zero transition in {selectedCountry}
             </DrawerDescription>
           </DrawerHeader>
           <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center ">
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
               Current System Costs (2021)
             </h2>
-            <p className="text-muted-foreground text-center  w-full">
-              Distribution of total operational and investment costs across
-              technologies
+            <p className="text-muted-foreground text-center w-full">
+              Distribution of total system costs across technologies
             </p>
             <CarrierCostGeneral
-              heading="Total Operational Costs"
+              heading="Total System Costs"
               data={totalCostsState2021}
               costField="total_costs"
-              description="Total operational costs for 2021"
-            />
-            <CarrierCostGeneral
-              heading="Current Investment Costs"
-              data={investmentCostsState2021}
-              costField="investment_cost"
-              description="Investment costs for 2021"
+              description="Total system costs for 2021"
             />
           </div>
           <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center ">
-              Net-Zero Target Costs (2050)
+            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
+              Net-Zero Target (2050)
             </h2>
-            <p className="text-muted-foreground text-center  w-full">
-              Projected costs and investments needed to achieve carbon
-              neutrality
+            <p className="text-muted-foreground text-center w-full">
+              Projected costs and investments needed to achieve carbon neutrality
             </p>
             <CarrierCostGeneral
               heading="Total System Costs"
               data={totalCostsState2050}
               costField="total_costs"
-              description="Total System cost 2050"
+              description="Total system costs for 2050"
             />
             <CarrierCostGeneral
-              heading="Investments Needed"
+              heading="Required Investments"
               data={investmentsNeededState2050}
               costField="investment_needed"
-              description="Investments needed 2050"
+              description="Additional investments needed for net-zero transition"
             />
           </div>
           <DrawerFooter className="w-full border-t">

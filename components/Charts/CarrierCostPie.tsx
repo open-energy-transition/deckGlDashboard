@@ -63,6 +63,7 @@ export function CarrierCostGeneral({
       const total = dataArray.reduce((acc: number, item: DataItem) => {
         return acc + (Number(item[costField as keyof DataItem]) || 0);
       }, 0);
+      
       setTotalGeneration(Number(total.toFixed(2)));
 
       const transformedData = dataArray
@@ -71,10 +72,9 @@ export function CarrierCostGeneral({
             item && item.carrier && item.carrier !== `Total ${costField}`
         )
         .map((item: DataItem) => {
-          const value = Number(
-            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
-          );
+          const value = Number((Number(item[costField as keyof DataItem]) || 0).toFixed(2));
           const percentage = total > 0 ? (value / total) * 100 : 0;
+          
           return {
             carrier: item.carrier,
             value: value,
@@ -86,9 +86,6 @@ export function CarrierCostGeneral({
           };
         });
 
-      console.log("dataArray", dataArray);
-      console.log("transformedData", transformedData);
-
       setChartData(transformedData);
     }
   }, [data, costField]);
@@ -99,7 +96,7 @@ export function CarrierCostGeneral({
         <CardHeader>
           <CardTitle>{heading || "System and Investment cost"}</CardTitle>
           <CardDescription>
-            {description || "how much euros for each"}
+            {description || "Cost distribution by technology"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -132,13 +129,11 @@ export function CarrierCostGeneral({
                               typeof value === "number"
                                 ? value.toFixed(2)
                                 : Number(value).toFixed(2)
-                            } euros`}</span>
+                            } billion €`}</span>
                           </div>
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
-                            <span>{`${item.payload.percentage.toFixed(
-                              1
-                            )}%`}</span>
+                            <span>{`${item.payload.percentage.toFixed(1)}%`}</span>
                           </div>
                         </div>
                       </>
@@ -175,7 +170,7 @@ export function CarrierCostGeneral({
                             y={(viewBox.cy || 0) + 24}
                             className="fill-muted-foreground"
                           >
-                            euros
+                            billion €
                           </tspan>
                         </text>
                       );
