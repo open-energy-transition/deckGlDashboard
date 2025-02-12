@@ -1,5 +1,4 @@
-const BASE_URL = "http://34.31.13.149:8000/geoserver/GIS_Dashboard/ows";
-
+const BASE_URL = "https://geo.powernetzero.org/geoserver/GIS_Dashboard/ows";
 
 export const toLowerCase = (str) => str.toLowerCase();
 
