@@ -1,5 +1,6 @@
 const API_BASE_URL = "/api/geography";
 
+
 export const toLowerCase = (str) => str.toLowerCase();
 
 export const COUNTRY_COLORS = {

@@ -28,12 +28,6 @@ const benefitList: BenefitsProps[] = [
     description:
       "PyPSA-Earth is the model used to obtain the results presented in the Dashboard.PyPSA-Earth-Status is the project consolidating efforts to increase accuracy of the data provided by PyPSA-Earth modeling workflow for all countries of the world. PyPSA-Earth Regional Studies [TODO The input from the coordinators is needed]",
   },
-  {
-    icon: "Sparkle",
-    title: "Data",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur dolores.",
-  },
 ];
 
 const BenefitsSection = () => {
@@ -48,9 +42,7 @@ const BenefitsSection = () => {
             What the data represents
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non
-            ducimus reprehenderit architecto rerum similique facere odit
-            deleniti necessitatibus quo quae.
+            
           </p>
         </div>
 

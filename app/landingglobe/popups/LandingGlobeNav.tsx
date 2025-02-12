@@ -132,9 +132,9 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </SheetClose>
-            <SheetTitle className="text-4xl">2021</SheetTitle>
+            <SheetTitle className="text-4xl">Country Analysis</SheetTitle>
             <SheetDescription>
-              current co2 emmisions by energy carrier
+              Explore statistics for your selected country
             </SheetDescription>
           </SheetHeader>
           <CountryDropdown defaultValue={selectedCountry} />
