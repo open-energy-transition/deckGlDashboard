@@ -3,10 +3,9 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import MainPageNav from "./popups/LandingGlobeNav";
-import RightDrawer from "./popups/RightDrawer";
-import { LucideArrowRightSquare } from "lucide-react";
+import ElectricityPriceComponent from "./popups/ElectricityPriceComponent";
 
-const Globe = dynamic(() => import("./Globe"), {
+const Globe = dynamic(() => import("./R3fGlobeScene"), {
   ssr: false,
   loading: () => <div className="w-full h-screen bg-background" />,
 });
@@ -23,7 +22,7 @@ export default function LandingGlobe() {
     <div className="relative w-full h-screen">
       <Globe />
       <MainPageNav open={isOpen} setIsOpen={setIsOpen} />
-      <RightDrawer open={isOpen} setIsOpen={setIsOpen} />
+      {/* <ElectricityPriceComponent /> */}
     </div>
   );
 }
