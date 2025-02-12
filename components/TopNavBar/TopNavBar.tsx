@@ -57,14 +57,21 @@ export function NavigationMenuDemo() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        
+
         <NavigationMenuItem
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
           <div
-            className={`${navigationMenuTriggerStyle()} flex items-center gap-1`}
+            className={`${navigationMenuTriggerStyle()} flex items-center gap-1 cursor-pointer`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
+            <Switch
+              id="theme"
+              checked={theme === "light"}
+              onCheckedChange={() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              }
+            />
             <Label htmlFor="theme">
               {theme === "light" ? <Moon /> : <Sun />}
             </Label>
