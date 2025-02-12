@@ -10,9 +10,9 @@ export const pool = new Pool({
   database: process.env.POSTGRES_DB,
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
-  statement_timeout: 10000, // Cancel queries that take more than 10 seconds
-  query_timeout: 10000, // Same as above but at query level
+  connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection could not be established
+  statement_timeout: 30000, // Cancel queries that take more than 30 seconds
+  query_timeout: 30000, // Same as above but at query level
   application_name: 'geography-api', // For better monitoring
 });
 
@@ -144,15 +144,29 @@ export function validateCountry(country: string): boolean {
 }
 
 // Optimized GeoJSON response formatter
-export function formatGeoJsonResponse(result: any) {
-  const geoJson = result.rows[0]?.jsonb_build_object;
-  if (!geoJson) {
-    return NextResponse.json({
-      type: 'FeatureCollection',
-      features: []
-    });
+export function formatGeoJsonResponse(result: any, headers?: Headers) {
+  const response = (result.features) 
+    ? NextResponse.json(result)
+    : result.rows?.[0]?.jsonb_build_object
+      ? NextResponse.json(result.rows[0].jsonb_build_object)
+      : Array.isArray(result)
+        ? NextResponse.json({
+            type: 'FeatureCollection',
+            features: result
+          })
+        : NextResponse.json({
+            type: 'FeatureCollection',
+            features: []
+          });
+
+  // Add headers if provided
+  if (headers) {
+    for (const [key, value] of headers.entries()) {
+      response.headers.set(key, value);
+    }
   }
-  return NextResponse.json(geoJson);
+
+  return response;
 }
 
 // Error response utility

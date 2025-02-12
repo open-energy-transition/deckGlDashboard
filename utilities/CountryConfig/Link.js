@@ -21,6 +21,8 @@ export const getGeoJsonData = (countryCode) => {
     lines: `${API_BASE_URL}/lines/${code}`,
     countryView: `${API_BASE_URL}/countryView/${code}`,
     regions: `${API_BASE_URL}/regions/${code}`,
+    regions_2021: `${API_BASE_URL}/regions/${code}?year=2021`,
+    regions_2050: `${API_BASE_URL}/regions/${code}?year=2050`
   };
 };
 
