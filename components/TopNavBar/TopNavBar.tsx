@@ -64,7 +64,6 @@ export function NavigationMenuDemo() {
           <div
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1 cursor-pointer mx-0 px-0`}
           >
-            <Switch id="theme" checked={theme === "light"} />
             <Label htmlFor="theme">
               {theme === "light" ? <Moon /> : <Sun />}
             </Label>
