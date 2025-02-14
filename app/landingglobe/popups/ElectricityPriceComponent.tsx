@@ -8,11 +8,22 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { CircleFlag } from "react-circle-flags";
 import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import { Label, Pie, PieChart } from "recharts";
+import { GenerationMixglobe } from "./GenerationPie";
 
 interface DrawerData {
   electricityPrice2050: number;
   investmentPerCO2: number;
   electricityPrice2021: number;
+  generationMix: any;
 }
 
 const ElectricityPriceComponent = ({
@@ -26,6 +37,7 @@ const ElectricityPriceComponent = ({
     electricityPrice2050: 0,
     investmentPerCO2: 0,
     electricityPrice2021: 0,
+    generationMix: [],
   });
 
   const [mouse, ref] = useMouse();
@@ -47,6 +59,7 @@ const ElectricityPriceComponent = ({
         electricityPrice2050: 0,
         investmentPerCO2: 0,
         electricityPrice2021: 0,
+        generationMix: [],
       });
       setLoading(false);
       return;
@@ -58,6 +71,7 @@ const ElectricityPriceComponent = ({
         fetch(`/api/electricity_prices/${hoveredCountry}/2050`),
         fetch(`/api/investment_per_co2_reduced/${hoveredCountry}/2050`),
         fetch(`/api/electricity_prices/${hoveredCountry}/2021`),
+        fetch(`/api/generation_mix/${hoveredCountry}/2050`),
       ]);
 
       const failedResponses = responses.filter((r) => !r.ok);
@@ -69,6 +83,7 @@ const ElectricityPriceComponent = ({
         electricityPricesData2050,
         investmentPerCO2Data,
         electricityPriceData2021,
+        generationMixData2050,
       ] = await Promise.all(responses.map((r) => r.json()));
 
       const processedData: DrawerData = {
@@ -82,6 +97,7 @@ const ElectricityPriceComponent = ({
         electricityPrice2021:
           parseFloat(electricityPriceData2021.data?.[0]?.electricity_price) ||
           0,
+        generationMix: generationMixData2050.data,
       };
 
       setData(processedData);
@@ -90,6 +106,7 @@ const ElectricityPriceComponent = ({
         electricityPrice2050: 0,
         investmentPerCO2: 0,
         electricityPrice2021: 0,
+        generationMix: [],
       });
     } finally {
       setLoading(false);
@@ -119,7 +136,7 @@ const ElectricityPriceComponent = ({
       } else {
         gsap.to(contentRef.current, {
           width: "25rem",
-          height: "5rem",
+          height: "28rem",
           opacity: 1,
           duration: 0.3,
           delay: 0.08,
@@ -142,7 +159,7 @@ const ElectricityPriceComponent = ({
           <CircleFlag
             countryCode={hoveredCountry.toLowerCase()}
             height={50}
-            className="w-full aspect-square col-span-11 h-20 mx-auto md:h-auto  md:col-span-2 "
+            className="pt-1 w-full aspect-square col-span-11 h-20 mx-auto md:h-auto  md:col-span-2 "
           />
           <div className="col-span-11 md:col-span-3">
             <p>2021</p>
@@ -155,6 +172,9 @@ const ElectricityPriceComponent = ({
           <div className="col-span-11 md:col-span-3">
             <p>2050</p>
             {data.electricityPrice2050.toFixed(2)} €/MWh{" "}
+          </div>
+          <div className="hidden md:block md:col-span-11">
+            <GenerationMixglobe data={data.generationMix} />
           </div>
         </div>
       )}

@@ -92,7 +92,7 @@ export function CarrierCapacityGeneralPie({
 
   return (
     <>
-      <Card className="w-full md:w-[26rem] md:h-[32rem]">
+      <Card className="w-full md:w-[26rem] ">
         <CardHeader>
           <CardTitle>{heading || "default heading"}</CardTitle>
           <CardDescription>

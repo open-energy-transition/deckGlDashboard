@@ -92,7 +92,7 @@ export function CarrierCostGeneral({
 
   return (
     <>
-      <Card className="w-full md:w-[26rem] md:h-[32rem]">
+      <Card className="w-full md:w-[26rem]">
         <CardHeader>
           <CardTitle>{heading || "System and Investment cost"}</CardTitle>
           <CardDescription>
