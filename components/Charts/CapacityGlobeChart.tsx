@@ -95,7 +95,7 @@ export function CarrierCapacityGeneralPie({
 
   return (
     <>
-      <Card className="w-[26rem]">
+      <Card className="w-full md:w-[26rem] md:h-[32rem]">
         <CardHeader>
           <CardTitle>{heading || "default heading"}</CardTitle>
           <CardDescription>
@@ -105,7 +105,7 @@ export function CarrierCapacityGeneralPie({
         <CardContent>
           <ChartContainer
             config={GenerationMixchartConfigSmall}
-            className="aspect-square"
+            className="h-[28rem] w-full md:aspect-square"
           >
             <PieChart>
               <ChartTooltip
