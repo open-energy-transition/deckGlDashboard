@@ -34,6 +34,7 @@ import MapLegend from "./components/MapLegend";
 import { useCountry } from "@/components/country-context";
 import { Button } from "@/components/ui/button";
 import { useNetworkView } from "@/components/network-view-context";
+import BusesTooltip from "./popups/BusesTooltip";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -135,8 +136,6 @@ export default function MainMap() {
   const DeckRef = useRef(null);
 
   const { selectedCountry, setSelectedCountry } = useCountry();
-
-  const { networkView, setNetworkView } = useNetworkView();
 
   const [selectedPointID, setSelectedPointID] = useState<string | null>(null);
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
@@ -260,6 +259,10 @@ export default function MainMap() {
     }
   }, [open]);
 
+  useEffect(() => {
+    console.log("selectedPointID", selectedPointID);
+  }, [selectedPointID]);
+
   const MakeLayers = useCallback(() => {
     if (isLoading || Object.keys(busCapacities).length === 0) {
       return [];
@@ -296,7 +299,7 @@ export default function MainMap() {
         lineWidthScale: 20,
         getLineColor: [228, 30, 60, 150], // Last value is alpha (0-255)
         getFillColor: [228, 30, 60, 150], // Last value is alpha (0-255)
-        getLineWidth: (d) => {
+        getLineWidth: (d: any) => {
           const baseWidth = normalizeSnom(
             d.properties.s_nom,
             selectedCountry,
@@ -360,7 +363,7 @@ export default function MainMap() {
           }
         },
         onHover: (info) => {
-          setHoverPointID(info.object ? info.object.id : null);
+          setHoverPointID(info.object ? info.object.properties.Bus : null);
         },
         // getFillColor: [72, 123, 182],
         getLineColor: [124, 152, 133],
@@ -385,11 +388,6 @@ export default function MainMap() {
       }),
     ];
   }, [selectedCountry, busCapacities, isLoading, zoomLevel]);
-
-  const visibleLayers = (networkView: boolean) => {
-    const allLayers = MakeLayers();
-    return networkView ? allLayers.slice(5) : [...allLayers];
-  };
 
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
@@ -437,7 +435,7 @@ export default function MainMap() {
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={visibleLayers(networkView)}
+          layers={MakeLayers()}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -458,6 +456,7 @@ export default function MainMap() {
         side={"right"}
         data={selectedBusData}
       />
+      <BusesTooltip hoveredBus={hoverPointID} />
     </>
   );
 }
