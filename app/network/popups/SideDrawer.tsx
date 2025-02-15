@@ -120,18 +120,11 @@ export default function MySideDrawer({
               </div>
             ) : (
               <>
-                <Card className="my-4 flex flex-col justify-between align-middle gap-2">
+                <Card className="h-[26rem]">
                   <ChartRadial
                     data={generatorData}
                     valueKey="p_nom"
                     title="Nominal Capacity"
-                  />
-                </Card>
-                <Card className="my-4 flex flex-col justify-between align-middle gap-2">
-                  <ChartRadial
-                    data={generatorData}
-                    valueKey="p_nom_opt"
-                    title="Optimal Capacity"
                   />
                 </Card>
               </>
