@@ -1,31 +1,17 @@
 "use client";
 import { useCountry } from "@/components/country-context";
 import React, { useEffect, useState, useRef, useCallback, use } from "react";
-import { useMouse } from "@uidotdev/usehooks";
 import gsap from "gsap";
 import { GeneratorData, SideDrawerProps } from "@/app/types";
-import { Card } from "@/components/ui/card";
 import { ChartRadial } from "@/components/Charts/ChartRadial";
 
 const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
   const { selectedCountry, setSelectedCountry } = useCountry();
   const [loading, setLoading] = useState(true);
-  const [mouse] = useMouse();
 
   const [generatorData, setGeneratorData] = useState<GeneratorData[]>([]);
 
   const toolTipRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!toolTipRef.current) return;
-
-    const { x, y } = mouse;
-    gsap.to(toolTipRef.current, {
-      delay: 0.08,
-      x: x * 1.07,
-      y: y * 0.1,
-    });
-  }, [mouse]);
 
   const fetchData = useCallback(async () => {
     if (!hoveredBus || !selectedCountry) {
@@ -51,7 +37,6 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
         }));
 
       setGeneratorData(filteredData);
-      console.log("filteredData", filteredData);
     } catch (error) {
       console.error("Error fetching bus data:", error);
       setGeneratorData([]);
@@ -63,12 +48,13 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
   useEffect(() => {
     if (!toolTipRef.current) return;
 
-    if (generatorData.length > 0) {
+    if (hoveredBus) {
       gsap.to(toolTipRef.current, {
         delay: 0.01,
         width: "24rem",
         height: "30rem",
         duration: 0.3,
+        opacity: 1,
       });
     } else {
       gsap.to(toolTipRef.current, {
@@ -76,9 +62,10 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
         width: 0,
         height: 0,
         duration: 0.3,
+        opacity: 0,
       });
     }
-  }, [, hoveredBus, selectedCountry, generatorData]);
+  }, [hoveredBus, selectedCountry, generatorData, loading]);
 
   useEffect(() => {
     fetchData();
@@ -86,18 +73,18 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
 
   return (
     <>
-      {!hoveredBus ? (
-        <div className="flex items-center justify-center py-8">
-          No bus selected
-        </div>
-      ) : loading ? (
-        <div className="flex items-center justify-center py-8">Loading...</div>
-      ) : (
-        <>
-          <div
-            className="bg-card/90 absolute w-0 h-0  z-40 p-2 border-border border-2 rounded-md shadow-lg"
-            ref={toolTipRef}
-          >
+      <div
+        className={`bg-card/90 absolute w-0 h-0  z-40 p-2 border-border border-2 rounded-md shadow-lg overflow-hidden opacity-0`}
+        ref={toolTipRef}
+      >
+        {!hoveredBus ? (
+          <div className="flex items-center justify-center">
+            No bus selected
+          </div>
+        ) : loading ? (
+          <div className="flex items-center justify-cente ">Loading...</div>
+        ) : (
+          <>
             <h2 className="text-xl font-bold text-card-foreground">
               Nominal Capacity for hovered bus {hoveredBus}
             </h2>
@@ -106,9 +93,9 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
               valueKey="p_nom"
               title="Nominal Capacity"
             />
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 };
