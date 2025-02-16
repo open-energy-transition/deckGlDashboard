@@ -364,6 +364,7 @@ export default function MainMap() {
         },
         onHover: (info) => {
           setHoverPointID(info.object ? info.object.properties.Bus : null);
+          console.log("picked", info);
         },
         // getFillColor: [72, 123, 182],
         getLineColor: [124, 152, 133],
