@@ -48,7 +48,7 @@ const ElectricityPriceComponent = ({
     const { x, y } = mouse;
     gsap.to(contentRef.current, {
       delay: 0.08,
-      x: x * 0.5,
+      x: x,
       y: y * 0.5,
     });
   }, [mouse]);
