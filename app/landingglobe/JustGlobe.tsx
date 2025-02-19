@@ -1,14 +1,14 @@
 "use client";
 
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef, MutableRefObject } from "react";
 import R3fGlobe, { GlobeMethods, GlobeProps } from "r3f-globe";
 
 const GlobeOnly = forwardRef<GlobeMethods, GlobeProps>((props, ref) => {
-  const globeRef = useRef<GlobeMethods>(null);
+  const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
   useEffect(() => {
     if (globeRef.current) {
-      // Asegurarse de que el Globe está inicializado antes de pasar la referencia
+
       if (typeof ref === 'function') {
         ref(globeRef.current);
       } else if (ref) {
@@ -18,7 +18,7 @@ const GlobeOnly = forwardRef<GlobeMethods, GlobeProps>((props, ref) => {
   }, [ref]);
 
   return (
-    <R3fGlobe {...props} ref={globeRef} />
+    <R3fGlobe {...props} ref={globeRef as MutableRefObject<GlobeMethods | undefined>} />
   );
 });
 
