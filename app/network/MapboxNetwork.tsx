@@ -16,7 +16,7 @@ const LAYER_IDS = {
   LABELS: 'country-labels'
 };
 
-const COUNTRY_BUS_CONFIGS = {
+export const COUNTRY_BUS_CONFIGS = {
   US: { minRadius: 1000, maxRadius: 40000, zoomBase: 1.2 },
   MX: { minRadius: 5000, maxRadius: 25000, zoomBase: 1.2 },
   BR: { minRadius: 15000, maxRadius: 35000, zoomBase: 1.2 },
@@ -55,7 +55,9 @@ const MapboxNetwork = () => {
   const eventListenersRef = useRef<{ [key: string]: any }>({});
   const { theme } = useTheme();
   const { selectedCountry } = useCountry();
-  const [mapStyle, setMapStyle] = useState<string>('');
+  const [mapStyle, setMapStyle] = useState<string>(
+    theme === 'light' ? 'mapbox://styles/mapbox/light-v11' : 'mapbox://styles/mapbox/dark-v11'
+  );
   const [mapLoaded, setMapLoaded] = useState(false);
   const [selectedBus, setSelectedBus] = useState<string | null>(null);
   const [hoveredBus, setHoveredBus] = useState<string | null>(null);
@@ -67,10 +69,82 @@ const MapboxNetwork = () => {
   const [isMounted, setIsMounted] = useState(false);
   const updateTimeoutRef = useRef<NodeJS.Timeout>();
 
+  // Set initial mounted state
   useEffect(() => {
     setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  // Update map style when theme changes
+  useEffect(() => {
     setMapStyle(theme === 'light' ? 'mapbox://styles/mapbox/light-v11' : 'mapbox://styles/mapbox/dark-v11');
   }, [theme]);
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapContainerRef.current || !isMounted || !mapStyle || !selectedCountry) {
+      return;
+    }
+    
+    if (mapRef.current) {
+      return;
+    }
+
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: mapStyle,
+      center: [COUNTRY_COORDINATES[selectedCountry][1], COUNTRY_COORDINATES[selectedCountry][0]],
+      zoom: COUNTRY_VIEW_CONFIG[selectedCountry].zoom,
+      minZoom: 3,
+      maxZoom: 20
+    });
+
+    map.addControl(
+      new mapboxgl.NavigationControl({
+        showCompass: true,
+        showZoom: true,
+        visualizePitch: true
+      }),
+      'bottom-right'
+    );
+
+    map.addControl(
+      new mapboxgl.ScaleControl({ maxWidth: 200, unit: 'metric' }),
+      'bottom-left'
+    );
+
+    const loadHandler = () => {
+      setMapLoaded(true);
+    };
+
+    const zoomHandler = () => {
+      setZoomLevel(map.getZoom());
+    };
+
+    map.on('load', loadHandler);
+    map.on('zoom', zoomHandler);
+    
+    eventListenersRef.current = {
+      load: loadHandler,
+      zoom: zoomHandler
+    };
+
+    mapRef.current = map;
+
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+      removeEventListeners();
+      if (map) {
+        map.remove();
+      }
+      mapRef.current = null;
+      setMapLoaded(false);
+    };
+  }, [mapStyle, isMounted, selectedCountry]);
 
   const loadBusCapacities = useCallback(async (country: string) => {
     if (!country) return;
@@ -90,8 +164,7 @@ const MapboxNetwork = () => {
       const capacities = data.data.reduce(
         (acc: Record<string, number>, item: any) => {
           if (item.bus && typeof item.total_capacity === "number") {
-            const gva = item.total_capacity / 1000;
-            acc[item.bus] = gva;
+            acc[item.bus] = item.total_capacity;
           }
           return acc;
         },
@@ -149,8 +222,12 @@ const MapboxNetwork = () => {
   }, []);
 
   const updateMapData = useCallback(async (map: mapboxgl.Map) => {
-    if (!map.loaded()) return;
-    if (!map.isStyleLoaded()) return;
+    if (!map.loaded()) {
+      return;
+    }
+    if (!map.isStyleLoaded()) {
+      return;
+    }
 
     try {
       const geoData = getGeoJsonData(selectedCountry);
@@ -166,7 +243,7 @@ const MapboxNetwork = () => {
           map.removeSource(sourceId);
         }
       });
-
+      
       map.addSource('country-data', {
         type: 'geojson',
         data: geoData.countryView
@@ -244,193 +321,91 @@ const MapboxNetwork = () => {
                     ['get', 'country'],
                     'US', [
                       'case',
-                      ['<=', ['var', 'capacity'], 20], 4,      // 0-20 MW
-                      ['<=', ['var', 'capacity'], 50], 8,      // 20-50 MW
-                      ['<=', ['var', 'capacity'], 100], 12,    // 50-100 MW
-                      ['<=', ['var', 'capacity'], 150], 16,    // 100-150 MW
-                      20                                        // >150 MW
+                      ['<=', ['var', 'capacity'], 20000], 4,      // 0-20 GW
+                      ['<=', ['var', 'capacity'], 50000], 8,      // 20-50 GW
+                      ['<=', ['var', 'capacity'], 100000], 12,    // 50-100 GW
+                      ['<=', ['var', 'capacity'], 150000], 16,    // 100-150 GW
+                      20                                           // >150 GW
                     ],
                     'IN', [
                       'case',
-                      ['<=', ['var', 'capacity'], 15], 4,      // 0-15 MW
-                      ['<=', ['var', 'capacity'], 35], 8,      // 15-35 MW
-                      ['<=', ['var', 'capacity'], 60], 12,     // 35-60 MW
-                      ['<=', ['var', 'capacity'], 90], 16,     // 60-90 MW
-                      20                                        // >90 MW
+                      ['<=', ['var', 'capacity'], 15000], 4,      // 0-15 GW
+                      ['<=', ['var', 'capacity'], 35000], 8,      // 15-35 GW
+                      ['<=', ['var', 'capacity'], 60000], 12,     // 35-60 GW
+                      ['<=', ['var', 'capacity'], 90000], 16,     // 60-90 GW
+                      20                                           // >90 GW
                     ],
                     'BR', [
                       'case',
-                      ['<=', ['var', 'capacity'], 5], 4,       // 0-5 MW
-                      ['<=', ['var', 'capacity'], 15], 8,      // 5-15 MW
-                      ['<=', ['var', 'capacity'], 30], 12,     // 15-30 MW
-                      ['<=', ['var', 'capacity'], 45], 16,     // 30-45 MW
-                      20                                        // >45 MW
+                      ['<=', ['var', 'capacity'], 5000], 4,       // 0-5 GW
+                      ['<=', ['var', 'capacity'], 15000], 8,      // 5-15 GW
+                      ['<=', ['var', 'capacity'], 30000], 12,     // 15-30 GW
+                      ['<=', ['var', 'capacity'], 45000], 16,     // 30-45 GW
+                      20                                           // >45 GW
                     ],
                     'DE', [
                       'case',
-                      ['<=', ['var', 'capacity'], 10], 4,      // 0-10 MW
-                      ['<=', ['var', 'capacity'], 25], 8,      // 10-25 MW
-                      ['<=', ['var', 'capacity'], 45], 12,     // 25-45 MW
-                      ['<=', ['var', 'capacity'], 65], 16,     // 45-65 MW
-                      20                                        // >65 MW
+                      ['<=', ['var', 'capacity'], 10000], 4,      // 0-10 GW
+                      ['<=', ['var', 'capacity'], 25000], 8,      // 10-25 GW
+                      ['<=', ['var', 'capacity'], 45000], 12,     // 25-45 GW
+                      ['<=', ['var', 'capacity'], 65000], 16,     // 45-65 GW
+                      20                                           // >65 GW
                     ],
                     'AU', [
                       'case',
-                      ['<=', ['var', 'capacity'], 2.5], 4,     // 0-2.5 MW
-                      ['<=', ['var', 'capacity'], 7.5], 8,     // 2.5-7.5 MW
-                      ['<=', ['var', 'capacity'], 12.5], 12,   // 7.5-12.5 MW
-                      ['<=', ['var', 'capacity'], 17.5], 16,   // 12.5-17.5 MW
-                      20                                        // >17.5 MW
+                      ['<=', ['var', 'capacity'], 2500], 4,      // 0-2.5 GW
+                      ['<=', ['var', 'capacity'], 7500], 8,      // 2.5-7.5 GW
+                      ['<=', ['var', 'capacity'], 12500], 12,     // 7.5-12.5 GW
+                      ['<=', ['var', 'capacity'], 17500], 16,     // 12.5-17.5 GW
+                      20                                           // >17.5 GW
                     ],
                     'CO', [
                       'case',
-                      ['<=', ['var', 'capacity'], 0.5], 4,     // 0-0.5 MW
-                      ['<=', ['var', 'capacity'], 1.5], 8,     // 0.5-1.5 MW
-                      ['<=', ['var', 'capacity'], 3], 12,      // 1.5-3 MW
-                      ['<=', ['var', 'capacity'], 5], 16,      // 3-5 MW
-                      20                                        // >5 MW
+                      ['<=', ['var', 'capacity'], 500], 4,       // 0-0.5 GW
+                      ['<=', ['var', 'capacity'], 1500], 8,       // 0.5-1.5 GW
+                      ['<=', ['var', 'capacity'], 3000], 12,        // 1.5-3 GW
+                      ['<=', ['var', 'capacity'], 5000], 16,        // 3-5 GW
+                      20                                           // >5 GW
                     ],
                     'MX', [
                       'case',
-                      ['<=', ['var', 'capacity'], 3], 4,       // 0-3 MW
-                      ['<=', ['var', 'capacity'], 8], 8,       // 3-8 MW
-                      ['<=', ['var', 'capacity'], 15], 12,     // 8-15 MW
-                      ['<=', ['var', 'capacity'], 20], 16,     // 15-20 MW
-                      20                                        // >20 MW
+                      ['<=', ['var', 'capacity'], 3000], 4,       // 0-3 GW
+                      ['<=', ['var', 'capacity'], 8000], 8,       // 3-8 GW
+                      ['<=', ['var', 'capacity'], 15000], 12,       // 8-15 GW
+                      ['<=', ['var', 'capacity'], 20000], 16,       // 15-20 GW
+                      20                                           // >20 GW
                     ],
                     'NG', [
                       'case',
-                      ['<=', ['var', 'capacity'], 0.5], 4,     // 0-0.5 MW
-                      ['<=', ['var', 'capacity'], 2], 8,       // 0.5-2 MW
-                      ['<=', ['var', 'capacity'], 5], 12,      // 2-5 MW
-                      ['<=', ['var', 'capacity'], 8], 16,      // 5-8 MW
-                      20                                        // >8 MW
+                      ['<=', ['var', 'capacity'], 500], 4,       // 0-0.5 GW
+                      ['<=', ['var', 'capacity'], 1500], 8,        // 0.5-2 GW
+                      ['<=', ['var', 'capacity'], 3000], 12,         // 2-5 GW
+                      ['<=', ['var', 'capacity'], 5000], 16,         // 5-8 GW
+                      20                                           // >8 GW
                     ],
                     'IT', [
                       'case',
-                      ['<=', ['var', 'capacity'], 5], 4,       // 0-5 MW
-                      ['<=', ['var', 'capacity'], 15], 8,      // 5-15 MW
-                      ['<=', ['var', 'capacity'], 25], 12,     // 15-25 MW
-                      ['<=', ['var', 'capacity'], 40], 16,     // 25-40 MW
-                      20                                        // >40 MW
+                      ['<=', ['var', 'capacity'], 5000], 4,       // 0-5 GW
+                      ['<=', ['var', 'capacity'], 15000], 8,      // 5-15 GW
+                      ['<=', ['var', 'capacity'], 25000], 12,     // 15-25 GW
+                      ['<=', ['var', 'capacity'], 40000], 16,     // 25-40 GW
+                      20                                           // >40 GW
                     ],
                     'ZA', [
                       'case',
-                      ['<=', ['var', 'capacity'], 2.5], 4,     // 0-2.5 MW
-                      ['<=', ['var', 'capacity'], 10], 8,      // 2.5-10 MW
-                      ['<=', ['var', 'capacity'], 20], 12,     // 10-20 MW
-                      ['<=', ['var', 'capacity'], 35], 16,     // 20-35 MW
-                      20                                        // >35 MW
-                    ],
-                    // Default case for any other country
-                    [
-                      'case',
-                      ['<=', ['var', 'capacity'], 1], 4,       // 0-1 MW
-                      ['<=', ['var', 'capacity'], 5], 8,       // 1-5 MW
-                      ['<=', ['var', 'capacity'], 10], 12,     // 5-10 MW
-                      ['<=', ['var', 'capacity'], 15], 16,     // 10-15 MW
-                      20                                        // >15 MW
-                    ]
-                  ],
-                  [
-                    'case',
-                    ['boolean', ['feature-state', 'selected'], false], STATE_MULTIPLIERS.SELECTED,
-                    ['boolean', ['feature-state', 'hover'], false], STATE_MULTIPLIERS.HOVER,
-                    STATE_MULTIPLIERS.BASE
-                  ]
-                ],
-                10, [
-                  '*',
-                  [
-                    'match',
-                    ['get', 'country'],
-                    'US', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 20], 8,      // 0-20 MW
-                      ['<=', ['var', 'capacity'], 50], 16,     // 20-50 MW
-                      ['<=', ['var', 'capacity'], 100], 24,    // 50-100 MW
-                      ['<=', ['var', 'capacity'], 150], 32,    // 100-150 MW
-                      40                                        // >150 MW
-                    ],
-                    'IN', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 15], 8,      // 0-15 MW
-                      ['<=', ['var', 'capacity'], 35], 16,     // 15-35 MW
-                      ['<=', ['var', 'capacity'], 60], 24,     // 35-60 MW
-                      ['<=', ['var', 'capacity'], 90], 32,     // 60-90 MW
-                      40                                        // >90 MW
-                    ],
-                    'BR', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 5], 8,       // 0-5 MW
-                      ['<=', ['var', 'capacity'], 15], 16,      // 5-15 MW
-                      ['<=', ['var', 'capacity'], 30], 24,      // 15-30 MW
-                      ['<=', ['var', 'capacity'], 45], 32,      // 30-45 MW
-                      40                                        // >45 MW
-                    ],
-                    'DE', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 10], 8,      // 0-10 MW
-                      ['<=', ['var', 'capacity'], 25], 16,      // 10-25 MW
-                      ['<=', ['var', 'capacity'], 45], 24,      // 25-45 MW
-                      ['<=', ['var', 'capacity'], 65], 32,      // 45-65 MW
-                      40                                        // >65 MW
-                    ],
-                    'AU', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 2.5], 8,      // 0-2.5 MW
-                      ['<=', ['var', 'capacity'], 7.5], 16,      // 2.5-7.5 MW
-                      ['<=', ['var', 'capacity'], 12.5], 24,      // 7.5-12.5 MW
-                      ['<=', ['var', 'capacity'], 17.5], 32,      // 12.5-17.5 MW
-                      40                                        // >17.5 MW
-                    ],
-                    'CO', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 0.5], 8,       // 0-0.5 MW
-                      ['<=', ['var', 'capacity'], 1.5], 16,       // 0.5-1.5 MW
-                      ['<=', ['var', 'capacity'], 3], 24,        // 1.5-3 MW
-                      ['<=', ['var', 'capacity'], 5], 32,        // 3-5 MW
-                      40                                        // >5 MW
-                    ],
-                    'MX', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 3], 8,       // 0-3 MW
-                      ['<=', ['var', 'capacity'], 8], 16,       // 3-8 MW
-                      ['<=', ['var', 'capacity'], 15], 24,       // 8-15 MW
-                      ['<=', ['var', 'capacity'], 20], 32,       // 15-20 MW
-                      40                                        // >20 MW
-                    ],
-                    'NG', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 0.5], 8,       // 0-0.5 MW
-                      ['<=', ['var', 'capacity'], 2], 16,        // 0.5-2 MW
-                      ['<=', ['var', 'capacity'], 5], 24,         // 2-5 MW
-                      ['<=', ['var', 'capacity'], 8], 32,         // 5-8 MW
-                      40                                        // >8 MW
-                    ],
-                    'IT', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 5], 8,       // 0-5 MW
-                      ['<=', ['var', 'capacity'], 15], 16,       // 5-15 MW
-                      ['<=', ['var', 'capacity'], 25], 24,        // 15-25 MW
-                      ['<=', ['var', 'capacity'], 40], 32,        // 25-40 MW
-                      40                                        // >40 MW
-                    ],
-                    'ZA', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 2.5], 8,       // 0-2.5 MW
-                      ['<=', ['var', 'capacity'], 10], 16,        // 2.5-10 MW
-                      ['<=', ['var', 'capacity'], 20], 24,         // 10-20 MW
-                      ['<=', ['var', 'capacity'], 35], 32,         // 20-35 MW
-                      40                                        // >35 MW
+                      ['<=', ['var', 'capacity'], 2500], 4,       // 0-2.5 GW
+                      ['<=', ['var', 'capacity'], 10000], 8,       // 2.5-10 GW
+                      ['<=', ['var', 'capacity'], 20000], 12,       // 10-20 GW
+                      ['<=', ['var', 'capacity'], 35000], 16,       // 20-35 GW
+                      20                                           // >35 GW
                     ],
                     [
                       'case',
-                      ['<=', ['var', 'capacity'], 1], 8,       // 0-1 MW
-                      ['<=', ['var', 'capacity'], 5], 16,        // 1-5 MW
-                      ['<=', ['var', 'capacity'], 10], 24,         // 5-10 MW
-                      ['<=', ['var', 'capacity'], 15], 32,         // 10-15 MW
-                      40                                        // >15 MW
+                      ['<=', ['var', 'capacity'], 1000], 4,       // 0-1 GW
+                      ['<=', ['var', 'capacity'], 5000], 8,       // 1-5 GW
+                      ['<=', ['var', 'capacity'], 10000], 12,       // 5-10 GW
+                      ['<=', ['var', 'capacity'], 15000], 16,       // 10-15 GW
+                      20                                           // >15 GW
                     ]
                   ],
                   [
@@ -564,6 +539,7 @@ const MapboxNetwork = () => {
       });
 
     } catch (error) {
+      console.error('Error updating map data:', error);
     }
   }, [selectedCountry, busCapacities]);
 
@@ -597,66 +573,6 @@ const MapboxNetwork = () => {
       loadBusCapacities(selectedCountry);
     }
   }, [selectedCountry, mapLoaded]);
-
-  useEffect(() => {
-    if (!mapContainerRef.current || initializeStartedRef.current || !isMounted || !mapStyle) return;
-    
-    initializeStartedRef.current = true;
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
-
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: mapStyle,
-      center: [COUNTRY_COORDINATES[selectedCountry][1], COUNTRY_COORDINATES[selectedCountry][0]],
-      zoom: COUNTRY_VIEW_CONFIG[selectedCountry].zoom,
-      minZoom: 3,
-      maxZoom: 20
-    });
-
-    map.addControl(
-      new mapboxgl.NavigationControl({
-        showCompass: true,
-        showZoom: true,
-        visualizePitch: true
-      }),
-      'bottom-right'
-    );
-
-    map.addControl(
-      new mapboxgl.ScaleControl({ maxWidth: 200, unit: 'metric' }),
-      'bottom-left'
-    );
-
-    const loadHandler = () => {
-      setMapLoaded(true);
-    };
-
-    const zoomHandler = () => {
-      setZoomLevel(map.getZoom());
-    };
-
-    map.on('load', loadHandler);
-    map.on('zoom', zoomHandler);
-    
-    eventListenersRef.current = {
-      load: loadHandler,
-      zoom: zoomHandler
-    };
-
-    mapRef.current = map;
-
-    return () => {
-      if (updateTimeoutRef.current) {
-        clearTimeout(updateTimeoutRef.current);
-      }
-      removeEventListeners();
-      if (map) {
-        map.remove();
-      }
-      setMapLoaded(false);
-      initializeStartedRef.current = false;
-    };
-  }, [theme, isMounted, mapStyle, selectedCountry]);
 
   if (!isMounted) {
     return null;

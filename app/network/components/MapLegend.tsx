@@ -1,5 +1,5 @@
 import React from "react";
-import { COUNTRY_BUS_CONFIGS } from "../MainMap";
+import { COUNTRY_BUS_CONFIGS } from "../MapboxNetwork";
 import { COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from "@/utilities/CountryConfig/Link";
 
 interface MapLegendProps {
@@ -69,14 +69,14 @@ export default function MapLegend({
   const validCountries = COUNTRY_S_NOM_RANGES
     ? Object.keys(COUNTRY_S_NOM_RANGES)
     : [];
-  const isValidCountry = country && validCountries.includes(country);
+  const isValidCountry = country && validCountries.includes(country.toUpperCase());
 
   const countryRanges = isValidCountry
-    ? COUNTRY_S_NOM_RANGES[country as keyof typeof COUNTRY_S_NOM_RANGES]
+    ? COUNTRY_S_NOM_RANGES[country.toUpperCase() as keyof typeof COUNTRY_S_NOM_RANGES]
     : DEFAULT_RANGES;
 
-  const busConfig = isValidCountry
-    ? COUNTRY_BUS_CONFIGS[country as keyof typeof COUNTRY_BUS_CONFIGS]
+  const busConfig = isValidCountry && COUNTRY_BUS_CONFIGS[country.toUpperCase() as keyof typeof COUNTRY_BUS_CONFIGS]
+    ? COUNTRY_BUS_CONFIGS[country.toUpperCase() as keyof typeof COUNTRY_BUS_CONFIGS]
     : DEFAULT_BUS_CONFIG;
 
   const calculateLegendBusSizes = (busConfig: typeof DEFAULT_BUS_CONFIG) => {

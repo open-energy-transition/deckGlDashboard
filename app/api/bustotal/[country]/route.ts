@@ -16,13 +16,11 @@ export async function GET(
   const country = params.country;
 
   try {
-    
-
     const result = await pool.query(
       `
         SELECT bus, SUM(p_nom) as total_capacity
         FROM public.generators
-        WHERE country_code = $1 
+        WHERE country_code = $1
         AND carrier != 'load'
         GROUP BY bus
         HAVING SUM(p_nom) > 0
@@ -31,10 +29,7 @@ export async function GET(
       [country]
     );
 
-    
-    
-
-    return NextResponse.json({ 
+    return NextResponse.json({
       data: result.rows,
       meta: {
         count: result.rows.length,
@@ -42,7 +37,7 @@ export async function GET(
       }
     });
   } catch (error) {
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: "Error fetching data"
     }, { status: 500 });
   }
