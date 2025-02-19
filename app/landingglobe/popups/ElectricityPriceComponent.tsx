@@ -99,7 +99,6 @@ const ElectricityPriceComponent = ({
 
   useEffect(() => {
     if (hoveredCountry === "null") {
-      console.log('hoveredCountry === "null"');
       gsap.to(contentRef.current, {
         width: 0,
         height: 0,
@@ -108,7 +107,6 @@ const ElectricityPriceComponent = ({
         delay: 0.08,
       });
     } else {
-      console.log(hoveredCountry);
       gsap.to(contentRef.current, {
         width: "35vw",
         height: "15vh",

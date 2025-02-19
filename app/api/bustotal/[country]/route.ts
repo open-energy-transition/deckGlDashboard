@@ -22,7 +22,8 @@ export async function GET(
       `
         SELECT bus, SUM(p_nom) as total_capacity
         FROM public.generators
-        WHERE country_code = $1
+        WHERE country_code = $1 
+        AND carrier != 'load'
         GROUP BY bus
         HAVING SUM(p_nom) > 0
         ORDER BY total_capacity DESC;

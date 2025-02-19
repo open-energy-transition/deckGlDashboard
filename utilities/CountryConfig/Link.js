@@ -104,3 +104,106 @@ export const COUNTRY_NAMES = {
   US: "United States",
   ZA: "South Africa",
 };
+
+export const COUNTRY_BUS_RANGES = {
+  US: {  // max: 180499 MW, min: 136 MW
+    ranges: [
+      { min: 0, max: 20, radius: 4 },        // 0-20 MW
+      { min: 20, max: 50, radius: 8 },       // 20-50 MW
+      { min: 50, max: 100, radius: 12 },     // 50-100 MW
+      { min: 100, max: 150, radius: 16 },    // 100-150 MW
+      { min: 150, max: Infinity, radius: 20 } // >150 MW
+    ],
+    zoomFactor: 1.2
+  },
+  IN: {  // max: 114113 MW, min: 183 MW
+    ranges: [
+      { min: 0, max: 15, radius: 4 },       // 0-15 MW
+      { min: 15, max: 35, radius: 8 },      // 15-35 MW
+      { min: 35, max: 60, radius: 12 },     // 35-60 MW
+      { min: 60, max: 90, radius: 16 },     // 60-90 MW
+      { min: 90, max: Infinity, radius: 20 } // >90 MW
+    ],
+    zoomFactor: 1.2
+  },
+  BR: {  // max: 55377 MW, min: 28 MW
+    ranges: [
+      { min: 0, max: 5, radius: 4 },        // 0-5 MW
+      { min: 5, max: 15, radius: 8 },       // 5-15 MW
+      { min: 15, max: 30, radius: 12 },     // 15-30 MW
+      { min: 30, max: 45, radius: 16 },     // 30-45 MW
+      { min: 45, max: Infinity, radius: 20 } // >45 MW
+    ],
+    zoomFactor: 1.2
+  },
+  DE: {  // max: 83846 MW, min: 2572 MW
+    ranges: [
+      { min: 0, max: 10, radius: 4 },       // 0-10 MW
+      { min: 10, max: 25, radius: 8 },      // 10-25 MW
+      { min: 25, max: 45, radius: 12 },     // 25-45 MW
+      { min: 45, max: 65, radius: 16 },     // 45-65 MW
+      { min: 65, max: Infinity, radius: 20 } // >65 MW
+    ],
+    zoomFactor: 1.2
+  },
+  MX: {  // max: 26155 MW, min: 139 MW
+    ranges: [
+      { min: 0, max: 3, radius: 4 },        // 0-3 MW
+      { min: 3, max: 8, radius: 8 },        // 3-8 MW
+      { min: 8, max: 15, radius: 12 },      // 8-15 MW
+      { min: 15, max: 20, radius: 16 },     // 15-20 MW
+      { min: 20, max: Infinity, radius: 20 } // >20 MW
+    ],
+    zoomFactor: 1.2
+  },
+  AU: {  // max: 21507 MW, min: 5.88 MW
+    ranges: [
+      { min: 0, max: 2.5, radius: 4 },      // 0-2.5 MW
+      { min: 2.5, max: 7.5, radius: 8 },    // 2.5-7.5 MW
+      { min: 7.5, max: 12.5, radius: 12 },  // 7.5-12.5 MW
+      { min: 12.5, max: 17.5, radius: 16 }, // 12.5-17.5 MW
+      { min: 17.5, max: Infinity, radius: 20 } // >17.5 MW
+    ],
+    zoomFactor: 1.2
+  },
+  IT: {  // max: 53326 MW, min: 78 MW
+    ranges: [
+      { min: 0, max: 5, radius: 4 },        // 0-5 MW
+      { min: 5, max: 15, radius: 8 },       // 5-15 MW
+      { min: 15, max: 25, radius: 12 },     // 15-25 MW
+      { min: 25, max: 40, radius: 16 },     // 25-40 MW
+      { min: 40, max: Infinity, radius: 20 } // >40 MW
+    ],
+    zoomFactor: 1.2
+  },
+  ZA: {  // max: 40780 MW, min: 108 MW
+    ranges: [
+      { min: 0, max: 2.5, radius: 4 },      // 0-2.5 MW
+      { min: 2.5, max: 10, radius: 8 },     // 2.5-10 MW
+      { min: 10, max: 20, radius: 12 },     // 10-20 MW
+      { min: 20, max: 35, radius: 16 },     // 20-35 MW
+      { min: 35, max: Infinity, radius: 20 } // >35 MW
+    ],
+    zoomFactor: 1.2
+  },
+  CO: {  // max: 6670 MW, min: 2.16 MW
+    ranges: [
+      { min: 0, max: 0.5, radius: 4 },      // 0-0.5 MW
+      { min: 0.5, max: 1.5, radius: 8 },    // 0.5-1.5 MW
+      { min: 1.5, max: 3, radius: 12 },     // 1.5-3 MW
+      { min: 3, max: 5, radius: 16 },       // 3-5 MW
+      { min: 5, max: Infinity, radius: 20 }  // >5 MW
+    ],
+    zoomFactor: 1.2
+  },
+  NG: {  // max: 10411 MW, min: 0.87 MW
+    ranges: [
+      { min: 0, max: 0.5, radius: 4 },      // 0-0.5 MW
+      { min: 0.5, max: 2, radius: 8 },      // 0.5-2 MW
+      { min: 2, max: 5, radius: 12 },       // 2-5 MW
+      { min: 5, max: 8, radius: 16 },       // 5-8 MW
+      { min: 8, max: Infinity, radius: 20 }  // >8 MW
+    ],
+    zoomFactor: 1.2
+  }
+};
