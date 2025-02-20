@@ -46,21 +46,36 @@ export async function GET(
       const totalCount = parseInt(countResult.rows[0].count);
       const totalPages = Math.ceil(totalCount / pageSize);
 
+      // Get total capacity for each bus
+      const capacityQuery = `
+        WITH bus_capacities AS (
+          SELECT bus, SUM(p_nom) as total_capacity
+          FROM public.generators
+          WHERE country_code = $1
+          AND carrier != 'load'
+          GROUP BY bus
+          HAVING SUM(p_nom) > 0
+        )
+      `;
+
       const query = `
-        WITH base_data AS (
+        ${capacityQuery},
+        base_data AS (
           SELECT 
-            "Bus",
-            v_nom,
-            country,
-            carrier,
-            type,
-            generator,
-            country_code,
-            ST_SimplifyPreserveTopology(geometry, $1) as geometry
-          FROM ${tableName}
-          WHERE geometry IS NOT NULL
-          ORDER BY "Bus"
-          LIMIT $2 OFFSET $3
+            b."Bus",
+            b.v_nom,
+            b.country,
+            b.carrier,
+            b.type,
+            b.generator,
+            b.country_code,
+            COALESCE(c.total_capacity, 0) as total_capacity,
+            ST_SimplifyPreserveTopology(b.geometry, $2) as geometry
+          FROM ${tableName} b
+          LEFT JOIN bus_capacities c ON b."Bus" = c.bus
+          WHERE b.geometry IS NOT NULL
+          ORDER BY b."Bus"
+          LIMIT $3 OFFSET $4
         )
         SELECT jsonb_build_object(
           'type', 'FeatureCollection',
@@ -85,14 +100,15 @@ export async function GET(
               'carrier', carrier,
               'type', type,
               'generator', generator,
-              'country_code', country_code
+              'country_code', country_code,
+              'total_capacity', total_capacity
             )
           ) AS feature
           FROM base_data
         ) features;
       `;
       
-      const result = await client.query(query, [simplification, pageSize, offset]);
+      const result = await client.query(query, [country, simplification, pageSize, offset]);
 
       const headers = new Headers();
       headers.set('Cache-Control', 'public, s-maxage=3600');

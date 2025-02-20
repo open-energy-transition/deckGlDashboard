@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { COUNTRY_BUS_CONFIGS } from "../MapboxNetwork";
 import { COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from "@/utilities/CountryConfig/Link";
 
@@ -37,7 +37,7 @@ const formatPowerValue = (value: number): string => {
   } else if (gva >= 1) {
     return `${Number(gva.toFixed(1))} GVA`;
   } else {
-    return `${Math.round(value)} MW`;
+    return `${Math.round(value)} MVA`;
   }
 };
 
@@ -61,11 +61,65 @@ const getBusCategories = (country: keyof typeof COUNTRY_BUS_RANGES): BusCategory
   })).reverse();
 };
 
-export default function MapLegend({
-  country,
-  theme,
-  type = "lines",
-}: MapLegendProps) {
+const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
+  const [busCategories, setBusCategories] = useState<BusCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBusData = async () => {
+      try {
+        console.log('Fetching bus data for country:', country);
+        const response = await fetch(`/api/geography/buses/${country}`);
+        const data = await response.json();
+        console.log('Received bus data:', data);
+        
+        if (!data.features || !data.features.length) {
+          console.log('No features found in data');
+          return;
+        }
+        
+        const capacities = data.features
+          .map((f: any) => f.properties.total_capacity)
+          .filter((c: number) => c > 0);
+        
+        if (capacities.length === 0) {
+          console.log('No valid capacities found');
+          return;
+        }
+
+        const maxCapacity = Math.max(...capacities);
+        const minCapacity = Math.min(...capacities);
+        
+        // Use fixed ranges to match the map
+        const ranges = [
+          { min: 0, max: 0, radius: 4, label: '0 MVA' },
+          { min: 0.1, max: 1000, radius: 6, label: '0-1 GVA' },
+          { min: 1000, max: 5000, radius: 8, label: '1-5 GVA' },
+          { min: 5000, max: 10000, radius: 10, label: '5-10 GVA' },
+          { min: 10000, max: 50000, radius: 12, label: '10-50 GVA' },
+          { min: 50000, max: Infinity, radius: 14, label: '> 50 GVA' }
+        ];
+        
+        const categories: BusCategory[] = ranges.map(({ radius, label }) => ({
+          label,
+          size: radius * 2,
+          color: BUS_COLOR
+        }));
+        
+        console.log('Generated legend categories:', categories);
+        setBusCategories(categories.reverse());
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching bus data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    if (type === "buses") {
+      fetchBusData();
+    }
+  }, [country, type]);
+
   const validCountries = COUNTRY_S_NOM_RANGES
     ? Object.keys(COUNTRY_S_NOM_RANGES)
     : [];
@@ -81,9 +135,9 @@ export default function MapLegend({
 
   const calculateLegendBusSizes = (busConfig: typeof DEFAULT_BUS_CONFIG) => {
     return {
-      VERY_LARGE: 12,
-      LARGE: 10,
-      MEDIUM: 8,
+      VERY_LARGE: 18,
+      LARGE: 15,
+      MEDIUM: 10,
       SMALL: 6,
       VERY_SMALL: 4
     };
@@ -97,32 +151,22 @@ export default function MapLegend({
       width: 0.2,
     },
     {
-      label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.min)
-      )}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 4))}`,
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.min))}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 4))}`,
       width: 0.4,
     },
     {
-      label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.max / 4)
-      )}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 2))}`,
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max / 4))}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 2))}`,
       width: 0.6,
     },
     {
-      label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.max / 2)
-      )}-${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.75))}`,
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max / 2))}-${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.75))}`,
       width: 0.8,
     },
     {
-      label: `> ${formatPowerValue(
-        roundToNiceNumber(countryRanges.max * 0.75)
-      )}`,
+      label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.75))}`,
       width: 1.0,
     },
   ];
-
-  const busCategories = getBusCategories(country);
 
   const renderTransmissionLines = () => {
     return (
@@ -132,10 +176,7 @@ export default function MapLegend({
             <div
               className="w-8 h-0 mr-3"
               style={{
-                borderTop: `${Math.max(
-                  1,
-                  cat.width * 6
-                )}px solid rgba(${LINE_COLOR.join(",")}, 0.8)`,
+                borderTop: `${Math.max(1, cat.width * 6)}px solid rgba(${LINE_COLOR.join(",")}, 0.8)`,
               }}
             />
             <span className="text-sm">{cat.label}</span>
@@ -146,6 +187,10 @@ export default function MapLegend({
   };
 
   const renderBuses = () => {
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div className="w-full">
         {busCategories.map((bus, idx) => (
@@ -168,10 +213,7 @@ export default function MapLegend({
   if (type === "lines") return renderTransmissionLines();
   if (type === "buses") return renderBuses();
 
-  return (
-    <div>
-      {renderTransmissionLines()}
-      {renderBuses()}
-    </div>
-  );
+  return null;
 }
+
+export default MapLegend;

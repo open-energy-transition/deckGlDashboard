@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { CircleLayer } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useTheme } from 'next-themes';
 import { useCountry } from '@/components/country-context';
@@ -62,7 +62,6 @@ const MapboxNetwork = () => {
   const [selectedBus, setSelectedBus] = useState<string | null>(null);
   const [hoveredBus, setHoveredBus] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [zoomLevel, setZoomLevel] = useState(4);
   const initializeStartedRef = useRef(false);
@@ -146,71 +145,6 @@ const MapboxNetwork = () => {
     };
   }, [mapStyle, isMounted, selectedCountry]);
 
-  const loadBusCapacities = useCallback(async (country: string) => {
-    if (!country) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/bustotal/${country}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      if (!data.data || !Array.isArray(data.data)) {
-        throw new Error("Invalid API response format");
-      }
-
-      const capacities = data.data.reduce(
-        (acc: Record<string, number>, item: any) => {
-          if (item.bus && typeof item.total_capacity === "number") {
-            acc[item.bus] = item.total_capacity;
-          }
-          return acc;
-        },
-        {}
-      );
-
-      if (Object.keys(capacities).length === 0) {
-        throw new Error("No valid bus capacities found in response");
-      }
-
-      setBusCapacities(capacities);
-    } catch (error) {
-      setBusCapacities({});
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const calculateBusRadius = useCallback((busId: string, capacity: number) => {
-    if (!capacity) return COUNTRY_BUS_CONFIGS[selectedCountry].minRadius / 100;
-
-    const config = COUNTRY_BUS_CONFIGS[selectedCountry];
-    const { minRadius, maxRadius, zoomBase } = config;
-
-    const capacityValues = Object.values(busCapacities);
-    const minCapacity = Math.min(...capacityValues);
-    const maxCapacity = Math.max(...capacityValues);
-
-    const logBase = 2;
-    const logMin = Math.log(minCapacity + 1) / Math.log(logBase);
-    const logMax = Math.log(maxCapacity + 1) / Math.log(logBase);
-    const logCurrent = Math.log(capacity + 1) / Math.log(logBase);
-
-    const normalizedSize = (logCurrent - logMin) / (logMax - logMin);
-    const dispersedSize = Math.pow(normalizedSize, 0.4);
-
-    const baseRadius = minRadius + (maxRadius - minRadius) * dispersedSize;
-
-    const zoomFactor = Math.pow(zoomBase, zoomLevel - 5);
-
-    const numBuses = capacityValues.length;
-    const densityFactor = Math.max(0.6, 1 - numBuses / 200);
-
-    return (baseRadius * zoomFactor * densityFactor) / 100;
-  }, [selectedCountry, busCapacities, zoomLevel]);
-
   const removeEventListeners = useCallback(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -222,15 +156,13 @@ const MapboxNetwork = () => {
   }, []);
 
   const updateMapData = useCallback(async (map: mapboxgl.Map) => {
-    if (!map.loaded()) {
-      return;
-    }
-    if (!map.isStyleLoaded()) {
+    if (!map.loaded() || !map.isStyleLoaded()) {
       return;
     }
 
     try {
       const geoData = getGeoJsonData(selectedCountry);
+      console.log('GeoData buses:', geoData.buses);
       
       [LAYER_IDS.BUSES, LAYER_IDS.LINES, LAYER_IDS.COUNTRY].forEach(layerId => {
         if (map.getLayer(layerId)) {
@@ -254,10 +186,67 @@ const MapboxNetwork = () => {
         data: geoData.lines
       });
 
+      // Log the buses data before adding it as a source
+      const response = await fetch(geoData.buses);
+      const busesData = await response.json();
+      
+      // Detailed logging of the first few features
+      console.log('Sample bus features with total_capacity:', 
+        busesData.features.slice(0, 5).map((f: { properties: { Bus: string; total_capacity: string } }) => ({
+          bus: f.properties.Bus,
+          total_capacity: f.properties.total_capacity,
+          parsed_capacity: parseFloat(f.properties.total_capacity)
+        }))
+      );
+
+      // Calculate capacity statistics for dynamic scaling
+      const capacities = busesData.features
+        .map((f: { properties: { Bus: string; total_capacity: string } }) => {
+          const cap = parseFloat(f.properties.total_capacity);
+          if (cap > 0) {
+            console.log(`Bus ${f.properties.Bus}: ${cap} MW`);
+          }
+          return cap;
+        })
+        .filter((c: number) => c !== null && c !== undefined && !isNaN(c) && c > 0);
+
+      // Log capacity distribution
+      const capacityRanges = {
+        '0': capacities.filter((c: number) => c === 0).length,
+        '0-1000': capacities.filter((c: number) => c > 0 && c <= 1000).length,
+        '1000-5000': capacities.filter((c: number) => c > 1000 && c <= 5000).length,
+        '5000-10000': capacities.filter((c: number) => c > 5000 && c <= 10000).length,
+        '10000-50000': capacities.filter((c: number) => c > 10000 && c <= 50000).length,
+        '>50000': capacities.filter((c: number) => c > 50000).length
+      };
+      
+      console.log('Capacity distribution:', capacityRanges);
+
+      const maxCapacity = Math.max(...capacities);
+      const minCapacity = Math.min(...capacities);
+      
+      console.log('Capacity range:', {
+        min: minCapacity,
+        max: maxCapacity,
+        total_buses: busesData.features.length,
+        buses_with_capacity: capacities.length
+      });
+
       map.addSource('buses-data', {
         type: 'geojson',
-        data: geoData.buses
+        data: {
+          type: 'FeatureCollection',
+          features: busesData.features
+        }
       });
+
+      // Store capacity stats for use in the layer configuration
+      const capacityStats = {
+        min: minCapacity,
+        max: maxCapacity,
+        quartiles: [maxCapacity * 0.25, maxCapacity * 0.5, maxCapacity * 0.75]
+      };
+      console.log('Capacity statistics:', capacityStats);
 
       map.addLayer({
         id: LAYER_IDS.COUNTRY,
@@ -287,7 +276,8 @@ const MapboxNetwork = () => {
         }
       });
 
-      map.addLayer({
+      // Log the layer configuration before adding it
+      const busLayerConfig: CircleLayer = {
         id: LAYER_IDS.BUSES,
         type: 'circle',
         source: 'buses-data',
@@ -299,122 +289,33 @@ const MapboxNetwork = () => {
             '#7c9885'
           ],
           'circle-radius': [
-            'let',
-            'busId',
-            ['get', 'Bus'],
-            [
-              'let',
-              'capacity',
-              ['case',
-                ['has', ['to-string', ['var', 'busId']], ['literal', busCapacities]],
-                ['number', ['get', ['to-string', ['var', 'busId']], ['literal', busCapacities]]],
-                0
-              ],
-              [
-                'interpolate',
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            3, [
+              'case',
+              ['==', ['get', 'total_capacity'], 0], 3,
+              ['interpolate',
                 ['linear'],
-                ['zoom'],
-                3, [
-                  '*',
-                  [
-                    'match',
-                    ['get', 'country'],
-                    'US', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 20000], 4,      // 0-20 GW
-                      ['<=', ['var', 'capacity'], 50000], 8,      // 20-50 GW
-                      ['<=', ['var', 'capacity'], 100000], 12,    // 50-100 GW
-                      ['<=', ['var', 'capacity'], 150000], 16,    // 100-150 GW
-                      20                                           // >150 GW
-                    ],
-                    'IN', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 15000], 4,      // 0-15 GW
-                      ['<=', ['var', 'capacity'], 35000], 8,      // 15-35 GW
-                      ['<=', ['var', 'capacity'], 60000], 12,     // 35-60 GW
-                      ['<=', ['var', 'capacity'], 90000], 16,     // 60-90 GW
-                      20                                           // >90 GW
-                    ],
-                    'BR', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 5000], 4,       // 0-5 GW
-                      ['<=', ['var', 'capacity'], 15000], 8,      // 5-15 GW
-                      ['<=', ['var', 'capacity'], 30000], 12,     // 15-30 GW
-                      ['<=', ['var', 'capacity'], 45000], 16,     // 30-45 GW
-                      20                                           // >45 GW
-                    ],
-                    'DE', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 10000], 4,      // 0-10 GW
-                      ['<=', ['var', 'capacity'], 25000], 8,      // 10-25 GW
-                      ['<=', ['var', 'capacity'], 45000], 12,     // 25-45 GW
-                      ['<=', ['var', 'capacity'], 65000], 16,     // 45-65 GW
-                      20                                           // >65 GW
-                    ],
-                    'AU', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 2500], 4,      // 0-2.5 GW
-                      ['<=', ['var', 'capacity'], 7500], 8,      // 2.5-7.5 GW
-                      ['<=', ['var', 'capacity'], 12500], 12,     // 7.5-12.5 GW
-                      ['<=', ['var', 'capacity'], 17500], 16,     // 12.5-17.5 GW
-                      20                                           // >17.5 GW
-                    ],
-                    'CO', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 500], 4,       // 0-0.5 GW
-                      ['<=', ['var', 'capacity'], 1500], 8,       // 0.5-1.5 GW
-                      ['<=', ['var', 'capacity'], 3000], 12,        // 1.5-3 GW
-                      ['<=', ['var', 'capacity'], 5000], 16,        // 3-5 GW
-                      20                                           // >5 GW
-                    ],
-                    'MX', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 3000], 4,       // 0-3 GW
-                      ['<=', ['var', 'capacity'], 8000], 8,       // 3-8 GW
-                      ['<=', ['var', 'capacity'], 15000], 12,       // 8-15 GW
-                      ['<=', ['var', 'capacity'], 20000], 16,       // 15-20 GW
-                      20                                           // >20 GW
-                    ],
-                    'NG', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 500], 4,       // 0-0.5 GW
-                      ['<=', ['var', 'capacity'], 1500], 8,        // 0.5-2 GW
-                      ['<=', ['var', 'capacity'], 3000], 12,         // 2-5 GW
-                      ['<=', ['var', 'capacity'], 5000], 16,         // 5-8 GW
-                      20                                           // >8 GW
-                    ],
-                    'IT', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 5000], 4,       // 0-5 GW
-                      ['<=', ['var', 'capacity'], 15000], 8,      // 5-15 GW
-                      ['<=', ['var', 'capacity'], 25000], 12,     // 15-25 GW
-                      ['<=', ['var', 'capacity'], 40000], 16,     // 25-40 GW
-                      20                                           // >40 GW
-                    ],
-                    'ZA', [
-                      'case',
-                      ['<=', ['var', 'capacity'], 2500], 4,       // 0-2.5 GW
-                      ['<=', ['var', 'capacity'], 10000], 8,       // 2.5-10 GW
-                      ['<=', ['var', 'capacity'], 20000], 12,       // 10-20 GW
-                      ['<=', ['var', 'capacity'], 35000], 16,       // 20-35 GW
-                      20                                           // >35 GW
-                    ],
-                    [
-                      'case',
-                      ['<=', ['var', 'capacity'], 1000], 4,       // 0-1 GW
-                      ['<=', ['var', 'capacity'], 5000], 8,       // 1-5 GW
-                      ['<=', ['var', 'capacity'], 10000], 12,       // 5-10 GW
-                      ['<=', ['var', 'capacity'], 15000], 16,       // 10-15 GW
-                      20                                           // >15 GW
-                    ]
-                  ],
-                  [
-                    'case',
-                    ['boolean', ['feature-state', 'selected'], false], STATE_MULTIPLIERS.SELECTED,
-                    ['boolean', ['feature-state', 'hover'], false], STATE_MULTIPLIERS.HOVER,
-                    STATE_MULTIPLIERS.BASE
-                  ]
-                ]
+                ['get', 'total_capacity'],
+                0.1, 4,        // Valor mínimo (excluyendo 0)
+                1000, 6,       // 1 GW
+                5000, 8,       // 5 GW
+                10000, 10,     // 10 GW
+                50000, 12      // 50 GW
+              ]
+            ],
+            8, [
+              'case',
+              ['==', ['get', 'total_capacity'], 0], 5,
+              ['interpolate',
+                ['linear'],
+                ['get', 'total_capacity'],
+                0.1, 8,        // Valor mínimo (excluyendo 0)
+                1000, 12,      // 1 GW
+                5000, 16,      // 5 GW
+                10000, 20,     // 10 GW
+                50000, 24      // 50 GW
               ]
             ]
           ],
@@ -427,7 +328,17 @@ const MapboxNetwork = () => {
           ],
           'circle-stroke-color': '#ffffff'
         }
-      });
+      };
+      console.log('Bus layer config:', busLayerConfig);
+
+      map.addLayer(busLayerConfig);
+
+      // Verify the layer was added successfully
+      console.log('Is bus layer added?', map.getLayer(LAYER_IDS.BUSES) !== undefined);
+      
+      // Log a sample feature to check properties
+      const features = map.querySourceFeatures('buses-data');
+      console.log('Sample bus features:', features.slice(0, 2));
 
       const mousemoveHandler = (e: mapboxgl.MapMouseEvent & { features?: mapboxgl.MapboxGeoJSONFeature[] }) => {
         if (e.features && e.features[0]) {
@@ -541,7 +452,7 @@ const MapboxNetwork = () => {
     } catch (error) {
       console.error('Error updating map data:', error);
     }
-  }, [selectedCountry, busCapacities]);
+  }, [selectedCountry]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -549,16 +460,14 @@ const MapboxNetwork = () => {
       return;
     }
 
-    if (Object.keys(busCapacities).length > 0) {
-      const styleLoadHandler = () => {
-        updateMapData(map);
-      };
+    const styleLoadHandler = () => {
+      updateMapData(map);
+    };
 
-      if (map.isStyleLoaded()) {
-        styleLoadHandler();
-      } else {
-        map.once('style.load', styleLoadHandler);
-      }
+    if (map.isStyleLoaded()) {
+      styleLoadHandler();
+    } else {
+      map.once('style.load', styleLoadHandler);
     }
 
     return () => {
@@ -566,13 +475,7 @@ const MapboxNetwork = () => {
         clearTimeout(updateTimeoutRef.current);
       }
     };
-  }, [selectedCountry, mapLoaded, isMounted, busCapacities, updateMapData]);
-
-  useEffect(() => {
-    if (selectedCountry && mapLoaded) {
-      loadBusCapacities(selectedCountry);
-    }
-  }, [selectedCountry, mapLoaded]);
+  }, [selectedCountry, mapLoaded, isMounted, updateMapData]);
 
   if (!isMounted) {
     return null;

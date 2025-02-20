@@ -33,10 +33,13 @@ export async function GET(
       data: result.rows,
       meta: {
         count: result.rows.length,
-        country: country
+        country: country,
+        min: result.rows.length > 0 ? Math.min(...result.rows.map(r => r.total_capacity)) : 0,
+        max: result.rows.length > 0 ? Math.max(...result.rows.map(r => r.total_capacity)) : 0
       }
     });
   } catch (error) {
+    console.error('Database error:', error);
     return NextResponse.json({
       error: "Error fetching data"
     }, { status: 500 });
