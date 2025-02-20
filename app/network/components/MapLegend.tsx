@@ -124,7 +124,6 @@ export default function MapLegend({
 
   const busCategories = getBusCategories(country);
 
-  // Renderizar solo las líneas de transmisión
   const renderTransmissionLines = () => {
     return (
       <div className="w-full">
@@ -146,7 +145,6 @@ export default function MapLegend({
     );
   };
 
-  // Renderizar solo los buses
   const renderBuses = () => {
     return (
       <div className="w-full">
@@ -167,11 +165,9 @@ export default function MapLegend({
     );
   };
 
-  // Renderizar según el tipo especificado
   if (type === "lines") return renderTransmissionLines();
   if (type === "buses") return renderBuses();
 
-  // Si no se especifica tipo, renderizar todo
   return (
     <div>
       {renderTransmissionLines()}
