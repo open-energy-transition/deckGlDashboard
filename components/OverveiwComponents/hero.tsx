@@ -12,7 +12,7 @@ export const HeroSection = () => {
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto text-center text-4xl md:text-5xl lg:text-7xl font-bold">
+            <div className="mx-auto text-center text-4xl md:text-5xl lg:text-7xl font-bold pb-6">
               <h1>
                 Net Zero by
                 <Link href="/landingglobe">
@@ -33,9 +33,9 @@ export const HeroSection = () => {
           </div>
 
           <div className="">
-            <Button className="w-5/6 md:w-1/4 font-bold group/arrow">
-                2050
-                <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+            <Button className="w-5/6 md:w-1/4 font-bold group/arrow bg-gradient-to-r from-[#E31937] to-primary text-white">
+              2050
+              <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>

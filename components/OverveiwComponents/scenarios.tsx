@@ -13,7 +13,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/components/ui/carousel";
 import Image from "next/image";
 
 export const ScenariosSection = () => {
@@ -27,39 +27,58 @@ export const ScenariosSection = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Carousel className="w-full max-w-xs">
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="w-full"
+            >
               <CarouselContent>
                 {Array.from({ length: 5 }).map((_, index) => (
-                  <CarouselItem key={index}>
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/2 lg:basis-1/3"
+                  >
                     <div className="p-1">
                       <a href="/scenarios">
-                      <Card>
-                        <CardContent className="grid grid-cols-4 gap-4 p-6">
-                          <div className="col-span-2 font-bold text-xl">
-                            US
-                          </div>
-                          <div className="col-span-2 font-bold text-xl">
-                            196 Billion
-                          </div>
-                          <Image
-                            src="/images/US_example.png"
-                            alt="US system cost chart"
-                            width={434}
-                            height={502}
-                            className="col-span-4"
-                          />
-                          <div style={{ borderRadius: '40px', overflow: 'hidden' }}>
-                            <Image src="/images/marthasnoopy_resize.png"
-                              alt="Author profile image"
-                              width={274}
-                              height={274}
-                              className="col-span-2"/>
-                          </div>
-                          <div className="col-span-2 place-content-center">
-                            Snoopy
-                          </div>
-                        </CardContent>
-                      </Card>
+                        <Card>
+                          <CardContent className="grid grid-cols-4 gap-4 p-6">
+                            <div className="col-span-2 font-bold text-xl">
+                              US
+                            </div>
+                            <div className="col-span-2 font-bold text-xl">
+                              196 Billion
+                            </div>
+                            <Image
+                              src="/images/US_example.png"
+                              alt="US system cost chart"
+                              width={434}
+                              height={502}
+                              className="col-span-4"
+                            />
+                            <div
+                              style={{
+                                borderRadius: "40px",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <Image
+                                src="/images/marthasnoopy_resize.png"
+                                alt="Author profile image"
+                                width={274}
+                                height={274}
+                                className="col-span-2"
+                              />
+                            </div>
+                            <div className="col-span-2 place-content-center">
+                              Snoopy
+                            </div>
+                          </CardContent>
+                          <CardFooter className="flex justify-center">
+                            "Woof! This energy scenario is pawsitively
+                            electrifying"
+                          </CardFooter>
+                        </Card>
                       </a>
                     </div>
                   </CarouselItem>
@@ -69,9 +88,6 @@ export const ScenariosSection = () => {
               <CarouselNext />
             </Carousel>
           </CardContent>
-          <CardFooter>
-
-          </CardFooter>
         </Card>
       </div>
     </section>
