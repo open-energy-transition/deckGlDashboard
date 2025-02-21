@@ -7,6 +7,7 @@ import { useTheme } from 'next-themes';
 import { useCountry } from '@/components/country-context';
 import { COUNTRY_COORDINATES, COUNTRY_VIEW_CONFIG, getGeoJsonData, COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from '@/utilities/CountryConfig/Link';
 import MySideDrawer from './popups/SideDrawer';
+import { getMapboxRadiusExpression } from '../../app/utilities/capacityRanges';
 
 // Constants for layer IDs
 const LAYER_IDS = {
@@ -288,37 +289,7 @@ const MapboxNetwork = () => {
             ['boolean', ['feature-state', 'hover'], false], '#8fb3a3',
             '#7c9885'
           ],
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            3, [
-              'case',
-              ['==', ['get', 'total_capacity'], 0], 3,
-              ['interpolate',
-                ['linear'],
-                ['get', 'total_capacity'],
-                0.1, 4,        // Valor mínimo (excluyendo 0)
-                1000, 6,       // 1 GW
-                5000, 8,       // 5 GW
-                10000, 10,     // 10 GW
-                50000, 12      // 50 GW
-              ]
-            ],
-            8, [
-              'case',
-              ['==', ['get', 'total_capacity'], 0], 5,
-              ['interpolate',
-                ['linear'],
-                ['get', 'total_capacity'],
-                0.1, 8,        // Valor mínimo (excluyendo 0)
-                1000, 12,      // 1 GW
-                5000, 16,      // 5 GW
-                10000, 20,     // 10 GW
-                50000, 24      // 50 GW
-              ]
-            ]
-          ],
+          'circle-radius': getMapboxRadiusExpression(capacities),
           'circle-opacity': 0.8,
           'circle-stroke-width': [
             'case',

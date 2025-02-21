@@ -46,13 +46,23 @@ export async function GET(
       const totalCount = parseInt(countResult.rows[0].count);
       const totalPages = Math.ceil(totalCount / pageSize);
 
-      // Get total capacity for each bus
+      const generatorsViewName = `generators_${country}_materialized`;
+      
+      const generatorsViewCheck = await client.query(`
+        SELECT EXISTS (
+          SELECT FROM pg_matviews 
+          WHERE schemaname = 'public' 
+          AND matviewname = $1
+        );
+      `, [generatorsViewName]);
+
+      const generatorsTableName = generatorsViewCheck.rows[0].exists ? generatorsViewName : `generators_${country}`;
+
       const capacityQuery = `
         WITH bus_capacities AS (
           SELECT bus, SUM(p_nom) as total_capacity
-          FROM public.generators
-          WHERE country_code = $1
-          AND carrier != 'load'
+          FROM ${generatorsTableName}
+          WHERE carrier != 'load'
           GROUP BY bus
           HAVING SUM(p_nom) > 0
         )
@@ -70,12 +80,12 @@ export async function GET(
             b.generator,
             b.country_code,
             COALESCE(c.total_capacity, 0) as total_capacity,
-            ST_SimplifyPreserveTopology(b.geometry, $2) as geometry
+            ST_SimplifyPreserveTopology(b.geometry, $1) as geometry
           FROM ${tableName} b
           LEFT JOIN bus_capacities c ON b."Bus" = c.bus
           WHERE b.geometry IS NOT NULL
           ORDER BY b."Bus"
-          LIMIT $3 OFFSET $4
+          LIMIT $2 OFFSET $3
         )
         SELECT jsonb_build_object(
           'type', 'FeatureCollection',
@@ -108,7 +118,7 @@ export async function GET(
         ) features;
       `;
       
-      const result = await client.query(query, [country, simplification, pageSize, offset]);
+      const result = await client.query(query, [simplification, pageSize, offset]);
 
       const headers = new Headers();
       headers.set('Cache-Control', 'public, s-maxage=3600');

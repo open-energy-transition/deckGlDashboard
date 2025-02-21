@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { COUNTRY_BUS_CONFIGS } from "../MapboxNetwork";
 import { COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from "@/utilities/CountryConfig/Link";
+import { calculateCapacityRanges, type CapacityRange } from "../../../app/utilities/capacityRanges";
 
 interface MapLegendProps {
   country: keyof typeof COUNTRY_BUS_RANGES;
@@ -62,7 +63,7 @@ const getBusCategories = (country: keyof typeof COUNTRY_BUS_RANGES): BusCategory
 };
 
 const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
-  const [busCategories, setBusCategories] = useState<BusCategory[]>([]);
+  const [busCategories, setBusCategories] = useState<CapacityRange[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -87,25 +88,7 @@ const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
           return;
         }
 
-        const maxCapacity = Math.max(...capacities);
-        const minCapacity = Math.min(...capacities);
-        
-        // Use fixed ranges to match the map
-        const ranges = [
-          { min: 0, max: 0, radius: 4, label: '0 MVA' },
-          { min: 0.1, max: 1000, radius: 6, label: '0-1 GVA' },
-          { min: 1000, max: 5000, radius: 8, label: '1-5 GVA' },
-          { min: 5000, max: 10000, radius: 10, label: '5-10 GVA' },
-          { min: 10000, max: 50000, radius: 12, label: '10-50 GVA' },
-          { min: 50000, max: Infinity, radius: 14, label: '> 50 GVA' }
-        ];
-        
-        const categories: BusCategory[] = ranges.map(({ radius, label }) => ({
-          label,
-          size: radius * 2,
-          color: BUS_COLOR
-        }));
-        
+        const categories = calculateCapacityRanges(capacities);
         console.log('Generated legend categories:', categories);
         setBusCategories(categories.reverse());
         setIsLoading(false);
@@ -135,8 +118,8 @@ const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
 
   const calculateLegendBusSizes = (busConfig: typeof DEFAULT_BUS_CONFIG) => {
     return {
-      VERY_LARGE: 18,
-      LARGE: 15,
+      VERY_LARGE: 16,
+      LARGE: 14,
       MEDIUM: 10,
       SMALL: 6,
       VERY_SMALL: 4
@@ -198,9 +181,9 @@ const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
             <div
               className="mr-3 rounded-full flex-shrink-0"
               style={{
-                width: bus.size,
-                height: bus.size,
-                backgroundColor: `rgba(${bus.color.join(",")}, 1)`,
+                width: bus.radius * 2,
+                height: bus.radius * 2,
+                backgroundColor: `rgba(${BUS_COLOR.join(",")}, 1)`,
               }}
             />
             <span className="text-sm">{bus.label}</span>

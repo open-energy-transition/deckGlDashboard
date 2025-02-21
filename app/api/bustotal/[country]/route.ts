@@ -16,17 +16,28 @@ export async function GET(
   const country = params.country;
 
   try {
+    const viewCheck = await pool.query(
+      `SELECT EXISTS (
+        SELECT FROM pg_matviews 
+        WHERE schemaname = 'public' 
+        AND matviewname = $1
+      );`,
+      [`generators_${country}_materialized`]
+    );
+
+    const tableName = viewCheck.rows[0].exists 
+      ? `generators_${country}_materialized` 
+      : `generators_${country}`;
+
     const result = await pool.query(
       `
         SELECT bus, SUM(p_nom) as total_capacity
-        FROM public.generators
-        WHERE country_code = $1
-        AND carrier != 'load'
+        FROM ${tableName}
+        WHERE carrier != 'load'
         GROUP BY bus
         HAVING SUM(p_nom) > 0
         ORDER BY total_capacity DESC;
-      `,
-      [country]
+      `
     );
 
     return NextResponse.json({
