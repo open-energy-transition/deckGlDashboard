@@ -1,10 +1,10 @@
-import { HeroSection } from "@/components/OverveiwComponents/hero";
-import { ScenariosSection } from "@/components/OverveiwComponents/scenarios";
-import { GithubSection } from "@/components/OverveiwComponents/github";
-import { CreditsSection } from "@/components/OverveiwComponents/credits";
-import { CommunitySection } from "@/components/OverveiwComponents/community";
-import ScrollButton from "@/components/OverveiwComponents/ScrollButton";
-import { IntroOETSection } from "@/components/OverveiwComponents/introOET";
+import { HeroSection } from "@/components/Homepage/hero";
+import { ScenariosSection } from "@/components/Homepage/scenarios";
+import { GithubSection } from "@/components/Homepage/github";
+import { CreditsSection } from "@/components/Homepage/credits";
+import { CommunitySection } from "@/components/Homepage/community";
+import ScrollButton from "@/components/Homepage/ScrollButton";
+import { IntroOETSection } from "@/components/Homepage/introOET";
 
 export default function Page() {
   return (

@@ -1,10 +1,13 @@
-export default function LearnMorePage() {
+import { ConceptsSection } from "@/components/Learnmore/Concepts";
+import { ExplainGlobeSection } from "@/components/Learnmore/ExplainGlobe";
+import { ExplainNetworkSection } from "@/components/Learnmore/ExplainNetwork";
+
+export default function Page() {
   return (
-    <div className="w-screen min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold mb-4">Learn More</h1>
-      <p className="text-xl text-center max-w-2xl">
-        This page is under construction. Soon, you'll find more information about our project here.
-      </p>
+    <div className="w-screen min-h-screen overflow-y-scroll overflow-x-hidden bg-background flex flex-col items-center justify-center gap-4 p-4 lg:gap-8 lg:p-0 box-border max-w-screen">
+      <ExplainGlobeSection />
+      <ExplainNetworkSection />
+      <ConceptsSection />
     </div>
   );
 }
