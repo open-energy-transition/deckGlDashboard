@@ -13,6 +13,7 @@ export default function Page() {
       <ScenariosSection />
       <IntroOETSection />
       <GithubSection />
+      <CreditsSection />
       <CommunitySection />
     </div>
   );
