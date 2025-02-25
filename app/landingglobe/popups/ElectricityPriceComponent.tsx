@@ -18,10 +18,15 @@ import {
 import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
 import { Label, Pie, PieChart } from "recharts";
 import { GenerationMixglobe } from "./GenerationPie";
+interface InvestmentData {
+  carrier: string;
+  investment_needed: number;
+}
 
 interface DrawerData {
   electricityPrice2050: number;
-  investmentPerCO2: number;
+  investmentsNeeded: InvestmentData[];
+  totalInvestmentNeeded: number;
   electricityPrice2021: number;
   generationMix: any;
 }
@@ -35,7 +40,8 @@ const ElectricityPriceComponent = ({
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DrawerData>({
     electricityPrice2050: 0,
-    investmentPerCO2: 0,
+    investmentsNeeded: [],
+    totalInvestmentNeeded: 0,
     electricityPrice2021: 0,
     generationMix: [],
   });
@@ -57,7 +63,8 @@ const ElectricityPriceComponent = ({
     if (!hoveredCountry && hoveredCountry !== "null") {
       setData({
         electricityPrice2050: 0,
-        investmentPerCO2: 0,
+        investmentsNeeded: [],
+        totalInvestmentNeeded: 0,
         electricityPrice2021: 0,
         generationMix: [],
       });
@@ -69,7 +76,7 @@ const ElectricityPriceComponent = ({
     try {
       const responses = await Promise.all([
         fetch(`/api/electricity_prices/${hoveredCountry}/2050`),
-        fetch(`/api/investment_per_co2_reduced/${hoveredCountry}/2050`),
+        fetch(`/api/investments_needed/${hoveredCountry}/2050`),
         fetch(`/api/electricity_prices/${hoveredCountry}/2021`),
         fetch(`/api/generation_mix/${hoveredCountry}/2050`),
       ]);
@@ -81,19 +88,23 @@ const ElectricityPriceComponent = ({
 
       const [
         electricityPricesData2050,
-        investmentPerCO2Data,
+        investmentsNeededData,
         electricityPriceData2021,
         generationMixData2050,
       ] = await Promise.all(responses.map((r) => r.json()));
+
+      const investmentsNeeded = investmentsNeededData.data as InvestmentData[];
+      const totalInvestmentNeeded = investmentsNeeded.reduce(
+        (sum, item) => sum + item.investment_needed,
+        0
+      );
 
       const processedData: DrawerData = {
         electricityPrice2050:
           parseFloat(electricityPricesData2050.data?.[0]?.electricity_price) ||
           0,
-        investmentPerCO2:
-          parseFloat(
-            investmentPerCO2Data.data?.[0]?.investment_per_co2_reduced
-          ) || 0,
+        investmentsNeeded,
+        totalInvestmentNeeded,
         electricityPrice2021:
           parseFloat(electricityPriceData2021.data?.[0]?.electricity_price) ||
           0,
@@ -104,7 +115,8 @@ const ElectricityPriceComponent = ({
     } catch (error) {
       setData({
         electricityPrice2050: 0,
-        investmentPerCO2: 0,
+        investmentsNeeded: [],
+        totalInvestmentNeeded: 0,
         electricityPrice2021: 0,
         generationMix: [],
       });
@@ -159,21 +171,34 @@ const ElectricityPriceComponent = ({
           <CircleFlag
             countryCode={hoveredCountry.toLowerCase()}
             height={50}
-            className="pt-1 w-full aspect-square col-span-11 h-20 mx-auto md:h-auto  md:col-span-2 "
+            className="pt-2 w-full aspect-square col-span-11 h-20 mx-auto md:h-auto md:col-span-2 md:ml-2 md:mt-2"
           />
-          <div className="col-span-11 md:col-span-3">
-            <p>2021</p>
-            {data.electricityPrice2021.toFixed(2)} €/MWh{" "}
+          <div className="col-span-11 md:col-span-9 flex flex-col justify-center">
+            <p className="text-xs text-muted-foreground">Investment Required</p>
+            <p className="text-3xl font-bold mb-1">
+              €{data.totalInvestmentNeeded.toFixed(2)}{" "}
+              <span className="hidden md:inline">Billion</span>
+              <span className="md:hidden">B</span>
+            </p>
+
+            <div className="flex justify-around">
+              <div>
+                <p className="text-sm">2021</p>
+                <p>
+                  <span className="font-semibold">{data.electricityPrice2021.toFixed(2)}</span>
+                  <span className="block md:inline font-normal"> €/MWh</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm">2050</p>
+                <p>
+                  <span className="font-semibold">{data.electricityPrice2050.toFixed(2)}</span>
+                  <span className="block md:inline font-normal"> €/MWh</span>
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="col-span-11 md:col-span-3">
-            <p>Investment Required</p>
-            {data.investmentPerCO2.toFixed(2)} €/tCO
-          </div>
-          <div className="col-span-11 md:col-span-3">
-            <p>2050</p>
-            {data.electricityPrice2050.toFixed(2)} €/MWh{" "}
-          </div>
-          <div className="hidden md:block md:col-span-11">
+          <div className="hidden md:block md:col-span-11 -mt-12">
             <GenerationMixglobe data={data.generationMix} />
           </div>
         </div>
