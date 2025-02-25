@@ -60,7 +60,10 @@ export function GenerationMixglobe({ data }: Props) {
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== "Total generation"
+            item &&
+            item.carrier &&
+            item.carrier !== "Total generation" &&
+            item.generation > 0.1 // Adjust this value to filter out small or zero-value entries
         )
         .map((item: DataItem) => {
           const value = Number(item.generation?.toFixed(2) || 0);
