@@ -33,10 +33,12 @@ export const HeroSection = () => {
           </div>
 
           <div className="">
-            <Button className="w-5/6 md:w-1/4 font-bold group/arrow bg-gradient-to-r from-[#E31937] to-primary text-white">
-              2050
-              <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
-            </Button>
+            <Link href="/landingglobe">
+              <Button className="w-5/6 md:w-1/4 font-bold group/arrow bg-gradient-to-r from-[#E31937] to-primary text-white">
+                2050
+                <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
