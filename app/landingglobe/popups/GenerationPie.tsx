@@ -171,7 +171,7 @@ export function GenerationMixglobe({ data }: Props) {
           </Pie>
           <ChartLegend
             content={<ChartLegendContent />}
-            className="flex-wrap mt-5"
+            className="flex-wrap -mt-8"
           />
         </PieChart>
       </ChartContainer>

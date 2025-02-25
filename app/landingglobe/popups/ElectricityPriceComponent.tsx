@@ -171,21 +171,34 @@ const ElectricityPriceComponent = ({
           <CircleFlag
             countryCode={hoveredCountry.toLowerCase()}
             height={50}
-            className="pt-2 w-full aspect-square col-span-11 h-20 mx-auto md:h-auto  md:col-span-2 "
+            className="pt-2 w-full aspect-square col-span-11 h-20 mx-auto md:h-auto md:col-span-2 md:ml-2 md:mt-2"
           />
-          <div className="col-span-11 md:col-span-3">
-            <p>2021</p>
-            {data.electricityPrice2021.toFixed(2)} €/MWh{" "}
+          <div className="col-span-11 md:col-span-9 flex flex-col justify-center">
+            <p className="text-xs text-muted-foreground">Investment Required</p>
+            <p className="text-3xl font-bold mb-1">
+              €{data.totalInvestmentNeeded.toFixed(2)}{" "}
+              <span className="hidden md:inline">Billion</span>
+              <span className="md:hidden">B</span>
+            </p>
+
+            <div className="flex justify-around">
+              <div>
+                <p className="text-sm">2021</p>
+                <p>
+                  <span className="font-semibold">{data.electricityPrice2021.toFixed(2)}</span>
+                  <span className="block md:inline font-normal"> €/MWh</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm">2050</p>
+                <p>
+                  <span className="font-semibold">{data.electricityPrice2050.toFixed(2)}</span>
+                  <span className="block md:inline font-normal"> €/MWh</span>
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="col-span-11 md:col-span-3">
-            {data.totalInvestmentNeeded.toFixed(2)} B€
-            <p>Investment Required</p>
-          </div>
-          <div className="col-span-11 md:col-span-3">
-            <p>2050</p>
-            {data.electricityPrice2050.toFixed(2)} €/MWh{" "}
-          </div>
-          <div className="hidden md:block md:col-span-11">
+          <div className="hidden md:block md:col-span-11 -mt-12">
             <GenerationMixglobe data={data.generationMix} />
           </div>
         </div>
