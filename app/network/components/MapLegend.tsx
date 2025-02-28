@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { COUNTRY_BUS_CONFIGS } from "../MapboxNetwork";
 import { COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from "@/utilities/CountryConfig/Link";
-import { calculateCapacityRanges, type CapacityRange } from "../../../app/utilities/capacityRanges";
+import { calculateCapacityRanges, type CapacityRange } from "@/app/utilities/capacityRanges";
 
 interface MapLegendProps {
   country: keyof typeof COUNTRY_BUS_RANGES;
@@ -53,7 +53,7 @@ const roundToNiceNumber = (value: number): number => {
 
 const getBusCategories = (country: keyof typeof COUNTRY_BUS_RANGES): BusCategory[] => {
   const ranges = COUNTRY_BUS_RANGES[country]?.ranges || [];
-  return ranges.map((range, index) => ({
+  return ranges.map((range: any, index: number) => ({
     label: index === ranges.length - 1 
       ? `> ${range.min / 1000} GW`
       : `${range.min / 1000}-${range.max / 1000} GW`,
@@ -70,7 +70,7 @@ const MapLegend = ({ country, theme, type = "lines" }: MapLegendProps) => {
     const fetchBusData = async () => {
       try {
         console.log('Fetching bus data for country:', country);
-        const response = await fetch(`/api/geography/buses/${country}`);
+        const response = await fetch(`/api/geography/buses/${String(country)}`);
         const data = await response.json();
         console.log('Received bus data:', data);
         

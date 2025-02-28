@@ -6,8 +6,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useTheme } from 'next-themes';
 import { useCountry } from '@/components/country-context';
 import { COUNTRY_COORDINATES, COUNTRY_VIEW_CONFIG, getGeoJsonData, COUNTRY_S_NOM_RANGES, COUNTRY_BUS_RANGES } from '@/utilities/CountryConfig/Link';
-import MySideDrawer from './popups/SideDrawer';
 import { getMapboxRadiusExpression } from '../../app/utilities/capacityRanges';
+import BusesTooltip from './popups/BusesTooltip';
 
 const LAYER_IDS = {
   COUNTRY: 'country-layer',
@@ -62,7 +62,6 @@ const MapboxNetwork = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [selectedBus, setSelectedBus] = useState<string | null>(null);
   const [hoveredBus, setHoveredBus] = useState<string | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [zoomLevel, setZoomLevel] = useState(4);
   const initializeStartedRef = useRef(false);
@@ -74,6 +73,7 @@ const MapboxNetwork = () => {
   const dataLoadingRef = useRef(false);
   const retryCountRef = useRef(0);
   const MAX_RETRIES = 10;
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsMounted(true);
@@ -111,26 +111,27 @@ const MapboxNetwork = () => {
       if (e.features && e.features.length > 0) {
         map.getCanvas().style.cursor = 'pointer';
         
-          const feature = e.features[0];
-          const busId = feature.properties?.Bus;
-          
+        const feature = e.features[0];
+        const busId = feature.properties?.Bus;
+        
         if (busId && busId !== hoveredBus && busId !== selectedBus) {
-            if (hoveredBus) {
-              map.setFeatureState(
-              { source: 'buses-data', id: hoveredBus },
-                { hover: false }
-              );
-            }
-            
+          if (hoveredBus) {
             map.setFeatureState(
-              { source: 'buses-data', id: busId },
-              { hover: true }
+              { source: 'buses-data', id: hoveredBus },
+              { hover: false }
             );
-            
-            setHoveredBus(busId);
           }
+          
+          map.setFeatureState(
+            { source: 'buses-data', id: busId },
+            { hover: true }
+          );
+          
+          setHoveredBus(busId);
+          setCursorPosition({ x: e.point.x, y: e.point.y });
         }
-      };
+      }
+    };
 
       const mouseleaveHandler = () => {
         map.getCanvas().style.cursor = '';
@@ -157,7 +158,6 @@ const MapboxNetwork = () => {
                 { selected: false }
               );
               setSelectedBus(null);
-              setDrawerOpen(false);
             } else {
               if (selectedBus) {
                 map.setFeatureState(
@@ -173,7 +173,6 @@ const MapboxNetwork = () => {
               
               setSelectedBus(busId);
               setHoveredBus(null);
-              setDrawerOpen(true);
               
               if (e.lngLat) {
                 map.flyTo({
@@ -197,7 +196,7 @@ const MapboxNetwork = () => {
       [`mouseleave.${LAYER_IDS.BUSES}`]: mouseleaveHandler,
       [`click.${LAYER_IDS.BUSES}`]: clickHandler
     };
-  }, [hoveredBus, selectedBus, setHoveredBus, setSelectedBus, setDrawerOpen]);
+  }, [hoveredBus, selectedBus, setHoveredBus, setSelectedBus]);
 
   const updateMapData = useCallback(async (map: mapboxgl.Map) => {
     if (dataLoadingRef.current) {
@@ -569,7 +568,6 @@ const MapboxNetwork = () => {
             { selected: false }
           );
           setSelectedBus(null);
-          setDrawerOpen(false);
         } catch (error) {
         }
       }
@@ -624,7 +622,7 @@ const MapboxNetwork = () => {
         }
       });
     }
-  }, [selectedCountry, mapLoaded, isMounted, updateMapData, selectedBus, setSelectedBus, setDrawerOpen]);
+  }, [selectedCountry, mapLoaded, isMounted, updateMapData, selectedBus, setSelectedBus]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -694,15 +692,17 @@ const MapboxNetwork = () => {
         style={{ width: '100%', height: '100%' }} 
         className="absolute inset-0"
       />
-      <MySideDrawer
-        open={drawerOpen}
-        setOpen={setDrawerOpen}
-        side="right"
-        data={selectedBus ? {
-          busId: selectedBus,
-          countryCode: selectedCountry
-        } : null}
-      />
+      <div
+        style={{
+          position: 'fixed',
+          zIndex: 100,
+          pointerEvents: 'none',
+          left: cursorPosition.x,
+          top: cursorPosition.y * 0.5,
+        }}
+      >
+        <BusesTooltip hoveredBus={hoveredBus} />
+      </div>
     </>
   );
 };
