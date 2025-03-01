@@ -3,6 +3,7 @@ import DeckGL, { GeoJsonLayer } from "deck.gl";
 import React, { useCallback, useRef } from "react";
 import { Map } from "react-map-gl/maplibre";
 import type { MapViewState, ViewStateChangeParameters } from "@deck.gl/core";
+import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 const RegionLayer = () => {
   const links = getGeoJsonData("US");
@@ -18,9 +19,9 @@ const RegionLayer = () => {
     getLineColor: [228, 30, 60],
     getFillColor: (d) => {
       console.log("d", d);
-      return [215, 229, 190, 2.5 * d.properties.crt];
+      const [r, g, b] = regionalGeneratorTypes.ror;
+      return [r, g, b, 2.5 * d.properties.cf];
     },
-
     getLineWidth: 200,
     getRadius: 100,
     lineWidthScale: 20,

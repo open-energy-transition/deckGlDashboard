@@ -5,6 +5,7 @@ import React, { useCallback, useRef } from "react";
 import { Map } from "react-map-gl/maplibre";
 import type { MapViewState, ViewStateChangeParameters } from "@deck.gl/core";
 import RegionLayer from "./popups/RegionLayer";
+import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -24,6 +25,8 @@ const Page = () => {
   const MakeLayers = useCallback(() => {
     const links = getGeoJsonData("US");
     const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000`;
+
+    console.log("color", regionalGeneratorTypes);
 
     return [
       //   new GeoJsonLayer({
