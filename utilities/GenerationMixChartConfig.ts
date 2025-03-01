@@ -162,3 +162,20 @@ export const GenerationMixchartConfigSmall = {
     color: "hsl(var(--chart-offwind-dc))",
   },
 } satisfies ChartConfig;
+
+export const regionalGeneratorTypes = [
+  "csp",
+  "ror",
+  "biomass",
+  "load",
+  "CCGT",
+  "solar",
+  "offwind-ac",
+  "lignite",
+  "onwind",
+  "geothermal",
+  "offwind-dc",
+  "oil",
+  "coal",
+  "nuclear",
+];
