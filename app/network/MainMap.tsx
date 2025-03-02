@@ -4,26 +4,22 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Map } from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
 
-import type { MapViewState, ViewStateChangeParameters } from "@deck.gl/core";
+import type { MapViewState } from "@deck.gl/core";
 import { FlyToInterpolator } from "deck.gl";
 import {
   COUNTRY_COORDINATES,
   getGeoJsonData,
-  COUNTRY_S_NOM_RANGES,
   COUNTRY_VIEW_CONFIG,
-  COUNTRY_BUS_CONFIGS,
-  normalizeSnom,
 } from "@/utilities/CountryConfig/Link";
-import { GeoJsonLayer } from "@deck.gl/layers";
 import { useTheme } from "next-themes";
 import { WebMercatorViewport } from "@deck.gl/core";
-import type { RenderPassParameters } from "@luma.gl/core";
 
 import { useCountry } from "@/components/country-context";
 import BusesTooltip from "./popups/BusesTooltip";
 import BusesLayer from "./layers/BusesLayer";
 import LinesLayer from "./layers/LinesLayer";
 import CountryLayer from "./layers/CountryLayer";
+import RegionLayer from "./layers/RegionLayer";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -41,11 +37,11 @@ const MAP_STYLE_LIGHT =
 const MAP_STYLE_DARK =
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
-interface CustomRenderParameters extends RenderPassParameters {
-  depthTest?: boolean;
+interface MainMapProps {
+  networkView: boolean;
 }
 
-export default function MainMap() {
+export default function MainMap({ networkView }: MainMapProps) {
   const { theme: currentTheme } = useTheme();
   const DeckRef = useRef(null);
   const { selectedCountry, setSelectedCountry } = useCountry();
@@ -58,21 +54,13 @@ export default function MainMap() {
 
   const [zoomLevel, setZoomLevel] = useState(4);
 
-  const MakeLayers = useCallback(() => {
-    const links = getGeoJsonData(selectedCountry);
-
-    return [
-      CountryLayer(),
-      LinesLayer({ zoomLevel }),
-      BusesLayer({
-        hoverPointID,
-        setHoverPointID,
-        position,
-        setPosition,
-        zoomLevel,
-      }),
-    ];
-  }, [selectedCountry, zoomLevel]);
+  const makeLayers = useCallback(() => {
+    if (networkView) {
+      return [CountryLayer(), LinesLayer({ zoomLevel })];
+    } else {
+      return [CountryLayer(), RegionLayer()];
+    }
+  }, [, selectedCountry, hoverPointID, position, zoomLevel, networkView]);
 
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
@@ -108,7 +96,16 @@ export default function MainMap() {
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={MakeLayers()}
+          layers={[
+            ...makeLayers(),
+            BusesLayer({
+              hoverPointID,
+              setHoverPointID,
+              position,
+              setPosition,
+              zoomLevel,
+            }),
+          ]}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}

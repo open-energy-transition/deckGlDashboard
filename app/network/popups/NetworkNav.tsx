@@ -20,7 +20,12 @@ import MapLegend from "@/app/network/popups/MapLegend";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Button } from "@/components/ui/button";
 
-const NetworkNav = () => {
+interface NetworkNavProps {
+  networkView: boolean;
+  setNetworkView: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const NetworkNav = ({ networkView, setNetworkView }: NetworkNavProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { selectedCountry } = useCountry();
@@ -66,6 +71,17 @@ const NetworkNav = () => {
               isParentOpen={open}
               setIsParentOpen={setOpen}
             />
+
+            <div className="flex items-center justify-between space-x-2">
+              <p>toggle network view</p>
+              <Switch
+                id="theme"
+                checked={networkView}
+                onClick={(e) => {
+                  setNetworkView(!networkView);
+                }}
+              />
+            </div>
 
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
