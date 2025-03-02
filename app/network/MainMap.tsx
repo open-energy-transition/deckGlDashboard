@@ -39,9 +39,13 @@ const MAP_STYLE_DARK =
 
 interface MainMapProps {
   networkView: boolean;
+  regionalDataParams: any;
 }
 
-export default function MainMap({ networkView }: MainMapProps) {
+export default function MainMap({
+  networkView,
+  regionalDataParams,
+}: MainMapProps) {
   const { theme: currentTheme } = useTheme();
   const DeckRef = useRef(null);
   const { selectedCountry, setSelectedCountry } = useCountry();
@@ -58,9 +62,9 @@ export default function MainMap({ networkView }: MainMapProps) {
     if (networkView) {
       return [CountryLayer(), LinesLayer({ zoomLevel })];
     } else {
-      return [CountryLayer(), RegionLayer()];
+      return [CountryLayer(), RegionLayer({ regionalDataParams })];
     }
-  }, [, selectedCountry, hoverPointID, position, zoomLevel, networkView]);
+  }, [selectedCountry, zoomLevel, networkView, regionalDataParams]);
 
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
