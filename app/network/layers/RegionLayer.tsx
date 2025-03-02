@@ -1,11 +1,6 @@
-import { getGeoJsonData } from "@/utilities/CountryConfig/Link";
-import DeckGL, { GeoJsonLayer } from "deck.gl";
-import React, { useCallback, useRef } from "react";
-import { Map } from "react-map-gl/maplibre";
-import type { MapViewState, ViewStateChangeParameters } from "@deck.gl/core";
+"use client";
+import { GeoJsonLayer } from "deck.gl";
 import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
-import { useCountry } from "@/components/country-context";
-
 interface RegionLayerProps {
   regionalDataParams: {
     generatorType: keyof typeof regionalGeneratorTypes;
