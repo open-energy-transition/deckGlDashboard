@@ -75,7 +75,13 @@ export default function MainMap({
         RegionLayer({ regionalDataParams, links }),
       ]);
     }
-  }, [selectedCountry, zoomLevel, networkView, regionalDataParams]);
+  }, [
+    selectedCountry,
+    zoomLevel,
+    networkView,
+    regionalDataParams.generatorType,
+    regionalDataParams.param,
+  ]);
 
   useEffect(() => {
     const countryCoordinates = COUNTRY_COORDINATES[selectedCountry];
