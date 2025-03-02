@@ -121,11 +121,11 @@ export default function MainMap({
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
-          // onViewStateChange={(params) => {
-          //   if (params.viewState && "latitude" in params.viewState) {
-          //     setZoomLevel(params.viewState.zoom);
-          //   }
-          // }}
+          onViewStateChange={(params) => {
+            if (params.viewState && "latitude" in params.viewState) {
+              setZoomLevel(params.viewState.zoom);
+            }
+          }}
         >
           <Map
             reuseMaps
