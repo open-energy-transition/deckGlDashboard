@@ -19,18 +19,14 @@ interface CustomRenderParameters extends RenderPassParameters {
 }
 
 interface BusesLayerProps {
-  hoverPointID: string | null;
   setHoverPointID: Dispatch<SetStateAction<string | null>>;
-  position: { x: number; y: number };
-  setPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
+  position: React.MutableRefObject<{ x: number; y: number }>;
   zoomLevel: number;
 }
 
 const BusesLayer = ({
-  hoverPointID,
   setHoverPointID,
   position,
-  setPosition,
   zoomLevel,
 }: BusesLayerProps) => {
   const { selectedCountry, setSelectedCountry } = useCountry();
@@ -122,7 +118,7 @@ const BusesLayer = ({
       return baseRadius;
     },
     onHover: (info) => {
-      setPosition({ x: info.x || 0, y: info.y || 0 });
+      position.current = { x: info.x || 0, y: info.y || 0 };
       setHoverPointID(info.object ? info.object.properties.Bus : null);
     },
     getLineColor: [124, 152, 133],

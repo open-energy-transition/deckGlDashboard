@@ -51,7 +51,8 @@ export default function MainMap({
   const { selectedCountry, setSelectedCountry } = useCountry();
 
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const position = useRef({ x: 0, y: 0 });
 
   const [initialViewState, setInitialViewState] =
     useState<MapViewState>(INITIAL_VIEW_STATE);
@@ -99,13 +100,6 @@ export default function MainMap({
     });
   }, [selectedCountry]);
 
-  const onViewStateChange = useCallback(
-    (params: { viewState: MapViewState }) => {
-      setZoomLevel(params.viewState.zoom);
-    },
-    []
-  );
-
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
@@ -113,17 +107,19 @@ export default function MainMap({
           layers={[
             ...deckLayers,
             BusesLayer({
-              hoverPointID,
               setHoverPointID,
               position,
-              setPosition,
               zoomLevel,
             }),
           ]}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
-          onViewStateChange={onViewStateChange as any}
+          onViewStateChange={(params) => {
+            if (params.viewState && "latitude" in params.viewState) {
+              setZoomLevel(params.viewState.zoom);
+            }
+          }}
         >
           <Map
             reuseMaps
@@ -137,8 +133,8 @@ export default function MainMap({
               position: "fixed",
               zIndex: 100,
               pointerEvents: "none",
-              left: position.x,
-              top: position.y * 0.5,
+              left: position.current.x,
+              top: position.current.y * 0.5,
             }}
           >
             <BusesTooltip hoveredBus={hoverPointID} />
