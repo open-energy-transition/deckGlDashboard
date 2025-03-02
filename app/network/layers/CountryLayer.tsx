@@ -1,5 +1,3 @@
-import { useCountry } from "@/components/country-context";
-import { getGeoJsonData } from "@/utilities/CountryConfig/Link";
 import { GeoJsonLayer } from "deck.gl";
 import type { RenderPassParameters } from "@luma.gl/core";
 
@@ -7,9 +5,7 @@ interface CustomRenderParameters extends RenderPassParameters {
   depthTest?: boolean;
 }
 
-const CountryLayer = () => {
-  const { selectedCountry, setSelectedCountry } = useCountry();
-  const links = getGeoJsonData(selectedCountry);
+const CountryLayer = ({ links }: any) => {
   return new GeoJsonLayer({
     id: `Country${1}`,
     data: links.countryView,

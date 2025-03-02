@@ -1,8 +1,10 @@
 "use client";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { getGeoJsonData, normalizeSnom } from "@/utilities/CountryConfig/Link";
+import {
+  COUNTRY_COORDINATES,
+  normalizeSnom,
+} from "@/utilities/CountryConfig/Link";
 import type { RenderPassParameters } from "@luma.gl/core";
-import { useCountry } from "@/components/country-context";
 
 interface CustomRenderParameters extends RenderPassParameters {
   depthTest?: boolean;
@@ -10,12 +12,11 @@ interface CustomRenderParameters extends RenderPassParameters {
 
 interface LinesLayerProps {
   zoomLevel: number;
+  links: any;
+  selectedCountry: keyof typeof COUNTRY_COORDINATES;
 }
 
-const LinesLayer = ({ zoomLevel }: LinesLayerProps) => {
-  const { selectedCountry, setSelectedCountry } = useCountry();
-  const links = getGeoJsonData(selectedCountry);
-
+const LinesLayer = ({ zoomLevel, links, selectedCountry }: LinesLayerProps) => {
   return new GeoJsonLayer({
     id: `Linebus`,
     data: links.lines,

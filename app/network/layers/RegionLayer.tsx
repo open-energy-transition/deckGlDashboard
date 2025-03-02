@@ -11,11 +11,10 @@ interface RegionLayerProps {
     generatorType: keyof typeof regionalGeneratorTypes;
     param: string;
   };
+  links: any;
 }
 
-const RegionLayer = ({ regionalDataParams }: RegionLayerProps) => {
-  const { selectedCountry, setSelectedCountry } = useCountry();
-  const links = getGeoJsonData(selectedCountry);
+const RegionLayer = ({ regionalDataParams, links }: RegionLayerProps) => {
   const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionalDataParams.generatorType}`;
 
   const generatorKey = regionalDataParams.generatorType;

@@ -58,11 +58,21 @@ export default function MainMap({
 
   const [zoomLevel, setZoomLevel] = useState(4);
 
-  const makeLayers = useCallback(() => {
+  const [deckLayers, setdeckLayers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const links = getGeoJsonData(selectedCountry);
+
     if (networkView) {
-      return [CountryLayer(), LinesLayer({ zoomLevel })];
+      setdeckLayers([
+        CountryLayer({ links }),
+        LinesLayer({ zoomLevel, links, selectedCountry }),
+      ]);
     } else {
-      return [CountryLayer(), RegionLayer({ regionalDataParams })];
+      setdeckLayers([
+        CountryLayer({ links }),
+        RegionLayer({ regionalDataParams, links }),
+      ]);
     }
   }, [selectedCountry, zoomLevel, networkView, regionalDataParams]);
 
@@ -101,7 +111,7 @@ export default function MainMap({
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
           layers={[
-            ...makeLayers(),
+            ...deckLayers,
             BusesLayer({
               hoverPointID,
               setHoverPointID,
