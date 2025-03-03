@@ -159,7 +159,9 @@ export async function GET(
       }
 
       const headers = new Headers();
-      headers.set("Cache-Control", "public, s-maxage=3600");
+      headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      headers.set("Pragma", "no-cache");
+      headers.set("Expires", "0");
 
       return formatGeoJsonResponse(result.rows[0].geojson, headers);
     });
