@@ -15,7 +15,7 @@ const RegionLayer = ({
   const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionGeneratorValue}`;
 
   return new GeoJsonLayer({
-    id: `Country_regions${1}`,
+    id: `Country_regions${regionGeneratorValue}_${regionParamValue}_${Date.now()}`,
     data: polygon,
     opacity: 1,
     stroked: true,
