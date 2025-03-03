@@ -5,18 +5,20 @@ interface RegionLayerProps {
   regionGeneratorValue: keyof typeof regionalGeneratorTypes;
   regionParamValue: string;
   links: any;
+  selectedCountry: string;
 }
 
 const RegionLayer = ({
   regionGeneratorValue,
   regionParamValue,
   links,
+  selectedCountry,
 }: RegionLayerProps) => {
-  const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionGeneratorValue}`;
+  const timestamp = Date.now() + Math.random();
 
   return new GeoJsonLayer({
-    id: `Country_regions${regionGeneratorValue}_${regionParamValue}_${Date.now()}`,
-    data: polygon,
+    id: `${selectedCountry}_${regionGeneratorValue}_${regionParamValue}_${timestamp}`,
+    data: `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionGeneratorValue}`,
     opacity: 1,
     stroked: true,
     filled: true,
@@ -28,9 +30,14 @@ const RegionLayer = ({
     },
     getLineWidth: 100,
     updateTriggers: {
-      getFillColor: [regionGeneratorValue, regionParamValue, links, polygon],
+      getFillColor: [
+        regionGeneratorValue,
+        regionParamValue,
+        links,
+        selectedCountry,
+      ],
     },
-    getRadius: 100,
+    getPointRadius: 100,
     lineWidthScale: 20,
   });
 };

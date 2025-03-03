@@ -68,6 +68,8 @@ export default function MainMap({
   useEffect(() => {
     const links = getGeoJsonData(selectedCountry);
 
+    
+
     if (networkView) {
       setdeckLayers([
         CountryLayer({ links }),
@@ -76,7 +78,12 @@ export default function MainMap({
     } else {
       setdeckLayers([
         CountryLayer({ links }),
-        RegionLayer({ regionGeneratorValue, regionParamValue, links }),
+        RegionLayer({
+          regionGeneratorValue,
+          regionParamValue,
+          links,
+          selectedCountry,
+        }),
       ]);
     }
   }, [
