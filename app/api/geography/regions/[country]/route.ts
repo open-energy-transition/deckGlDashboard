@@ -6,7 +6,7 @@ import {
   createErrorResponse 
 } from '../../config';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 const DEFAULT_PAGE_SIZE = 1000;
 const GEOMETRY_SIMPLIFICATION = 0.01;
