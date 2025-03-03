@@ -20,6 +20,7 @@ import BusesLayer from "./layers/BusesLayer";
 import LinesLayer from "./layers/LinesLayer";
 import CountryLayer from "./layers/CountryLayer";
 import RegionLayer from "./layers/RegionLayer";
+import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 49.254,
@@ -39,12 +40,15 @@ const MAP_STYLE_DARK =
 
 interface MainMapProps {
   networkView: boolean;
-  regionalDataParams: any;
+  regionGeneratorValue: keyof typeof regionalGeneratorTypes;
+
+  regionParamValue: string;
 }
 
 export default function MainMap({
   networkView,
-  regionalDataParams,
+  regionGeneratorValue,
+  regionParamValue,
 }: MainMapProps) {
   const { theme: currentTheme } = useTheme();
   const DeckRef = useRef(null);
@@ -72,15 +76,15 @@ export default function MainMap({
     } else {
       setdeckLayers([
         CountryLayer({ links }),
-        RegionLayer({ regionalDataParams, links }),
+        RegionLayer({ regionGeneratorValue, regionParamValue, links }),
       ]);
     }
   }, [
     selectedCountry,
     zoomLevel,
     networkView,
-    regionalDataParams.generatorType,
-    regionalDataParams.param,
+    regionGeneratorValue,
+    regionParamValue,
   ]);
 
   useEffect(() => {

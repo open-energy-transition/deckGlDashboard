@@ -2,18 +2,17 @@
 import { GeoJsonLayer } from "deck.gl";
 import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 interface RegionLayerProps {
-  regionalDataParams: {
-    generatorType: keyof typeof regionalGeneratorTypes;
-    param: string;
-  };
+  regionGeneratorValue: keyof typeof regionalGeneratorTypes;
+  regionParamValue: string;
   links: any;
 }
 
-const RegionLayer = ({ regionalDataParams, links }: RegionLayerProps) => {
-  const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionalDataParams.generatorType}`;
-
-  const generatorKey = regionalDataParams.generatorType;
-  const paramKey = regionalDataParams.param;
+const RegionLayer = ({
+  regionGeneratorValue,
+  regionParamValue,
+  links,
+}: RegionLayerProps) => {
+  const polygon = `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionGeneratorValue}`;
 
   return new GeoJsonLayer({
     id: `Country_regions${1}`,
@@ -24,12 +23,12 @@ const RegionLayer = ({ regionalDataParams, links }: RegionLayerProps) => {
     pickable: true,
     getLineColor: [228, 30, 60],
     getFillColor: (d) => {
-      const [r, g, b] = regionalGeneratorTypes[generatorKey];
-      return [r, g, b, 2.5 * d.properties[paramKey]];
+      const [r, g, b] = regionalGeneratorTypes[regionGeneratorValue];
+      return [r, g, b, 2.5 * d.properties[regionParamValue]];
     },
     getLineWidth: 100,
     updateTriggers: {
-      getFillColor: [generatorKey,paramKey,regionalDataParams,links]
+      getFillColor: [regionGeneratorValue, regionParamValue, links, polygon],
     },
     getRadius: 100,
     lineWidthScale: 20,

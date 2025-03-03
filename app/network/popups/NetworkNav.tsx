@@ -33,15 +33,21 @@ import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 interface NetworkNavProps {
   networkView: boolean;
   setNetworkView: React.Dispatch<React.SetStateAction<boolean>>;
-  RegionalDataParams: any;
-  setRegionalDataParams: any;
+  regionGeneratorValue: keyof typeof regionalGeneratorTypes;
+  setRegionGeneratorValue: React.Dispatch<
+    React.SetStateAction<keyof typeof regionalGeneratorTypes>
+  >;
+  regionParamValue: string;
+  setRegionParamValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const NetworkNav = ({
   networkView,
   setNetworkView,
-  RegionalDataParams,
-  setRegionalDataParams,
+  regionGeneratorValue,
+  setRegionGeneratorValue,
+  regionParamValue,
+  setRegionParamValue,
 }: NetworkNavProps) => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
@@ -101,12 +107,11 @@ const NetworkNav = ({
             </div>
             <div className="flex gap-2">
               <Select
-                value={RegionalDataParams.generatorType}
+                value={regionGeneratorValue}
                 onValueChange={(e) =>
-                  setRegionalDataParams({
-                    ...RegionalDataParams,
-                    generatorType: e,
-                  })
+                  setRegionGeneratorValue(
+                    e as keyof typeof regionalGeneratorTypes
+                  )
                 }
                 disabled={networkView}
               >
@@ -125,17 +130,12 @@ const NetworkNav = ({
                 </SelectContent>
               </Select>
               <Select
-                value={RegionalDataParams.param}
-                onValueChange={(e) =>
-                  setRegionalDataParams({
-                    ...RegionalDataParams,
-                    param: e,
-                  })
-                }
+                value={regionParamValue}
+                onValueChange={(e) => setRegionParamValue(e)}
                 disabled={networkView}
               >
                 <SelectTrigger className="w-[50%]">
-                  <SelectValue placeholder="Select a fruit" />
+                  <SelectValue placeholder="Select a parameter" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

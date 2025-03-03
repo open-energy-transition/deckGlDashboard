@@ -6,23 +6,26 @@ import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 const Page = () => {
   const [networkView, setNetworkView] = React.useState<boolean>(true);
-  const [RegionalDataParams, setRegionalDataParams] = React.useState<any>({
-    generatorType: "ror",
-    param: "crt",
-  });
+  const [regionGeneratorValue, setRegionGeneratorValue] =
+    React.useState<keyof typeof regionalGeneratorTypes>("ror");
+
+  const [regionParamValue, setRegionParamValue] = React.useState<string>("crt");
 
   return (
     <div>
       <div className="absolute w-full h-full z-0 left-0 top-0 overflow-hidden ">
         <MainMap
           networkView={networkView}
-          regionalDataParams={RegionalDataParams}
+          regionGeneratorValue={regionGeneratorValue}
+          regionParamValue={regionParamValue}
         />
         <NetworkNav
           networkView={networkView}
           setNetworkView={setNetworkView}
-          RegionalDataParams={RegionalDataParams}
-          setRegionalDataParams={setRegionalDataParams}
+          regionGeneratorValue={regionGeneratorValue}
+          setRegionGeneratorValue={setRegionGeneratorValue}
+          regionParamValue={regionParamValue}
+          setRegionParamValue={setRegionParamValue}
         />
       </div>
     </div>
