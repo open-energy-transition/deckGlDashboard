@@ -38,11 +38,14 @@ Coming soon! This section will provide more in-depth information about the model
 
 ## Contributors
 
-There is a lot that went behind the scenes to make this dashboard possible. Our contributors include:
 
 <a href="https://github.com/BryanFran"><img src="https://github.com/BryanFran.png" width="50px" alt="username" /></a>
+<a href="https://github.com/drifter089"><img src="https://github.com/drifter089.png" width="50px" alt="username" /></a>
+<a href="https://github.com/GbotemiB"><img src="https://github.com/GbotemiB.png" width="50px" alt="username" /></a>
+<a href="https://github.com/ekatef"><img src="https://github.com/ekatef.png" width="50px" alt="username" /></a>
+<a href="https://github.com/yerbol-akhmetov"><img src="https://github.com/yerbol-akhmetov.png" width="50px" alt="username" /></a>
+<a href="https://github.com/ElectricMountains"><img src="https://github.com/ElectricMountains.png" width="50px" alt="username" /></a>
 
-To add more contributors, simply add their GitHub usernames to the above format.
 
 ## Building and Deployment
 
@@ -50,12 +53,6 @@ To build the application for production:
 
 ```bash
 npm run build
-# or
-yarn build
-# or
-pnpm build
-# or
-bun build
 ```
 
 ## Learn More
