@@ -28,6 +28,9 @@ const RegionLayer = ({ regionalDataParams, links }: RegionLayerProps) => {
       return [r, g, b, 2.5 * d.properties[paramKey]];
     },
     getLineWidth: 100,
+    updateTriggers: {
+      getFillColor: [generatorKey,paramKey,regionalDataParams,links],
+    }
     getRadius: 100,
     lineWidthScale: 20,
   });
