@@ -90,7 +90,7 @@ const NetworkNav = ({
             />
 
             <div className="flex items-center justify-between space-x-2 flex-wrap">
-              <p>toggle network view</p>
+              <p>Regional view</p>
               <Switch
                 id="theme"
                 checked={networkView}
