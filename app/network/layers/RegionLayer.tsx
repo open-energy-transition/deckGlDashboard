@@ -29,8 +29,8 @@ const RegionLayer = ({ regionalDataParams, links }: RegionLayerProps) => {
     },
     getLineWidth: 100,
     updateTriggers: {
-      getFillColor: [generatorKey,paramKey,regionalDataParams,links],
-    }
+      getFillColor: [generatorKey,paramKey,regionalDataParams,links]
+    },
     getRadius: 100,
     lineWidthScale: 20,
   });
