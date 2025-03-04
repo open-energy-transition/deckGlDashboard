@@ -15,8 +15,11 @@ export default function Page() {
       <HeroSection />
       <ExplainGlobeSection />
       <ExplainNetworkSection />
-      <ConceptsSection />
-      <CommunitySection />
+      {/* <ConceptsSection /> */}
+      <IntroOETSection />
+      <GithubSection />
+      <CreditsSection />
+      {/* <CommunitySection /> */}
     </div>
   );
 }

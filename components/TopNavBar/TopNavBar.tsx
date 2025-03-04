@@ -58,9 +58,9 @@ export function NavigationMenuDemo() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
-          <Link href="/learnmore">
+          <Link href="/Scenarios">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Learn more
+              Scenarios
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
