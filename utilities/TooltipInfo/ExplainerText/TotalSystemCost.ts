@@ -21,10 +21,10 @@ export const TotalSystemCost_info: TotalSystemCost_info_type = {
   full_name: "Total System Cost",
   definition:
     "The Total System Cost represents the complete economic cost of building and operating the entire electricity system, including generation, transmission, and distribution infrastructure.",
-  unit: "Billions (€)",
+  unit: "Billion € (euros)",
   source:
     "Calculated from capital, operating, and maintenance costs of all system components",
   values: "Aggregated system-wide costs",
   comparison:
-    "total system soat how its distributed and the additional investements required.",
+    "Distribution of total system costs across different horizons and the required investments.",
 };
