@@ -95,7 +95,7 @@ const NetworkNav = ({
               setIsParentOpen={setOpen}
             />
 
-            <div className="flex items-center justify-between space-x-2 flex-wrap">
+{/*             <div className="flex items-center justify-between space-x-2 flex-wrap">
               <p>Regional view</p>
               <Switch
                 id="theme"
@@ -145,7 +145,7 @@ const NetworkNav = ({
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
               <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">
