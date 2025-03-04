@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/chart";
 
 import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
 
 interface Props {
   data: any;
@@ -84,13 +86,18 @@ export function GenerationMixGeneral({ data }: Props) {
     <>
       <Card className="w-full md:w-[26rem]">
         <CardHeader>
-          <CardTitle>Generation Mix</CardTitle>
-          <CardDescription>PyPSA Generation by Technology</CardDescription>
+          <CardTitle className="text-xl">
+            Generation Mix{" "}
+            <ChartInfoTooltip
+              tooltipInfo={Generation_info}
+              className="w-4 h-4"
+            />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ChartContainer
             config={GenerationMixchartConfigSmall}
-            className="h-[26rem] w-full md:aspect-square"
+            className="h-[26rem] md:h-[24rem] w-full md:aspect-square"
           >
             <PieChart>
               <ChartTooltip
