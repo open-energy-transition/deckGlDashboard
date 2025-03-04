@@ -118,8 +118,8 @@ const CapacityComparisionDrawer = ({
           </DrawerHeader>
           {/* left 2021 */}
           <div className="flex flex-wrap justify-center items-start w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 lg:h-fit gap-6">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center self-start">
-              Current Capacity (2021)
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center self-start">
+              Current (2021)
             </h2>
             <CarrierCapacityGeneralPie
               data={optimalCapacityState2021}
@@ -129,7 +129,7 @@ const CapacityComparisionDrawer = ({
           </div>
           {/* right 2050 */}
           <div className="flex flex-wrap gap-6 justify-center items-start w-[100%] lg:w-[50%] p-8 border-t-2 border-l-2  mt-4 ">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
             <CarrierCapacityGeneralPie

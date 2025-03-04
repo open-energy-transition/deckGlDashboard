@@ -37,22 +37,43 @@ const ChartInfoTooltip = ({
       >
         <InfoCircledIcon className={`${className || ""}`} />
       </HoverCardTrigger>
-      <HoverCardContent className="w-96 bg-background">
-        <div className="space-y-2 text-sm">
-          <p className="text-base">{tooltipInfo?.definition}</p>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p>Unit</p>
-              <p>{tooltipInfo?.unit}</p>
-            </div>
-            <div>
-              <p>Source</p>
-              <p>{tooltipInfo?.source}</p>
-            </div>
-          </div>
+      <HoverCardContent className="w-96 p-4 space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">
+            {tooltipInfo?.full_name}
+          </h3>
+          <p className="text-sm text-muted-foreground font-thin">
+            {tooltipInfo?.definition}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <p>Values</p>
-            <p>{tooltipInfo?.values}</p>
+            <h4 className="text-sm font-medium">{`Unit`}</h4>
+            <p className="text-sm text-muted-foreground font-thin">
+              {tooltipInfo?.unit}
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium">{`Source`}</h4>
+            <p className="text-sm text-muted-foreground font-thin">
+              {tooltipInfo?.source}
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium">{`Values`}</h4>
+            <p className="text-sm text-muted-foreground font-thin">
+              {tooltipInfo?.values}
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium">{`Comparison`}</h4>
+            <p className="text-sm text-muted-foreground">
+              {tooltipInfo?.comparison}
+            </p>
           </div>
         </div>
       </HoverCardContent>

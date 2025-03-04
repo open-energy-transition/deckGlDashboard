@@ -116,8 +116,8 @@ const SystemCostDrawer = ({
             </div>
           </DrawerHeader>
           <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
-              Current System Costs (2021)
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
+              Current (2021)
             </h2>
             <CarrierCostGeneral
               heading="Total System Costs"
@@ -126,7 +126,7 @@ const SystemCostDrawer = ({
             />
           </div>
           <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
             <CarrierCostGeneral
