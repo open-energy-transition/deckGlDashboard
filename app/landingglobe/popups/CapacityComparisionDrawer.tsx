@@ -16,6 +16,9 @@ import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
 import useSWR from "swr";
 import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
 import { CarrierCapacityGeneralPie } from "@/components/Charts/CapacityGlobeChart";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
+import { CircleFlag } from "react-circle-flags";
 
 type Props = {
   selectedCountry: string;
@@ -89,35 +92,39 @@ const CapacityComparisionDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          Capacity Expansion for {selectedCountry}
+          {Installed_capacity_info.full_name}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center align-middle mt-3">
-          <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">
-              Capacity Expansion Analysis
-            </DrawerTitle>
-            <DrawerDescription className="text-base">
-              Comparing installed capacity and expansion requirements between
-              current state and net-zero target for {selectedCountry}
-            </DrawerDescription>
+          <DrawerHeader className="w-full flex gap-2 align-middle">
+            <CircleFlag
+              countryCode={selectedCountry.toLowerCase()}
+              height={30}
+              className="aspect-square h-20 mr-2"
+            />
+            <div>
+              <DrawerTitle className="text-4xl">
+                {Installed_capacity_info.full_name} Comparision
+                <ChartInfoTooltip
+                  tooltipInfo={Installed_capacity_info}
+                  className="w-6 h-6 ml-2"
+                />
+              </DrawerTitle>
+              <DrawerDescription className="text-base">
+                {Installed_capacity_info.comparison} {selectedCountry}
+              </DrawerDescription>
+            </div>
           </DrawerHeader>
           {/* left 2021 */}
           <div className="flex flex-wrap justify-center items-start w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 lg:h-fit gap-6">
             <h2 className="w-full text-4xl font-semibold text-card-foreground text-center self-start">
               Current Capacity (2021)
             </h2>
-            <p className="text-muted-foreground text-center w-full self-start">
-              Distribution of currently installed power generation capacity by
-              technology
-            </p>
             <CarrierCapacityGeneralPie
               data={optimalCapacityState2021}
               costField="optimal_capacity"
-              heading="Total Installed Capacity"
-              description="Distribution of currently installed power generation capacity by
-              technology"
+              heading={Installed_capacity_info.full_name}
             />
           </div>
           {/* right 2050 */}
@@ -125,21 +132,15 @@ const CapacityComparisionDrawer = ({
             <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
-            <p className="text-muted-foreground text-center w-full">
-              Required capacity distribution and expansion to achieve carbon
-              neutrality
-            </p>
             <CarrierCapacityGeneralPie
               data={optimalCapacityState2050}
               costField="optimal_capacity"
-              heading="Total Installed Capacity"
-              description="Distribution of total installed power generation capacity"
+              heading={Installed_capacity_info.full_name}
             />
             <CarrierCapacityGeneralPie
               data={capacityExpansionState2050}
               costField="capacity_expansion"
               heading="Required Capacity Expansion"
-              description="Distribution of power generation capacity expansion requirements by technology"
             />
           </div>
           <DrawerFooter className="w-full border-t">

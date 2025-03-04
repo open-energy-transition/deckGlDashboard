@@ -25,5 +25,5 @@ export const Installed_capacity_info: Installed_capacity_info_type = {
   source: "Power plant capacity data by technology type",
   values: "maximum potential power output",
   comparison:
-    "Changes in installed capacity between scenarios, showing differences in potential power generation capability across different technologies.",
+    "Changes in installed capacity between now and 2050 and what capacity expansions are needed to meet future net-zero demand.",
 };

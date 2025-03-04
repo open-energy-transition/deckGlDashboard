@@ -15,6 +15,9 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
 import useSWR from "swr";
 import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
+import { TotalSystemCost_info } from "@/utilities/TooltipInfo/ExplainerText/TotalSystemCost";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { CircleFlag } from "react-circle-flags";
 
 type Props = {
   selectedCountry: string;
@@ -88,53 +91,53 @@ const SystemCostDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          Investment Costs for {selectedCountry}
+          {TotalSystemCost_info.full_name}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
-          <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">
-              Investment Costs Analysis
-            </DrawerTitle>
-            <DrawerDescription className="text-base">
-              Comparing total system costs and required investments for net-zero
-              transition in {selectedCountry}
-            </DrawerDescription>
+          <DrawerHeader className="w-full flex gap-2 align-middle">
+            <CircleFlag
+              countryCode={selectedCountry.toLowerCase()}
+              height={30}
+              className="aspect-square h-20 mr-2"
+            />
+            <div>
+              <DrawerTitle className="text-4xl">
+                {TotalSystemCost_info.full_name} comparison
+                <ChartInfoTooltip
+                  tooltipInfo={TotalSystemCost_info}
+                  className="w-6 h-6 ml-2"
+                />
+              </DrawerTitle>
+              <DrawerDescription className="text-base">
+                {TotalSystemCost_info.comparison} {selectedCountry}
+              </DrawerDescription>
+            </div>
           </DrawerHeader>
           <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
             <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
               Current System Costs (2021)
             </h2>
-            <p className="text-muted-foreground text-center w-full">
-              Distribution of total system costs across technologies
-            </p>
             <CarrierCostGeneral
               heading="Total System Costs"
               data={totalCostsState2021}
               costField="total_costs"
-              description="Total system costs for 2021"
             />
           </div>
           <div className="flex flex-wrap gap-8 justify-center align-middle w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 mx-auto">
             <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
-            <p className="text-muted-foreground text-center w-full">
-              Projected costs and investments needed to achieve carbon
-              neutrality
-            </p>
             <CarrierCostGeneral
               heading="Total System Costs"
               data={totalCostsState2050}
               costField="total_costs"
-              description="Total system costs for 2050"
             />
             <CarrierCostGeneral
               heading="Required Investments"
               data={investmentsNeededState2050}
               costField="investment_needed"
-              description="Additional investments needed for net-zero transition"
             />
           </div>
           <DrawerFooter className="w-full border-t">

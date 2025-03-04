@@ -26,5 +26,5 @@ export const TotalSystemCost_info: TotalSystemCost_info_type = {
     "Calculated from capital, operating, and maintenance costs of all system components",
   values: "Aggregated system-wide costs",
   comparison:
-    "Comparison of total costs between different scenarios, highlighting cost implications of various system configurations and policy choices.",
+    "total system soat how its distributed and the additional investements required.",
 };
