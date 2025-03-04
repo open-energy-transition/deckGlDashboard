@@ -12,13 +12,11 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { GenerationMixPieChart } from "@/components/Charts/GenerationMixPieChart";
-import { InstalledCapacityPieChart } from "@/components/Charts/InstalledCapacityPieChart";
 import useSWR from "swr";
-import { useTheme } from "next-themes";
-import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
-import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
 import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { CircleFlag } from "react-circle-flags";
 
 type Props = {
   selectedCountry: string;
@@ -77,38 +75,40 @@ const GenerationMixBottomDrawer = ({
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="w-full" onClick={() => setOpen(!open)}>
-          Generation Mix for {selectedCountry}
+          {Generation_info.full_name}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center mt-3">
-          <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">
-              Generation Mix Analysis
-            </DrawerTitle>
-            <DrawerDescription className="text-base">
-              Comparing energy generation distribution between current state and
-              net-zero target for {selectedCountry}
-            </DrawerDescription>
+          <DrawerHeader className="w-full flex items-center gap-2">
+            <CircleFlag
+              countryCode={selectedCountry.toLowerCase()}
+              height={30}
+              className="aspect-square h-20 mr-2"
+            />
+            <div>
+              <DrawerTitle className="text-4xl">
+                {Generation_info.full_name} Comparision{" "}
+                <ChartInfoTooltip
+                  tooltipInfo={Generation_info}
+                  className="w-6 h-6"
+                />
+              </DrawerTitle>
+              <DrawerDescription className="text-base">
+                {Generation_info.comparison} {selectedCountry}
+              </DrawerDescription>
+            </div>
           </DrawerHeader>
           <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
-              Current Generation (2021)
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
+              Current (2021)
             </h2>
-            <p className="text-muted-foreground text-center mb-6">
-              Distribution of energy generation by technology type in{" "}
-              {selectedCountry}'s current energy mix
-            </p>
             <GenerationMixGeneral data={generationComparisonState2021} />
           </div>
           <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
-            <h2 className="w-full text-4xl font-semibold text-card-foreground text-center">
+            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
-            <p className="text-muted-foreground text-center mb-6">
-              Projected energy generation distribution to achieve carbon
-              neutrality
-            </p>
             <GenerationMixGeneral data={generationComparisonState2050} />
           </div>
           <DrawerFooter className="w-full border-t">

@@ -23,6 +23,7 @@ import { Co2EmmisionsPie } from "@/components/Charts/Co2EmmisionsPie";
 import GenerationMixBottomDrawer from "./GenerationmixDrawer";
 import SystemCostDrawer from "./SystemCostDrawer";
 import CapacityComparisionDrawer from "./CapacityComparisionDrawer";
+import { CircleFlag } from "react-circle-flags";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -154,37 +155,30 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
             setIsParentOpen={setIsOpen}
           />
 
-          <Card className="p-6 space-y-6">
-            <h3 className="text-2xl font-semibold">CO2 Emissions (2021)</h3>
+          <Card className="p-6 space-y-4">
+            <h3 className="text-2xl font-bold">
+              <CircleFlag
+                countryCode={selectedCountry.toLowerCase()}
+                height={30}
+                className="aspect-square h-6 inline mr-2 -translate-y-1"
+              />
+              CO2 Emissions (2021)
+            </h3>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <p className="text-3xl font-bold tracking-tight">
-                  {(co2Emissions
-                    ?.reduce(
-                      (acc, curr) => acc + (Number(curr.co2_emission) || 0),
-                      0
-                    ) / 1e6)
-                    .toLocaleString("en-US", {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
-                    })}
-                  <span className="text-lg font-normal ml-2">billion tCO2</span>
-                </p>
-              </div>
+            <p className="text-2xl font-semibold tracking-tight">
+              {(
+                co2Emissions?.reduce(
+                  (acc, curr) => acc + (Number(curr.co2_emission) || 0),
+                  0
+                ) / 1e6
+              ).toLocaleString("en-US", {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+              <span className="text-lg font-normal ml-2">billion tCO2</span>
+            </p>
 
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  Distribution by Carrier
-                </p>
-                <div className="pt-2">
-                  <Co2EmmisionsPie
-                    data={co2Emissions}
-                    costField="co2_emission"
-                  />
-                </div>
-              </div>
-            </div>
+            <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
           </Card>
           <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
             <Switch

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import MainPageNav from "./popups/LandingGlobeNav";
-import ElectricityPriceComponent from "./popups/ElectricityPriceComponent";
 
 const Globe = dynamic(() => import("./R3fGlobeScene"), {
   ssr: false,
