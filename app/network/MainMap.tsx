@@ -78,12 +78,13 @@ export default function MainMap({
     } else {
       setdeckLayers([
         CountryLayer({ links }),
-        RegionLayer({
-          regionGeneratorValue,
-          regionParamValue,
-          links,
-          selectedCountry,
-        }),
+        // RegionLayer({
+        //   regionGeneratorValue,
+        //   regionParamValue,
+        //   links,
+        //   selectedCountry,
+        // }),
+        LinesLayer({ zoomLevel, links, selectedCountry }),
       ]);
     }
   }, [
