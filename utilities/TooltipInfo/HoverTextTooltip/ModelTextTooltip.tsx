@@ -30,6 +30,7 @@ const ModelTextTooltip = ({
       <HoverCardTrigger
         asChild
         className={`cursor-pointer inline-block decoration-solid underline decoration-1`}
+        style={{ textDecoration: "underline" }}
       >
         <p>{DisplayText}</p>
       </HoverCardTrigger>
