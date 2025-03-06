@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/chart";
 import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
 import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
+import ModelTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/ModelTextTooltip";
+import { PyPSA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Pypsa";
 
 interface Props {
   data: React.MutableRefObject<any>;
@@ -128,7 +130,8 @@ export function InstalledCapacityPieChart({ data }: Props) {
             <ChartInfoTooltip tooltipInfo={Installed_capacity_info} />{" "}
           </CardTitle>
           <CardDescription>
-            PyPSA Installed Capacity by Technology
+            <ModelTextTooltip tooltipInfo={PyPSA_info} DisplayText="PyPSA" />{" "}
+            Installed Capacity by Technology
           </CardDescription>
         </CardHeader>
         <CardContent>

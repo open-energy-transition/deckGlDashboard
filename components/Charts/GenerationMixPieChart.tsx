@@ -103,11 +103,6 @@ export function GenerationMixPieChart({ data }: Props) {
             />
           </CardTitle>
           <CardDescription>
-            {/* PyPSA{" "}
-            <ModelInfoTooltip
-              tooltipInfo={PyPSA_info}
-              className="w-4 h-4 -translate-y-[2px]"
-            />{" "} */}
             <ModelTextTooltip tooltipInfo={PyPSA_info} DisplayText="PyPSA" />{" "}
             Generation by Technology
           </CardDescription>
