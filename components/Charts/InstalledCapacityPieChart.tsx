@@ -18,6 +18,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
 
 interface Props {
   data: React.MutableRefObject<any>;
@@ -121,7 +123,10 @@ export function InstalledCapacityPieChart({ data }: Props) {
     <>
       <Card className="w-[95%] px-4 sm:px-24 md:px-0 md:w-[47%] xl:w-[28%] 2xl:w-[25%]">
         <CardHeader>
-          <CardTitle>Installed Capacity Mix</CardTitle>
+          <CardTitle>
+            Installed Capacity Mix{" "}
+            <ChartInfoTooltip tooltipInfo={Installed_capacity_info} />{" "}
+          </CardTitle>
           <CardDescription>
             PyPSA Installed Capacity by Technology
           </CardDescription>

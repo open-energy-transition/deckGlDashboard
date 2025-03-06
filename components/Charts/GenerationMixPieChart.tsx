@@ -20,6 +20,11 @@ import {
 } from "@/components/ui/chart";
 
 import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import ModelInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ModelInfoTooltip";
+import { PyPSA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Pypsa";
+import ModelTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/ModelTextTooltip";
 
 interface Props {
   data: React.MutableRefObject<any>;
@@ -90,8 +95,22 @@ export function GenerationMixPieChart({ data }: Props) {
     <>
       <Card className="w-[95%] px-0 sm:px-24 md:px-0 md:w-[47%] xl:w-[28%] 2xl:w-[25%]">
         <CardHeader>
-          <CardTitle>Generation Mix</CardTitle>
-          <CardDescription>PyPSA Generation by Technology</CardDescription>
+          <CardTitle>
+            Generation Mix{" "}
+            <ChartInfoTooltip
+              tooltipInfo={Generation_info}
+              className="h-4 w-4 -translate-y-[1px]"
+            />
+          </CardTitle>
+          <CardDescription>
+            {/* PyPSA{" "}
+            <ModelInfoTooltip
+              tooltipInfo={PyPSA_info}
+              className="w-4 h-4 -translate-y-[2px]"
+            />{" "} */}
+            <ModelTextTooltip tooltipInfo={PyPSA_info} DisplayText="PyPSA" />{" "}
+            Generation by Technology
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer

@@ -19,6 +19,10 @@ import { useTheme } from "next-themes";
 import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
 import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
 import { ScrollBar } from "../../../components/ui/scroll-area";
+import HoverTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/HoverTextTooltip";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
 
 type Props = {
   selectedCountry: string;
@@ -84,9 +88,12 @@ const BottomDrawer = ({
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center gap-6 mt-3">
           <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">Network Statistics</DrawerTitle>
+            <DrawerTitle className="text-4xl">
+              {Installed_capacity_info.full_name} and{" "}
+              {Generation_info.full_name}
+            </DrawerTitle>
             <DrawerDescription className="">
-              View all country level charts
+              comparision across different models
             </DrawerDescription>
           </DrawerHeader>
           <GenerationMixPieChart data={generationComparisonRef} />
