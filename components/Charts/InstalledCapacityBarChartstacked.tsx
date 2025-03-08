@@ -18,6 +18,12 @@ import {
   ChartTooltipContent,
   ChartLegend,
 } from "@/components/ui/chart";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
+import ModelTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/ModelTextTooltip";
+import { Ember_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Ember";
+import { PyPSA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Pypsa";
+import { EIA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/EIA";
 
 interface Props {
   data: React.MutableRefObject<any>;
@@ -176,8 +182,15 @@ export function InstalledCapacityBarChartStacked({ data }: Props) {
     <>
       <Card className="w-[95%] md:w-[80%] xl:w-[68%] flex flex-col justify-between align-middle">
         <CardHeader>
-          <CardTitle>Installed Capacity Comparison</CardTitle>
-          <CardDescription>EMBER vs PyPSA vs EIA (GW)</CardDescription>
+          <CardTitle>
+            Installed Capacity Comparison
+            <ChartInfoTooltip tooltipInfo={Installed_capacity_info} />{" "}
+          </CardTitle>
+          <CardDescription>
+            <ModelTextTooltip tooltipInfo={Ember_info} DisplayText="EMBER" /> vs{" "}
+            <ModelTextTooltip tooltipInfo={PyPSA_info} DisplayText="PyPSA" /> vs{" "}
+            <ModelTextTooltip tooltipInfo={EIA_info} DisplayText="EIA" /> (GW)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer className="h-[42vh] w-full" config={chartConfig}>
