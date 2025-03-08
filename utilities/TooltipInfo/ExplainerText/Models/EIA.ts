@@ -10,5 +10,5 @@ export const EIA_info: EIA_info_type = {
   definition:
     "The U.S. Energy Information Administration (EIA) is a government agency that collects, analyzes, and disseminates independent and impartial energy information to promote sound policymaking, efficient markets, and public understanding of energy and its interaction with the economy and the environment.",
   githubLink: "",
-  Link: "https://ember-energy.org/",
+  Link: "https://www.eia.gov/",
 };
