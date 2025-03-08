@@ -1,23 +1,10 @@
 import { Card } from "@/components/ui/card";
-import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useMouse } from "@uidotdev/usehooks";
-import { useCountry } from "@/components/country-context";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { CircleFlag } from "react-circle-flags";
-import { GenerationMixGeneral } from "@/components/Charts/GenerationPie";
-import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
-import { Label, Pie, PieChart } from "recharts";
-import { GenerationMixglobe } from "./GenerationPie";
+import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
+import { InvestmentPie } from "./InvestementsPie";
 interface InvestmentData {
   carrier: string;
   investment_needed: number;
@@ -143,24 +130,23 @@ const ElectricityPriceComponent = ({
         delay: 0.08,
       });
     } else {
-      console.log(hoveredCountry);
-      if (window.innerWidth <= 768) {
-        gsap.to(contentRef.current, {
-          width: "12rem",
-          height: "16rem",
-          opacity: 1,
-          duration: 0.3,
-          delay: 0.08,
-        });
-      } else {
-        gsap.to(contentRef.current, {
-          width: "25rem",
-          height: "28rem",
-          opacity: 1,
-          duration: 0.3,
-          delay: 0.08,
-        });
-      }
+      // if (window.innerWidth <= 768) {
+      //   gsap.to(contentRef.current, {
+      //     width: "12rem",
+      //     height: "16rem",
+      //     opacity: 1,
+      //     duration: 0.3,
+      //     delay: 0.08,
+      //   });
+      // } else {
+      gsap.to(contentRef.current, {
+        width: "19rem",
+        height: "21rem",
+        opacity: 1,
+        duration: 0.3,
+        delay: 0.08,
+      });
+      // }
     }
   }, [hoveredCountry]);
 
@@ -171,7 +157,7 @@ const ElectricityPriceComponent = ({
   return (
     <>
       <Card
-        className={`fixed top-0 left-0  h-0 w-0 z-40  mx-auto text-accent-foreground bg-background text-center opacity-1 overflow-hidden border-border border-2 m-2`}
+        className={`fixed top-0 left-0  h-0 w-0 z-40  mx-auto text-accent-foreground bg-background text-center opacity-1 overflow-hidden border-border border-2 m-2 pointer-events-none`}
         ref={contentRef}
       >
         {!loading && (
@@ -181,7 +167,7 @@ const ElectricityPriceComponent = ({
               height={50}
               className="pt-2 w-full aspect-square col-span-11 h-28 mx-auto md:h-auto md:col-span-2 translate-x-3 translate-y-3"
             />
-            <div className="col-span-11 md:col-span-9 flex flex-col justify-center">
+            <div className="col-span-11 md:col-span-9 flex flex-col justify-center pt-3">
               <p className="text-muted-foreground w-full  h-[10%] flex justify-center items-center">
                 Investment Required
               </p>
@@ -192,7 +178,10 @@ const ElectricityPriceComponent = ({
               </p>
             </div>
             <div className="hidden md:block md:col-span-11 -mt-12">
-              <GenerationMixglobe data={data.generationMix} />
+              <InvestmentPie
+                data={data.investmentsNeeded}
+                costField="investment_needed"
+              />
             </div>
           </div>
         )}
