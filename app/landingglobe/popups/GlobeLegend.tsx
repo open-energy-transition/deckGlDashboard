@@ -2,7 +2,7 @@ import React from "react";
 
 const GlobeLegend = () => {
   return (
-    <div className="absolute border-border border bg-background top-4 right-2 hidden md:block w-[19rem] h-[10rem] p-2 rounded-lg">
+    <div className="absolute border-border border bg-background top-4 right-4 hidden md:block w-[19rem] h-[10rem] p-2 rounded-lg">
       Hover a country and see the investment needed in
       <ul className="list-none">
         <li>
