@@ -44,7 +44,7 @@ const ModelInfoTooltip = ({
         )}
 
         {tooltipInfo?.githubLink && (
-          <Link href={tooltipInfo.githubLink}>
+          <Link href={tooltipInfo.githubLink} target="_blank">
             <GithubIcon className="h-6 w-6" />
           </Link>
         )}
