@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useMouse } from "@uidotdev/usehooks";
 import gsap from "gsap";
 import { CircleFlag } from "react-circle-flags";
-import { CarrierCostGeneral } from "@/components/Charts/CarrierCostPie";
 import { InvestmentPie } from "./InvestementsPie";
 interface InvestmentData {
   carrier: string;
@@ -11,11 +10,8 @@ interface InvestmentData {
 }
 
 interface DrawerData {
-  electricityPrice2050: number;
   investmentsNeeded: InvestmentData[];
   totalInvestmentNeeded: number;
-  electricityPrice2021: number;
-  generationMix: any;
 }
 
 const ElectricityPriceComponent = ({
@@ -26,11 +22,8 @@ const ElectricityPriceComponent = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DrawerData>({
-    electricityPrice2050: 0,
     investmentsNeeded: [],
     totalInvestmentNeeded: 0,
-    electricityPrice2021: 0,
-    generationMix: [],
   });
 
   const [mouse, ref] = useMouse();
@@ -56,11 +49,8 @@ const ElectricityPriceComponent = ({
   const fetchData = useCallback(async () => {
     if (!hoveredCountry && hoveredCountry !== "null") {
       setData({
-        electricityPrice2050: 0,
         investmentsNeeded: [],
         totalInvestmentNeeded: 0,
-        electricityPrice2021: 0,
-        generationMix: [],
       });
       setLoading(false);
       return;
@@ -69,10 +59,7 @@ const ElectricityPriceComponent = ({
     setLoading(true);
     try {
       const responses = await Promise.all([
-        fetch(`/api/electricity_prices/${hoveredCountry}/2050`),
         fetch(`/api/investments_needed/${hoveredCountry}/2050`),
-        fetch(`/api/electricity_prices/${hoveredCountry}/2021`),
-        fetch(`/api/generation_mix/${hoveredCountry}/2050`),
       ]);
 
       const failedResponses = responses.filter((r) => !r.ok);
@@ -80,12 +67,9 @@ const ElectricityPriceComponent = ({
         throw new Error("One or more API calls failed");
       }
 
-      const [
-        electricityPricesData2050,
-        investmentsNeededData,
-        electricityPriceData2021,
-        generationMixData2050,
-      ] = await Promise.all(responses.map((r) => r.json()));
+      const [investmentsNeededData] = await Promise.all(
+        responses.map((r) => r.json())
+      );
 
       const investmentsNeeded = investmentsNeededData.data as InvestmentData[];
       const totalInvestmentNeeded = investmentsNeeded.reduce(
@@ -94,25 +78,15 @@ const ElectricityPriceComponent = ({
       );
 
       const processedData: DrawerData = {
-        electricityPrice2050:
-          parseFloat(electricityPricesData2050.data?.[0]?.electricity_price) ||
-          0,
         investmentsNeeded,
         totalInvestmentNeeded,
-        electricityPrice2021:
-          parseFloat(electricityPriceData2021.data?.[0]?.electricity_price) ||
-          0,
-        generationMix: generationMixData2050.data,
       };
 
       setData(processedData);
     } catch (error) {
       setData({
-        electricityPrice2050: 0,
         investmentsNeeded: [],
         totalInvestmentNeeded: 0,
-        electricityPrice2021: 0,
-        generationMix: [],
       });
     } finally {
       setLoading(false);
