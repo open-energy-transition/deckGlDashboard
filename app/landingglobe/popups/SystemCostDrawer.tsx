@@ -151,14 +151,22 @@ const SystemCostDrawer = ({
             <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
               Current (2021)
             </h2>
-            <p className="w-full text-2xl font-semibold text-card-foreground text-center">
-              Electricity Price{" "}
-              <ChartInfoTooltip
-                tooltipInfo={ElectricityPrice_info}
-                className="h-5 w-5"
-              />{" "}
-              - {electricityPriceState2021[0].electricity_price}
-            </p>
+            {electricityPriceState2021 &&
+            Array.isArray(electricityPriceState2021) &&
+            electricityPriceState2021.length > 0 ? (
+              <p className="w-full text-2xl font-semibold text-card-foreground text-center">
+                Electricity Price{" "}
+                <ChartInfoTooltip
+                  tooltipInfo={ElectricityPrice_info}
+                  className="h-5 w-5"
+                />{" "}
+                - {electricityPriceState2021[0]?.electricity_price ?? "N/A"}
+              </p>
+            ) : (
+              <p className="w-full text-2xl font-semibold text-card-foreground text-center">
+                Loading electricity price...
+              </p>
+            )}
             <CarrierCostGeneral
               heading="Total System Costs"
               data={totalCostsState2021}
@@ -169,14 +177,22 @@ const SystemCostDrawer = ({
             <h2 className="w-full text-3xl font-semibold text-card-foreground text-center">
               Net-Zero Target (2050)
             </h2>
-            <p className="w-full text-2xl font-semibold text-card-foreground text-center">
-              Electricity Price{" "}
-              <ChartInfoTooltip
-                tooltipInfo={ElectricityPrice_info}
-                className="h-5 w-5"
-              />{" "}
-              - {electricityPriceState2050[0].electricity_price}
-            </p>
+            {electricityPriceState2050 &&
+            Array.isArray(electricityPriceState2050) &&
+            electricityPriceState2050.length > 0 ? (
+              <p className="w-full text-2xl font-semibold text-card-foreground text-center">
+                Electricity Price{" "}
+                <ChartInfoTooltip
+                  tooltipInfo={ElectricityPrice_info}
+                  className="h-5 w-5"
+                />{" "}
+                - {electricityPriceState2050[0]?.electricity_price ?? "N/A"}
+              </p>
+            ) : (
+              <p className="w-full text-2xl font-semibold text-card-foreground text-center">
+                Loading electricity price...
+              </p>
+            )}
             <CarrierCostGeneral
               heading="Total System Costs"
               data={totalCostsState2050}
