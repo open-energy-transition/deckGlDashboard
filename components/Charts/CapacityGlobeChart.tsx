@@ -20,12 +20,13 @@ import {
 } from "@/components/ui/chart";
 
 import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
 
 interface Props {
   data: any;
   costField: string;
   heading?: string;
-  description?: string;
 }
 
 interface DataItem {
@@ -48,12 +49,7 @@ interface ChartItem {
   fill: string;
 }
 
-export function CarrierCapacityGeneralPie({
-  data,
-  costField,
-  heading,
-  description,
-}: Props) {
+export function CarrierCapacityGeneralPie({ data, costField, heading }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -92,17 +88,20 @@ export function CarrierCapacityGeneralPie({
 
   return (
     <>
-      <Card className="w-[26rem]">
+      <Card className="w-full md:w-[26rem]">
         <CardHeader>
-          <CardTitle>{heading || "default heading"}</CardTitle>
-          <CardDescription>
-            {description || "default description"}
-          </CardDescription>
+          <CardTitle className="text-xl">
+            {heading || "default heading"}{" "}
+            <ChartInfoTooltip
+              tooltipInfo={Installed_capacity_info}
+              className="w-4 h-4"
+            />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ChartContainer
             config={GenerationMixchartConfigSmall}
-            className="aspect-square"
+            className="h-[26rem] md:h-[24rem] w-full md:aspect-square"
           >
             <PieChart>
               <ChartTooltip

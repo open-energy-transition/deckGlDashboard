@@ -14,11 +14,16 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { GenerationMixPieChart } from "@/components/Charts/GenerationMixPieChart";
 import { InstalledCapacityPieChart } from "@/components/Charts/InstalledCapacityPieChart";
-import useSWR from 'swr';
+import useSWR from "swr";
 import { useTheme } from "next-themes";
 import { InstalledCapacityBarChartStacked } from "@/components/Charts/InstalledCapacityBarChartstacked";
 import { GenerationMixBarChartStacked } from "@/components/Charts/GenerationMixBarChartStacked";
-import { ScrollBar } from "./ui/scroll-area";
+import { ScrollBar } from "../../../components/ui/scroll-area";
+import HoverTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/HoverTextTooltip";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import { Installed_capacity_info } from "@/utilities/TooltipInfo/ExplainerText/InstalledCapacity";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { CircleFlag } from "react-circle-flags";
 
 type Props = {
   selectedCountry: string;
@@ -83,11 +88,21 @@ const BottomDrawer = ({
       </DrawerTrigger>
       <DrawerContent className="top-0">
         <ScrollArea className="w-full overflow-y-auto flex flex-wrap justify-center gap-6 mt-3">
-          <DrawerHeader className="w-full pb-2">
-            <DrawerTitle className="text-4xl">Network Statistics</DrawerTitle>
-            <DrawerDescription className="">
-              View all country level charts
-            </DrawerDescription>
+          <DrawerHeader className="w-full flex items-center gap-2">
+            <CircleFlag
+              countryCode={selectedCountry.toLowerCase()}
+              height={30}
+              className="aspect-square h-20 mr-2"
+            />
+            <div>
+              <DrawerTitle className="text-4xl">
+                {Installed_capacity_info.full_name} and{" "}
+                {Generation_info.full_name}
+              </DrawerTitle>
+              <DrawerDescription className="">
+                comparision across different models
+              </DrawerDescription>
+            </div>
           </DrawerHeader>
           <GenerationMixPieChart data={generationComparisonRef} />
           <GenerationMixBarChartStacked data={generationComparisonRef} />
@@ -95,7 +110,7 @@ const BottomDrawer = ({
           <InstalledCapacityPieChart data={capacityComparisonRef} />
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button>CLOSE</Button>
+              <Button className="w-[90%]">CLOSE</Button>
             </DrawerClose>
           </DrawerFooter>
           {/* <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300" /> */}

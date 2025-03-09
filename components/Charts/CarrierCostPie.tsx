@@ -20,12 +20,13 @@ import {
 } from "@/components/ui/chart";
 
 import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { TotalSystemCost_info } from "@/utilities/TooltipInfo/ExplainerText/TotalSystemCost";
 
 interface Props {
   data: any;
   costField: string;
   heading?: string;
-  description?: string;
 }
 
 interface DataItem {
@@ -48,12 +49,7 @@ interface ChartItem {
   fill: string;
 }
 
-export function CarrierCostGeneral({
-  data,
-  costField,
-  heading,
-  description,
-}: Props) {
+export function CarrierCostGeneral({ data, costField, heading }: Props) {
   const [chartData, setChartData] = useState<ChartDataType>([]);
   const [totalGeneration, setTotalGeneration] = useState<number>(0);
 
@@ -63,7 +59,7 @@ export function CarrierCostGeneral({
       const total = dataArray.reduce((acc: number, item: DataItem) => {
         return acc + (Number(item[costField as keyof DataItem]) || 0);
       }, 0);
-      
+
       setTotalGeneration(Number(total.toFixed(2)));
 
       const transformedData = dataArray
@@ -72,9 +68,11 @@ export function CarrierCostGeneral({
             item && item.carrier && item.carrier !== `Total ${costField}`
         )
         .map((item: DataItem) => {
-          const value = Number((Number(item[costField as keyof DataItem]) || 0).toFixed(2));
+          const value = Number(
+            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
+          );
           const percentage = total > 0 ? (value / total) * 100 : 0;
-          
+
           return {
             carrier: item.carrier,
             value: value,
@@ -92,17 +90,20 @@ export function CarrierCostGeneral({
 
   return (
     <>
-      <Card className="w-[26rem]">
+      <Card className="w-full md:w-[26rem]">
         <CardHeader>
-          <CardTitle>{heading || "System and Investment cost"}</CardTitle>
-          <CardDescription>
-            {description || "Cost distribution by technology"}
-          </CardDescription>
+          <CardTitle className="text-xl">
+            {heading || "System and Investment cost"}{" "}
+            <ChartInfoTooltip
+              tooltipInfo={TotalSystemCost_info}
+              className="h-4 w-4"
+            />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ChartContainer
             config={GenerationMixchartConfig}
-            className="aspect-square"
+            className="h-[28rem] md:h-[25rem] w-full md:aspect-square"
           >
             <PieChart>
               <ChartTooltip
@@ -133,7 +134,9 @@ export function CarrierCostGeneral({
                           </div>
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
-                            <span>{`${item.payload.percentage.toFixed(1)}%`}</span>
+                            <span>{`${item.payload.percentage.toFixed(
+                              1
+                            )}%`}</span>
                           </div>
                         </div>
                       </>
