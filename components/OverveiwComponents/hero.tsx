@@ -12,38 +12,36 @@ export const HeroSection = () => {
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto text-center text-5xl md:text-6xl lg:text-8xl font-bold">
+            <div className="mx-auto text-center text-white text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
-                Welcome! to
-                <span className="text-transparent px-2 bg-gradient-to-r from-[#E31937] to-primary bg-clip-text">
-                  PyPSA
-                </span>
-                Earth Explorer
+                {" "}
+                Energy Visualization for a
+                <span className="px-2 text-accent ">Carbon-Neutral</span>
+                Future
               </h1>
             </div>
-            <p className="max-w-screen-sm mx-auto text-xl text-muted-foreground">
-              Have you ever wondered what exactly could look like the energy
-              transition for your country? With the modern open source energy
-              planning tools, you can design it yourself.
+            <p className="max-w-screen mx-auto text-[1.25rem] text-muted-foreground font-mono">
+              Understand the impact of energy decisions with an interactive,
+              open-source model of global carbon emissions, energy use, and
+              pathways to 2050 in a first of a kind visualization.
             </p>
           </div>
 
-          <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
-            <Button className="w-5/6 md:w-1/4 font-bold group/arrow">
-              Get Started
-              <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+          <div className="space-y-4 md:space-y-0 md:space-x-4">
+            <Button
+              className="w-full md:w-1/4 text-secondary/100"
+              variant="outline"
+            >
+              see networks
             </Button>
 
-            <Button
-              asChild
-              variant="secondary"
-              className="w-5/6 md:w-1/4 font-bold"
-            >
+            <Button asChild variant="secondary" className="w-full md:w-1/4 ">
               <Link
                 href="https://github.com/open-energy-transition"
                 target="_blank"
               >
-                Github repository
+                explore net-zero
+                <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform hover:transform-45" />
               </Link>
             </Button>
           </div>
