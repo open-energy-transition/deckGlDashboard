@@ -13,40 +13,40 @@ interface DataProps {
 
 const DataList: DataProps[] = [
   {
-    icon: "BatteryMedium",
-    title: "Installed Capacity Comparison",
+    icon: "Zap",
+    title: "Compare Installed Capacity",
     description:
-      "Current vs. Future Energy Infrastructure, highlighting the expansion needed for renewables and grid scaling.",
+      "Current vs. Future Energy Infrastructure",
   },
   {
     icon: "HandCoins",
     title: "Investment Requirements",
     description:
-      "Capital needed to achieve net-zero, including financial estimates for infrastructure expansion and clean energy deployment.",
+      "The cost of getting to Net-Zero, with investment needs per resource type",
   },
   {
-    icon: "Factory",
+    icon: "ChartPie",
     title: "Energy Generation Mix",
     description:
-      "How energy is produced today vs. the future, highlighting financial implications for policymakers and investors.",
+      "Discover which resources will supply your electricity in 2050",
   },
   {
     icon: "Network",
     title: "Network Statistics & Model Comparisons",
     description:
-      "Compares PyPSA-generated energy data with external datasets (EMBER, EIA) to validate energy modeling approaches.",
+      "Validate PyPSA-generated energy data with external datasets (EMBER, EIA)",
   },
   {
-    icon: "MousePointerClick",
-    title: "CO₂ Emissions",
+    icon: "Leaf",
+    title: "CO₂ Emissions to Zero",
     description:
-      "Compares current emissions (2021) with net-zero targets for 2050, showcasing the impact of different energy policies.",
+      "Our scenarios constrain CO₂ emissions to zero, ensuring power will come from renewables",
   },
   {
-    icon: "Newspaper",
+    icon: "CircleDollarSign",
     title: "Total System Costs",
     description:
-      "The cost of transitioning to net-zero, including a breakdown of investment in power generation, storage, and grid expansion.",
+      "The cost to run the grid in 2050",
   },
 ];
 
