@@ -62,7 +62,7 @@ export const CommunitySection = () => {
       </div>
       <Button className="w-40 p-4 mx-2 dark:bg-secondary z-20 bg-ring" asChild>
         <Link
-          href="https://discord.com/"
+          href="https://discord.gg/zxt9QFeF"
           target="_blank"
           className="dark:text-card-foreground text-background"
         >

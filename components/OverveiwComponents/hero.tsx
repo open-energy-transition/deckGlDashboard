@@ -34,17 +34,14 @@ export const HeroSection = () => {
               className="w-full md:w-1/4 text-card-foreground dark:hover:bg-secondary hover:bg-ring"
               variant="outline"
             >
-              see networks
+              <Link href="/network">see networks</Link>
             </Button>
 
             <Button
               asChild
               className="w-full md:w-1/4 dark:bg-secondary bg-ring dark:text-card-foreground text-destructive-foreground hover:bg-popover-foreground dark:hover:bg-border "
             >
-              <Link
-                href="https://github.com/open-energy-transition"
-                target="_blank"
-              >
+              <Link href="/landingglobe">
                 explore net-zero
                 <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform hover:transform-45" />
               </Link>
