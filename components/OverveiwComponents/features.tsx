@@ -50,32 +50,31 @@ const featureList: FeaturesProps[] = [
 export const FeaturesSection = () => {
   return (
     <section id="features" className="container py-16 sm:py-20 lg:py-32">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 text-card-foreground">
-        What This Dashboard Offers
-      </h2>
-
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
-        
+      <h3 className="md:w-1/2 mx-auto text-center pb-2 text-muted-foreground mb-0">
+        accesible data
       </h3>
+      <h2 className="text-5xl md:text-6xl lg:text-6xl text-center font-bold mb-16 text-card-foreground">
+        Why Data Visualization matters
+      </h2>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {featureList.map(({ icon, title, description }) => (
           <div key={title}>
             <Card className="h-full bg-background border-0 shadow-none">
-              <CardHeader className="flex justify-center items-center">
-                <div className="bg-oet-red p-2 rounded-full ring-8 ring-ring/10 mb-4">
+              <CardHeader className="flex justify-center items-start">
+                <div className="bg-none p-2 rounded-full ring-8 ring-ring/10 mb-4">
                   <Icon
                     name={icon as keyof typeof icons}
-                    size={24}
-                    color="hsl(var(--oet-red))"
-                    className="text-oet-red"
+                    size={48}
+                    color="hsl(var(--secondary))"
+                    className="text-secondary"
                   />
                 </div>
 
                 <CardTitle className="lg:text-xl">{title}</CardTitle>
               </CardHeader>
 
-              <CardContent className="text-muted-foreground text-center">
+              <CardContent className="text-muted-foreground text-start">
                 {description}
               </CardContent>
             </Card>

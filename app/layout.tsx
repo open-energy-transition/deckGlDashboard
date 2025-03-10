@@ -47,7 +47,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${spaceGrotesk.variable} ${wixDisplay.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip font-sans`}
+        className={`${spaceGrotesk.variable} ${wixDisplay.variable} antialiased relative min-h-screen no-scrollbar max-w-screen overflow-x-clip font-wix-display`}
       >
         <TransitionProvider>
           <ThemeProvider

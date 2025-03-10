@@ -12,7 +12,7 @@ export const HeroSection = () => {
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto text-center text-white text-5xl md:text-6xl lg:text-8xl font-bold">
+            <div className="mx-auto text-center text-card-foreground text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
                 {" "}
                 Energy Visualization for a
@@ -29,13 +29,17 @@ export const HeroSection = () => {
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             <Button
-              className="w-full md:w-1/4 text-secondary/100"
+              className="w-full md:w-1/4 text-card-foreground"
               variant="outline"
             >
               see networks
             </Button>
 
-            <Button asChild variant="secondary" className="w-full md:w-1/4 ">
+            <Button
+              asChild
+              variant="secondary"
+              className="w-full md:w-1/4 text-card-foreground "
+            >
               <Link
                 href="https://github.com/open-energy-transition"
                 target="_blank"
