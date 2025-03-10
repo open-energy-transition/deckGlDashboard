@@ -57,7 +57,7 @@ export const CommunitySection = () => {
       ref={parentRef}
     >
       <DiscordIcon />
-      <div className="text-5xl md:text-6xl lg:text-8xl font-bold mb-8 z-20">
+      <div className="text-5xl md:text-6xl font-sans lg:text-8xl font-bold mb-8 z-20">
         Ready to help shape tomorrow?
       </div>
       <Button className="w-40 p-4 mx-2 dark:bg-secondary z-20 bg-ring" asChild>

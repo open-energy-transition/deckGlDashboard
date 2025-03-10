@@ -11,7 +11,7 @@ export const ReverseInfo = () => {
         </div>
         <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
           This output data visualisation model aids to showcase the predictions
-          of Pypsa-Earth’s Energy Model. Specifically pointing out the changes
+          of PyPSA-Earth Energy Model. Specifically pointing out the changes
           necessary in energy generation to achieve a net-zero target by 2050.
           This helps in the decision making of energy politics and ultimately
           contributes to a better future.
