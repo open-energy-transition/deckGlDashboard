@@ -12,7 +12,7 @@ export const HeroSection = () => {
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto text-center text-card-foreground text-5xl md:text-6xl lg:text-8xl font-bold">
+            <div className="mx-auto font-sans text-center text-card-foreground text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
                 {" "}
                 Energy Visualization for a

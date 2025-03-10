@@ -53,16 +53,16 @@ export const FeaturesSection = () => {
       <h3 className="md:w-1/2 mx-auto text-center pb-2  mb-0 text-secondary">
         accessible data
       </h3>
-      <h2 className="text-5xl md:text-6xl lg:text-6xl text-center font-bold mb-16 text-card-foreground">
+      <h2 className="text-5xl md:text-6xl lg:text-6xl text-center font-sans font-bold mb-16 text-card-foreground">
         Why Data Visualization matters
       </h2>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-4">
         {featureList.map(({ icon, title, description }) => (
           <div key={title}>
             <Card className="h-full bg-background border-0 shadow-none">
               <CardHeader className="flex justify-center items-start">
-                <div className="bg-none p-2 rounded-full ring-8 ring-ring/10 mb-4">
+                <div className="bg-none p-0 rounded-full ring-8 ring-ring/10 mb-4">
                   <Icon
                     name={icon as keyof typeof icons}
                     size={48}
@@ -71,7 +71,7 @@ export const FeaturesSection = () => {
                   />
                 </div>
 
-                <CardTitle className="lg:text-xl">{title}</CardTitle>
+                <CardTitle className="lg:text-xl font-sans">{title}</CardTitle>
               </CardHeader>
 
               <CardContent className="text-muted-foreground text-start">

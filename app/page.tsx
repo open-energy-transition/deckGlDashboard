@@ -4,6 +4,7 @@ import { CreditsSection } from "@/components/OverveiwComponents/credits";
 import { FeaturesSection } from "@/components/OverveiwComponents/features";
 import { ServicesSection } from "@/components/OverveiwComponents/services";
 import { HeroSection } from "@/components/OverveiwComponents/hero";
+import { DataSection } from "@/components/OverveiwComponents/dataSection";
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ export default function Page() {
       <HeroSection />
       <HeroGlobeScene />
       <InfoSection />
+      <DataSection />
       {/* <ServicesSection />
       <BenefitsSection /> */}
       <FeaturesSection />
