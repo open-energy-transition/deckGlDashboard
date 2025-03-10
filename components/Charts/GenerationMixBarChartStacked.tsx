@@ -26,6 +26,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
+import { Generation_info } from "@/utilities/TooltipInfo/ExplainerText/GenerationMix";
+import ModelTextTooltip from "@/utilities/TooltipInfo/HoverTextTooltip/ModelTextTooltip";
+import { PyPSA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Pypsa";
+import { Ember_info } from "@/utilities/TooltipInfo/ExplainerText/Models/Ember";
+import { EIA_info } from "@/utilities/TooltipInfo/ExplainerText/Models/EIA";
 
 interface Props {
   data: React.MutableRefObject<any>;
@@ -119,7 +125,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
   useEffect(() => {
     if (data?.current?.data) {
       let dataArray = Array.isArray(data.current.data) ? data.current.data : [];
-      
 
       dataArray = dataArray.filter(
         (item: any) =>
@@ -196,7 +201,6 @@ export function GenerationMixBarChartStacked({ data }: Props) {
       }
 
       setChartData(transformedData);
-      
     }
   }, [data?.current]);
   if (!data?.current?.data) {
@@ -225,8 +229,15 @@ export function GenerationMixBarChartStacked({ data }: Props) {
     <>
       <Card className="w-[95%] md:w-[80%] xl:w-[68%] flex flex-col justify-between align-middle">
         <CardHeader>
-          <CardTitle>Generation Mix Comparison</CardTitle>
-          <CardDescription>EMBER vs PyPSA vs EIA (TWh)</CardDescription>
+          <CardTitle>
+            Generation Mix Comparison{" "}
+            <ChartInfoTooltip tooltipInfo={Generation_info} />
+          </CardTitle>
+          <CardDescription>
+            <ModelTextTooltip tooltipInfo={Ember_info} DisplayText="EMBER" /> vs{" "}
+            <ModelTextTooltip tooltipInfo={PyPSA_info} DisplayText="PyPSA" /> vs{" "}
+            <ModelTextTooltip tooltipInfo={EIA_info} DisplayText="EIA" /> (TWh)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer className="h-[42vh] w-full" config={chartConfig}>
