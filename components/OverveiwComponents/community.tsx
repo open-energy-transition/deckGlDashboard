@@ -58,7 +58,7 @@ export const CommunitySection = () => {
     >
       <DiscordIcon />
       <div className="text-5xl md:text-6xl font-sans lg:text-8xl font-bold mb-8 z-20">
-        Ready to help shape tomorrow?
+        Want to run energy models?
       </div>
       <Button className="w-40 p-4 mx-2 dark:bg-secondary z-20 bg-ring" asChild>
         <Link
@@ -66,7 +66,7 @@ export const CommunitySection = () => {
           target="_blank"
           className="dark:text-card-foreground text-background"
         >
-          join discord
+          Join our Discord
         </Link>
       </Button>
       <div className="absolute top-0 left-0 w-full h-full bg-transparent z-10 animate-[spin_20s_linear_infinite]">
