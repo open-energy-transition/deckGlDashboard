@@ -5,6 +5,7 @@ import { FeaturesSection } from "@/components/OverveiwComponents/features";
 import { ServicesSection } from "@/components/OverveiwComponents/services";
 import { HeroSection } from "@/components/OverveiwComponents/hero";
 import { DataSection } from "@/components/OverveiwComponents/dataSection";
+
 import {
   Card,
   CardContent,
@@ -16,6 +17,7 @@ import {
 import ScrollButton from "@/components/OverveiwComponents/ScrollButton";
 import { InfoSection } from "@/components/OverveiwComponents/infoSection";
 import dynamic from "next/dynamic";
+import { ReverseInfo } from "@/components/OverveiwComponents/reverseInfo";
 
 const HeroGlobeScene = dynamic(
   () => import("@/components/OverveiwComponents/HeroGlobeScene"),
@@ -36,6 +38,7 @@ export default function Page() {
       <DataSection />
       {/* <ServicesSection />
       <BenefitsSection /> */}
+      <ReverseInfo />
       <FeaturesSection />
       <CommunitySection />
       <ScrollButton />

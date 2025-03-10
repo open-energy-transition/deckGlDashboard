@@ -50,7 +50,7 @@ const featureList: FeaturesProps[] = [
 export const FeaturesSection = () => {
   return (
     <section id="features" className="container py-16 sm:py-20 lg:py-32">
-      <h3 className="md:w-1/2 mx-auto text-center pb-2  mb-0 text-secondary">
+      <h3 className="md:w-1/2 mx-auto text-center pb-2  mb-0 dark:text-secondary text-destructive">
         accessible data
       </h3>
       <h2 className="text-5xl md:text-6xl lg:text-6xl text-center font-sans font-bold mb-16 text-card-foreground">
@@ -62,12 +62,11 @@ export const FeaturesSection = () => {
           <div key={title}>
             <Card className="h-full bg-background border-0 shadow-none">
               <CardHeader className="flex justify-center items-start">
-                <div className="bg-none p-0 rounded-full ring-8 ring-ring/10 mb-4">
+                <div className="bg-none p-0 rounded-full ring-ring/10 mb-4">
                   <Icon
                     name={icon as keyof typeof icons}
                     size={48}
-                    color="hsl(var(--secondary))"
-                    className="text-secondary"
+                    className="dark:text-secondary text-destructive"
                   />
                 </div>
 

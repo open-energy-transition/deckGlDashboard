@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
+import Image from "next/image";
+
+// import icchartImage from "../";
 
 interface DataProps {
   icon: string;
@@ -51,42 +54,37 @@ export const DataSection = () => {
   return (
     <section
       id="datasection"
-      className="container w-full py-16 sm:py-20 lg:py-48"
+      className="container w-full py-16 sm:py-20 lg:py-48 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows gap-4"
     >
-      <div className="flex flex-row flex-wrap sm:flex-nowrap gap-8 ">
-        <div className="w-1/2">hjsdgkjgsfdhsjfsljkfhklsf</div>
-        <div className="w-full sm:w-1/2">
-          <h3 className="pb-2 mb-0 text-secondary">insights</h3>
-          <h2 className="text-5xl md:text-6xl lg:text-6xl font-bold mb-16 text-card-foreground">
-            Featured Data
-          </h2>
+      <h3 className=" mb-0 text-secondary col-span-1 md:col-span-2 lg:col-span-4 row-span-1">
+        insights
+      </h3>
+      <h2 className="text-5xl md:text-6xl lg:text-6xl font-bold mb-16 text-card-foreground col-span-1 md:col-span-2 lg:col-span-4 row-span-1">
+        Featured Data
+      </h2>
 
-          {DataList.map(({ icon, title, description }) => (
-            <div key={title}>
-              <Card className="h-full bg-background border-0 shadow-none">
-                <CardHeader className="flex justify-start ">
-                  <div className="bg-none p-2 rounded-full ring-8 ring-ring/10 mb-4">
-                    <Icon
-                      name={icon as keyof typeof icons}
-                      size={48}
-                      color="hsl(var(--secondary))"
-                      className="text-secondary"
-                    />
-                  </div>
+      {DataList.map(({ icon, title, description }) => (
+        <div key={title} className="col-span-1">
+          <Card className="h-full bg-background border shadow-none">
+            <CardHeader className="flex justify-start ">
+              <div className="bg-none p-2 rounded-full  mb-4">
+                <Icon
+                  name={icon as keyof typeof icons}
+                  size={48}
+                  //   color="hsl(var(--secondary))"
+                  className="dark:text-secondary text-destructive"
+                />
+              </div>
 
-                  <CardTitle className="lg:text-xl font-sans">
-                    {title}
-                  </CardTitle>
-                </CardHeader>
+              <CardTitle className="lg:text-xl font-sans">{title}</CardTitle>
+            </CardHeader>
 
-                <CardContent className="text-muted-foreground text-start">
-                  {description}
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+            <CardContent className="text-muted-foreground text-start">
+              {description}
+            </CardContent>
+          </Card>
         </div>
-      </div>
+      ))}
     </section>
   );
 };

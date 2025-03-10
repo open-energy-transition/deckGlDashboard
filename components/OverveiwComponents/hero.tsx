@@ -12,15 +12,17 @@ export const HeroSection = () => {
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
-            <div className="mx-auto font-sans text-center text-card-foreground text-5xl md:text-6xl lg:text-8xl font-bold">
+            <div className="mx-auto font-sans text-center text-card-foreground  text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
                 {" "}
                 Energy Visualization for a
-                <span className="px-2 text-accent ">Carbon-Neutral</span>
+                <span className="px-2 dark:text-accent text-destructive ">
+                  Carbon-Neutral
+                </span>
                 Future
               </h1>
             </div>
-            <p className="max-w-screen mx-auto text-[1.25rem] text-muted-foreground font-mono">
+            <p className="max-w-screen mx-auto md:text-[1.25rem] text-[1rem] text-muted-foreground font-mono">
               Understand the impact of energy decisions with an interactive,
               open-source model of global carbon emissions, energy use, and
               pathways to 2050 in a first of a kind visualization.
@@ -29,7 +31,7 @@ export const HeroSection = () => {
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             <Button
-              className="w-full md:w-1/4 text-card-foreground"
+              className="w-full md:w-1/4 text-card-foreground dark:hover:bg-secondary hover:bg-ring"
               variant="outline"
             >
               see networks
@@ -37,7 +39,7 @@ export const HeroSection = () => {
 
             <Button
               asChild
-              className="w-full md:w-1/4 bg-secondary text-card-foreground "
+              className="w-full md:w-1/4 dark:bg-secondary bg-ring dark:text-card-foreground text-destructive-foreground hover:bg-popover-foreground dark:hover:bg-border "
             >
               <Link
                 href="https://github.com/open-energy-transition"

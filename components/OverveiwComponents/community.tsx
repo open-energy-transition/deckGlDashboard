@@ -53,18 +53,18 @@ export const CommunitySection = () => {
   return (
     <section
       id="community"
-      className="relative w-full h-screen justify-center items-center content-center flex flex-col gap-4 overflow-hidden"
+      className="relative w-full px-16 h-screen text-center justify-center items-center content-center flex flex-col gap-4 overflow-hidden"
       ref={parentRef}
     >
       <DiscordIcon />
       <div className="text-5xl md:text-6xl lg:text-8xl font-bold mb-8 z-20">
         Ready to help shape tomorrow?
       </div>
-      <Button className="w-40 p-4 mx-2 bg-secondary z-20" asChild>
+      <Button className="w-40 p-4 mx-2 dark:bg-secondary z-20 bg-ring" asChild>
         <Link
           href="https://discord.com/"
           target="_blank"
-          className="text-card-foreground"
+          className="dark:text-card-foreground text-background"
         >
           join discord
         </Link>
