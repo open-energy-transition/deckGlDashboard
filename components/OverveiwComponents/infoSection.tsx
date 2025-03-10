@@ -13,7 +13,8 @@ export const InfoSection = () => {
           We took our expertise in energy system modelling and calculated 2050 scenarios for various countries,
           while ensuring the constraint of zero CO₂ emissions is kept.
           All our work for this project is open-source and reproducable, a habit we've had for years.
-          Reach out if you're interested in our open-source model, enjoy our first-of-a-kind energy system visualizations.
+          Reach out if you're interested in our open-source model.
+          Enjoy our first-of-a-kind energy system visualizations.
         </div>
       </div>
     </section>
