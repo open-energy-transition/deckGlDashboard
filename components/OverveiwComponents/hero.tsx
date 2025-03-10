@@ -15,17 +15,16 @@ export const HeroSection = () => {
             <div className="mx-auto font-sans text-center text-card-foreground  text-5xl md:text-6xl lg:text-8xl font-bold">
               <h1>
                 {" "}
-                Energy Visualization for a
+                Net-Zero by
                 <span className="px-2 dark:text-accent text-destructive ">
-                  Carbon-Neutral
+                  2050
                 </span>
-                Future
+                {/* Future */}
               </h1>
             </div>
             <p className="max-w-screen mx-auto md:text-[1.25rem] text-[1rem] text-muted-foreground font-mono">
-              Understand the impact of energy decisions with an interactive,
-              open-source model of global carbon emissions, energy use, and
-              pathways to 2050 in a first of a kind visualization.
+              How much investment is needed to get to net zero by 2050? with an
+              open-source model and first of a kind visualizations.
             </p>
           </div>
 

@@ -10,12 +10,6 @@ interface FeaturesProps {
 
 const featureList: FeaturesProps[] = [
   {
-    icon: "TabletSmartphone",
-    title: "Accessible Anywhere",
-    description:
-      "Our platform is designed to be mobile-friendly, allowing you to explore energy models and scenarios on any device, anytime.",
-  },
-  {
     icon: "BadgeCheck",
     title: "Reliable Insights",
     description:
@@ -32,18 +26,6 @@ const featureList: FeaturesProps[] = [
     title: "Interactive Visuals",
     description:
       "Gain clarity with strong visualizations of power systems, including energy flows and infrastructure, to better understand complex data.",
-  },
-  {
-    icon: "MousePointerClick",
-    title: "Actionable Guidance",
-    description:
-      "Explore clear pathways and next steps for energy planning, with tools and insights to guide decision-making.",
-  },
-  {
-    icon: "Newspaper",
-    title: "Comprehensive Details",
-    description:
-      "Access detailed scenario definitions, assumptions, and technical documentation to fully understand power system dynamics.",
   },
 ];
 

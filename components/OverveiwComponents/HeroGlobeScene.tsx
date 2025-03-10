@@ -112,59 +112,69 @@ const HeroGlobeScene = () => {
 
   return (
     <>
-      <div
-        className={`relative  w-full h-[50vh] lg:h[60vh] transition-opacity duration-200 ease-in-out ${
-          !isLoading && globeReady ? "opacity-100" : "opacity-1"
-        }`}
+      <React.Suspense
+        fallback={
+          <div className="w-full h-[50vh] lg:h[60vh] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        }
       >
-        <Canvas
-          camera={{ position: [0, 0, 210] }}
-          className="w-full h-full"
-          gl={{ alpha: true, antialias: true }}
-          dpr={[1, 2]}
-        >
-          <OrbitControls
-            minDistance={101}
-            maxDistance={1e4}
-            dampingFactor={0.1}
-            rotateSpeed={0.3}
-            enableZoom={false}
-            enablePan={false}
-            autoRotate={true}
-            autoRotateSpeed={0.5}
-          />
-          {/* <color attach="background" args={[0, 0, 0]} /> */}
-          <ambientLight intensity={Math.PI} />
-          <directionalLight intensity={0.6 * Math.PI} />
-          <GlobeOnly
-            ref={globeRef}
-            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            globeImageUrl={
-              theme === "dark"
-                ? "//unpkg.com/three-globe/example/img/earth-dark.jpg"
-                : EarthLightUrl.src
-            }
-            polygonsData={data?.features || []}
-            polygonCapColor={getPolygonColor}
-            polygonSideColor={getPolygonSideColor}
-            polygonStrokeColor={getPolygonColor}
-            polygonAltitude={getPolygonAltitude}
-            polygonsTransitionDuration={300}
-            //   onClick={handleClick}
-            //   onHover={handleHover}
-            onGlobeReady={() => setGlobeReady(true)}
-          />
-          <Stars
-            radius={42}
-            depth={42}
-            count={600}
-            factor={2}
-            saturation={0}
-            fade
-            speed={1}
-          />
-        </Canvas>
-      </div>
+        <div className={`relative w-full h-[50vh] lg:h[60vh]`}>
+          <div
+            className={`w-full h-full transition-opacity duration-200 ease-in-out ${
+              !isLoading && globeReady ? "opacity-100" : "opacity-1"
+            }`}
+          >
+            <Canvas
+              camera={{ position: [0, 0, 210] }}
+              className="w-full h-full"
+              gl={{ alpha: true, antialias: true }}
+              dpr={[1, 2]}
+            >
+              <OrbitControls
+                minDistance={101}
+                maxDistance={1e4}
+                dampingFactor={0.1}
+                rotateSpeed={0.3}
+                enableZoom={false}
+                enablePan={false}
+                autoRotate={true}
+                autoRotateSpeed={0.5}
+              />
+              {/* <color attach="background" args={[0, 0, 0]} /> */}
+              <ambientLight intensity={Math.PI} />
+              <directionalLight intensity={0.6 * Math.PI} />
+              <GlobeOnly
+                ref={globeRef}
+                bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+                globeImageUrl={
+                  theme === "dark"
+                    ? "//unpkg.com/three-globe/example/img/earth-dark.jpg"
+                    : EarthLightUrl.src
+                }
+                polygonsData={data?.features || []}
+                polygonCapColor={getPolygonColor}
+                polygonSideColor={getPolygonSideColor}
+                polygonStrokeColor={getPolygonColor}
+                polygonAltitude={getPolygonAltitude}
+                polygonsTransitionDuration={300}
+                //   onClick={handleClick}
+                //   onHover={handleHover}
+                onGlobeReady={() => setGlobeReady(true)}
+              />
+              <Stars
+                radius={42}
+                depth={42}
+                count={600}
+                factor={2}
+                saturation={0}
+                fade
+                speed={1}
+              />
+            </Canvas>
+          </div>
+        </div>
+      </React.Suspense>
     </>
   );
 };
