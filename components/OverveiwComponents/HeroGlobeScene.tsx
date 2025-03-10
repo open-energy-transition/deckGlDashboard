@@ -113,12 +113,12 @@ const HeroGlobeScene = () => {
   return (
     <>
       <div
-        className={`relative  w-full h-[50vh] transition-opacity duration-200 ease-in-out ${
+        className={`relative  w-full h-[50vh] lg:h[60vh] transition-opacity duration-200 ease-in-out ${
           !isLoading && globeReady ? "opacity-100" : "opacity-1"
         }`}
       >
         <Canvas
-          camera={{ position: [0, 0, 200] }}
+          camera={{ position: [0, 0, 210] }}
           className="w-full h-full"
           gl={{ alpha: true, antialias: true }}
           dpr={[1, 2]}
@@ -154,15 +154,15 @@ const HeroGlobeScene = () => {
             //   onHover={handleHover}
             onGlobeReady={() => setGlobeReady(true)}
           />
-          {/* <Stars
-            radius={100}
-            depth={50}
-            count={5000}
-            factor={4}
+          <Stars
+            radius={42}
+            depth={42}
+            count={600}
+            factor={2}
             saturation={0}
             fade
             speed={1}
-          /> */}
+          />
         </Canvas>
       </div>
     </>
