@@ -13,30 +13,27 @@ const featureList: FeaturesProps[] = [
     icon: "BadgeCheck",
     title: "Reliable Insights",
     description:
-      "Built on validated data and reproducible results, ensuring accuracy and trust in energy planning and analysis.",
+      "Results you can reproduce and validate. You can drill down to the details on our assumptions and how we model the grid.",
   },
   {
     icon: "Goal",
     title: "Targeted Scenarios",
     description:
-      "Dive into tailored energy scenarios, from today’s grid operations to net-zero 2050 projections, for informed decision-making.",
+      "Support informed decision-making on established goals such as Net-Zero by 2050.",
   },
   {
     icon: "PictureInPicture",
     title: "Interactive Visuals",
     description:
-      "Gain clarity with strong visualizations of power systems, including energy flows and infrastructure, to better understand complex data.",
+      "Explore our data with enticing visualizations to gain a better understanding of the complex data of energy flows and infrastructure.",
   },
 ];
 
 export const FeaturesSection = () => {
   return (
     <section id="features" className="container py-16 sm:py-20 lg:py-32">
-      <h3 className="md:w-1/2 mx-auto text-center pb-2  mb-0 dark:text-secondary text-destructive">
-        accessible data
-      </h3>
       <h2 className="text-5xl md:text-6xl lg:text-6xl text-center font-sans font-bold mb-16 text-card-foreground">
-        Why Data Visualization matters
+        Vision for this project
       </h2>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-4">

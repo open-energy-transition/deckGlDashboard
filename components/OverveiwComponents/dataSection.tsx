@@ -56,9 +56,6 @@ export const DataSection = () => {
       id="datasection"
       className="container w-full py-16 sm:py-20 lg:py-48 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows gap-4"
     >
-      <h3 className=" mb-0 col-span-1 md:col-span-2 lg:col-span-4 row-span-1 dark:text-secondary text-destructive">
-        
-      </h3>
       <h2 className="text-5xl md:text-6xl lg:text-6xl font-bold mb-16 text-card-foreground col-span-1 md:col-span-2 lg:col-span-4 row-span-1">
         Features
       </h2>
