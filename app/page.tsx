@@ -32,8 +32,8 @@ export default function Page() {
       <HeroSection />
       <HeroGlobeScene />
       <InfoSection />
-      <ServicesSection />
-      <BenefitsSection />
+      {/* <ServicesSection />
+      <BenefitsSection /> */}
       <FeaturesSection />
       <CommunitySection />
       <ScrollButton />

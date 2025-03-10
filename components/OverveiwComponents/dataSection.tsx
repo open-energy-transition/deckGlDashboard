@@ -57,7 +57,7 @@ export const FeaturesSection = () => {
         Why Data Visualization matters
       </h2>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="flex flex-col">
         {featureList.map(({ icon, title, description }) => (
           <div key={title}>
             <Card className="h-full bg-background border-0 shadow-none">

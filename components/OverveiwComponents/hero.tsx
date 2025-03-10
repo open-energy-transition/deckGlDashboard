@@ -8,7 +8,7 @@ export const HeroSection = () => {
   const { theme } = useTheme();
   return (
     <section className="container w-full">
-      <div className="grid place-items-center lg:max-w-screen-xl mt-24 sm:mt-14 md:mt-0 gap-8 mx-auto py-32 md:py-80">
+      <div className="grid place-items-center lg:max-w-screen-xl mt-24 sm:mt-14 md:mt-0 gap-8 mx-auto pb-12 pt-24 md:pt-48">
         <div className="text-center space-y-16">
           {/* Welcome Section */}
           <div className="space-y-6">
@@ -37,8 +37,7 @@ export const HeroSection = () => {
 
             <Button
               asChild
-              variant="secondary"
-              className="w-full md:w-1/4 text-card-foreground "
+              className="w-full md:w-1/4 bg-secondary text-card-foreground "
             >
               <Link
                 href="https://github.com/open-energy-transition"

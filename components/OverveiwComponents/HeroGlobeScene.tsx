@@ -113,12 +113,12 @@ const HeroGlobeScene = () => {
   return (
     <>
       <div
-        className={`absolute top-[55vh] left-0 w-full h-screen transition-opacity duration-200 ease-in-out ${
+        className={`relative  w-full h-[50vh] transition-opacity duration-200 ease-in-out ${
           !isLoading && globeReady ? "opacity-100" : "opacity-1"
         }`}
       >
         <Canvas
-          camera={{ position: [0, 0, 250] }}
+          camera={{ position: [0, 0, 200] }}
           className="w-full h-full"
           gl={{ alpha: true, antialias: true }}
           dpr={[1, 2]}

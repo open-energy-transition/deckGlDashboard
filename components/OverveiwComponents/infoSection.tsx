@@ -1,6 +1,6 @@
 export const InfoSection = () => {
   return (
-    <section className="container w-full">
+    <section className="container w-full pt-24">
       <div className="flex flex-row flex-wrap sm:flex-nowrap gap-[8rem] items-start border-t-[0.5px] border-foreground py-4  justify-between ">
         <div className=" font-bold max-w-[22rem] text-5xl md:text-6xl lg:text-6xl dark:text-secondary">
           {" "}
