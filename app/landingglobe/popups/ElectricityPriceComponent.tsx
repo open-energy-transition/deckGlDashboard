@@ -114,8 +114,8 @@ const ElectricityPriceComponent = ({
       //   });
       // } else {
       gsap.to(contentRef.current, {
-        width: "19rem",
-        height: "21rem",
+        width: "20rem",
+        height: "25rem",
         opacity: 1,
         duration: 0.3,
         delay: 0.08,
@@ -131,17 +131,17 @@ const ElectricityPriceComponent = ({
   return (
     <>
       <Card
-        className={`fixed top-0 left-0  h-0 w-0 z-40  mx-auto text-accent-foreground bg-background text-center opacity-1 overflow-hidden border-border border-2 m-2 pointer-events-none`}
+        className={`fixed top-0 left-0  h-0 w-0 z-40  mx-auto text-accent-foreground bg-background text-center opacity-1 overflow-hidden border-border border-2 m-2 pointer-events-none grid grid-cols-4 grid-rows-4 gap-2`}
         ref={contentRef}
       >
         {!loading && (
-          <div className="w-full h-full grid grid-cols-11">
+          <>
             <CircleFlag
               countryCode={hoveredCountry.toLowerCase()}
               height={50}
-              className="pt-2 w-full aspect-square col-span-11 h-28 mx-auto md:h-auto md:col-span-2 translate-x-3 translate-y-3"
+              className="pt-2 w-full aspect-square col-span-4 h-28 mx-auto md:h-auto md:col-span-1 row-span-1 translate-x-3 translate-y-3"
             />
-            <div className="col-span-11 md:col-span-9 flex flex-col justify-center pt-3">
+            <div className="col-span-4 md:col-span-3 row-span-1 flex flex-col justify-center pt-3">
               <p className="text-muted-foreground w-full  h-[10%] flex justify-center items-center">
                 Investment Required
               </p>
@@ -151,13 +151,13 @@ const ElectricityPriceComponent = ({
                 <span className="md:hidden">B</span>
               </p>
             </div>
-            <div className="hidden md:block md:col-span-11 -mt-12">
+            <div className="hidden md:block md:col-span-4 row-span-3 -translate-y-8">
               <InvestmentPie
                 data={data.investmentsNeeded}
                 costField="investment_needed"
               />
             </div>
-          </div>
+          </>
         )}
         {loading && <p>Loading...</p>}
       </Card>
