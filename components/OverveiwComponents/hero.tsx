@@ -23,8 +23,7 @@ export const HeroSection = () => {
               </h1>
             </div>
             <p className="max-w-screen mx-auto md:text-[1.25rem] text-[1rem] text-muted-foreground font-mono">
-              How much investment is needed to get to net zero by 2050? with an
-              open-source model and first of a kind visualizations.
+              We modelled the grid in 2050 with our open-source stack
             </p>
           </div>
 
@@ -33,7 +32,7 @@ export const HeroSection = () => {
               className="w-full md:w-1/4 text-card-foreground dark:hover:bg-secondary hover:bg-ring"
               variant="outline"
             >
-              <Link href="/network">see networks</Link>
+              <Link href="/network">Now</Link>
             </Button>
 
             <Button
@@ -41,7 +40,7 @@ export const HeroSection = () => {
               className="w-full md:w-1/4 dark:bg-secondary bg-ring dark:text-card-foreground text-destructive-foreground hover:bg-popover-foreground dark:hover:bg-border "
             >
               <Link href="/landingglobe">
-                explore net-zero
+                2050
                 <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform hover:transform-45" />
               </Link>
             </Button>

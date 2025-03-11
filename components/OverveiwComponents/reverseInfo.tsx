@@ -10,16 +10,9 @@ export const ReverseInfo = () => {
           </span>
         </div>
         <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
-          As an environmental think tank, OET conducts research, analysis, and
+          Open Energy Transition (OET) researches and
           develops open-source tools and methodologies to drive the global
-          energy transition towards 100% renewable energy. Simultaneously, as a
-          software company, OET focuses on the development, provision and
-          support of open-source software solutions that enhance energy
-          transition planning and decision-making processes. By combining the
-          roles of a think tank and a software company, OET brings together
-          unique expertise in environmental sustainability and software
-          development to facilitate the transition to a sustainable energy
-          future.
+          energy transition towards 100% renewable energy.
         </div>
       </div>
     </section>
