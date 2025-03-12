@@ -154,7 +154,7 @@ const NetworkNav = ({
                     <SelectLabel>Data</SelectLabel>
                     <SelectItem value="cf">Capacity Factor</SelectItem>
                     <SelectItem value="crt">Curtailment</SelectItem>
-                    {/* <SelectItem value="usdpt">Used Potential</SelectItem> */}
+                    <SelectItem value="usdpt">Used Potential</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

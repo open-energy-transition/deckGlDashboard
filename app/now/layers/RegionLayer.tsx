@@ -39,8 +39,14 @@ const RegionLayer = ({
   ): [number, number, number, number] => {
     if (!d.properties) return [0, 0, 0, 0];
 
-    const value = d.properties[regionParamValue];
+    let value = d.properties[regionParamValue];
     if (value === undefined || value === null) return [0, 0, 0, 0];
+
+    if (regionParamValue === "usdpt") {
+      value = value * 100;
+    }
+
+    console.log("value", value);
 
     const alpha = Math.floor((value / 99) * 255);
     return [
