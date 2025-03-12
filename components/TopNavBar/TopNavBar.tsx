@@ -64,7 +64,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
           <NavigationMenuLink
-            href="/network"
+            href="/now"
             className={navigationMenuTriggerStyle()}
           >
             Now
@@ -72,7 +72,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
           <NavigationMenuLink
-            href="/landingglobe"
+            href="/2050"
             className={navigationMenuTriggerStyle()}
           >
             2050
