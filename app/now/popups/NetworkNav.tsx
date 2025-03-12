@@ -153,8 +153,12 @@ const NetworkNav = ({
                   <SelectGroup>
                     <SelectLabel>Data</SelectLabel>
                     <SelectItem value="cf">Capacity Factor</SelectItem>
-                    <SelectItem value="crt">Curtailment</SelectItem>
-                    <SelectItem value="usdpt">Used Potential</SelectItem>
+                    <SelectItem value="crt" disabled>
+                      Curtailment
+                    </SelectItem>
+                    <SelectItem value="usdpt" disabled>
+                      Used Potential
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
