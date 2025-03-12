@@ -31,7 +31,7 @@ import {
   Stars,
 } from "@react-three/drei";
 import { Color, Vector3 } from "three";
-import GlobeOnly from "../../app/landingglobe/JustGlobe";
+import GlobeOnly from "../../app/2050/JustGlobe";
 
 // const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
 
