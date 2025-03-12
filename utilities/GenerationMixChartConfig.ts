@@ -165,10 +165,10 @@ export const GenerationMixchartConfigSmall = {
 
 
 export const regionalGeneratorTypes = {
-  csp: [232, 196, 104],
+  // csp: [232, 196, 104],
   ror: [76, 128, 230],
   biomass: [69, 161, 69],
-  load: [134, 57, 172],
+  // load: [134, 57, 172],
   CCGT: [231, 110, 80],
   solar: [255, 191, 0],
   "offwind-ac": [38, 157, 217],
@@ -176,7 +176,7 @@ export const regionalGeneratorTypes = {
   onwind: [90, 204, 242],
   geothermal: [217, 38, 98],
   "offwind-dc": [54, 140, 226],
-  oil: [195, 34, 34],
+  // oil: [195, 34, 34],
   coal: [51, 51, 51],
   nuclear: [40, 189, 189],
 };

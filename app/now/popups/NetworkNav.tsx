@@ -121,26 +121,10 @@ const NetworkNav = ({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Generator Types</SelectLabel>
-                    {Object.keys(regionalGeneratorTypes)
-                      .filter(type => {
-                        // Exclude csp and load always
-                        if (type === 'csp' || type === 'load') return false;
-                        
-                        // Filter by parameter type
-                        switch(regionParamValue) {
-                          case 'cf':
-                          case 'crt':
-                          case 'usdpt':
-                            // These metrics only make sense for variable renewables
-                            return ['onwind', 'offwind-ac', 'offwind-dc', 'solar', 'ror'].includes(type);
-                          default:
-                            return true;
-                        }
-                      })
-                      .map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
+                    {Object.keys(regionalGeneratorTypes).map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
@@ -149,13 +133,6 @@ const NetworkNav = ({
                 value={regionParamValue}
                 onValueChange={(e) => {
                   setRegionParamValue(e);
-                  const validGenerators = e === 'cf' || e === 'crt' || e === 'usdpt' 
-                    ? ['onwind', 'offwind-ac', 'offwind-dc', 'solar', 'ror']
-                    : Object.keys(regionalGeneratorTypes).filter(type => type !== 'csp' && type !== 'load');
-                  
-                  if (!validGenerators.includes(regionGeneratorValue)) {
-                    setRegionGeneratorValue(validGenerators[0] as keyof typeof regionalGeneratorTypes);
-                  }
                 }}
                 disabled={networkView}
               >
