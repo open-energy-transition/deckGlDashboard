@@ -42,11 +42,12 @@ const RegionLayer = ({
     const value = d.properties[regionParamValue];
     if (value === undefined || value === null) return [0, 0, 0, 0];
 
+    const alpha = Math.floor((value / 99) * 255);
     return [
       regionalGeneratorTypes[regionGeneratorValue][0],
       regionalGeneratorTypes[regionGeneratorValue][1],
       regionalGeneratorTypes[regionGeneratorValue][2],
-      value,
+      alpha,
     ];
   };
 
