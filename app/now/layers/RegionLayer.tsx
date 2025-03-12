@@ -33,6 +33,7 @@ const metricColorScales = {
   }
 } as const;
 
+
 const RegionLayer = ({
   regionGeneratorValue,
   regionParamValue,
@@ -118,6 +119,7 @@ const RegionLayer = ({
   return new GeoJsonLayer({
     id: `${selectedCountry}_${regionGeneratorValue}_${regionParamValue}_${timestamp}`,
     data: fullUrl.toString(),
+
     opacity: 1,
     stroked: true,
     filled: true,

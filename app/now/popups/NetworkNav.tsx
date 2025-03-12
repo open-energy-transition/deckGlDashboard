@@ -172,7 +172,6 @@ const NetworkNav = ({
                 </SelectContent>
               </Select>
             </div>
-
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
               <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">
