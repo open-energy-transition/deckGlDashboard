@@ -42,20 +42,14 @@ const MAP_STYLE_DARK =
 
 interface MainMapProps {
   networkView: boolean;
-  setNetworkView: React.Dispatch<React.SetStateAction<boolean>>;
   regionGeneratorValue: keyof typeof regionalGeneratorTypes;
-  setRegionGeneratorValue: React.Dispatch<React.SetStateAction<keyof typeof regionalGeneratorTypes>>;
   regionParamValue: string;
-  setRegionParamValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function MainMapComponent({
   networkView,
-  setNetworkView,
   regionGeneratorValue,
-  setRegionGeneratorValue,
   regionParamValue,
-  setRegionParamValue,
 }: MainMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const { theme: currentTheme } = useTheme();
@@ -66,15 +60,11 @@ function MainMapComponent({
   const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
   const [busBreaks, setBusBreaks] = useState<Array<{group: number, min: number, max: number}>>([]);
   const [isLoadingBuses, setIsLoadingBuses] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(4);
+  const [deckLayers, setdeckLayers] = useState<any[]>([]);
 
   const position = useRef({ x: 0, y: 0 });
-
-  const [initialViewState, setInitialViewState] =
-    useState<MapViewState>(INITIAL_VIEW_STATE);
-
-  const [zoomLevel, setZoomLevel] = useState(4);
-
-  const [deckLayers, setdeckLayers] = useState<any[]>([]);
+  const [initialViewState, setInitialViewState] = useState<MapViewState>(INITIAL_VIEW_STATE);
 
   useEffect(() => {
     setIsMounted(true);
