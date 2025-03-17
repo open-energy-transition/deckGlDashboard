@@ -94,8 +94,7 @@ const NetworkNav = ({
               isParentOpen={open}
               setIsParentOpen={setOpen}
             />
-
-{/*             <div className="flex items-center justify-between space-x-2 flex-wrap">
+            <div className="flex items-center justify-between space-x-2 flex-wrap">
               <p>Regional view</p>
               <Switch
                 id="theme"
@@ -131,7 +130,9 @@ const NetworkNav = ({
               </Select>
               <Select
                 value={regionParamValue}
-                onValueChange={(e) => setRegionParamValue(e)}
+                onValueChange={(e) => {
+                  setRegionParamValue(e);
+                }}
                 disabled={networkView}
               >
                 <SelectTrigger className="w-[50%]">
@@ -140,12 +141,17 @@ const NetworkNav = ({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Data</SelectLabel>
-                    <SelectItem value="cf">capacity factor</SelectItem>
-                    <SelectItem value="crt">curtailment</SelectItem>
+                    <SelectItem value="cf">Capacity Factor</SelectItem>
+                    <SelectItem value="crt" disabled>
+                      Curtailment
+                    </SelectItem>
+                    <SelectItem value="usdpt" disabled>
+                      Used Potential
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
               <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">

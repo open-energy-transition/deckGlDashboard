@@ -80,6 +80,7 @@ export default function MapLegend({
 
   const legendBusSizes = calculateLegendBusSizes();
 
+
   const lineCategories = [
     {
       label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.min))}`,
@@ -165,7 +166,6 @@ export default function MapLegend({
     },
   ];
 
-
   const renderTransmissionLines = () => {
     return (
       <div className="w-full">
@@ -186,7 +186,6 @@ export default function MapLegend({
       </div>
     );
   };
-
 
   const renderBuses = () => {
     return (

@@ -1,11 +1,20 @@
 "use client";
 import { GeoJsonLayer } from "deck.gl";
 import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+
 interface RegionLayerProps {
   regionGeneratorValue: keyof typeof regionalGeneratorTypes;
   regionParamValue: string;
   links: any;
   selectedCountry: string;
+}
+
+interface GeoJsonFeature {
+  properties: {
+    carrier: string;
+    [key: string]: any;
+  };
 }
 
 const RegionLayer = ({

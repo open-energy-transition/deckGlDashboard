@@ -168,7 +168,6 @@ function MainMapComponent({
   if (!isMounted) {
     return null;
   }
-
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
@@ -210,3 +209,4 @@ function MainMapComponent({
 export default dynamic(() => Promise.resolve(MainMapComponent), {
   ssr: false
 });
+
