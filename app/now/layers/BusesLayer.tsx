@@ -1,7 +1,7 @@
 "use client";
 import {
   COUNTRY_BUS_CONFIGS,
-  getGeoJsonData,e
+  getGeoJsonData,
   COUNTRY_BUS_RANGES,
 } from "@/utilities/CountryConfig/Link";
 import { GeoJsonLayer } from "deck.gl";
