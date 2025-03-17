@@ -4,7 +4,6 @@ import {
   getGeoJsonData,
   COUNTRY_BUS_RANGES,
 } from "@/utilities/CountryConfig/Link";
-import { GeoJsonLayer } from "deck.gl";
 import type { RenderPassParameters } from "@luma.gl/core";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
