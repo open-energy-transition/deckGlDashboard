@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import dynamic from 'next/dynamic';
 import { Map } from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
-import { Layer } from "@deck.gl/core";
 
 import type { MapViewState } from "@deck.gl/core";
 import { FlyToInterpolator } from "deck.gl";
@@ -21,6 +21,7 @@ import BusesLayer from "./layers/BusesLayer";
 import LinesLayer from "./layers/LinesLayer";
 import CountryLayer from "./layers/CountryLayer";
 import RegionLayer from "./layers/RegionLayer";
+import NetworkNav from "./popups/NetworkNav";
 import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 const INITIAL_VIEW_STATE: MapViewState = {
@@ -45,40 +46,77 @@ interface MainMapProps {
   regionParamValue: string;
 }
 
-export default function MainMap({
+function MainMapComponent({
   networkView,
   regionGeneratorValue,
   regionParamValue,
 }: MainMapProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const { theme: currentTheme } = useTheme();
   const DeckRef = useRef(null);
-  const { selectedCountry } = useCountry();
+  const { selectedCountry, setSelectedCountry } = useCountry();
 
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
+  const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
+  const [busBreaks, setBusBreaks] = useState<Array<{group: number, min: number, max: number}>>([]);
+  const [isLoadingBuses, setIsLoadingBuses] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(4);
+  const [deckLayers, setdeckLayers] = useState<any[]>([]);
+
   const position = useRef({ x: 0, y: 0 });
   const [initialViewState, setInitialViewState] = useState<MapViewState>(INITIAL_VIEW_STATE);
-  const [zoomLevel, setZoomLevel] = useState(4);
-  const [deckLayers, setdeckLayers] = useState<Layer<any>[]>([]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const loadBusCapacities = useCallback(async (country: string) => {
+    if (!country) return;
+    
+    setIsLoadingBuses(true);
+    try {
+      const response = await fetch(`/api/bustotal/${country}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch bus capacities');
+      }
+      const data = await response.json();
+      
+      const capacities: Record<string, number> = {};
+      data.data.forEach((row: any) => {
+        capacities[row.bus] = row.total_capacity;
+      });
+      
+      setBusCapacities(capacities);
+      setBusBreaks(data.meta.breaks);
+    } catch (error) {
+      console.error('Error loading bus capacities:', error);
+      setBusCapacities({});
+      setBusBreaks([]);
+    } finally {
+      setIsLoadingBuses(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      loadBusCapacities(selectedCountry);
+    }
+  }, [selectedCountry, loadBusCapacities]);
 
   useEffect(() => {
     const links = getGeoJsonData(selectedCountry);
-    
-    const layers: Layer<any>[] = [CountryLayer({ links })];
 
-    if (!networkView && regionGeneratorValue && regionParamValue) {
-      layers.push(
-        RegionLayer({
-          regionGeneratorValue,
-          regionParamValue,
-          links,
-          selectedCountry,
-        })
-      );
+    if (networkView) {
+      setdeckLayers([
+        CountryLayer({ links }),
+        LinesLayer({ zoomLevel, links, selectedCountry }),
+      ]);
+    } else {
+      setdeckLayers([
+        CountryLayer({ links }),
+        LinesLayer({ zoomLevel, links, selectedCountry }),
+      ]);
     }
-
-    layers.push(LinesLayer({ zoomLevel, links, selectedCountry }));
-
-    setdeckLayers(layers);
   }, [
     selectedCountry,
     zoomLevel,
@@ -110,18 +148,31 @@ export default function MainMap({
     });
   }, [selectedCountry]);
 
+  const layers = useMemo(() => {
+    if (!networkView) return [];
+
+    return [
+      ...deckLayers,
+      BusesLayer({
+        setHoverPointID,
+        position: position.current,
+        zoomLevel,
+        busCapacities,
+        isLoading: isLoadingBuses,
+        selectedCountry,
+        breaks: busBreaks,
+      }),
+    ];
+  }, [networkView, setHoverPointID, position, zoomLevel, busCapacities, isLoadingBuses, selectedCountry, deckLayers, busBreaks]);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
         <DeckGL
-          layers={[
-            ...deckLayers,
-            BusesLayer({
-              setHoverPointID,
-              position,
-              zoomLevel,
-            }),
-          ]}
+          layers={layers}
           initialViewState={initialViewState}
           controller={true}
           ref={DeckRef}
@@ -154,3 +205,8 @@ export default function MainMap({
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(MainMapComponent), {
+  ssr: false
+});
+

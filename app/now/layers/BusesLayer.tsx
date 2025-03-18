@@ -2,7 +2,9 @@
 import {
   COUNTRY_BUS_CONFIGS,
   getGeoJsonData,
+  COUNTRY_BUS_RANGES,
 } from "@/utilities/CountryConfig/Link";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import React, {
   Dispatch,
@@ -19,122 +21,163 @@ interface CustomRenderParameters extends RenderPassParameters {
 }
 
 interface BusesLayerProps {
-  setHoverPointID: Dispatch<SetStateAction<string | null>>;
-  position: React.MutableRefObject<{ x: number; y: number }>;
+  setHoverPointID: (id: string | null) => void;
+  position: { x: number; y: number };
   zoomLevel: number;
+  busCapacities: Record<string, number>;
+  isLoading: boolean;
+  selectedCountry?: string;
+  breaks?: Array<{
+    group: number;
+    min: number;
+    max: number;
+  }>;
 }
 
-const BusesLayer = ({
+interface BusFeature extends Feature<Geometry> {
+  properties: {
+    Bus: string;
+    capacity?: number;
+    [key: string]: any;
+  };
+}
+
+interface PickingInfo {
+  index: number;
+  picked: boolean;
+  object?: BusFeature;
+  layer: any;
+  x: number;
+  y: number;
+}
+
+const calculateBusRadius = (
+  feature: BusFeature,
+  busCapacities: Record<string, number>,
+  selectedCountry: string | undefined,
+  isLoading: boolean,
+  isHovered: boolean,
+  breaks?: Array<{group: number, min: number, max: number}>,
+  zoomLevel?: number
+): number => {
+  const busId = feature.properties.Bus;
+  const capacity = busCapacities[busId];
+
+  if (!selectedCountry || isLoading || !capacity || !breaks) {
+    return 10000 / (Math.pow(1.5, zoomLevel || 0));
+  }
+
+  const group = breaks.find(b => capacity >= b.min && capacity <= b.max);
+  const minSize = 100000;
+  const maxSize = 2000000;
+  const sizeStep = (maxSize - minSize) / (breaks.length - 1);
+  
+  let radius = minSize + (group ? (group.group - 1) * sizeStep : 0);
+  const scaleFactor = 1 / (Math.pow(1.5, zoomLevel || 0));
+  radius = radius * scaleFactor;
+
+  if (isHovered) {
+    radius *= 3;
+  }
+
+  return radius;
+};
+
+const getFillColor = (
+  feature: BusFeature,
+  busCapacities: Record<string, number>,
+  isLoading: boolean,
+  isHovered: boolean,
+  breaks?: Array<{group: number, min: number, max: number}>
+): [number, number, number, number] => {
+  const busId = feature.properties.Bus;
+  const capacity = busCapacities[busId];
+
+  if (isLoading || !capacity || !breaks) {
+    return isHovered ? [150, 180, 160, 180] : [124, 152, 133, 100];
+  }
+
+  const group = breaks.find(b => capacity >= b.min && capacity <= b.max);
+  const baseColor: [number, number, number] = [124, 152, 133];
+  const baseAlpha = 100;
+  const alphaStep = 30;
+  
+  const alpha = isHovered ? 255 : baseAlpha + (group ? (group.group - 1) * alphaStep : 0);
+  
+  return [...baseColor, alpha];
+};
+
+function createBusesLayer({
   setHoverPointID,
   position,
   zoomLevel,
-}: BusesLayerProps) => {
-  const { selectedCountry, setSelectedCountry } = useCountry();
-  const [busCapacities, setBusCapacities] = useState<Record<string, number>>(
-    {}
-  );
+  busCapacities,
+  isLoading,
+  selectedCountry,
+  breaks,
+}: BusesLayerProps) {
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  const loadBusCapacities = useCallback(async (country: string) => {
-    if (!country) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/bustotal/${country}`);
-      const data = await response.json();
-
-      if (!data.data || !Array.isArray(data.data)) {
-        throw new Error("Invalid API response format");
-      }
-
-      const capacities = data.data.reduce(
-        (acc: Record<string, number>, item: any) => {
-          if (item.bus && typeof item.total_capacity === "number") {
-            acc[item.bus] = item.total_capacity / 1000000;
-          }
-          return acc;
-        },
-        {}
-      );
-
-      setBusCapacities(capacities);
-    } catch (error) {
-      setBusCapacities({});
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const links = getGeoJsonData(selectedCountry);
-
-  const calculateBusRadius = (busId: string, zoom: number) => {
-    if (isLoading || !busCapacities[busId]) {
-      return COUNTRY_BUS_CONFIGS[selectedCountry].minRadius;
-    }
-
-    const capacity = busCapacities[busId];
-    const config = COUNTRY_BUS_CONFIGS[selectedCountry];
-    const { minRadius, maxRadius, zoomBase } = config;
-
-    const capacityValues = Object.values(busCapacities);
-    const minCapacity = Math.min(...capacityValues);
-    const maxCapacity = Math.max(...capacityValues);
-
-    const logBase = 2;
-    const logMin = Math.log(minCapacity + 1) / Math.log(logBase);
-    const logMax = Math.log(maxCapacity + 1) / Math.log(logBase);
-    const logCurrent = Math.log(capacity + 1) / Math.log(logBase);
-
-    const normalizedSize = (logCurrent - logMin) / (logMax - logMin);
-    const dispersedSize = Math.pow(normalizedSize, 0.4);
-
-    const baseRadius = minRadius + (maxRadius - minRadius) * dispersedSize;
-
-    const zoomFactor = Math.pow(zoomBase, zoom - 5);
-
-    const numBuses = capacityValues.length;
-    const densityFactor = Math.max(0.6, 1 - numBuses / 200);
-
-    return baseRadius * zoomFactor * densityFactor;
-  };
-
-  useEffect(() => {
-    loadBusCapacities(selectedCountry);
-  }, [selectedCountry]);
+  const links = getGeoJsonData(selectedCountry || "US");
+  const timestamp = Date.now() + Math.random();
 
   return new GeoJsonLayer({
-    id: `Buses${2}`,
+    id: `Buses_${selectedCountry}_${timestamp}`,
     data: links.buses,
     opacity: 1,
-    stroked: false,
+    stroked: true,
     filled: true,
     pointType: "circle",
     wireframe: true,
-    pointRadiusScale: 2.0,
-    getPointRadius: (d) => {
-      const baseRadius = calculateBusRadius(d.properties.Bus, zoomLevel);
-
-      return baseRadius;
-    },
-    onHover: (info) => {
-      position.current = { x: info.x || 0, y: info.y || 0 };
+    radiusUnits: 'meters',
+    pointRadiusScale: 1.0,
+    getPointRadius: ((d: BusFeature) => {
+      return calculateBusRadius(
+        d, 
+        busCapacities, 
+        selectedCountry, 
+        isLoading,
+        false,
+        breaks,
+        zoomLevel
+      );
+    }) as any,
+    getFillColor: ((d: BusFeature) => {
+      return getFillColor(
+        d, 
+        busCapacities, 
+        isLoading,
+        false,
+        breaks
+      );
+    }) as any,
+    getLineColor: [124, 152, 133, 255],
+    getLineWidth: 2,
+    lineWidthMinPixels: 1,
+    lineWidthScale: 1,
+    pickable: true,
+    autoHighlight: true,
+    highlightColor: [200, 200, 200, 100],
+    onHover: (info: PickingInfo) => {
+      position.x = info.x || 0;
+      position.y = info.y || 0;
       setHoverPointID(info.object ? info.object.properties.Bus : null);
     },
-    getLineColor: [124, 152, 133],
-    getFillColor: [124, 152, 133],
-    pickable: true,
     updateTriggers: {
-      getPointRadius: [zoomLevel, busCapacities, isLoading],
+      getPointRadius: [busCapacities, isLoading, selectedCountry, breaks, zoomLevel],
+      getFillColor: [busCapacities, isLoading, breaks],
     },
     transitions: {
-      getPointRadius: 200,
+      getPointRadius: 300,
+      getFillColor: 300,
     },
-    autoHighlight: true,
     parameters: {
       depthTest: false,
     } as CustomRenderParameters,
   });
-};
+}
 
-export default BusesLayer;
+export default createBusesLayer;
+

@@ -8,21 +8,24 @@ interface MapLegendProps {
   country: string;
   theme: string;
   type?: "lines" | "buses";
+  breaks?: Array<{
+    group: number;
+    min: number;
+    max: number;
+  }>;
 }
 
 const LINE_COLOR = [227, 26, 28];
 const BUS_COLOR = [124, 152, 133];
 
 const DEFAULT_RANGES = {
-  min: 500,
-  max: 20000,
-  bussize: 20,
+  min: 0,
+  max: 1000,
 };
 
 const DEFAULT_BUS_CONFIG = {
-  minRadius: 3000,
-  maxRadius: 10000,
-  zoomBase: 1.2,
+  minRadius: 3,
+  maxRadius: 20,
 };
 
 const formatPowerValue = (value: number): string => {
@@ -50,6 +53,7 @@ export default function MapLegend({
   country,
   theme,
   type = "lines",
+  breaks,
 }: MapLegendProps) {
   const validCountries = COUNTRY_S_NOM_RANGES
     ? Object.keys(COUNTRY_S_NOM_RANGES)
@@ -60,27 +64,22 @@ export default function MapLegend({
     ? COUNTRY_S_NOM_RANGES[country as keyof typeof COUNTRY_S_NOM_RANGES]
     : DEFAULT_RANGES;
 
-  const busConfig = isValidCountry
-    ? COUNTRY_BUS_CONFIGS[country as keyof typeof COUNTRY_BUS_CONFIGS]
-    : DEFAULT_BUS_CONFIG;
-
-  const calculateLegendBusSizes = (busConfig: typeof DEFAULT_BUS_CONFIG) => {
-    const scaleFactor = (16 / busConfig.maxRadius) * 1000;
+  const calculateLegendBusSizes = () => {
+    const minSize = 3;
+    const maxSize = 20;
+    const step = (maxSize - minSize) / 4;
 
     return {
-      LARGE: Math.max(6, Math.min(20, busConfig.maxRadius * scaleFactor)),
-      MEDIUM: Math.max(
-        4,
-        Math.min(
-          16,
-          ((busConfig.maxRadius + busConfig.minRadius) / 2) * scaleFactor
-        )
-      ),
-      SMALL: Math.max(3, Math.min(12, busConfig.minRadius * scaleFactor)),
+      LARGE: maxSize,
+      MEDIUM_LARGE: maxSize - step,
+      MEDIUM: maxSize - (step * 2),
+      MEDIUM_SMALL: maxSize - (step * 3),
+      SMALL: minSize,
     };
   };
 
-  const legendBusSizes = calculateLegendBusSizes(busConfig);
+  const legendBusSizes = calculateLegendBusSizes();
+
 
   const lineCategories = [
     {
@@ -113,31 +112,60 @@ export default function MapLegend({
     },
   ];
 
-  const busCategories = [
+  const busCategories = breaks ? [
     {
-      label: `> ${formatPowerValue(
-        roundToNiceNumber(countryRanges.max * 0.7)
-      )}`,
+      label: `> ${formatPowerValue(roundToNiceNumber(breaks[4].max))}`,
       size: legendBusSizes.LARGE,
       color: BUS_COLOR,
     },
     {
-      label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.max * 0.3)
-      )}-${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.7))}`,
+      label: `${formatPowerValue(roundToNiceNumber(breaks[3].min))} - ${formatPowerValue(roundToNiceNumber(breaks[3].max))}`,
+      size: legendBusSizes.MEDIUM_LARGE,
+      color: BUS_COLOR,
+    },
+    {
+      label: `${formatPowerValue(roundToNiceNumber(breaks[2].min))} - ${formatPowerValue(roundToNiceNumber(breaks[2].max))}`,
       size: legendBusSizes.MEDIUM,
       color: BUS_COLOR,
     },
     {
-      label: `< ${formatPowerValue(
-        roundToNiceNumber(countryRanges.max * 0.3)
-      )}`,
+      label: `${formatPowerValue(roundToNiceNumber(breaks[1].min))} - ${formatPowerValue(roundToNiceNumber(breaks[1].max))}`,
+      size: legendBusSizes.MEDIUM_SMALL,
+      color: BUS_COLOR,
+    },
+    {
+      label: `< ${formatPowerValue(roundToNiceNumber(breaks[0].min))}`,
+      size: legendBusSizes.SMALL,
+      color: BUS_COLOR,
+    },
+  ] : [
+    {
+      label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
+      size: legendBusSizes.LARGE,
+      color: BUS_COLOR,
+    },
+    {
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
+      size: legendBusSizes.MEDIUM_LARGE,
+      color: BUS_COLOR,
+    },
+    {
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))}`,
+      size: legendBusSizes.MEDIUM,
+      color: BUS_COLOR,
+    },
+    {
+      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))}`,
+      size: legendBusSizes.MEDIUM_SMALL,
+      color: BUS_COLOR,
+    },
+    {
+      label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))}`,
       size: legendBusSizes.SMALL,
       color: BUS_COLOR,
     },
   ];
 
-  // Renderizar solo las líneas de transmisión
   const renderTransmissionLines = () => {
     return (
       <div className="w-full">
@@ -159,7 +187,6 @@ export default function MapLegend({
     );
   };
 
-  // Renderizar solo los buses
   const renderBuses = () => {
     return (
       <div className="w-full">
@@ -180,11 +207,8 @@ export default function MapLegend({
     );
   };
 
-  // Renderizar según el tipo especificado
   if (type === "lines") return renderTransmissionLines();
   if (type === "buses") return renderBuses();
-
-  // Si no se especifica tipo, renderizar todo
   return (
     <div>
       {renderTransmissionLines()}

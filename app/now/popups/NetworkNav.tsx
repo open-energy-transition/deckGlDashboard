@@ -94,9 +94,8 @@ const NetworkNav = ({
               isParentOpen={open}
               setIsParentOpen={setOpen}
             />
-
             <div className="flex items-center justify-between space-x-2 flex-wrap">
-              <p>Generator Metrics View</p>
+              <p>Regional view</p>
               <Switch
                 id="theme"
                 checked={networkView}
@@ -123,17 +122,7 @@ const NetworkNav = ({
                     <SelectLabel>Generator Types</SelectLabel>
                     {Object.keys(regionalGeneratorTypes).map((type) => (
                       <SelectItem key={type} value={type}>
-                        <div>
-                          <div
-                            className="inline-block w-4 h-4 mr-2 rounded-sm translate-y-[4px]"
-                            style={{
-                              backgroundColor: `rgb(${regionalGeneratorTypes[
-                                type as keyof typeof regionalGeneratorTypes
-                              ].join(",")})`,
-                            }}
-                          ></div>
-                          {type}
-                        </div>
+                        {type}
                       </SelectItem>
                     ))}
                   </SelectGroup>

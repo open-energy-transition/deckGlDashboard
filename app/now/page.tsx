@@ -8,8 +8,8 @@ const Page = () => {
   const [networkView, setNetworkView] = React.useState<boolean>(true);
   const [regionGeneratorValue, setRegionGeneratorValue] =
     React.useState<keyof typeof regionalGeneratorTypes>("ror");
-
   const [regionParamValue, setRegionParamValue] = React.useState<string>("cf");
+
 
   return (
     <div>
