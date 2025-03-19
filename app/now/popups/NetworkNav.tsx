@@ -122,7 +122,17 @@ const NetworkNav = ({
                     <SelectLabel>Generator Types</SelectLabel>
                     {Object.keys(regionalGeneratorTypes).map((type) => (
                       <SelectItem key={type} value={type}>
-                        {type}
+                        <div>
+                          <div
+                            className="inline-block w-4 h-4 mr-2 rounded-sm translate-y-[4px]"
+                            style={{
+                              backgroundColor: `rgb(${regionalGeneratorTypes[
+                                type as keyof typeof regionalGeneratorTypes
+                              ].join(",")})`,
+                            }}
+                          ></div>
+                            {type}
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectGroup>
