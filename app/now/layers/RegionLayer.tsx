@@ -85,3 +85,5 @@ const RegionLayer = ({
     },
   });
 };
+
+export default RegionLayer;
