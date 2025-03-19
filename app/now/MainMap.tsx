@@ -114,6 +114,12 @@ function MainMapComponent({
     } else {
       setdeckLayers([
         CountryLayer({ links }),
+        RegionLayer({
+          regionGeneratorValue,
+          regionParamValue,
+          links,
+          selectedCountry,
+        }),
         LinesLayer({ zoomLevel, links, selectedCountry }),
       ]);
     }
