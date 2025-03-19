@@ -74,7 +74,8 @@ const RegionLayer = ({
     updateTriggers: {
       getFillColor: [
         regionGeneratorValue,
-@@ -37,8 +78,10 @@ const RegionLayer = ({
+        regionParamValue,
+        links,
         selectedCountry,
       ],
     },
