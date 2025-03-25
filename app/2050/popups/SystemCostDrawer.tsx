@@ -160,7 +160,8 @@ const SystemCostDrawer = ({
                   tooltipInfo={ElectricityPrice_info}
                   className="h-5 w-5"
                 />{" "}
-                - {electricityPriceState2021[0]?.electricity_price ?? "N/A"}{" "}€/MWh
+                - {electricityPriceState2021[0]?.electricity_price ?? "N/A"}{" "}
+                €/MWh
               </p>
             ) : (
               <p className="w-full text-2xl font-semibold text-card-foreground text-center">
@@ -186,7 +187,7 @@ const SystemCostDrawer = ({
                   tooltipInfo={ElectricityPrice_info}
                   className="h-5 w-5"
                 />{" "}
-                - {electricityPriceState2050[0]?.electricity_price ?? "N/A"}{" "}€/MWh
+                {electricityPriceState2050[0]?.electricity_price ?? "N/A"} €/MWh
               </p>
             ) : (
               <p className="w-full text-2xl font-semibold text-card-foreground text-center">
