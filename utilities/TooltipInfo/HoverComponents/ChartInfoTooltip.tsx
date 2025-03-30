@@ -15,13 +15,15 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { RequiredInvestment_info_type } from "../ExplainerText/RequiredInvestment";
 
 interface ChartInfoTooltipProps {
   tooltipInfo?:
     | Generation_info_type
     | Installed_capacity_info_type
     | NominalCapacity_info_type
-    | TotalSystemCost_info_type;
+    | TotalSystemCost_info_type
+    | RequiredInvestment_info_type;
   className?: string;
 }
 
