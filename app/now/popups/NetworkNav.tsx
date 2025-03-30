@@ -72,14 +72,21 @@ const NetworkNav = ({
           <ChevronRight className="h-4 w-4" />
         )}
       </Button>
-      <Sheet modal={false} open={true} onOpenChange={setOpen}>
+      <Sheet modal={false} open={true}>
         <SheetContent
           side="left"
           className={`w-96 h-screen flex flex-col overflow-y-auto no-scrollbar p-4 bg-background border-r z-50 ${
             open ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-200`}
         >
-          <SheetHeader>
+          <SheetHeader className="relative">
+            <SheetClose
+              className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
+              onClick={() => setOpen(false)}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
             <SheetTitle>Network Statistics</SheetTitle>
             <SheetDescription>
               select a country and view all country level charts
