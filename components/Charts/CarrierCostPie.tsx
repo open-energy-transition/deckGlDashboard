@@ -65,7 +65,10 @@ export function CarrierCostGeneral({ data, costField, heading }: Props) {
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== `Total ${costField}`
+            item &&
+            item.carrier &&
+            item.carrier !== `Total ${costField}` &&
+            Number(item[costField as keyof DataItem] || 0) > 0
         )
         .map((item: DataItem) => {
           const value = Number(
