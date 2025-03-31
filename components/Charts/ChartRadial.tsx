@@ -124,7 +124,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
 
     const totalValue = Object.values(groupedData).reduce(
       (sum, value) => sum + value,
-      0
+      0,
     );
 
     return Object.entries(groupedData)
@@ -147,14 +147,14 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
   const totalValue = useMemo(() => {
     return processedData.reduce(
       (sum: number, item: ProcessedDataItem) => sum + Number(item.value),
-      0
+      0,
     );
   }, [processedData]);
 
   const totalPercentage = useMemo(() => {
     return processedData.reduce(
       (sum: number, item: ProcessedDataItem) => sum + Number(item.percentage),
-      0
+      0,
     );
   }, [processedData]);
 
@@ -239,7 +239,7 @@ const ChartRadialLegendcontent = (props: any) => {
             className="h-3 w-3 rounded-sm"
             style={{ backgroundColor: entry.payload.fill }}
           />
-           <span className="text-xs">
+          <span className="text-xs">
             {entry.payload.carrier === "ror"
               ? "run of river"
               : entry.payload.carrier}{" "}
