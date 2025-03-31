@@ -145,7 +145,7 @@ export function validateCountry(country: string): boolean {
 
 // Optimized GeoJSON response formatter
 export function formatGeoJsonResponse(result: any, headers?: Headers) {
-  const response = (result.features) 
+  const response = (result.features)
     ? NextResponse.json(result)
     : result.rows?.[0]?.jsonb_build_object
       ? NextResponse.json(result.rows[0].jsonb_build_object)
@@ -215,4 +215,4 @@ export async function withDbClient<T>(callback: (client: any) => Promise<T>): Pr
   } finally {
     client.release();
   }
-} 
+}

@@ -70,7 +70,7 @@ const GlobeViz = () => {
   const [position, setPosition] = useState<Vector3>(new Vector3(60, 60, 60));
   const [globeReady, setGlobeReady] = useState(false);
 
-  const endpoints = useMemo(() => 
+  const endpoints = useMemo(() =>
     Object.keys(COUNTRY_COORDINATES).map(
       (country) => getGeoJsonData(country).countryView
     ), []
@@ -78,7 +78,7 @@ const GlobeViz = () => {
 
   const { data, error } = useSWR(endpoints, async (urls) => {
     const responses = await Promise.all(
-      urls.map((url) => 
+      urls.map((url) =>
         fetch(url)
           .then(res => {
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -101,7 +101,7 @@ const GlobeViz = () => {
   const getPolygonColor = useCallback(
     (d: any) => {
       if (!d?.id) return "#7C9885";
-      
+
       const countryCode = d.properties?.country_code?.toUpperCase();
       if (!countryCode) return "#7C9885";
 
@@ -136,7 +136,7 @@ const GlobeViz = () => {
     (d: any) => {
       const countryCode = d.properties?.country_code?.toUpperCase();
       let baseColor = "#7C9885";
-      
+
       if (selectedCountry === countryCode) {
         baseColor = "#E41E3C";
       } else if (hoveredCountry === countryCode) {

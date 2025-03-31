@@ -4,4 +4,4 @@ interface DepthTestParameters {
   depthTest: boolean;
 }
 
-export interface DeckGLParameters extends _RenderParameters, DepthTestParameters {} 
+export interface DeckGLParameters extends _RenderParameters, DepthTestParameters {}

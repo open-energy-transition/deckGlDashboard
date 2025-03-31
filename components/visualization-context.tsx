@@ -35,4 +35,4 @@ export function useVisualization() {
     throw new Error("useVisualization must be used within a VisualizationProvider");
   }
   return context;
-} 
+}

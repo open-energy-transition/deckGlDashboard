@@ -30,4 +30,4 @@ export function useNetworkView() {
     throw new Error("useNetworkView must be used within a NetworkViewProvider");
   }
   return context;
-} 
+}

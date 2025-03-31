@@ -29,4 +29,4 @@ export async function GET(
   } catch (error) {
     return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
-} 
+}
