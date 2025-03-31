@@ -86,7 +86,7 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
         ) : (
           <>
             <h2 className="text-xl font-bold text-card-foreground">
-              Nominal Capacity for hovered bus {hoveredBus}
+              Nominal Capacity
             </h2>
             <ChartRadial
               data={generatorData}
