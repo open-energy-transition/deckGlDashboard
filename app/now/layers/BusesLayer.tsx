@@ -71,7 +71,7 @@ const calculateBusRadius = (
   const minSize = 100000;
   const maxSize = 2000000;
   const sizeStep = (maxSize - minSize) / (breaks.length - 1);
-  
+
   let radius = minSize + (group ? (group.group - 1) * sizeStep : 0);
   const scaleFactor = 1 / (Math.pow(1.5, zoomLevel || 0));
   radius = radius * scaleFactor;
@@ -101,9 +101,9 @@ const getFillColor = (
   const baseColor: [number, number, number] = [124, 152, 133];
   const baseAlpha = 100;
   const alphaStep = 30;
-  
+
   const alpha = isHovered ? 255 : baseAlpha + (group ? (group.group - 1) * alphaStep : 0);
-  
+
   return [...baseColor, alpha];
 };
 
@@ -135,9 +135,9 @@ function createBusesLayer({
     pointRadiusScale: 1.0,
     getPointRadius: ((d: BusFeature) => {
       return calculateBusRadius(
-        d, 
-        busCapacities, 
-        selectedCountry, 
+        d,
+        busCapacities,
+        selectedCountry,
         isLoading,
         false,
         breaks,
@@ -146,8 +146,8 @@ function createBusesLayer({
     }) as any,
     getFillColor: ((d: BusFeature) => {
       return getFillColor(
-        d, 
-        busCapacities, 
+        d,
+        busCapacities,
         isLoading,
         false,
         breaks
@@ -180,4 +180,3 @@ function createBusesLayer({
 }
 
 export default createBusesLayer;
-

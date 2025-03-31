@@ -13,12 +13,12 @@ export async function GET() {
   const client = await pool.connect();
   try {
     const query = `
-      SELECT table_name 
-      FROM information_schema.tables 
+      SELECT table_name
+      FROM information_schema.tables
       WHERE table_schema = 'public'
       AND (
-        table_name LIKE 'buses_%' OR 
-        table_name LIKE 'lines_%' OR 
+        table_name LIKE 'buses_%' OR
+        table_name LIKE 'lines_%' OR
         table_name LIKE '%_country_view' OR
         table_name LIKE 'regions_%'
       )
@@ -26,7 +26,7 @@ export async function GET() {
     `;
 
     const result = await client.query(query);
-    
+
     return NextResponse.json({
       tables: result.rows.map(row => row.table_name)
     });
@@ -39,4 +39,4 @@ export async function GET() {
   } finally {
     client.release();
   }
-} 
+}

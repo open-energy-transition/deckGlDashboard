@@ -13,24 +13,24 @@ export async function GET(
   try {
     const { country } = params;
     const url = new URL(request.url);
-    
+
     const page = parseInt(url.searchParams.get('page') || '1');
     const pageSize = parseInt(url.searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE));
     const offset = (page - 1) * pageSize;
 
     const simplification = parseFloat(url.searchParams.get('simplification') || String(GEOMETRY_SIMPLIFICATION));
-    
+
     if (!validateCountry(country)) {
       return createErrorResponse('Invalid country code', 400);
     }
 
     return await withDbClient(async (client) => {
       const materializedViewName = `lines_${country}_materialized`;
-      
+
       const viewCheck = await client.query(`
         SELECT EXISTS (
-          SELECT FROM pg_matviews 
-          WHERE schemaname = 'public' 
+          SELECT FROM pg_matviews
+          WHERE schemaname = 'public'
           AND matviewname = $1
         );
       `, [materializedViewName]);
@@ -38,7 +38,7 @@ export async function GET(
       const tableName = viewCheck.rows[0].exists ? materializedViewName : `lines_${country}`;
 
       const countQuery = `
-        SELECT COUNT(*) 
+        SELECT COUNT(*)
         FROM ${tableName}
         WHERE geometry IS NOT NULL;
       `;
@@ -48,7 +48,7 @@ export async function GET(
 
       const query = `
         WITH base_data AS (
-          SELECT 
+          SELECT
             "Line",
             bus0,
             bus1,
@@ -95,16 +95,16 @@ export async function GET(
           FROM base_data
         ) features;
       `;
-      
+
       const result = await client.query(query, [simplification, pageSize, offset]);
 
       const headers = new Headers();
       headers.set('Cache-Control', 'public, s-maxage=3600');
-      
+
       return formatGeoJsonResponse(result, headers);
     });
   } catch (error) {
     console.error('Lines API Error:', error);
     return createErrorResponse('Internal Server Error', 500);
   }
-} 
+}

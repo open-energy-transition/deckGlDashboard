@@ -29,6 +29,9 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
+import NetworkElementInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/NetworkElementsInfoTootip";
+import { Bus_info } from "@/utilities/TooltipInfo/ExplainerText/NetworkElements/Bus_text";
+import { Line_info } from "@/utilities/TooltipInfo/ExplainerText/NetworkElements/Line_Text";
 
 interface NetworkNavProps {
   networkView: boolean;
@@ -165,6 +168,10 @@ const NetworkNav = ({
                 <div className="flex flex-col items-start p-2">
                   <div className="text-sm font-medium mb-1">
                     Transmission Lines
+                    <NetworkElementInfoTooltip
+                      tooltipInfo={Line_info}
+                      className="h-4 w-4 ml-1 -translate-y-[2px]"
+                    />
                   </div>
                   <MapLegend
                     country={selectedCountry}
@@ -173,7 +180,13 @@ const NetworkNav = ({
                   />
                 </div>
                 <div className="flex flex-col items-start border-l border-border p-2">
-                  <div className="text-sm font-medium mb-1">Buses</div>
+                  <div className="text-sm font-medium mb-1">
+                    Buses
+                    <NetworkElementInfoTooltip
+                      tooltipInfo={Bus_info}
+                      className="h-4 w-4 ml-1 -translate-y-[2px]"
+                    />
+                  </div>
                   <MapLegend
                     country={selectedCountry}
                     theme={theme || "light"}

@@ -15,4 +15,4 @@ export interface SideDrawerProps {
     busId: string;
     countryCode: string;
   } | null;
-} 
+}

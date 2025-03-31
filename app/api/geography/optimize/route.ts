@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         try {
           const busesTable = `buses_${country}`;
           const busesMaterializedView = `${busesTable}_materialized`;
-          
+
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${busesMaterializedView} AS
             SELECT ${LAYER_CONFIGS.buses.columns.join(', ')}
@@ -39,8 +39,8 @@ export async function POST(request: Request) {
           results.push(`Created materialized view ${busesMaterializedView}`);
 
           await client.query(`
-            CREATE INDEX IF NOT EXISTS idx_${busesMaterializedView}_geometry 
-            ON ${busesMaterializedView} 
+            CREATE INDEX IF NOT EXISTS idx_${busesMaterializedView}_geometry
+            ON ${busesMaterializedView}
             USING GIST (geometry);
           `);
           results.push(`Created spatial index on ${busesMaterializedView}`);
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         try {
           const linesTable = `lines_${country}`;
           const linesMaterializedView = `${linesTable}_materialized`;
-          
+
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${linesMaterializedView} AS
             SELECT ${LAYER_CONFIGS.lines.columns.join(', ')}
@@ -61,8 +61,8 @@ export async function POST(request: Request) {
           results.push(`Created materialized view ${linesMaterializedView}`);
 
           await client.query(`
-            CREATE INDEX IF NOT EXISTS idx_${linesMaterializedView}_geometry 
-            ON ${linesMaterializedView} 
+            CREATE INDEX IF NOT EXISTS idx_${linesMaterializedView}_geometry
+            ON ${linesMaterializedView}
             USING GIST (geometry);
           `);
           results.push(`Created spatial index on ${linesMaterializedView}`);
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
         try {
           const countryViewTable = `${country}_country_view`;
           const countryViewMaterializedView = `${countryViewTable}_materialized`;
-          
+
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${countryViewMaterializedView} AS
             SELECT ${LAYER_CONFIGS.countryView.columns.join(', ')}
@@ -83,8 +83,8 @@ export async function POST(request: Request) {
           results.push(`Created materialized view ${countryViewMaterializedView}`);
 
           await client.query(`
-            CREATE INDEX IF NOT EXISTS idx_${countryViewMaterializedView}_geometry 
-            ON ${countryViewMaterializedView} 
+            CREATE INDEX IF NOT EXISTS idx_${countryViewMaterializedView}_geometry
+            ON ${countryViewMaterializedView}
             USING GIST (geometry);
           `);
           results.push(`Created spatial index on ${countryViewMaterializedView}`);
@@ -100,8 +100,8 @@ export async function POST(request: Request) {
 
             const viewCheck = await client.query(`
               SELECT EXISTS (
-                SELECT FROM information_schema.views 
-                WHERE table_schema = 'public' 
+                SELECT FROM information_schema.views
+                WHERE table_schema = 'public'
                 AND table_name = $1
               );
             `, [viewName]);
@@ -120,8 +120,8 @@ export async function POST(request: Request) {
             results.push(`Created materialized view ${materializedViewName}`);
 
             await client.query(`
-              CREATE INDEX IF NOT EXISTS idx_${materializedViewName}_geometry 
-              ON ${materializedViewName} 
+              CREATE INDEX IF NOT EXISTS idx_${materializedViewName}_geometry
+              ON ${materializedViewName}
               USING GIST (geometry);
             `);
             results.push(`Created spatial index on ${materializedViewName}`);
@@ -131,9 +131,9 @@ export async function POST(request: Request) {
         }
       }
 
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Optimization completed',
-        details: results 
+        details: results
       });
     });
   } catch (error) {
@@ -187,9 +187,9 @@ export async function PUT(request: Request) {
         }
       }
 
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Refresh completed',
-        details: results 
+        details: results
       });
     });
   } catch (error) {
@@ -199,4 +199,4 @@ export async function PUT(request: Request) {
       500
     );
   }
-} 
+}

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { 
-  validateCountry, 
+import {
+  validateCountry,
   withDbClient,
-  formatGeoJsonResponse, 
-  createErrorResponse 
+  formatGeoJsonResponse,
+  createErrorResponse
 } from '../../config';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +19,7 @@ export async function GET(
     const country = params.country.toLowerCase();
     const url = new URL(request.url);
     const year = url.searchParams.get('year') || '2021';
-    
+
     const page = parseInt(url.searchParams.get('page') || '1');
     const pageSize = parseInt(url.searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE));
     const offset = (page - 1) * pageSize;
@@ -41,8 +41,8 @@ export async function GET(
       const viewCheck = await client.query(
         `
         SELECT EXISTS (
-          SELECT FROM information_schema.views 
-          WHERE table_schema = 'public' 
+          SELECT FROM information_schema.views
+          WHERE table_schema = 'public'
           AND table_name = $1
         );
         `,
@@ -61,8 +61,8 @@ export async function GET(
       const metricsCheck = await client.query(
         `
         SELECT EXISTS (
-          SELECT FROM information_schema.tables 
-          WHERE table_schema = 'public' 
+          SELECT FROM information_schema.tables
+          WHERE table_schema = 'public'
           AND table_name = $1
         );
         `,
@@ -77,7 +77,7 @@ export async function GET(
       }
 
       const countQuery = `
-        SELECT COUNT(*) 
+        SELECT COUNT(*)
         FROM ${viewName} r
         WHERE r.geometry IS NOT NULL
       `;
@@ -87,7 +87,7 @@ export async function GET(
 
       const query = `
         WITH base_data AS (
-          SELECT 
+          SELECT
             r.id,
             r.name,
             r.country_code,
@@ -98,7 +98,7 @@ export async function GET(
             '${year}' as horizon,
             1 as scenario_id,
             ST_SimplifyPreserveTopology(r.geometry, $1) as geometry,
-            CASE 
+            CASE
               WHEN gm.carrier IS NULL THEN true
               ELSE false
             END as is_empty_data
@@ -180,4 +180,4 @@ export async function GET(
       500
     );
   }
-} 
+}

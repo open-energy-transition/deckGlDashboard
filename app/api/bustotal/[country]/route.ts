@@ -19,7 +19,7 @@ export async function GET(
     const result = await pool.query(
       `
         WITH stats AS (
-          SELECT 
+          SELECT
             bus,
             SUM(p_nom) as total_capacity,
             ntile(5) OVER (ORDER BY SUM(p_nom)) as break_group
@@ -29,14 +29,14 @@ export async function GET(
           HAVING SUM(p_nom) > 0
         ),
         break_ranges AS (
-          SELECT 
+          SELECT
             break_group,
             MIN(total_capacity) as min_capacity,
             MAX(total_capacity) as max_capacity
           FROM stats
           GROUP BY break_group
         )
-        SELECT 
+        SELECT
           s.bus,
           s.total_capacity,
           s.break_group,
@@ -56,7 +56,7 @@ export async function GET(
       max: row.group_max
     })))).sort((a, b) => a.group - b.group);
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       data: result.rows,
       meta: {
         count: result.rows.length,
@@ -65,8 +65,8 @@ export async function GET(
       }
     });
   } catch (error) {
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: "Error fetching data"
     }, { status: 500 });
   }
-} 
+}

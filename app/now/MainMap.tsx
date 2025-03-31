@@ -77,7 +77,7 @@ function MainMapComponent({
 
   const loadBusCapacities = useCallback(async (country: string) => {
     if (!country) return;
-    
+
     setIsLoadingBuses(true);
     try {
       const response = await fetch(`/api/bustotal/${country}`);
@@ -85,12 +85,12 @@ function MainMapComponent({
         throw new Error('Failed to fetch bus capacities');
       }
       const data = await response.json();
-      
+
       const capacities: Record<string, number> = {};
       data.data.forEach((row: any) => {
         capacities[row.bus] = row.total_capacity;
       });
-      
+
       setBusCapacities(capacities);
       setBusBreaks(data.meta.breaks);
     } catch (error) {
@@ -214,4 +214,3 @@ function MainMapComponent({
 export default dynamic(() => Promise.resolve(MainMapComponent), {
   ssr: false
 });
-
