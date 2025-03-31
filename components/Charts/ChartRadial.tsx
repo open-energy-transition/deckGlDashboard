@@ -239,8 +239,11 @@ const ChartRadialLegendcontent = (props: any) => {
             className="h-3 w-3 rounded-sm"
             style={{ backgroundColor: entry.payload.fill }}
           />
-          <span className="text-xs">
-            {entry.payload.carrier} ({entry.payload.percentage}%)
+           <span className="text-xs">
+            {entry.payload.carrier === "ror"
+              ? "run of river"
+              : entry.payload.carrier}{" "}
+            ({entry.payload.percentage}%)
           </span>
         </div>
       ))}
