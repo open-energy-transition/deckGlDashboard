@@ -9,15 +9,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  prettier:
     timeout-minutes: 10
-    name: "lint"
+    name: "prettier-formatter"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 18
       - run: npm ci
 
-      - run: npx prettier --check .
+      - run: npx prettier . --write
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply Prettier formatting
