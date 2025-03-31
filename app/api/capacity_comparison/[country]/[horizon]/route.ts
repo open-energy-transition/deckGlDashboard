@@ -30,4 +30,4 @@ export async function GET(
     console.error("Error fetching data from PostgreSQL:", error);
     return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
-} 
+}

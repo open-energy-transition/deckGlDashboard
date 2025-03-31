@@ -10,4 +10,4 @@ const BusLegend = () => {
   );
 };
 
-export default BusLegend; 
+export default BusLegend;

@@ -42,7 +42,7 @@ const BenefitsSection = () => {
             What the data represents
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            
+
           </p>
         </div>
 
