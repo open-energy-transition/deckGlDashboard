@@ -57,17 +57,14 @@ export function InvestmentPie({ data, costField }: Props) {
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== `Total ${costField}`
-        )
-        .filter(
-          (item: DataItem) =>
             item &&
             item.carrier &&
-            Number(item[costField as keyof DataItem]) > 0
+            item.carrier !== `Total ${costField}` &&
+            Number(item[costField as keyof DataItem]) > 0.1
         )
         .map((item: DataItem) => {
           const value = Number(
-            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
+            Number(item[costField as keyof DataItem]).toFixed(2)
           );
 
           return {

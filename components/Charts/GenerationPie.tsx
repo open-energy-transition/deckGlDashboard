@@ -62,10 +62,13 @@ export function GenerationMixGeneral({ data }: Props) {
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== "Total generation"
+            item &&
+            item.carrier &&
+            item.carrier !== "Total generation" &&
+            Number(item.generation?.toFixed(2)) > 0
         )
         .map((item: DataItem) => {
-          const value = Number(item.generation?.toFixed(2) || 0);
+          const value = Number(item.generation?.toFixed(2));
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
             carrier: item.carrier,
