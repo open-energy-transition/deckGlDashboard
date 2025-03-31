@@ -35,7 +35,10 @@ const NetworkElementInfoTooltip = ({
           height={24}
         />
       </HoverCardTrigger>
-      <HoverCardContent className="w-96 p-4 space-y-4">
+      <HoverCardContent
+        className="w-80 max-w-md p-4 space-y-4"
+        style={{ width: "var(--tooltip-width, 200px)" }}
+      >
         <div>
           <h3 className="text-lg font-semibold mb-2">
             {tooltipInfo?.full_name}
