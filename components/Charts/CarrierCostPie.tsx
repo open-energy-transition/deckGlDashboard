@@ -22,6 +22,7 @@ import {
 import { GenerationMixchartConfig } from "@/utilities/GenerationMixChartConfig";
 import ChartInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/ChartInfoTooltip";
 import { TotalSystemCost_info } from "@/utilities/TooltipInfo/ExplainerText/TotalSystemCost";
+import { RequiredInvestment_info } from "@/utilities/TooltipInfo/ExplainerText/RequiredInvestment";
 
 interface Props {
   data: any;
@@ -98,7 +99,7 @@ export function CarrierCostGeneral({ data, costField, heading }: Props) {
           <CardTitle className="text-xl">
             {heading || "System and Investment cost"}{" "}
             <ChartInfoTooltip
-              tooltipInfo={TotalSystemCost_info}
+              tooltipInfo={RequiredInvestment_info}
               className="h-4 w-4"
             />
           </CardTitle>
