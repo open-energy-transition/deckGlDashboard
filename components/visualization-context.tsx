@@ -9,9 +9,15 @@ type VisualizationContextType = {
   setSelectedParameter: (param: string) => void;
 };
 
-const VisualizationContext = createContext<VisualizationContextType | undefined>(undefined);
+const VisualizationContext = createContext<
+  VisualizationContextType | undefined
+>(undefined);
 
-export function VisualizationProvider({ children }: { children: React.ReactNode }) {
+export function VisualizationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [selectedRenewableType, setSelectedRenewableType] = useState("solar");
   const [selectedParameter, setSelectedParameter] = useState("cf");
 
@@ -32,7 +38,9 @@ export function VisualizationProvider({ children }: { children: React.ReactNode 
 export function useVisualization() {
   const context = useContext(VisualizationContext);
   if (context === undefined) {
-    throw new Error("useVisualization must be used within a VisualizationProvider");
+    throw new Error(
+      "useVisualization must be used within a VisualizationProvider",
+    );
   }
   return context;
 }

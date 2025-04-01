@@ -72,14 +72,13 @@ export default function MapLegend({
     return {
       LARGE: maxSize,
       MEDIUM_LARGE: maxSize - step,
-      MEDIUM: maxSize - (step * 2),
-      MEDIUM_SMALL: maxSize - (step * 3),
+      MEDIUM: maxSize - step * 2,
+      MEDIUM_SMALL: maxSize - step * 3,
       SMALL: minSize,
     };
   };
 
   const legendBusSizes = calculateLegendBusSizes();
-
 
   const lineCategories = [
     {
@@ -88,83 +87,85 @@ export default function MapLegend({
     },
     {
       label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.min)
+        roundToNiceNumber(countryRanges.min),
       )}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 4))}`,
       width: 0.4,
     },
     {
       label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.max / 4)
+        roundToNiceNumber(countryRanges.max / 4),
       )}-${formatPowerValue(roundToNiceNumber(countryRanges.max / 2))}`,
       width: 0.6,
     },
     {
       label: `${formatPowerValue(
-        roundToNiceNumber(countryRanges.max / 2)
+        roundToNiceNumber(countryRanges.max / 2),
       )}-${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.75))}`,
       width: 0.8,
     },
     {
       label: `> ${formatPowerValue(
-        roundToNiceNumber(countryRanges.max * 0.75)
+        roundToNiceNumber(countryRanges.max * 0.75),
       )}`,
       width: 1.0,
     },
   ];
 
-  const busCategories = breaks ? [
-    {
-      label: `> ${formatPowerValue(roundToNiceNumber(breaks[4].max))}`,
-      size: legendBusSizes.LARGE,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(breaks[3].min))} - ${formatPowerValue(roundToNiceNumber(breaks[3].max))}`,
-      size: legendBusSizes.MEDIUM_LARGE,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(breaks[2].min))} - ${formatPowerValue(roundToNiceNumber(breaks[2].max))}`,
-      size: legendBusSizes.MEDIUM,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(breaks[1].min))} - ${formatPowerValue(roundToNiceNumber(breaks[1].max))}`,
-      size: legendBusSizes.MEDIUM_SMALL,
-      color: BUS_COLOR,
-    },
-    {
-      label: `< ${formatPowerValue(roundToNiceNumber(breaks[0].min))}`,
-      size: legendBusSizes.SMALL,
-      color: BUS_COLOR,
-    },
-  ] : [
-    {
-      label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
-      size: legendBusSizes.LARGE,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
-      size: legendBusSizes.MEDIUM_LARGE,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))}`,
-      size: legendBusSizes.MEDIUM,
-      color: BUS_COLOR,
-    },
-    {
-      label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))}`,
-      size: legendBusSizes.MEDIUM_SMALL,
-      color: BUS_COLOR,
-    },
-    {
-      label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))}`,
-      size: legendBusSizes.SMALL,
-      color: BUS_COLOR,
-    },
-  ];
+  const busCategories = breaks
+    ? [
+        {
+          label: `> ${formatPowerValue(roundToNiceNumber(breaks[4].max))}`,
+          size: legendBusSizes.LARGE,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(breaks[3].min))} - ${formatPowerValue(roundToNiceNumber(breaks[3].max))}`,
+          size: legendBusSizes.MEDIUM_LARGE,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(breaks[2].min))} - ${formatPowerValue(roundToNiceNumber(breaks[2].max))}`,
+          size: legendBusSizes.MEDIUM,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(breaks[1].min))} - ${formatPowerValue(roundToNiceNumber(breaks[1].max))}`,
+          size: legendBusSizes.MEDIUM_SMALL,
+          color: BUS_COLOR,
+        },
+        {
+          label: `< ${formatPowerValue(roundToNiceNumber(breaks[0].min))}`,
+          size: legendBusSizes.SMALL,
+          color: BUS_COLOR,
+        },
+      ]
+    : [
+        {
+          label: `> ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
+          size: legendBusSizes.LARGE,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.8))}`,
+          size: legendBusSizes.MEDIUM_LARGE,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.6))}`,
+          size: legendBusSizes.MEDIUM,
+          color: BUS_COLOR,
+        },
+        {
+          label: `${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))} - ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.4))}`,
+          size: legendBusSizes.MEDIUM_SMALL,
+          color: BUS_COLOR,
+        },
+        {
+          label: `< ${formatPowerValue(roundToNiceNumber(countryRanges.max * 0.2))}`,
+          size: legendBusSizes.SMALL,
+          color: BUS_COLOR,
+        },
+      ];
 
   const renderTransmissionLines = () => {
     return (
@@ -176,7 +177,7 @@ export default function MapLegend({
               style={{
                 borderTop: `${Math.max(
                   1,
-                  cat.width * 6
+                  cat.width * 6,
                 )}px solid rgba(${LINE_COLOR.join(",")}, 0.8)`,
               }}
             />

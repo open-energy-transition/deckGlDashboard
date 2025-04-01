@@ -38,14 +38,13 @@ Coming soon! This section will provide more in-depth information about the model
 
 ## Contributors
 
-
 <a href="https://github.com/BryanFran"><img src="https://github.com/BryanFran.png" width="50px" alt="username" /></a>
 <a href="https://github.com/drifter089"><img src="https://github.com/drifter089.png" width="50px" alt="username" /></a>
 <a href="https://github.com/GbotemiB"><img src="https://github.com/GbotemiB.png" width="50px" alt="username" /></a>
 <a href="https://github.com/ekatef"><img src="https://github.com/ekatef.png" width="50px" alt="username" /></a>
 <a href="https://github.com/yerbol-akhmetov"><img src="https://github.com/yerbol-akhmetov.png" width="50px" alt="username" /></a>
 <a href="https://github.com/ElectricMountains"><img src="https://github.com/ElectricMountains.png" width="50px" alt="username" /></a>
-
+<a href="https://github.com/davide-f"><img src="https://github.com/davide-f.png" width="50px" alt="username" /></a>
 
 ## Building and Deployment
 
@@ -58,5 +57,6 @@ npm run build
 ## Learn More
 
 For more information about PyPSA-Earth:
+
 - [PyPSA-Earth GitHub](https://github.com/pypsa-meets-earth/pypsa-earth)
 - [PyPSA Github](https://github.com/PyPSA/PyPSA)

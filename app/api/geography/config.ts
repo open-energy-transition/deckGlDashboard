@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { NextResponse } from "next/server";
+import { Pool } from "pg";
 
 // Optimized database pool configuration
 export const pool = new Pool({
   host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  port: parseInt(process.env.POSTGRES_PORT || "5432"),
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
@@ -13,15 +13,26 @@ export const pool = new Pool({
   connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection could not be established
   statement_timeout: 30000, // Cancel queries that take more than 30 seconds
   query_timeout: 30000, // Same as above but at query level
-  application_name: 'geography-api', // For better monitoring
+  application_name: "geography-api", // For better monitoring
 });
 
 // Valid country codes
-export const VALID_COUNTRIES = ['au', 'br', 'co', 'de', 'in', 'it', 'mx', 'ng', 'us', 'za'];
+export const VALID_COUNTRIES = [
+  "au",
+  "br",
+  "co",
+  "de",
+  "in",
+  "it",
+  "mx",
+  "ng",
+  "us",
+  "za",
+];
 
 // Types for better type safety
-export type CountryCode = typeof VALID_COUNTRIES[number];
-export type LayerType = 'buses' | 'lines' | 'countryView' | 'regions';
+export type CountryCode = (typeof VALID_COUNTRIES)[number];
+export type LayerType = "buses" | "lines" | "countryView" | "regions";
 
 // Optimized query configurations
 export const QUERY_CONFIGS = {
@@ -51,7 +62,7 @@ export const QUERY_CONFIGS = {
         FROM ${tableName}
         WHERE geometry IS NOT NULL
       ) features;
-    `
+    `,
   },
   lines: {
     tableName: (country: string) => `lines_${country.toLowerCase()}`,
@@ -81,7 +92,7 @@ export const QUERY_CONFIGS = {
         FROM ${tableName}
         WHERE geometry IS NOT NULL
       ) features;
-    `
+    `,
   },
   countryView: {
     tableName: (country: string) => `${country.toLowerCase()}_country_view`,
@@ -103,7 +114,7 @@ export const QUERY_CONFIGS = {
         FROM ${tableName}
         WHERE geometry IS NOT NULL
       ) features;
-    `
+    `,
   },
   regions: {
     tableName: (country: string) => `regions_${country.toLowerCase()}_2021`,
@@ -134,8 +145,8 @@ export const QUERY_CONFIGS = {
         FROM ${tableName}
         WHERE geometry IS NOT NULL
       ) features;
-    `
-  }
+    `,
+  },
 };
 
 // Utility function to validate country code
@@ -145,18 +156,18 @@ export function validateCountry(country: string): boolean {
 
 // Optimized GeoJSON response formatter
 export function formatGeoJsonResponse(result: any, headers?: Headers) {
-  const response = (result.features)
+  const response = result.features
     ? NextResponse.json(result)
     : result.rows?.[0]?.jsonb_build_object
       ? NextResponse.json(result.rows[0].jsonb_build_object)
       : Array.isArray(result)
         ? NextResponse.json({
-            type: 'FeatureCollection',
-            features: result
+            type: "FeatureCollection",
+            features: result,
           })
         : NextResponse.json({
-            type: 'FeatureCollection',
-            features: []
+            type: "FeatureCollection",
+            features: [],
           });
 
   // Add headers if provided
@@ -171,10 +182,7 @@ export function formatGeoJsonResponse(result: any, headers?: Headers) {
 
 // Error response utility
 export function createErrorResponse(message: string, status: number = 500) {
-  return NextResponse.json(
-    { error: message },
-    { status }
-  );
+  return NextResponse.json({ error: message }, { status });
 }
 
 // Optimized database query executor
@@ -208,7 +216,9 @@ export function getTableName(layer: LayerType, country: string): string {
 }
 
 // Database client wrapper utility
-export async function withDbClient<T>(callback: (client: any) => Promise<T>): Promise<T> {
+export async function withDbClient<T>(
+  callback: (client: any) => Promise<T>,
+): Promise<T> {
   const client = await pool.connect();
   try {
     return await callback(client);

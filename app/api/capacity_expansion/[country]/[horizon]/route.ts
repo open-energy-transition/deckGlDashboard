@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string; horizon: string } }
+  { params }: { params: { country: string; horizon: string } },
 ) {
   const { country, horizon } = params;
 
@@ -22,14 +22,14 @@ export async function GET(
         FROM public.capacity_expansion
         WHERE country_code = $1 AND horizon = $2;
       `,
-      [country, horizon]
+      [country, horizon],
     );
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch capacity expansion data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

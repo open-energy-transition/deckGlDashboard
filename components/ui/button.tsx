@@ -21,7 +21,8 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-[3rem] px-4 py-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-lg hover:scale-105",
+        default:
+          "h-[3rem] px-4 py-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-lg hover:scale-105",
         sm: "h-[3rem] rounded-md px-3 ",
         lg: "h-[3rem] rounded-md px-8",
         icon: "h-9 w-9",
@@ -31,7 +32,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -50,7 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

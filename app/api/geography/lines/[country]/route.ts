@@ -1,5 +1,10 @@
-import { NextResponse } from 'next/server';
-import { withDbClient, validateCountry, formatGeoJsonResponse, createErrorResponse } from '../../config';
+import { NextResponse } from "next/server";
+import {
+  withDbClient,
+  validateCountry,
+  formatGeoJsonResponse,
+  createErrorResponse,
+} from "../../config";
 
 export const revalidate = 3600;
 
@@ -8,34 +13,43 @@ const GEOMETRY_SIMPLIFICATION = 0.01;
 
 export async function GET(
   request: Request,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   try {
     const { country } = params;
     const url = new URL(request.url);
 
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const pageSize = parseInt(url.searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE));
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const pageSize = parseInt(
+      url.searchParams.get("pageSize") || String(DEFAULT_PAGE_SIZE),
+    );
     const offset = (page - 1) * pageSize;
 
-    const simplification = parseFloat(url.searchParams.get('simplification') || String(GEOMETRY_SIMPLIFICATION));
+    const simplification = parseFloat(
+      url.searchParams.get("simplification") || String(GEOMETRY_SIMPLIFICATION),
+    );
 
     if (!validateCountry(country)) {
-      return createErrorResponse('Invalid country code', 400);
+      return createErrorResponse("Invalid country code", 400);
     }
 
     return await withDbClient(async (client) => {
       const materializedViewName = `lines_${country}_materialized`;
 
-      const viewCheck = await client.query(`
+      const viewCheck = await client.query(
+        `
         SELECT EXISTS (
           SELECT FROM pg_matviews
           WHERE schemaname = 'public'
           AND matviewname = $1
         );
-      `, [materializedViewName]);
+      `,
+        [materializedViewName],
+      );
 
-      const tableName = viewCheck.rows[0].exists ? materializedViewName : `lines_${country}`;
+      const tableName = viewCheck.rows[0].exists
+        ? materializedViewName
+        : `lines_${country}`;
 
       const countQuery = `
         SELECT COUNT(*)
@@ -96,15 +110,19 @@ export async function GET(
         ) features;
       `;
 
-      const result = await client.query(query, [simplification, pageSize, offset]);
+      const result = await client.query(query, [
+        simplification,
+        pageSize,
+        offset,
+      ]);
 
       const headers = new Headers();
-      headers.set('Cache-Control', 'public, s-maxage=3600');
+      headers.set("Cache-Control", "public, s-maxage=3600");
 
       return formatGeoJsonResponse(result, headers);
     });
   } catch (error) {
-    console.error('Lines API Error:', error);
-    return createErrorResponse('Internal Server Error', 500);
+    console.error("Lines API Error:", error);
+    return createErrorResponse("Internal Server Error", 500);
   }
 }

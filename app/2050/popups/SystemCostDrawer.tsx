@@ -36,31 +36,31 @@ const SystemCostDrawer = ({
   const { data: totalCostsData2021 } = useSWR(
     `/api/total_costs_by_techs/${selectedCountry}/2021`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: totalCostsData2050 } = useSWR(
     `/api/total_costs_by_techs/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: investmentsNeededData2050 } = useSWR(
     `/api/investments_needed/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: electricityPrice2021 } = useSWR(
     `/api/electricity_prices/${selectedCountry}/2021`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: electricityPrice2050 } = useSWR(
     `/api/electricity_prices/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const [totalCostsState2021, setTotalCostsState2021] =

@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { NextResponse } from "next/server";
+import { Pool } from "pg";
 
 const pool = new Pool({
   host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  port: parseInt(process.env.POSTGRES_PORT || "5432"),
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
 });
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 export async function GET() {
   const client = await pool.connect();
   try {
@@ -28,13 +28,13 @@ export async function GET() {
     const result = await client.query(query);
 
     return NextResponse.json({
-      tables: result.rows.map(row => row.table_name)
+      tables: result.rows.map((row) => row.table_name),
     });
   } catch (error) {
-    console.error('Error fetching tables:', error);
+    console.error("Error fetching tables:", error);
     return NextResponse.json(
-      { error: 'Error fetching tables' },
-      { status: 500 }
+      { error: "Error fetching tables" },
+      { status: 500 },
     );
   } finally {
     client.release();
