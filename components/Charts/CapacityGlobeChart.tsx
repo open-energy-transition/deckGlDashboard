@@ -67,11 +67,11 @@ export function CarrierCapacityGeneralPie({ data, costField, heading }: Props) {
             item &&
             item.carrier &&
             item.carrier !== `Total ${costField}` &&
-            Number(item[costField as keyof DataItem] || 0) > 0
+            Number(item[costField as keyof DataItem] || 0) > 0,
         )
         .map((item: DataItem) => {
           const value = Number(
-            Number(item[costField as keyof DataItem]).toFixed(2)
+            Number(item[costField as keyof DataItem]).toFixed(2),
           );
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {
@@ -136,7 +136,7 @@ export function CarrierCapacityGeneralPie({ data, costField, heading }: Props) {
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
                             <span>{`${item.payload.percentage.toFixed(
-                              1
+                              1,
                             )}%`}</span>
                           </div>
                         </div>

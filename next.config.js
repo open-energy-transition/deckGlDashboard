@@ -3,13 +3,13 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'github.com',
-        pathname: '/open-energy-transition/**',
+        protocol: "https",
+        hostname: "github.com",
+        pathname: "/open-energy-transition/**",
       },
       {
-        protocol: 'https',
-        hostname: 'raw.githubusercontent.com',
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
       },
     ],
   },

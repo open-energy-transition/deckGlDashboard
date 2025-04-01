@@ -68,7 +68,7 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
       responses.forEach((res, index) => {});
 
       const [electricityPricesData] = await Promise.all(
-        responses.map((r) => r.json())
+        responses.map((r) => r.json()),
       );
 
       setData({
@@ -87,7 +87,7 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
   const { data: co2EmissionsData } = useSWR(
     `/api/co2_emissions/${selectedCountry}/2021`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const [co2Emissions, setCo2Emissions] = useState<DataItem[]>([]);
@@ -170,7 +170,7 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
               {(
                 co2Emissions?.reduce(
                   (acc, curr) => acc + (Number(curr.co2_emission) || 0),
-                  0
+                  0,
                 ) / 1e6
               ).toLocaleString("en-US", {
                 maximumFractionDigits: 2,

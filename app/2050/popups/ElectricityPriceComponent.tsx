@@ -68,13 +68,13 @@ const ElectricityPriceComponent = ({
       }
 
       const [investmentsNeededData] = await Promise.all(
-        responses.map((r) => r.json())
+        responses.map((r) => r.json()),
       );
 
       const investmentsNeeded = investmentsNeededData.data as InvestmentData[];
       const totalInvestmentNeeded = investmentsNeeded.reduce(
         (sum, item) => sum + item.investment_needed,
-        0
+        0,
       );
 
       const processedData: DrawerData = {

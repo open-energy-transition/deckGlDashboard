@@ -89,7 +89,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
 
       // Encontrar el total
       const totalItem = dataArray.find(
-        (item: DataItem) => item.carrier === "Total capacity"
+        (item: DataItem) => item.carrier === "Total capacity",
       );
       const total = Number(totalItem?.pypsa_model?.toFixed(2) || 0);
       setTotalCapacity(total);
@@ -101,7 +101,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
             item &&
             item.carrier &&
             item.carrier !== "Total capacity" &&
-            item.carrier !== "Geothermal"
+            item.carrier !== "Geothermal",
         )
         .map((item: DataItem) => {
           const value = Number(item.pypsa_model?.toFixed(2) || 0);
@@ -166,7 +166,7 @@ export function InstalledCapacityPieChart({ data }: Props) {
                             <div className="flex gap-2">
                               <span className="font-bold">percentage</span>
                               <span>{`${item.payload.percentage.toFixed(
-                                1
+                                1,
                               )}%`}</span>
                             </div>
                           </div>

@@ -40,17 +40,17 @@ const BottomDrawer = ({
 }: Props) => {
   const { data: capacityComparisonData } = useSWR(
     `/api/capacity_comparison/${selectedCountry}`,
-    fetcher
+    fetcher,
   );
 
   const { data: generationComparisonData } = useSWR(
     `/api/generation_comparison/${selectedCountry}`,
-    fetcher
+    fetcher,
   );
 
   const { data: demandComparisonData } = useSWR(
     `/api/demand_comparison/${selectedCountry}`,
-    fetcher
+    fetcher,
   );
 
   const capacityComparisonRef = useRef(capacityComparisonData);

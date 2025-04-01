@@ -65,9 +65,9 @@ const HeroGlobeScene = () => {
   const endpoints = useMemo(
     () =>
       Object.keys(COUNTRY_COORDINATES).map(
-        (country) => getGeoJsonData(country).countryView
+        (country) => getGeoJsonData(country).countryView,
       ),
-    []
+    [],
   );
 
   const { data, error } = useSWR(endpoints, async (urls) => {
@@ -83,8 +83,8 @@ const HeroGlobeScene = () => {
             .catch((error) => {
               console.error(`Error fetching ${url}:`, error);
               return { features: [] };
-            })
-        )
+            }),
+        ),
       );
       const result = responses.reduce((acc, curr) => {
         if (curr.features) {

@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string; horizon: string } }
+  { params }: { params: { country: string; horizon: string } },
 ) {
   const { country, horizon } = params;
 
@@ -22,7 +22,7 @@ export async function GET(
         FROM public.investment_per_co2_reduced
         WHERE country_code = $1 AND horizon = $2;
       `,
-      [country, horizon]
+      [country, horizon],
     );
 
     return NextResponse.json({ data: result.rows });

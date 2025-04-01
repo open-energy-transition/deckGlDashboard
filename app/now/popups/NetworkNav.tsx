@@ -119,7 +119,7 @@ const NetworkNav = ({
                 value={regionGeneratorValue}
                 onValueChange={(e) =>
                   setRegionGeneratorValue(
-                    e as keyof typeof regionalGeneratorTypes
+                    e as keyof typeof regionalGeneratorTypes,
                   )
                 }
                 disabled={networkView}
