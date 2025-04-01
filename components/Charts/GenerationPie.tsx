@@ -65,7 +65,7 @@ export function GenerationMixGeneral({ data }: Props) {
             item &&
             item.carrier &&
             item.carrier !== "Total generation" &&
-            Number(item.generation?.toFixed(2)) > 0
+            Number(item.generation?.toFixed(2)) > 0,
         )
         .map((item: DataItem) => {
           const value = Number(item.generation?.toFixed(2));
@@ -132,7 +132,7 @@ export function GenerationMixGeneral({ data }: Props) {
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
                             <span>{`${item.payload.percentage.toFixed(
-                              1
+                              1,
                             )}%`}</span>
                           </div>
                         </div>

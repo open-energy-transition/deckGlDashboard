@@ -38,7 +38,6 @@ import { Color, Vector3 } from "three";
 import GlobeOnly from "./JustGlobe";
 import ElectricityPriceComponent from "./popups/ElectricityPriceComponent";
 
-
 // const R3fGlobe = dynamic(() => import("r3f-globe"), { ssr: false });
 
 interface GeoFeature {
@@ -66,29 +65,33 @@ const GlobeViz = () => {
   const globeRef = useRef<GlobeMethods>(null);
   const cameraRef = useRef<any>(null);
 
-  const [hoveredCountry, setHoveredCountry] = useState<"in" | "out" | "null">("null");
+  const [hoveredCountry, setHoveredCountry] = useState<"in" | "out" | "null">(
+    "null",
+  );
   const [position, setPosition] = useState<Vector3>(new Vector3(60, 60, 60));
   const [globeReady, setGlobeReady] = useState(false);
 
-  const endpoints = useMemo(() =>
-    Object.keys(COUNTRY_COORDINATES).map(
-      (country) => getGeoJsonData(country).countryView
-    ), []
+  const endpoints = useMemo(
+    () =>
+      Object.keys(COUNTRY_COORDINATES).map(
+        (country) => getGeoJsonData(country).countryView,
+      ),
+    [],
   );
 
   const { data, error } = useSWR(endpoints, async (urls) => {
     const responses = await Promise.all(
       urls.map((url) =>
         fetch(url)
-          .then(res => {
+          .then((res) => {
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             return res.json();
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(`Error fetching ${url}:`, error);
             return { features: [] };
-          })
-      )
+          }),
+      ),
     );
     return responses.reduce((acc, curr) => {
       if (curr.features) {
@@ -113,7 +116,7 @@ const GlobeViz = () => {
       }
       return "#7C9885";
     },
-    [selectedCountry, hoveredCountry]
+    [selectedCountry, hoveredCountry],
   );
 
   const getPolygonAltitude = useCallback(
@@ -129,7 +132,7 @@ const GlobeViz = () => {
       }
       return 0.01;
     },
-    [selectedCountry, hoveredCountry]
+    [selectedCountry, hoveredCountry],
   );
 
   const getPolygonSideColor = useCallback(
@@ -148,7 +151,7 @@ const GlobeViz = () => {
       const b = parseInt(baseColor.slice(5, 7), 16);
       return `rgba(${r}, ${g}, ${b}, 0.3)`;
     },
-    [selectedCountry, hoveredCountry]
+    [selectedCountry, hoveredCountry],
   );
 
   const handleHover = useCallback((...args: unknown[]) => {
@@ -181,17 +184,21 @@ const GlobeViz = () => {
       if (args.length < 2) return;
 
       const secondArg = args[1];
-      if (!secondArg || typeof secondArg !== "object" || secondArg === null) return;
+      if (!secondArg || typeof secondArg !== "object" || secondArg === null)
+        return;
 
-      const polygonData = secondArg as { properties?: { country_code?: string } };
+      const polygonData = secondArg as {
+        properties?: { country_code?: string };
+      };
       if (!polygonData?.properties?.country_code) return;
 
       const countryCode = polygonData.properties.country_code.toUpperCase();
-      if (!COUNTRY_COORDINATES[countryCode as keyof typeof COUNTRY_COORDINATES]) return;
+      if (!COUNTRY_COORDINATES[countryCode as keyof typeof COUNTRY_COORDINATES])
+        return;
 
       setSelectedCountry(countryCode as keyof typeof COUNTRY_COORDINATES);
     },
-    [setSelectedCountry]
+    [setSelectedCountry],
   );
 
   useEffect(() => {
@@ -252,6 +259,5 @@ const GlobeViz = () => {
     </>
   );
 };
-
 
 export default GlobeViz;

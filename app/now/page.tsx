@@ -11,7 +11,6 @@ const Page = () => {
     React.useState<keyof typeof regionalGeneratorTypes>("ror");
   const [regionParamValue, setRegionParamValue] = React.useState<string>("cf");
 
-
   return (
     <div>
       <div className="absolute w-full h-full z-0 left-0 top-0 overflow-hidden ">

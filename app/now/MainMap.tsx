@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import dynamic from 'next/dynamic';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import dynamic from "next/dynamic";
 import DeckGL from "@deck.gl/react";
 
 import type { MapViewState } from "@deck.gl/core";
@@ -25,8 +31,8 @@ import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 
 // Dynamically import the Map component with specific settings
 const Map = dynamic(
-  () => import('react-map-gl/maplibre').then((mod) => mod.Map),
-  { ssr: false, loading: () => <div>Loading map...</div> }
+  () => import("react-map-gl/maplibre").then((mod) => mod.Map),
+  { ssr: false, loading: () => <div>Loading map...</div> },
 );
 
 const INITIAL_VIEW_STATE: MapViewState = {
@@ -62,14 +68,19 @@ function MainMapComponent({
   const { selectedCountry, setSelectedCountry } = useCountry();
 
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
-  const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
-  const [busBreaks, setBusBreaks] = useState<Array<{group: number, min: number, max: number}>>([]);
+  const [busCapacities, setBusCapacities] = useState<Record<string, number>>(
+    {},
+  );
+  const [busBreaks, setBusBreaks] = useState<
+    Array<{ group: number; min: number; max: number }>
+  >([]);
   const [isLoadingBuses, setIsLoadingBuses] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(4);
   const [deckLayers, setdeckLayers] = useState<any[]>([]);
 
   const position = useRef({ x: 0, y: 0 });
-  const [initialViewState, setInitialViewState] = useState<MapViewState>(INITIAL_VIEW_STATE);
+  const [initialViewState, setInitialViewState] =
+    useState<MapViewState>(INITIAL_VIEW_STATE);
 
   useEffect(() => {
     setIsMounted(true);
@@ -82,7 +93,7 @@ function MainMapComponent({
     try {
       const response = await fetch(`/api/bustotal/${country}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch bus capacities');
+        throw new Error("Failed to fetch bus capacities");
       }
       const data = await response.json();
 
@@ -94,7 +105,7 @@ function MainMapComponent({
       setBusCapacities(capacities);
       setBusBreaks(data.meta.breaks);
     } catch (error) {
-      console.error('Error loading bus capacities:', error);
+      console.error("Error loading bus capacities:", error);
       setBusCapacities({});
       setBusBreaks([]);
     } finally {
@@ -168,7 +179,17 @@ function MainMapComponent({
         breaks: busBreaks,
       }),
     ];
-  }, [networkView, setHoverPointID, position, zoomLevel, busCapacities, isLoadingBuses, selectedCountry, deckLayers, busBreaks]);
+  }, [
+    networkView,
+    setHoverPointID,
+    position,
+    zoomLevel,
+    busCapacities,
+    isLoadingBuses,
+    selectedCountry,
+    deckLayers,
+    busBreaks,
+  ]);
 
   if (!isMounted) {
     return null;
@@ -212,5 +233,5 @@ function MainMapComponent({
 }
 
 export default dynamic(() => Promise.resolve(MainMapComponent), {
-  ssr: false
+  ssr: false,
 });

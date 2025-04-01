@@ -7,9 +7,15 @@ type NetworkViewContextType = {
   setNetworkView: (view: boolean) => void;
 };
 
-const NetworkViewContext = createContext<NetworkViewContextType | undefined>(undefined);
+const NetworkViewContext = createContext<NetworkViewContextType | undefined>(
+  undefined,
+);
 
-export function NetworkViewProvider({ children }: { children: React.ReactNode }) {
+export function NetworkViewProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [networkView, setNetworkView] = useState(false);
 
   return (

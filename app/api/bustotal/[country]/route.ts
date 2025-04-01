@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   const country = params.country;
 
@@ -46,27 +46,34 @@ export async function GET(
         JOIN break_ranges br ON s.break_group = br.break_group
         ORDER BY s.total_capacity DESC;
       `,
-      [country]
+      [country],
     );
 
     // Get the break ranges from the query results
-    const breakRanges = Array.from(new Set(result.rows.map(row => ({
-      group: row.break_group,
-      min: row.group_min,
-      max: row.group_max
-    })))).sort((a, b) => a.group - b.group);
+    const breakRanges = Array.from(
+      new Set(
+        result.rows.map((row) => ({
+          group: row.break_group,
+          min: row.group_min,
+          max: row.group_max,
+        })),
+      ),
+    ).sort((a, b) => a.group - b.group);
 
     return NextResponse.json({
       data: result.rows,
       meta: {
         count: result.rows.length,
         country: country,
-        breaks: breakRanges
-      }
+        breaks: breakRanges,
+      },
     });
   } catch (error) {
-    return NextResponse.json({
-      error: "Error fetching data"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Error fetching data",
+      },
+      { status: 500 },
+    );
   }
 }

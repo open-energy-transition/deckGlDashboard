@@ -57,5 +57,6 @@ npm run build
 ## Learn More
 
 For more information about PyPSA-Earth:
+
 - [PyPSA-Earth GitHub](https://github.com/pypsa-meets-earth/pypsa-earth)
 - [PyPSA Github](https://github.com/PyPSA/PyPSA)
