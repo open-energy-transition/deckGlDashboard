@@ -1,16 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { TrendingUp } from "lucide-react";
-import { PolarGrid, RadialBar, RadialBarChart, ResponsiveContainer, Legend } from "recharts";
-
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  PolarGrid,
+  RadialBar,
+  RadialBarChart,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+
 import {
   ChartConfig,
   ChartContainer,
@@ -115,7 +113,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
       .filter((item) => item.carrier !== "load")
       .reduce((acc: { [key: string]: number }, item) => {
         const value = Number(item[valueKey]);
-        if (!isNaN(value)) {
+        if (!isNaN(value) && value > 0) {
           if (!acc[item.carrier]) {
             acc[item.carrier] = 0;
           }
@@ -126,7 +124,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
 
     const totalValue = Object.values(groupedData).reduce(
       (sum, value) => sum + value,
-      0
+      0,
     );
 
     return Object.entries(groupedData)
@@ -149,14 +147,14 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
   const totalValue = useMemo(() => {
     return processedData.reduce(
       (sum: number, item: ProcessedDataItem) => sum + Number(item.value),
-      0
+      0,
     );
   }, [processedData]);
 
   const totalPercentage = useMemo(() => {
     return processedData.reduce(
       (sum: number, item: ProcessedDataItem) => sum + Number(item.percentage),
-      0
+      0,
     );
   }, [processedData]);
 
@@ -171,24 +169,6 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
           endAngle={-180}
           barSize={15}
         >
-          {/* <ChartTooltip
-              content={({ payload }) => {
-                if (payload && payload[0]) {
-                  const data = payload[0].payload as ProcessedDataItem;
-                  const carrierKey = data.carrier.toLowerCase() as CarrierType;
-                  return (
-                    <div className="bg-black bg-opacity-90 p-3 rounded shadow text-white">
-                      <p className="font-bold text-sm">
-                        {chartConfig[carrierKey]?.label || data.carrier}
-                      </p>
-                      <p className="text-sm">{data.value} MW</p>
-                      <p className="text-sm">{data.percentage}%</p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            /> */}
           <PolarGrid gridType="circle" />
           <ChartTooltip
             content={
@@ -224,7 +204,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
             background
             cornerRadius={5}
             label={{
-              position: "insideStart",
+              position: "outside",
               fill: "#fff",
               fontSize: 10,
               formatter: (value: number, entry: any) => {
@@ -235,17 +215,38 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
             }}
           />
 
-          <ChartLegend
+          <Legend
+            content={<ChartRadialLegendcontent />}
             wrapperStyle={{ paddingBottom: 0, marginBottom: 0 }}
-            content={
-              <ChartLegendContent
-                className="flex-wrap translate-y-10"
-                nameKey="carrier"
-              ></ChartLegendContent>
-            }
-          />
+          ></Legend>
         </RadialBarChart>
       </ChartContainer>
     </>
   );
 }
+
+const ChartRadialLegendcontent = (props: any) => {
+  const { payload } = props;
+  if (!payload || !Array.isArray(payload)) {
+    return <div>No data available</div>;
+  }
+
+  return (
+    <div className="flex flex-wrap gap-4 justify-center mt-2 translate-y-9">
+      {payload.map((entry, index) => (
+        <div key={`item-${index}`} className="flex items-center gap-2">
+          <div
+            className="h-3 w-3 rounded-sm"
+            style={{ backgroundColor: entry.payload.fill }}
+          />
+          <span className="text-xs">
+            {entry.payload.carrier === "ror"
+              ? "run of river"
+              : entry.payload.carrier}{" "}
+            ({entry.payload.percentage}%)
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
