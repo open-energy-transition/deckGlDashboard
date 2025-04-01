@@ -31,4 +31,4 @@ Thank you for helping make this project more secure!
 
 ## Contact
 
-Security contact: [akshat.mittal@openenergytransition.org]  
+Security contact: [akshat.mittal@openenergytransition.org]
