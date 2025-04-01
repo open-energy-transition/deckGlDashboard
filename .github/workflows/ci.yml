@@ -12,6 +12,8 @@ jobs:
   prettier:
     timeout-minutes: 10
     name: "prettier-formatter"
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
