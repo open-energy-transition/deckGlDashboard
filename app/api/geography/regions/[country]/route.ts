@@ -1,34 +1,36 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import {
   validateCountry,
   withDbClient,
   formatGeoJsonResponse,
-  createErrorResponse
-} from '../../config';
+  createErrorResponse,
+} from "../../config";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const DEFAULT_PAGE_SIZE = 1000;
 const GEOMETRY_SIMPLIFICATION = 0.01;
 
 export async function GET(
   request: Request,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   try {
     const country = params.country.toLowerCase();
     const url = new URL(request.url);
-    const year = url.searchParams.get('year') || '2021';
+    const year = url.searchParams.get("year") || "2021";
 
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const pageSize = parseInt(url.searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE));
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const pageSize = parseInt(
+      url.searchParams.get("pageSize") || String(DEFAULT_PAGE_SIZE),
+    );
     const offset = (page - 1) * pageSize;
 
     const generator_type = url.searchParams.get("generatorType");
     console.log("generator_type:", generator_type);
 
     const simplification = parseFloat(
-      url.searchParams.get("simplification") || String(GEOMETRY_SIMPLIFICATION)
+      url.searchParams.get("simplification") || String(GEOMETRY_SIMPLIFICATION),
     );
 
     if (!validateCountry(country)) {
@@ -46,14 +48,11 @@ export async function GET(
           AND table_name = $1
         );
         `,
-        [viewName]
+        [viewName],
       );
 
       if (!viewCheck.rows[0].exists) {
-        return createErrorResponse(
-          `View ${viewName} does not exist`,
-          404
-        );
+        return createErrorResponse(`View ${viewName} does not exist`, 404);
       }
 
       // Check if generator metrics table exists
@@ -66,13 +65,13 @@ export async function GET(
           AND table_name = $1
         );
         `,
-        [metricsTableName]
+        [metricsTableName],
       );
 
       if (!metricsCheck.rows[0].exists) {
         return createErrorResponse(
           `Generator metrics table ${metricsTableName} does not exist`,
-          404
+          404,
         );
       }
 
@@ -166,18 +165,20 @@ export async function GET(
       }
 
       const headers = new Headers();
-      headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      headers.set(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, proxy-revalidate",
+      );
       headers.set("Pragma", "no-cache");
       headers.set("Expires", "0");
 
       return formatGeoJsonResponse(result.rows[0].geojson, headers);
     });
-
   } catch (error) {
-    console.error('Regions API Error:', error);
+    console.error("Regions API Error:", error);
     return createErrorResponse(
-      error instanceof Error ? error.message : 'Unknown error',
-      500
+      error instanceof Error ? error.message : "Unknown error",
+      500,
     );
   }
 }

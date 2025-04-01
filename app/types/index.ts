@@ -10,7 +10,7 @@ export interface GeneratorData {
 export interface SideDrawerProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  side: 'left' | 'right' | 'top' | 'bottom';
+  side: "left" | "right" | "top" | "bottom";
   data: {
     busId: string;
     countryCode: string;

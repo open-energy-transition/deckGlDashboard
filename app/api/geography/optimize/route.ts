@@ -1,23 +1,55 @@
-import { NextResponse } from 'next/server';
-import { withDbClient, createErrorResponse, VALID_COUNTRIES } from '../config';
+import { NextResponse } from "next/server";
+import { withDbClient, createErrorResponse, VALID_COUNTRIES } from "../config";
 
 const LAYER_CONFIGS = {
   buses: {
-    columns: ['Bus', 'v_nom', 'country', 'carrier', 'type', 'generator', 'country_code', 'geometry'],
-    idColumn: 'Bus'
+    columns: [
+      "Bus",
+      "v_nom",
+      "country",
+      "carrier",
+      "type",
+      "generator",
+      "country_code",
+      "geometry",
+    ],
+    idColumn: "Bus",
   },
   lines: {
-    columns: ['Line', 'bus0', 'bus1', 'carrier', 'type', 's_nom', 'v_nom', 'country_code', 'length', 'geometry'],
-    idColumn: 'Line'
+    columns: [
+      "Line",
+      "bus0",
+      "bus1",
+      "carrier",
+      "type",
+      "s_nom",
+      "v_nom",
+      "country_code",
+      "length",
+      "geometry",
+    ],
+    idColumn: "Line",
   },
   countryView: {
-    columns: ['country_name', 'geometry'],
-    idColumn: 'country_name'
+    columns: ["country_name", "geometry"],
+    idColumn: "country_name",
   },
   regions: {
-    columns: ['id', 'name', 'country', 'country_code', 'Generator', 'cf', 'crt', 'usdpt', 'horizon', 'scenario_id', 'geometry'],
-    idColumn: 'id'
-  }
+    columns: [
+      "id",
+      "name",
+      "country",
+      "country_code",
+      "Generator",
+      "cf",
+      "crt",
+      "usdpt",
+      "horizon",
+      "scenario_id",
+      "geometry",
+    ],
+    idColumn: "id",
+  },
 };
 
 export async function POST(request: Request) {
@@ -32,7 +64,7 @@ export async function POST(request: Request) {
 
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${busesMaterializedView} AS
-            SELECT ${LAYER_CONFIGS.buses.columns.join(', ')}
+            SELECT ${LAYER_CONFIGS.buses.columns.join(", ")}
             FROM ${busesTable}
             WHERE geometry IS NOT NULL;
           `);
@@ -45,7 +77,9 @@ export async function POST(request: Request) {
           `);
           results.push(`Created spatial index on ${busesMaterializedView}`);
         } catch (error) {
-          results.push(`Error processing buses for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error processing buses for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
         try {
@@ -54,7 +88,7 @@ export async function POST(request: Request) {
 
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${linesMaterializedView} AS
-            SELECT ${LAYER_CONFIGS.lines.columns.join(', ')}
+            SELECT ${LAYER_CONFIGS.lines.columns.join(", ")}
             FROM ${linesTable}
             WHERE geometry IS NOT NULL;
           `);
@@ -67,7 +101,9 @@ export async function POST(request: Request) {
           `);
           results.push(`Created spatial index on ${linesMaterializedView}`);
         } catch (error) {
-          results.push(`Error processing lines for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error processing lines for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
         try {
@@ -76,35 +112,44 @@ export async function POST(request: Request) {
 
           await client.query(`
             CREATE MATERIALIZED VIEW IF NOT EXISTS ${countryViewMaterializedView} AS
-            SELECT ${LAYER_CONFIGS.countryView.columns.join(', ')}
+            SELECT ${LAYER_CONFIGS.countryView.columns.join(", ")}
             FROM ${countryViewTable}
             WHERE geometry IS NOT NULL;
           `);
-          results.push(`Created materialized view ${countryViewMaterializedView}`);
+          results.push(
+            `Created materialized view ${countryViewMaterializedView}`,
+          );
 
           await client.query(`
             CREATE INDEX IF NOT EXISTS idx_${countryViewMaterializedView}_geometry
             ON ${countryViewMaterializedView}
             USING GIST (geometry);
           `);
-          results.push(`Created spatial index on ${countryViewMaterializedView}`);
+          results.push(
+            `Created spatial index on ${countryViewMaterializedView}`,
+          );
         } catch (error) {
-          results.push(`Error processing countryView for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error processing countryView for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
-        const years = ['2021', '2050'];
+        const years = ["2021", "2050"];
         for (const year of years) {
           try {
             const viewName = `regions_${country}_${year}`;
             const materializedViewName = `${viewName}_materialized`;
 
-            const viewCheck = await client.query(`
+            const viewCheck = await client.query(
+              `
               SELECT EXISTS (
                 SELECT FROM information_schema.views
                 WHERE table_schema = 'public'
                 AND table_name = $1
               );
-            `, [viewName]);
+            `,
+              [viewName],
+            );
 
             if (!viewCheck.rows[0].exists) {
               results.push(`View ${viewName} does not exist, skipping...`);
@@ -113,7 +158,7 @@ export async function POST(request: Request) {
 
             await client.query(`
               CREATE MATERIALIZED VIEW IF NOT EXISTS ${materializedViewName} AS
-              SELECT ${LAYER_CONFIGS.regions.columns.join(', ')}
+              SELECT ${LAYER_CONFIGS.regions.columns.join(", ")}
               FROM ${viewName}
               WHERE geometry IS NOT NULL;
             `);
@@ -126,21 +171,23 @@ export async function POST(request: Request) {
             `);
             results.push(`Created spatial index on ${materializedViewName}`);
           } catch (error) {
-            results.push(`Error processing regions for ${country}_${year}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            results.push(
+              `Error processing regions for ${country}_${year}: ${error instanceof Error ? error.message : "Unknown error"}`,
+            );
           }
         }
       }
 
       return NextResponse.json({
-        message: 'Optimization completed',
-        details: results
+        message: "Optimization completed",
+        details: results,
       });
     });
   } catch (error) {
-    console.error('Optimization Error:', error);
+    console.error("Optimization Error:", error);
     return createErrorResponse(
-      error instanceof Error ? error.message : 'Unknown error',
-      500
+      error instanceof Error ? error.message : "Unknown error",
+      500,
     );
   }
 }
@@ -153,50 +200,66 @@ export async function PUT(request: Request) {
       for (const country of VALID_COUNTRIES) {
         try {
           const busesMaterializedView = `buses_${country}_materialized`;
-          await client.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${busesMaterializedView};`);
+          await client.query(
+            `REFRESH MATERIALIZED VIEW CONCURRENTLY ${busesMaterializedView};`,
+          );
           results.push(`Refreshed ${busesMaterializedView}`);
         } catch (error) {
-          results.push(`Error refreshing buses for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error refreshing buses for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
         try {
           const linesMaterializedView = `lines_${country}_materialized`;
-          await client.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${linesMaterializedView};`);
+          await client.query(
+            `REFRESH MATERIALIZED VIEW CONCURRENTLY ${linesMaterializedView};`,
+          );
           results.push(`Refreshed ${linesMaterializedView}`);
         } catch (error) {
-          results.push(`Error refreshing lines for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error refreshing lines for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
         try {
           const countryViewMaterializedView = `${country}_country_view_materialized`;
-          await client.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${countryViewMaterializedView};`);
+          await client.query(
+            `REFRESH MATERIALIZED VIEW CONCURRENTLY ${countryViewMaterializedView};`,
+          );
           results.push(`Refreshed ${countryViewMaterializedView}`);
         } catch (error) {
-          results.push(`Error refreshing countryView for ${country}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          results.push(
+            `Error refreshing countryView for ${country}: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
         }
 
-        const years = ['2021', '2050'];
+        const years = ["2021", "2050"];
         for (const year of years) {
           try {
             const materializedViewName = `regions_${country}_${year}_materialized`;
-            await client.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${materializedViewName};`);
+            await client.query(
+              `REFRESH MATERIALIZED VIEW CONCURRENTLY ${materializedViewName};`,
+            );
             results.push(`Refreshed ${materializedViewName}`);
           } catch (error) {
-            results.push(`Error refreshing regions for ${country}_${year}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            results.push(
+              `Error refreshing regions for ${country}_${year}: ${error instanceof Error ? error.message : "Unknown error"}`,
+            );
           }
         }
       }
 
       return NextResponse.json({
-        message: 'Refresh completed',
-        details: results
+        message: "Refresh completed",
+        details: results,
       });
     });
   } catch (error) {
-    console.error('Refresh Error:', error);
+    console.error("Refresh Error:", error);
     return createErrorResponse(
-      error instanceof Error ? error.message : 'Unknown error',
-      500
+      error instanceof Error ? error.message : "Unknown error",
+      500,
     );
   }
 }

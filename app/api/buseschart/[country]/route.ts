@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   const country = params.country;
 
@@ -20,7 +20,7 @@ export async function GET(
       `
       SELECT "Generator", "p_nom", "p_nom_opt", "carrier", "bus", "country_code"
       FROM public.generators_${country.toLowerCase()};
-      `
+      `,
     );
     return NextResponse.json({ data: result.rows });
   } catch (error) {

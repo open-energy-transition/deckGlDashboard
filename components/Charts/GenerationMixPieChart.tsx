@@ -62,7 +62,7 @@ export function GenerationMixPieChart({ data }: Props) {
         : [];
 
       const totalItem = dataArray.find(
-        (item: DataItem) => item.carrier === "Total generation"
+        (item: DataItem) => item.carrier === "Total generation",
       );
       const total = Number(totalItem?.pypsa_model?.toFixed(2) || 0);
       setTotalGeneration(total);
@@ -70,7 +70,7 @@ export function GenerationMixPieChart({ data }: Props) {
       const transformedData = dataArray
         .filter(
           (item: DataItem) =>
-            item && item.carrier && item.carrier !== "Total generation"
+            item && item.carrier && item.carrier !== "Total generation",
         )
         .map((item: DataItem) => {
           const value = Number(item.pypsa_model?.toFixed(2) || 0);
@@ -142,7 +142,7 @@ export function GenerationMixPieChart({ data }: Props) {
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
                             <span>{`${item.payload.percentage.toFixed(
-                              1
+                              1,
                             )}%`}</span>
                           </div>
                         </div>

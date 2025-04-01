@@ -45,7 +45,7 @@ export const CommunitySection = () => {
             end: "center 45%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
     });
   }, []);

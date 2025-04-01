@@ -15,8 +15,7 @@ const DataList: DataProps[] = [
   {
     icon: "Zap",
     title: "Compare Installed Capacity",
-    description:
-      "Current vs. Future Energy Infrastructure",
+    description: "Current vs. Future Energy Infrastructure",
   },
   {
     icon: "HandCoins",
@@ -45,8 +44,7 @@ const DataList: DataProps[] = [
   {
     icon: "CircleDollarSign",
     title: "Total System Costs",
-    description:
-      "The cost to run the grid in 2050",
+    description: "The cost to run the grid in 2050",
   },
 ];
 

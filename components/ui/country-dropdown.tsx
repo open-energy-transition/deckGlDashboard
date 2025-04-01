@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useCallback, useState, forwardRef, useEffect } from "react";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Globe } from "lucide-react";
 import { CircleFlag } from "react-circle-flags";
@@ -16,11 +24,13 @@ export interface CountryOption {
 }
 
 // Convert our country data to the format needed
-const countryOptions: CountryOption[] = Object.entries(COUNTRY_NAMES).map(([alpha3, name]) => ({
-  alpha2: alpha3.slice(0, 2), // Convert 3-letter to 2-letter code
-  alpha3,
-  name
-}));
+const countryOptions: CountryOption[] = Object.entries(COUNTRY_NAMES).map(
+  ([alpha3, name]) => ({
+    alpha2: alpha3.slice(0, 2), // Convert 3-letter to 2-letter code
+    alpha3,
+    name,
+  }),
+);
 
 interface CountryDropdownProps {
   onChange?: (country: CountryOption) => void;
@@ -39,17 +49,19 @@ const CountryDropdownComponent = (
     slim = false,
     ...props
   }: CountryDropdownProps,
-  ref: React.ForwardedRef<HTMLButtonElement>
+  ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { selectedCountry, setSelectedCountry } = useCountry();
   const [selected, setSelected] = useState<CountryOption | undefined>(
-    defaultValue ? countryOptions.find(c => c.alpha3 === defaultValue) : undefined
+    defaultValue
+      ? countryOptions.find((c) => c.alpha3 === defaultValue)
+      : undefined,
   );
 
   useEffect(() => {
     if (defaultValue) {
       const initialCountry = countryOptions.find(
-        (country) => country.alpha3 === defaultValue
+        (country) => country.alpha3 === defaultValue,
       );
       if (initialCountry) {
         setSelected(initialCountry);
@@ -59,7 +71,7 @@ const CountryDropdownComponent = (
 
   useEffect(() => {
     if (selectedCountry) {
-      const country = countryOptions.find(c => c.alpha3 === selectedCountry);
+      const country = countryOptions.find((c) => c.alpha3 === selectedCountry);
       if (country) {
         setSelected(country);
       }
@@ -82,12 +94,12 @@ const CountryDropdownComponent = (
             | "MX"
             | "NG"
             | "US"
-            | "ZA"
+            | "ZA",
         );
         onChange?.(country);
       }
     },
-    [onChange, setSelectedCountry]
+    [onChange, setSelectedCountry],
   );
 
   return (
@@ -100,7 +112,7 @@ const CountryDropdownComponent = (
         ref={ref}
         className={cn(
           "flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-          slim ? "w-20" : "w-full"
+          slim ? "w-20" : "w-full",
         )}
       >
         <SelectValue placeholder={placeholder}>

@@ -36,19 +36,19 @@ const CapacityComparisionDrawer = ({
   const { data: optimalCapacityData2021 } = useSWR(
     `/api/optimal_capacity/${selectedCountry}/2021`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: capacityExpansionData2050 } = useSWR(
     `/api/capacity_expansion/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: optimalCapacityData2050 } = useSWR(
     `/api/optimal_capacity/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const [optimalCapacityState2021, setOptimalCapacityState2021] =

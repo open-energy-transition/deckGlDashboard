@@ -29,7 +29,7 @@ const Menu = () => {
         duration: 0.7,
         ease: "power2",
         display: "flex",
-      }
+      },
     );
 
     // Add display: none when animation reverses

@@ -34,13 +34,13 @@ const GenerationMixBottomDrawer = ({
   const { data: generationComparisonData2050 } = useSWR(
     `/api/generation_mix/${selectedCountry}/2050`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const { data: generationComparisonData2021 } = useSWR(
     `/api/generation_mix/${selectedCountry}/2021`,
     fetcher,
-    { suspense: false }
+    { suspense: false },
   );
 
   const [generationComparisonState2050, setGenerationComparisonState] =

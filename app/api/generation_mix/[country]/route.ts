@@ -11,10 +11,10 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   const { country } = params;
-  const horizon = req.nextUrl.searchParams.get('horizon') || '2021';
+  const horizon = req.nextUrl.searchParams.get("horizon") || "2021";
 
   try {
     const result = await pool.query(
@@ -23,7 +23,7 @@ export async function GET(
         FROM public.generation_mix
         WHERE country_code = $1 AND horizon = $2;
       `,
-      [country, horizon]
+      [country, horizon],
     );
 
     return NextResponse.json({ data: result.rows });
