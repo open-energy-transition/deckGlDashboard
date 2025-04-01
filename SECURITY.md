@@ -8,6 +8,7 @@ If you discover a security vulnerability in this project, we kindly ask you to r
 - Instead, email us at [akshat.mittal@openenergytransition.org] with a detailed report.
 
 Your report should include:
+
 - A clear and concise description of the issue.
 - Steps to reproduce the vulnerability (if applicable).
 - Any relevant logs, screenshots, or proof-of-concept code.
@@ -18,8 +19,8 @@ We aim to respond to all reports within **72 hours**, and will work with you to 
 
 | Version | Supported |
 | ------- | --------- |
-| latest  | ✅         |
-| older   | ❌         |
+| latest  | ✅        |
+| older   | ❌        |
 
 Only the latest stable version is actively supported with security updates.
 
