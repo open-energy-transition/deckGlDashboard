@@ -24,7 +24,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
         onClick={() => setCurrentSection("vision")}
       >
         <AnimatedNavLink selected={currentSection === "vision"}>
-          vision
+          Vision
         </AnimatedNavLink>
       </div>
       <div
@@ -32,7 +32,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
         onClick={() => setCurrentSection("next-step")}
       >
         <AnimatedNavLink selected={currentSection === "next-step"}>
-          next step
+          Next steps
         </AnimatedNavLink>
       </div>
       <div
@@ -40,7 +40,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
         onClick={() => setCurrentSection("methods")}
       >
         <AnimatedNavLink selected={currentSection === "methods"}>
-          methods
+          Methods
         </AnimatedNavLink>
       </div>
       <div
@@ -48,7 +48,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
         onClick={() => setCurrentSection("limitations")}
       >
         <AnimatedNavLink selected={currentSection === "limitations"}>
-          limitations
+          Limitations
         </AnimatedNavLink>
       </div>
     </div>

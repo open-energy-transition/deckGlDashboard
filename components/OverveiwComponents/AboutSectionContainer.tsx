@@ -32,7 +32,7 @@ const AboutSectionContainer = () => {
   };
 
   return (
-    <div className="container flex flex-wrap items-start pt-24 justify-between gap-24 lg:gap-8  box-border min-w-[20rem]">
+    <div className="container flex flex-wrap items-start py-24 justify-between gap-24 lg:gap-8  box-border min-w-[20rem]">
       <AboutNav
         currentSection={currentSection}
         setCurrentSection={setCurrentSection}
