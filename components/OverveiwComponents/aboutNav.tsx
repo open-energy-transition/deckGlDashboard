@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React from "react";
 import { AboutSectionType } from "./AboutSectionContainer";
@@ -23,32 +23,42 @@ export const AboutNav: React.FC<AboutNavProps> = ({
         className="cursor-pointer"
         onClick={() => setCurrentSection("vision")}
       >
-        <AnimatedNavLink selected={currentSection === "vision"}>vision</AnimatedNavLink>
+        <AnimatedNavLink selected={currentSection === "vision"}>
+          vision
+        </AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("next-step")}
       >
-        <AnimatedNavLink selected={currentSection === "next-step"}>next step</AnimatedNavLink>
+        <AnimatedNavLink selected={currentSection === "next-step"}>
+          next step
+        </AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("methods")}
       >
-        <AnimatedNavLink selected={currentSection === "methods"}>methods</AnimatedNavLink>
+        <AnimatedNavLink selected={currentSection === "methods"}>
+          methods
+        </AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("limitations")}
       >
-        <AnimatedNavLink selected={currentSection === "limitations"}>limitations</AnimatedNavLink>
+        <AnimatedNavLink selected={currentSection === "limitations"}>
+          limitations
+        </AnimatedNavLink>
       </div>
     </div>
   );
 };
 
-const AnimatedNavLink: React.FC<{ children: React.ReactNode,selected:boolean }> = ({ children,selected }) => {
-
+const AnimatedNavLink: React.FC<{
+  children: React.ReactNode;
+  selected: boolean;
+}> = ({ children, selected }) => {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -59,27 +69,34 @@ const AnimatedNavLink: React.FC<{ children: React.ReactNode,selected:boolean }> 
     });
   }, [selected]);
 
-
   return (
     <>
-    <p onMouseEnter={()=>{
-      if (!selected) {
-      gsap.to(lineRef.current, {
-        width: "60%",
-        duration: 0.2,
-        ease: "power1.inOut",
-      });
-      }
-    }} onMouseLeave={()=>{
-      if (!selected) {
-      gsap.to(lineRef.current, {
-        width: "0%",
-        duration: 0.2,
-        ease: "power1.inOut",
-      });
-      }
-    }}>{children}</p>
-    <div className="relative bottom-0 left-0 w-28 h-1 bg-destructive dark:bg-secondary" ref={lineRef}/>
+      <p
+        onMouseEnter={() => {
+          if (!selected) {
+            gsap.to(lineRef.current, {
+              width: "60%",
+              duration: 0.2,
+              ease: "power1.inOut",
+            });
+          }
+        }}
+        onMouseLeave={() => {
+          if (!selected) {
+            gsap.to(lineRef.current, {
+              width: "0%",
+              duration: 0.2,
+              ease: "power1.inOut",
+            });
+          }
+        }}
+      >
+        {children}
+      </p>
+      <div
+        className="relative bottom-0 left-0 w-28 h-1 bg-destructive dark:bg-secondary"
+        ref={lineRef}
+      />
     </>
   );
-}
+};
