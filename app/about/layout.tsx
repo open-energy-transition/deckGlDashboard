@@ -1,3 +1,4 @@
+import { AboutNav } from '@/components/OverveiwComponents/aboutNav';
 import React from 'react';
 
 export default function AboutLayout({
@@ -7,7 +8,9 @@ export default function AboutLayout({
 }) {
     return (
         <>
-            {children}
+        <div className='mt-40'></div>
+        {children}
+        <AboutNav />
         </>      
     );
 }
