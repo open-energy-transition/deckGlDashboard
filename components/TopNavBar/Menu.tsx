@@ -70,9 +70,10 @@ const Menu = () => {
           className="absolute top-8 right-8 scale-125 cursor-pointer"
         />
         {[
-          { href: "/", text: "About" },
+          { href: "/", text: "Home" },
           { href: "/now", text: "Now" },
           { href: "/2050", text: "2050" },
+          { href: "/about", text: "About" },
         ].map(({ href, text }) => (
           <Link
             key={href}

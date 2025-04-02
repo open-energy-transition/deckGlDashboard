@@ -59,7 +59,7 @@ export function NavigationMenuDemo() {
       <NavigationMenuList className="max-w-[100vw] w-full p-4 flex justify-center gap-2 flex-wrap">
         <NavigationMenuItem className="hidden lg:block">
           <NavigationMenuLink href="/" className={navigationMenuTriggerStyle()}>
-            About
+            Home
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden lg:block">
@@ -78,7 +78,14 @@ export function NavigationMenuDemo() {
             2050
           </NavigationMenuLink>
         </NavigationMenuItem>
-
+        <NavigationMenuItem className="hidden lg:block">
+          <NavigationMenuLink
+            href="/about"
+            className={navigationMenuTriggerStyle()}
+          >
+            About
+          </NavigationMenuLink>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <div
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1 cursor-pointer`}
