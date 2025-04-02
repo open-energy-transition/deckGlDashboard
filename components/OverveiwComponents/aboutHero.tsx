@@ -7,13 +7,13 @@ export const AboutHero = () => {
         <h1 className="flex flex-col">
           {" "}
           Methods&
-          <span className=" dark:text-accent text-destructive">
+          <span className=" text-destructive dark:text-secondary">
             Limitations
           </span>
         </h1>
       </div>
       <Image
-        src="/images/credits/windturbine.png"
+        src="/images/credits/turbinewind.png"
         alt="Background"
         fill
         objectFit="cover"

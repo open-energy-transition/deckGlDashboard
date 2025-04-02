@@ -1,5 +1,9 @@
 import React from "react";
-
+import { LucideBrainCog } from "lucide-react";
 export const Methods = () => {
-  return <div>Methods</div>;
+  return <div className="flex flex-col">
+      < LucideBrainCog className="w-[3rem] h-[3rem]" />
+    <h1 className="font-sans text-card-foreground text-2xl md:text-3xl lg:text-4xl font-bold py-[1rem]"> Methods</h1>
+  <p className=" md:text-[1.25rem] text-[1rem] w-[45rem] text-foreground">The presented results were obtained using the PyPSA-Earth power system model , an open-source tool that enables state-of-the-art energy planing for everyone. 
+PyPSA-Earth modeling workflow automatically extracts all necessary data from publicly available open-source databases such as OpenStreetMap and GlobalEnegyMonitor. The workflow is designed to be fully functional across the whole world which enables modeling for any counrty of the world.</p></div>
 };

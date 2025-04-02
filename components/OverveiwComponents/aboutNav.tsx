@@ -12,7 +12,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
   setCurrentSection,
 }) => {
   return (
-    <div>
+    <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("vision")}
