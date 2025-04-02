@@ -13,7 +13,7 @@ export const AboutHero = () => {
         </h1>
       </div>
       <Image
-        src="/images/credits/turbinewind.png"
+        src="/images/credits/upturbinewind.png"
         alt="Background"
         fill
         objectFit="cover"

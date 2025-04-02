@@ -21,7 +21,7 @@ export const Vision = () => {
         </li>
         <li>
           Accelerate Insight Delivery: Fast-track the flow of research data into
-          the hands of decision-makers through automation.
+          the hands of decision-makers through visualisations & automation.
         </li>
         <li>
           Champion Open Collaboration: Use open data and open-source tools to
