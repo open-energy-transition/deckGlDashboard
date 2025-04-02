@@ -9,10 +9,9 @@ export default function Page() {
   return (
     <>
       <AboutHero />
-          <AboutSectionContainer />
-          <InfoSection />
-             <CommunitySection />
+      <AboutSectionContainer />
+      <InfoSection />
+      <CommunitySection />
     </>
   );
 }
-
