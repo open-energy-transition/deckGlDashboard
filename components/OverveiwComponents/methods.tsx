@@ -2,7 +2,7 @@ import React from "react";
 import { Cog } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-  
+
 export const Methods = () => {
   return (
     <div className="flex flex-col text-destructive dark:text-secondary">
@@ -14,17 +14,19 @@ export const Methods = () => {
       <p className=" md:text-[1.25rem] text-[1rem] md:w-[45rem] lg:w-[50rem] text-foreground">
         The presented results were obtained using the PyPSA-Earth power system
         model , an open-source tool that enables state-of-the-art energy planing
-        for everyone. <Link
+        for everyone.{" "}
+        <Link
           href="https://github.com/pypsa-meets-earth/pypsa-earth"
           target="_blank"
           className="dark:text-secondary text-destructive"
         >
           PyPSA-Earth modeling
-        </Link> {""} workflow automatically extracts all
-        necessary data from publicly available open-source databases such as
-        OpenStreetMap and GlobalEnegyMonitor. The workflow is designed to be
-        fully functional across the whole world which enables modeling for any
-        counrty of the world.
+        </Link>{" "}
+        {""} workflow automatically extracts all necessary data from publicly
+        available open-source databases such as OpenStreetMap and
+        GlobalEnegyMonitor. The workflow is designed to be fully functional
+        across the whole world which enables modeling for any counrty of the
+        world.
       </p>
       <Image
         src="/images/credits/VisualisationExpl.svg"

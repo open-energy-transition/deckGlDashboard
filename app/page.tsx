@@ -37,7 +37,7 @@ export default function Page() {
       <div className="relative w-full h-[50vh] lg:h[60vh]">
         <HeroGlobeScene />
       </div>
-    
+
       <InfoSection />
       <DataSection />
       {/* <ServicesSection />

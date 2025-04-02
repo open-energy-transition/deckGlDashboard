@@ -12,13 +12,18 @@ export const AboutInfo = () => {
           </span>
         </div>
         <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
-          PyPSA-Earth is an independent community-owned research initiative which works thanks to the coordinated efforts of volunteers around the world. Together, we are making changes happen!  <Link
-          href="https://discord.gg/zxt9QFeF"
-          target="_blank"
-          className="dark:text-secondary text-destructive"
-        >
-          Join us
-                  </Link> { " "}to try the model and contribute. Every bug report and typo fixed do count
+          PyPSA-Earth is an independent community-owned research initiative
+          which works thanks to the coordinated efforts of volunteers around the
+          world. Together, we are making changes happen!{" "}
+          <Link
+            href="https://discord.gg/zxt9QFeF"
+            target="_blank"
+            className="dark:text-secondary text-destructive"
+          >
+            Join us
+          </Link>{" "}
+          to try the model and contribute. Every bug report and typo fixed do
+          count
         </div>
       </div>
     </section>
