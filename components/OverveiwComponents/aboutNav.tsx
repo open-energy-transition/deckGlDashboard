@@ -1,6 +1,12 @@
+"use client"
 import Link from "next/link";
 import React from "react";
 import { AboutSectionType } from "./AboutSectionContainer";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { use, useRef } from "react";
+
+gsap.registerPlugin(useGSAP);
 
 type AboutNavProps = {
   currentSection: AboutSectionType;
@@ -12,31 +18,68 @@ export const AboutNav: React.FC<AboutNavProps> = ({
   setCurrentSection,
 }) => {
   return (
-    <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
+    <div className="flex flex-col gap-3 md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground w-full">
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("vision")}
       >
-        vision
+        <AnimatedNavLink selected={currentSection === "vision"}>vision</AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("next-step")}
       >
-        next-steps
+        <AnimatedNavLink selected={currentSection === "next-step"}>next step</AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("methods")}
       >
-        methods
+        <AnimatedNavLink selected={currentSection === "methods"}>methods</AnimatedNavLink>
       </div>
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("limitations")}
       >
-        limitations
+        <AnimatedNavLink selected={currentSection === "limitations"}>limitations</AnimatedNavLink>
       </div>
     </div>
   );
 };
+
+const AnimatedNavLink: React.FC<{ children: React.ReactNode,selected:boolean }> = ({ children,selected }) => {
+
+  const lineRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.to(lineRef.current, {
+      width: selected ? "80%" : "0%",
+      duration: 0.2,
+      ease: "power1.inOut",
+    });
+  }, [selected]);
+
+
+  return (
+    <>
+    <p onMouseEnter={()=>{
+      if (!selected) {
+      gsap.to(lineRef.current, {
+        width: "60%",
+        duration: 0.2,
+        ease: "power1.inOut",
+      });
+      }
+    }} onMouseLeave={()=>{
+      if (!selected) {
+      gsap.to(lineRef.current, {
+        width: "0%",
+        duration: 0.2,
+        ease: "power1.inOut",
+      });
+      }
+    }}>{children}</p>
+    <div className="relative bottom-0 left-0 w-28 h-1 bg-destructive dark:bg-secondary" ref={lineRef}/>
+    </>
+  );
+}
