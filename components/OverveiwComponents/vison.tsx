@@ -1,8 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const Vision = () => {
-  return (
-    <div>Vision</div>
-  )
-}
-
+  return <div>Vision</div>;
+};

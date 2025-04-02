@@ -1,8 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const NextSteps = () => {
-  return (
-    <div>next-steps</div>
-  )
-}
-
+  return <div>next-steps</div>;
+};

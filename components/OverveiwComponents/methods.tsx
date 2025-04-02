@@ -1,8 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const Methods = () => {
-  return (
-    <div>Methods</div>
-  )
-}
-
+  return <div>Methods</div>;
+};

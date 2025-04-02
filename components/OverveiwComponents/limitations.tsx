@@ -1,8 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const Limitations = () => {
-  return (
-    <div>Limitations</div>
-  )
-}
-
+  return <div>Limitations</div>;
+};
