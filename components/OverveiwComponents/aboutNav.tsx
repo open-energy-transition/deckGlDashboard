@@ -18,7 +18,7 @@ export const AboutNav: React.FC<AboutNavProps> = ({
   setCurrentSection,
 }) => {
   return (
-    <div className="flex flex-col gap-3 md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground w-full">
+    <div className="flex flex-col gap-3 md:text-[1.25rem] text-[1rem] max-w-[25rem] text-foreground w-full">
       <div
         className="cursor-pointer"
         onClick={() => setCurrentSection("vision")}
@@ -63,7 +63,7 @@ const AnimatedNavLink: React.FC<{
 
   useGSAP(() => {
     gsap.to(lineRef.current, {
-      width: selected ? "80%" : "0%",
+      width: selected ? "60%" : "0%",
       duration: 0.2,
       ease: "power1.inOut",
     });
@@ -94,7 +94,7 @@ const AnimatedNavLink: React.FC<{
         {children}
       </p>
       <div
-        className="relative bottom-0 left-0 w-28 h-1 bg-destructive dark:bg-secondary"
+        className="relative bottom-0 left-0 w-28 h-[2px] bg-destructive dark:bg-secondary"
         ref={lineRef}
       />
     </>
