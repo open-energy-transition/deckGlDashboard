@@ -9,7 +9,7 @@ export const NextSteps = () => {
       </h1>
       <p className=" md:text-[1.25rem] text-[1rem] md:w-[45rem] lg:w-[50rem] text-foreground">
         {" "}
-        • Only the power sector is currently considered.
+        We want to expand PyPSA-Earth to support sector coupling, enabling integrated modeling of electricity, heating, transport, and industry; achieve high-resolution energy modeling with detailed representation of local grids and infrastructure.
       </p>
     </div>
   ;

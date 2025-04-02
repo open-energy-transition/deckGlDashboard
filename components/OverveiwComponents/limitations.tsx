@@ -9,23 +9,13 @@ export const Limitations = () => {
         {" "}
         Limitations
       </h1>
-      <p className=" md:text-[1.25rem] text-[1rem]  text-foreground lg:w-[50rem]">
-        {" "}
-        • Only the power sector is currently considered.
-        <p className=" md:text-[1.25rem] text-[1rem]  text-foreground lg:w-[50rem]">
-          {" "}
-          • The distribution grid has not yet been modeled in detail.
-        </p>
-        <p className=" md:text-[1.25rem] text-[1rem]  text-foreground lg:w-[50rem]">
-          {" "}
-          • No manual corrections have been applied to input datasets.
-        </p>
-        <p className=" md:text-[1.25rem] text-[1rem]  text-foreground lg:w-[50rem]">
-          {" "}
-          • The visualisation is currently available for only X countries
-          (global coverage is still in progress).
-        </p>
-      </p>
+      <ul className="list-disc pl-5 space-y-2 md:text-[1.25rem] text-[1rem] text-foreground lg:w-[50rem]">
+        <li>Only the power sector is currently considered.</li>
+        <li>The distribution grid has not yet been modeled in detail.</li>
+        <li>No manual corrections have been applied to input datasets.</li>
+        <li>The visualisation is currently available for only X countries (global coverage is still in progress).
+        </li>
+      </ul>
     </div>
   ;
 };
