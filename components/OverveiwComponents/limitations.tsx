@@ -14,7 +14,9 @@ export const Limitations = () => {
         <li>Only the power sector is currently considered.</li>
         <li>The distribution grid has not yet been modeled in detail.</li>
         <li>No manual corrections have been applied to input datasets.</li>
-        <li>The visualisation is currently available for only X countries (global coverage is still in progress).
+        <li>
+          The visualisation is currently available for only X countries (global
+          coverage is still in progress).
         </li>
       </ul>
     </div>
