@@ -24,7 +24,7 @@ export const Vision = () => {
           decision-makers through visualisations & automation.
         </li>
         <li>
-          Champion Open Collaboration: Leverage open data and open-source 
+          Champion Open Collaboration: Leverage open data and open-source
           tools to foster transparency and cooperation.
         </li>
       </ul>
