@@ -22,8 +22,7 @@ export const AboutInfo = () => {
           >
             Join us
           </Link>{" "}
-          to try the model and contribute. Every bug report and typo fixed do
-          count
+          to try the model and contribute. Every bug report and typo fixed counts
         </div>
       </div>
     </section>
