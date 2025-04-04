@@ -6,7 +6,7 @@ This repository houses a dashboard designed to visualize the model output of PyP
 
 The visualizations in this dashboard are powered by data processed using scripts from the [jis-validation-repo](https://github.com/open-energy-transition/ji-gis-validation). You can reproduce the database using these scripts. A sample .env file is provided in the repository to help you get started.
 
-![Now Page Preview](./public/images/VisualisationExpl.svg)
+![Now Page Preview](./public/images/credits/VisualisationExpl.svg)
 
 ## Getting Started
 
