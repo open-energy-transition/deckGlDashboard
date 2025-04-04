@@ -15,8 +15,8 @@ export const NextSteps = () => {
         system modeling of every country in the world. Recently,
         PyPSA-Earth has been expanded to include sector coupling,
         enabling integrated modeling of different economic sectors,
-        including electricity, hydrogen, heating, transport, industry, and 
-        agriculture. A dedicated modeling stream is focused  on the 
+        including electricity, hydrogen, heating, transport, industry, and
+        agriculture. A dedicated modeling stream is focused  on the
         detailed representation of microgrids and distribution infrastructure.
       </p>
     </div>
