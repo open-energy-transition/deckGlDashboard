@@ -18,7 +18,7 @@ const CountryLayer = ({ links }: any) => {
     getFillColor: [215, 229, 190],
 
     getLineWidth: 1,
-    getRadius: 100,
+    getPointRadius: 100,
     lineWidthScale: 20,
     parameters: {
       depthTest: false,

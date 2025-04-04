@@ -9,10 +9,15 @@ gsap.registerPlugin(useGSAP);
 
 const Menu = () => {
   const menuContainer = React.useRef(null);
-
+  const [mounted, setMounted] = React.useState(false);
   const tl = React.useRef(gsap.timeline({ paused: true }));
 
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useGSAP(() => {
+    if (!mounted) return;
     const menuElement = menuContainer.current;
     if (!menuElement) return;
 
@@ -34,11 +39,13 @@ const Menu = () => {
 
     // Add display: none when animation reverses
     tl.current.eventCallback("onReverseComplete", () => {
-      gsap.set(menuElement, { display: "none" });
+      if (menuElement) {
+        gsap.set(menuElement, { display: "none" });
+      }
     });
-  }, []);
+  }, [mounted]);
 
-  const pathUrl = usePathname(); // Adding underscore to indicate it's intentionally unused for now
+  const pathUrl = usePathname();
 
   const handleLinkClick = (e: React.MouseEvent, href: string) => {
     if (pathUrl !== href) {
@@ -49,6 +56,10 @@ const Menu = () => {
     }
   };
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
       <div
@@ -57,7 +68,7 @@ const Menu = () => {
         }}
         className={`${navigationMenuTriggerStyle()} cursor-pointer hover:text-accent lg:hidden`}
       >
-        <AlignJustify />
+        <AlignJustify className="h-4 w-4" />
       </div>
       <div
         className="absolute left-0 top-0 z-10 hidden h-0 w-screen flex-col items-center justify-center gap-4 bg-card font-mono text-3xl opacity-0"
@@ -67,7 +78,7 @@ const Menu = () => {
           onClick={() => {
             tl.current.reverse();
           }}
-          className="absolute top-8 right-8 scale-125 cursor-pointer"
+          className="absolute top-8 right-8 scale-125 cursor-pointer h-6 w-6"
         />
         {[
           { href: "/", text: "Home" },
