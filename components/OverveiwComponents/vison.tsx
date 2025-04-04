@@ -16,16 +16,16 @@ export const Vision = () => {
       </h1>
       <ul className="list-disc pl-5 md:text-[1.25rem] text-[1rem] md:w-[45rem] lg:w-[50rem] text-foreground space-y-3">
         <li>
-          Empower Decision-Making: Turn complex energy models into clear,
+          Empower Decision-Making: Transform complex energy models into clear,
           actionable insights for policy and investment.
         </li>
         <li>
-          Accelerate Insight Delivery: Fast-track the flow of research data into
-          the hands of decision-makers through visualisations & automation.
+          Accelerate Insight Delivery: Fast-track the flow of research data to
+          decision-makers through visualisations & automation.
         </li>
         <li>
-          Champion Open Collaboration: Use open data and open-source tools to
-          foster transparency and cooperation.
+          Champion Open Collaboration: Leverage open data and open-source 
+          tools to foster transparency and cooperation.
         </li>
       </ul>
       {theme === "dark" ? (
