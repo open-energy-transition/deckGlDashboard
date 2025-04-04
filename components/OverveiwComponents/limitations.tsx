@@ -11,12 +11,11 @@ export const Limitations = () => {
         Limitations
       </h1>
       <ul className="list-disc pl-5 space-y-2 md:text-[1.25rem] text-[1rem] text-foreground lg:w-[50rem]">
-        <li>Only the power sector is currently considered.</li>
+        <li>Currently, only the power sector is currently considered.</li>
         <li>The distribution grid has not yet been modeled in detail.</li>
         <li>No manual corrections have been applied to input datasets.</li>
         <li>
-          The visualisation is currently available for only 10 countries (global
-          coverage is still in progress).
+          The visualisation is currently available for only 10 countries, with global coverage still in progress.
         </li>
       </ul>
     </div>
