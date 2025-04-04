@@ -122,7 +122,9 @@ const NetworkNav = ({
                   <Select
                     value={regionGeneratorValue}
                     onValueChange={(value) => {
-                      setRegionGeneratorValue(value as keyof typeof regionalGeneratorTypes);
+                      setRegionGeneratorValue(
+                        value as keyof typeof regionalGeneratorTypes,
+                      );
                     }}
                     disabled={networkView}
                   >
@@ -156,8 +158,12 @@ const NetworkNav = ({
                       <SelectGroup>
                         <SelectLabel>Parameters</SelectLabel>
                         <SelectItem value="cf">Capacity Factor</SelectItem>
-                        <SelectItem value="crt" disabled>Curtailment</SelectItem>
-                        <SelectItem value="usdpt" disabled>Used Potential</SelectItem>
+                        <SelectItem value="crt" disabled>
+                          Curtailment
+                        </SelectItem>
+                        <SelectItem value="usdpt" disabled>
+                          Used Potential
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

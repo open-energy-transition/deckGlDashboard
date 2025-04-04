@@ -29,7 +29,7 @@ const RegionLayer = ({
   // Construct URL with proper query parameters
   const baseUrl = links.regions_2021;
   if (!baseUrl) {
-    throw new Error('No base URL provided for regions data');
+    throw new Error("No base URL provided for regions data");
   }
 
   const fullUrl = new URL(baseUrl, window.location.origin);
@@ -52,14 +52,14 @@ const RegionLayer = ({
       if (d.properties.is_empty_data) return [128, 128, 128, 50];
 
       let value;
-      switch(regionParamValue) {
-        case 'cf':
+      switch (regionParamValue) {
+        case "cf":
           value = d.properties.cf;
           break;
-        case 'crt':
+        case "crt":
           value = d.properties.crt;
           break;
-        case 'usdpt':
+        case "usdpt":
           value = d.properties.usdpt;
           break;
         default:
@@ -91,7 +91,7 @@ const RegionLayer = ({
     getPointRadius: 100,
     parameters: {
       depthTest: false,
-    }
+    },
   });
 
   return layer;

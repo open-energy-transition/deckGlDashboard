@@ -180,10 +180,7 @@ const MainMapComponent = ({
       breaks: busBreaks,
     });
 
-    return [
-      ...deckLayers,
-      busLayer,
-    ];
+    return [...deckLayers, busLayer];
   }, [
     networkView,
     setHoverPointID,
@@ -236,7 +233,7 @@ const MainMapComponent = ({
       </div>
     </>
   );
-}
+};
 
 // Export with dynamic import and no SSR
 export default dynamic(() => Promise.resolve(MainMapComponent), {

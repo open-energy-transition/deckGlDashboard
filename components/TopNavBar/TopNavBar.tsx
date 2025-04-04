@@ -93,10 +93,7 @@ export function NavigationMenuDemo() {
             className={`${navigationMenuTriggerStyle()} flex items-center gap-1 cursor-pointer`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
-            <Label
-              htmlFor="theme"
-              className="cursor-pointer"
-            >
+            <Label htmlFor="theme" className="cursor-pointer">
               {theme === "light" ? (
                 <Moon className="h-4 w-4" />
               ) : (
