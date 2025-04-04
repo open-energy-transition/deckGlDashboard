@@ -23,9 +23,9 @@ export const Methods = () => {
           PyPSA-Earth modeling
         </Link>{" "}
         {""} workflow automatically extracts all necessary data from publicly
-        available open-source databases such as OpenStreetMap and
-        GlobalEnegyMonitor. The workflow is designed to be fully functional
-        across the whole world which enables modeling for any counrty of the
+        available open-source databases, such as OpenStreetMap and
+        GlobalEnergyMonitor. The workflow is designed to be fully functional
+        worldwide, which enables modeling for any country of the
         world.
       </p>
       <Image
