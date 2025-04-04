@@ -37,4 +37,4 @@ const RegionalLegend = ({ generatorType, parameterType }: RegionalLegendProps) =
   );
 };
 
-export default RegionalLegend; 
+export default RegionalLegend;

@@ -50,7 +50,7 @@ const RegionLayer = ({
     getFillColor: (d: Feature<Geometry, GeoJsonProperties>) => {
       if (!d.properties) return [128, 128, 128, 50];
       if (d.properties.is_empty_data) return [128, 128, 128, 50];
-      
+
       let value;
       switch(regionParamValue) {
         case 'cf':
