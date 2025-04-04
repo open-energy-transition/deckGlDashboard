@@ -16,7 +16,7 @@ export const AboutInfo = () => {
           which works thanks to the coordinated efforts of volunteers around the
           world. Together, we are making changes happen!{" "}
           <Link
-            href="https://discord.gg/zxt9QFeF"
+            href="https://github.com/pypsa-meets-earth/"
             target="_blank"
             className="dark:text-secondary text-destructive"
           >
