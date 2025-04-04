@@ -122,7 +122,10 @@ const SystemCostDrawer = ({
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="w-full bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground" onClick={() => setOpen(!open)}>
+        <Button
+          className="w-full bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground"
+          onClick={() => setOpen(!open)}
+        >
           {TotalSystemCost_info.full_name}
         </Button>
       </DrawerTrigger>
@@ -206,7 +209,9 @@ const SystemCostDrawer = ({
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button className="w-[80%] bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground">Close Analysis</Button>
+              <Button className="w-[80%] bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground">
+                Close Analysis
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </ScrollArea>

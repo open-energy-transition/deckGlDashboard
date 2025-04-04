@@ -74,7 +74,10 @@ const GenerationMixBottomDrawer = ({
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="w-full bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground" onClick={() => setOpen(!open)}>
+        <Button
+          className="w-full bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground"
+          onClick={() => setOpen(!open)}
+        >
           {Generation_info.full_name}
         </Button>
       </DrawerTrigger>
