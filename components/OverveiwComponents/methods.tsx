@@ -13,8 +13,8 @@ export const Methods = () => {
       </h1>
       <p className=" md:text-[1.25rem] text-[1rem] md:w-[45rem] lg:w-[50rem] text-foreground">
         The presented results were obtained using the PyPSA-Earth power system
-        model , an open-source tool that enables state-of-the-art energy planning
-        for everyone.{" "}
+        model , an open-source tool that enables state-of-the-art energy
+        planning for everyone.{" "}
         <Link
           href="https://github.com/pypsa-meets-earth/pypsa-earth"
           target="_blank"
@@ -25,8 +25,7 @@ export const Methods = () => {
         {""} workflow automatically extracts all necessary data from publicly
         available open-source databases, such as OpenStreetMap and
         GlobalEnergyMonitor. The workflow is designed to be fully functional
-        worldwide, which enables modeling for any country of the
-        world.
+        worldwide, which enables modeling for any country of the world.
       </p>
       <Image
         src="/images/credits/VisualisationExpl.svg"

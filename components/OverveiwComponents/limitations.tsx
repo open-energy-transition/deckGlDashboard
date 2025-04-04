@@ -15,7 +15,8 @@ export const Limitations = () => {
         <li>The distribution grid has not yet been modeled in detail.</li>
         <li>No manual corrections have been applied to input datasets.</li>
         <li>
-          The visualisation is currently available for only 10 countries, with global coverage still in progress.
+          The visualisation is currently available for only 10 countries, with
+          global coverage still in progress.
         </li>
       </ul>
     </div>
