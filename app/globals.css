@@ -24,11 +24,11 @@ body {
   :root {
     --background: 140 13% 95%/0.8;
     --foreground: 240 22% 14%;
-    --card: 75 19% 88%;
+    --card: 0 0% 90%;
     --card-foreground: 139 12% 19%;
     --popover: 0 0% 90%;
     --popover-foreground: 139 12% 24%;
-    --primary: 60 56% 91%;
+    --primary: 60 4.8% 95.9%;
     --primary-foreground: 240 22% 14%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;

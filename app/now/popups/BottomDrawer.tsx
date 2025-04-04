@@ -82,7 +82,10 @@ const BottomDrawer = ({
   return (
     <Drawer modal={false} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="w-full" onClick={() => setOpen(!open)}>
+        <Button
+          className="w-full bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground"
+          onClick={() => setOpen(!open)}
+        >
           Show Statistics for country : {selectedCountry}
         </Button>
       </DrawerTrigger>
@@ -110,7 +113,9 @@ const BottomDrawer = ({
           <InstalledCapacityPieChart data={capacityComparisonRef} />
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
-              <Button className="w-[90%]">CLOSE</Button>
+              <Button className="w-[90%] bg-destructive dark:bg-secondary text-primary text-[1rem] hover:text-foreground dark:hover:bg-background dark:text-card-foreground">
+                CLOSE
+              </Button>
             </DrawerClose>
           </DrawerFooter>
           {/* <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300" /> */}
