@@ -13,6 +13,7 @@ interface RegionLayerProps {
 interface GeoJsonFeature {
   properties: {
     carrier: string;
+    is_empty_data: boolean;
     [key: string]: any;
   };
 }
@@ -22,22 +23,63 @@ const RegionLayer = ({
   regionParamValue,
   links,
   selectedCountry,
-}: RegionLayerProps) => {
+}: RegionLayerProps): GeoJsonLayer => {
   const timestamp = Date.now() + Math.random();
 
-  return new GeoJsonLayer({
+  // Construct URL with proper query parameters
+  const baseUrl = links.regions_2021;
+  if (!baseUrl) {
+    throw new Error('No base URL provided for regions data');
+  }
+
+  const fullUrl = new URL(baseUrl, window.location.origin);
+  fullUrl.searchParams.set("generatorType", regionGeneratorValue);
+  fullUrl.searchParams.set("simplification", "0.01");
+  fullUrl.searchParams.set("pageSize", "10000");
+  fullUrl.searchParams.set("year", "2021");
+  fullUrl.searchParams.set("parameter", regionParamValue);
+
+  const layer = new GeoJsonLayer({
     id: `${selectedCountry}_${regionGeneratorValue}_${regionParamValue}_${timestamp}`,
-    data: `${links.regions_2021}&simplification=0.01&pageSize=10000&generatorType=${regionGeneratorValue}`,
+    data: fullUrl.toString(),
     opacity: 1,
     stroked: true,
     filled: true,
     pickable: true,
-    getLineColor: [228, 30, 60],
-    getFillColor: (d) => {
-      const [r, g, b] = regionalGeneratorTypes[regionGeneratorValue];
-      return [r, g, b, 2.5 * d.properties[regionParamValue]];
+    getLineColor: [50, 50, 50, 200],
+    getFillColor: (d: Feature<Geometry, GeoJsonProperties>) => {
+      if (!d.properties) return [128, 128, 128, 50];
+      if (d.properties.is_empty_data) return [128, 128, 128, 50];
+      
+      let value;
+      switch(regionParamValue) {
+        case 'cf':
+          value = d.properties.cf;
+          break;
+        case 'crt':
+          value = d.properties.crt;
+          break;
+        case 'usdpt':
+          value = d.properties.usdpt;
+          break;
+        default:
+          value = d.properties.cf;
+      }
+
+      if (value === undefined || value === null || isNaN(value)) {
+        return [128, 128, 128, 50];
+      }
+
+      const maxValue = 99;
+      const normalizedValue = Math.min(value / maxValue, 1);
+      const [r, g, b, baseAlpha] = regionalGeneratorTypes[regionGeneratorValue];
+      const alpha = Math.floor(normalizedValue * 155 + 100);
+
+      return [r, g, b, alpha];
     },
-    getLineWidth: 100,
+    getLineWidth: 2,
+    lineWidthMinPixels: 1,
+    lineWidthScale: 1,
     updateTriggers: {
       getFillColor: [
         regionGeneratorValue,
@@ -47,8 +89,12 @@ const RegionLayer = ({
       ],
     },
     getPointRadius: 100,
-    lineWidthScale: 20,
+    parameters: {
+      depthTest: false,
+    }
   });
+
+  return layer;
 };
 
 export default RegionLayer;

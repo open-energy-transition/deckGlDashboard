@@ -32,6 +32,15 @@ import GithubIcon from "../icons/github-icon";
 export function NavigationMenuDemo() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Avoid rendering anything until client-side hydration is complete
+  }
 
   return (
     <NavigationMenu className="fixed top-0 left-0 z-50 w-full bg-transparent max-w-[100vw] font-mono">
@@ -41,7 +50,7 @@ export function NavigationMenuDemo() {
           target="_blank"
           className="absolute left-4 w-32 h-12 hidden lg:block"
         >
-          <Image src="OET_LOGO_1.svg" fill alt="logo" />
+          <Image src="OET_LOGO_1.svg" fill alt="logo" priority />
         </Link>
       )}
       <div className="absolute right-5 top-5 hidden lg:block ml-auto">
@@ -86,10 +95,13 @@ export function NavigationMenuDemo() {
           >
             <Label
               htmlFor="theme"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="cursor-pointer"
             >
-              {theme === "light" ? <Moon /> : <Sun />}
+              {theme === "light" ? (
+                <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
             </Label>
           </div>
         </NavigationMenuItem>

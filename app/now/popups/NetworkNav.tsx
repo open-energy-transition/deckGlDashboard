@@ -32,6 +32,8 @@ import { regionalGeneratorTypes } from "@/utilities/GenerationMixChartConfig";
 import NetworkElementInfoTooltip from "@/utilities/TooltipInfo/HoverComponents/NetworkElementsInfoTootip";
 import { Bus_info } from "@/utilities/TooltipInfo/ExplainerText/NetworkElements/Bus_text";
 import { Line_info } from "@/utilities/TooltipInfo/ExplainerText/NetworkElements/Line_Text";
+import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import RegionalLegend from "../components/RegionalLegend";
 
 interface NetworkNavProps {
   networkView: boolean;
@@ -114,54 +116,58 @@ const NetworkNav = ({
                 }}
               />
             </div>
-            <div className="flex gap-2">
-              <Select
-                value={regionGeneratorValue}
-                onValueChange={(e) =>
-                  setRegionGeneratorValue(
-                    e as keyof typeof regionalGeneratorTypes
-                  )
-                }
-                disabled={networkView}
-              >
-                <SelectTrigger className="w-[50%]">
-                  <SelectValue placeholder="Generator Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Generator Types</SelectLabel>
-                    {Object.keys(regionalGeneratorTypes).map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Select
-                value={regionParamValue}
-                onValueChange={(e) => {
-                  setRegionParamValue(e);
-                }}
-                disabled={networkView}
-              >
-                <SelectTrigger className="w-[50%]">
-                  <SelectValue placeholder="Select a parameter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Data</SelectLabel>
-                    <SelectItem value="cf">Capacity Factor</SelectItem>
-                    <SelectItem value="crt" disabled>
-                      Curtailment
-                    </SelectItem>
-                    <SelectItem value="usdpt" disabled>
-                      Used Potential
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+            {!networkView && (
+              <>
+                <div className="flex gap-2 w-full">
+                  <Select
+                    value={regionGeneratorValue}
+                    onValueChange={(value) => {
+                      setRegionGeneratorValue(value as keyof typeof regionalGeneratorTypes);
+                    }}
+                    disabled={networkView}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select carrier" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Carriers</SelectLabel>
+                        {Object.entries(GenerationMixchartConfigSmall)
+                          .filter(([key]) => key in regionalGeneratorTypes)
+                          .map(([key, value]) => (
+                            <SelectItem key={key} value={key}>
+                              {value.label}
+                            </SelectItem>
+                          ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={regionParamValue}
+                    onValueChange={(value) => {
+                      setRegionParamValue(value);
+                    }}
+                    disabled={networkView}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select parameter" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Parameters</SelectLabel>
+                        <SelectItem value="cf">Capacity Factor</SelectItem>
+                        <SelectItem value="crt" disabled>Curtailment</SelectItem>
+                        <SelectItem value="usdpt" disabled>Used Potential</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <RegionalLegend
+                  generatorType={regionGeneratorValue}
+                  parameterType={regionParamValue}
+                />
+              </>
+            )}
             <div className="mt-auto">
               <div className="text-lg font-semibold mb-2">Network Legend</div>
               <div className="grid grid-cols-2 gap-2 bg-primary rounded-lg p-2">

@@ -40,7 +40,7 @@ const INITIAL_VIEW_STATE: MapViewState = {
 };
 
 const MAP_STYLE_LIGHT =
-  "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
+  "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
 const MAP_STYLE_DARK =
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
@@ -51,15 +51,15 @@ interface MainMapProps {
   regionParamValue: string;
 }
 
-function MainMapComponent({
+const MainMapComponent = ({
   networkView,
   regionGeneratorValue,
   regionParamValue,
-}: MainMapProps) {
+}: MainMapProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const { theme: currentTheme } = useTheme();
   const DeckRef = useRef(null);
-  const { selectedCountry, setSelectedCountry } = useCountry();
+  const { selectedCountry } = useCountry();
 
   const [hoverPointID, setHoverPointID] = useState<string | null>(null);
   const [busCapacities, setBusCapacities] = useState<Record<string, number>>({});
@@ -110,15 +110,20 @@ function MainMapComponent({
 
   useEffect(() => {
     const links = getGeoJsonData(selectedCountry);
-
     if (networkView) {
       setdeckLayers([
         CountryLayer({ links }),
         LinesLayer({ zoomLevel, links, selectedCountry }),
       ]);
     } else {
+      const regionLayer = RegionLayer({
+        regionGeneratorValue,
+        regionParamValue,
+        links,
+        selectedCountry,
+      });
       setdeckLayers([
-        CountryLayer({ links }),
+        regionLayer,
         LinesLayer({ zoomLevel, links, selectedCountry }),
       ]);
     }
@@ -154,25 +159,26 @@ function MainMapComponent({
   }, [selectedCountry]);
 
   const layers = useMemo(() => {
-    if (!networkView) return [];
+    const busLayer = BusesLayer({
+      setHoverPointID,
+      position: position.current,
+      zoomLevel,
+      busCapacities,
+      isLoading: isLoadingBuses,
+      selectedCountry,
+      breaks: busBreaks,
+    });
 
     return [
       ...deckLayers,
-      BusesLayer({
-        setHoverPointID,
-        position: position.current,
-        zoomLevel,
-        busCapacities,
-        isLoading: isLoadingBuses,
-        selectedCountry,
-        breaks: busBreaks,
-      }),
+      busLayer,
     ];
-  }, [networkView, setHoverPointID, position, zoomLevel, busCapacities, isLoadingBuses, selectedCountry, deckLayers, busBreaks]);
+  }, [setHoverPointID, position, zoomLevel, busCapacities, isLoadingBuses, selectedCountry, deckLayers, busBreaks]);
 
   if (!isMounted) {
     return null;
   }
+
   return (
     <>
       <div onContextMenu={(evt) => evt.preventDefault()}>
@@ -211,6 +217,7 @@ function MainMapComponent({
   );
 }
 
+// Export with dynamic import and no SSR
 export default dynamic(() => Promise.resolve(MainMapComponent), {
-  ssr: false
+  ssr: false,
 });
