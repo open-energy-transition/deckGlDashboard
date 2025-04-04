@@ -60,11 +60,11 @@ export function InvestmentPie({ data, costField }: Props) {
             item &&
             item.carrier &&
             item.carrier !== `Total ${costField}` &&
-            Number(item[costField as keyof DataItem]) > 0.1
+            Number(item[costField as keyof DataItem]) > 0.1,
         )
         .map((item: DataItem) => {
           const value = Number(
-            Number(item[costField as keyof DataItem]).toFixed(2)
+            Number(item[costField as keyof DataItem]).toFixed(2),
           );
 
           return {

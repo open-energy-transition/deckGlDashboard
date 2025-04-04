@@ -163,7 +163,6 @@ export const GenerationMixchartConfigSmall = {
   },
 } satisfies ChartConfig;
 
-
 export const regionalGeneratorTypes = {
   // csp: [232, 196, 104],
   ror: [76, 128, 230, 255],

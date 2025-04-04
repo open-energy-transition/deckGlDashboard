@@ -27,7 +27,7 @@ export function TransitionProvider({
               x: 0,
               duration: 0.5,
               ease: "circ.inOut",
-            }
+            },
           )
           .fromTo(
             secondLayer.current,
@@ -39,7 +39,7 @@ export function TransitionProvider({
               duration: 0.5,
               ease: "circ.inOut",
             },
-            "<50%"
+            "<50%",
           );
 
         return () => {
@@ -56,7 +56,7 @@ export function TransitionProvider({
               x: "100%",
               duration: 0.5,
               ease: "circ.inOut",
-            }
+            },
           )
           .fromTo(
             firstLayer.current,
@@ -66,7 +66,7 @@ export function TransitionProvider({
               duration: 0.5,
               ease: "circ.inOut",
             },
-            "<50%"
+            "<50%",
           )
           .call(next, undefined, "<50%");
 

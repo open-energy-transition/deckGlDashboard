@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Legend, Label } from "recharts";
 
-
 import {
   ChartConfig,
   ChartContainer,
@@ -57,11 +56,11 @@ export function Co2EmmisionsPie({ data, costField }: Props) {
           (item: DataItem) =>
             item &&
             item.carrier &&
-            Number(item[costField as keyof DataItem]) > 0
+            Number(item[costField as keyof DataItem]) > 0,
         )
         .map((item: DataItem) => {
           const value = Number(
-            (Number(item[costField as keyof DataItem]) || 0).toFixed(2)
+            (Number(item[costField as keyof DataItem]) || 0).toFixed(2),
           );
           const percentage = total > 0 ? (value / total) * 100 : 0;
           return {

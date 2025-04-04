@@ -62,7 +62,7 @@ type Data = [
     id: number;
     capacity_gw: number;
     carrier: string;
-  }
+  },
 ];
 
 type PieData = Array<{

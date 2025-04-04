@@ -57,23 +57,23 @@ const calculateBusRadius = (
   selectedCountry: string | undefined,
   isLoading: boolean,
   isHovered: boolean,
-  breaks?: Array<{group: number, min: number, max: number}>,
-  zoomLevel?: number
+  breaks?: Array<{ group: number; min: number; max: number }>,
+  zoomLevel?: number,
 ): number => {
   const busId = feature.properties.Bus;
   const capacity = busCapacities[busId];
 
   if (!selectedCountry || isLoading || !capacity || !breaks) {
-    return 10000 / (Math.pow(1.5, zoomLevel || 0));
+    return 10000 / Math.pow(1.5, zoomLevel || 0);
   }
 
-  const group = breaks.find(b => capacity >= b.min && capacity <= b.max);
+  const group = breaks.find((b) => capacity >= b.min && capacity <= b.max);
   const minSize = 100000;
   const maxSize = 2000000;
   const sizeStep = (maxSize - minSize) / (breaks.length - 1);
 
   let radius = minSize + (group ? (group.group - 1) * sizeStep : 0);
-  const scaleFactor = 1 / (Math.pow(1.5, zoomLevel || 0));
+  const scaleFactor = 1 / Math.pow(1.5, zoomLevel || 0);
   radius = radius * scaleFactor;
 
   if (isHovered) {
@@ -88,7 +88,7 @@ const getFillColor = (
   busCapacities: Record<string, number>,
   isLoading: boolean,
   isHovered: boolean,
-  breaks?: Array<{group: number, min: number, max: number}>
+  breaks?: Array<{ group: number; min: number; max: number }>,
 ): [number, number, number, number] => {
   const busId = feature.properties.Bus;
   const capacity = busCapacities[busId];
@@ -97,12 +97,14 @@ const getFillColor = (
     return isHovered ? [150, 180, 160, 180] : [124, 152, 133, 100];
   }
 
-  const group = breaks.find(b => capacity >= b.min && capacity <= b.max);
+  const group = breaks.find((b) => capacity >= b.min && capacity <= b.max);
   const baseColor: [number, number, number] = [124, 152, 133];
   const baseAlpha = 100;
   const alphaStep = 30;
 
-  const alpha = isHovered ? 255 : baseAlpha + (group ? (group.group - 1) * alphaStep : 0);
+  const alpha = isHovered
+    ? 255
+    : baseAlpha + (group ? (group.group - 1) * alphaStep : 0);
 
   return [...baseColor, alpha];
 };
@@ -116,7 +118,7 @@ function createBusesLayer({
   selectedCountry,
   breaks,
 }: BusesLayerProps) {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return null;
   }
 
@@ -131,7 +133,7 @@ function createBusesLayer({
     filled: true,
     pointType: "circle",
     wireframe: true,
-    radiusUnits: 'meters',
+    radiusUnits: "meters",
     pointRadiusScale: 1.0,
     getPointRadius: ((d: BusFeature) => {
       return calculateBusRadius(
@@ -141,17 +143,11 @@ function createBusesLayer({
         isLoading,
         false,
         breaks,
-        zoomLevel
+        zoomLevel,
       );
     }) as any,
     getFillColor: ((d: BusFeature) => {
-      return getFillColor(
-        d,
-        busCapacities,
-        isLoading,
-        false,
-        breaks
-      );
+      return getFillColor(d, busCapacities, isLoading, false, breaks);
     }) as any,
     getLineColor: [124, 152, 133, 255],
     getLineWidth: 2,
@@ -166,7 +162,13 @@ function createBusesLayer({
       setHoverPointID(info.object ? info.object.properties.Bus : null);
     },
     updateTriggers: {
-      getPointRadius: [busCapacities, isLoading, selectedCountry, breaks, zoomLevel],
+      getPointRadius: [
+        busCapacities,
+        isLoading,
+        selectedCountry,
+        breaks,
+        zoomLevel,
+      ],
       getFillColor: [busCapacities, isLoading, breaks],
     },
     transitions: {

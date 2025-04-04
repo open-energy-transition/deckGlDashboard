@@ -131,7 +131,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
           item &&
           item.carrier &&
           item.carrier !== "Total capacity" &&
-          item.carrier !== "Geothermal"
+          item.carrier !== "Geothermal",
       );
 
       const transformedData: ChartDataType = [
@@ -287,7 +287,7 @@ export function GenerationMixBarChartStacked({ data }: Props) {
                                           typeof val === "number"
                                             ? acc + val
                                             : acc,
-                                        0
+                                        0,
                                       )) *
                                     100
                                   ).toFixed(2)}

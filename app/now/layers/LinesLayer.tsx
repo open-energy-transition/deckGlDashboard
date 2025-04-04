@@ -31,7 +31,7 @@ const LinesLayer = ({ zoomLevel, links, selectedCountry }: LinesLayerProps) => {
       const baseWidth = normalizeSnom(
         d.properties.s_nom,
         selectedCountry,
-        zoomLevel
+        zoomLevel,
       );
       return baseWidth;
     },

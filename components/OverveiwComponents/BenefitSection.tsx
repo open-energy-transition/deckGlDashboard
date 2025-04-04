@@ -41,9 +41,7 @@ const BenefitsSection = () => {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-card-foreground">
             What the data represents
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-
-          </p>
+          <p className="text-xl text-muted-foreground mb-8"></p>
         </div>
 
         <div className="md:col-span-2 xl:col-span-1 grid lg:grid-cols-2 gap-4 w-full">

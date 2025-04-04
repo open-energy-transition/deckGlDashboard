@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { country: string } }
+  { params }: { params: { country: string } },
 ) {
   const country = params.country;
 
@@ -22,7 +22,7 @@ export async function GET(
         FROM public.capacity_comparison
         WHERE country_code = $1;
       `,
-      [country]
+      [country],
     );
 
     return NextResponse.json({ data: result.rows });

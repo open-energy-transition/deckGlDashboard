@@ -26,7 +26,7 @@ const HeroGlobeScene = dynamic(
     loading: () => (
       <div className="absolute w-1 h-1 bottom-0 bg-background opacity-0" />
     ),
-  }
+  },
 );
 
 export default function Page() {
