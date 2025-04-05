@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const ReverseInfo = () => {
   return (
     <section className="container w-full pt-24">
@@ -10,9 +12,23 @@ export const ReverseInfo = () => {
           </span>
         </div>
         <div className=" md:text-[1.25rem] text-[1rem] max-w-[45rem] text-foreground">
-          Open Energy Transition (OET) researches and develops open-source tools
-          and methodologies to drive the global energy transition towards 100%
-          renewable energy.
+          Open Energy Transition (OET) is a non-profit organization accelerating
+          the global shift to clean energy by making cutting-edge tools and
+          insights accessible to energy planners —helping steer billions in
+          investment and operations based on trusted information.
+          <br />
+          <br />
+          Want to build a similar applications? Explore support opportunities by
+          emailing
+          <strong> info@openenergytransition.org</strong>. More information
+          about OET can be found at{" "}
+          <Link
+            href="https://openenergytransition.org/"
+            target="_blank"
+            className="dark:text-secondary text-destructive"
+          >
+            https://openenergytransition.org.
+          </Link>{" "}
         </div>
       </div>
     </section>

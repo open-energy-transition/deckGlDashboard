@@ -26,9 +26,10 @@ export const AboutInfo = () => {
           data-informed decisions.
           <br />
           <br />
-          Explore support opportunities by emailing
-          info@openenergytransition.org. More information about OET can be found
-          at{" "}
+          Want to build similar applications? Explore support opportunities by
+          emailing
+          <strong> info@openenergytransition.org</strong>. More information
+          about OET can be found at{" "}
           <Link
             href="https://openenergytransition.org/"
             target="_blank"
