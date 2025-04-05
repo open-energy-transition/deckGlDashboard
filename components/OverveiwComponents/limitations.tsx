@@ -22,6 +22,11 @@ export const Limitations = () => {
           load balancing and shared infrastructure.
         </li>
         <li>
+          <strong>Only single weather-year:</strong> The model uses a single
+          weather year, which may leading to over- or underestimation of
+          generation and storage needs.
+        </li>
+        <li>
           <strong>Data quality varies globally:</strong> Inconsistent or
           unvalidated input data can result in unreliable outputs, especially in
           data-sparse regions.
