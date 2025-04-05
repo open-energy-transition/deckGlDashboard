@@ -15,7 +15,7 @@ export const AboutInfo = () => {
           Open Energy Transition (OET) is a non-profit organization accelerating
           the global shift to clean energy by making cutting-edge tools and
           insights accessible to energy planners —helping steer billions in
-          investment and operations based on trusted information.
+          investment based on trusted information.
           <br />
           <br />
           We advance open-source software and open data as powerful enablers of
@@ -26,8 +26,8 @@ export const AboutInfo = () => {
           data-informed decisions.
           <br />
           <br />
-          Want to build similar applications? Explore support opportunities by
-          emailing
+          Want to build similar applications? Want to tailor this app for your
+          need? Explore support opportunities by emailing
           <strong> info@openenergytransition.org</strong>. More information
           about OET can be found at{" "}
           <Link
