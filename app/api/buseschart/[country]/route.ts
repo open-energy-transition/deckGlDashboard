@@ -9,45 +9,54 @@ const pool = new Pool({
   port: Number(process.env.POSTGRES_PORT),
 });
 
-type CarrierType = 'offwind-ac' | 'offwind-dc' | 'onwind' | 'ror' | 'CCGT' | 'coal' | 'nuclear' | 'biomass' | 'solar';
+type CarrierType =
+  | "offwind-ac"
+  | "offwind-dc"
+  | "onwind"
+  | "ror"
+  | "CCGT"
+  | "coal"
+  | "nuclear"
+  | "biomass"
+  | "solar";
 
 const carrierConfig: Record<CarrierType, { label: string; color: string }> = {
-  'offwind-ac': {
-    label: 'Wind Offshore AC',
-    color: 'hsl(var(--chart-offwind-ac))'
+  "offwind-ac": {
+    label: "Wind Offshore AC",
+    color: "hsl(var(--chart-offwind-ac))",
   },
-  'offwind-dc': {
-    label: 'Wind Offshore DC',
-    color: 'hsl(var(--chart-offwind-dc))'
+  "offwind-dc": {
+    label: "Wind Offshore DC",
+    color: "hsl(var(--chart-offwind-dc))",
   },
-  'onwind': {
-    label: 'Wind Onshore',
-    color: 'hsl(var(--chart-onwind))'
+  onwind: {
+    label: "Wind Onshore",
+    color: "hsl(var(--chart-onwind))",
   },
-  'ror': {
-    label: 'Hydro',
-    color: 'hsl(var(--chart-ror))'
+  ror: {
+    label: "Hydro",
+    color: "hsl(var(--chart-ror))",
   },
-  'CCGT': {
-    label: 'CCGT',
-    color: 'hsl(var(--chart-CCGT))'
+  CCGT: {
+    label: "CCGT",
+    color: "hsl(var(--chart-CCGT))",
   },
-  'coal': {
-    label: 'Coal',
-    color: 'hsl(var(--chart-coal))'
+  coal: {
+    label: "Coal",
+    color: "hsl(var(--chart-coal))",
   },
-  'nuclear': {
-    label: 'Nuclear',
-    color: 'hsl(var(--chart-nuclear))'
+  nuclear: {
+    label: "Nuclear",
+    color: "hsl(var(--chart-nuclear))",
   },
-  'biomass': {
-    label: 'Biomass',
-    color: 'hsl(var(--chart-biomass))'
+  biomass: {
+    label: "Biomass",
+    color: "hsl(var(--chart-biomass))",
   },
-  'solar': {
-    label: 'Solar',
-    color: 'hsl(var(--chart-solar))'
-  }
+  solar: {
+    label: "Solar",
+    color: "hsl(var(--chart-solar))",
+  },
 };
 
 export async function GET(
@@ -64,12 +73,12 @@ export async function GET(
       `,
     );
 
-    const updatedRows = result.rows.map(row => {
+    const updatedRows = result.rows.map((row) => {
       const config = carrierConfig[row.carrier as CarrierType];
       return {
         ...row,
         carrier: config?.label || row.carrier,
-        color: config?.color || 'hsl(var(--chart-1))'
+        color: config?.color || "hsl(var(--chart-1))",
       };
     });
 

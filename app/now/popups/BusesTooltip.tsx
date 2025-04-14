@@ -35,7 +35,10 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
           carrier: item.carrier || "",
           bus: item.bus || "",
           country_code: selectedCountry,
-          color: GenerationMixchartConfigSmall[(item.carrier || "").toLowerCase() as CarrierType]?.color || "hsl(var(--chart-1))"
+          color:
+            GenerationMixchartConfigSmall[
+              (item.carrier || "").toLowerCase() as CarrierType
+            ]?.color || "hsl(var(--chart-1))",
         }));
 
       setGeneratorData(filteredData);

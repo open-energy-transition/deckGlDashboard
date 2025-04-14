@@ -72,7 +72,9 @@ const RegionLayer = ({
 
       const maxValue = 99;
       const normalizedValue = Math.min(value / maxValue, 1);
-      const [r, g, b, baseAlpha] = regionalGeneratorTypes[regionGeneratorValue] || [128, 128, 128, 255];
+      const [r, g, b, baseAlpha] = regionalGeneratorTypes[
+        regionGeneratorValue
+      ] || [128, 128, 128, 255];
       const alpha = Math.floor(normalizedValue * 155 + 100);
 
       return [r, g, b, alpha];

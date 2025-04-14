@@ -18,7 +18,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { GeneratorData } from "@/app/types";
-import { GenerationMixchartConfig, GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+import {
+  GenerationMixchartConfig,
+  GenerationMixchartConfigSmall,
+} from "@/utilities/GenerationMixChartConfig";
 
 type CarrierType = keyof typeof GenerationMixchartConfigSmall;
 
@@ -68,7 +71,9 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
           actualValue: value,
           percentage: percentage.toFixed(1),
           displayValue: percentage,
-          fill: GenerationMixchartConfigSmall[carrier.toLowerCase() as CarrierType]?.color || "hsl(var(--chart-1))",
+          fill:
+            GenerationMixchartConfigSmall[carrier.toLowerCase() as CarrierType]
+              ?.color || "hsl(var(--chart-1))",
         };
       })
       .sort((a, b) => b.actualValue - a.actualValue);
