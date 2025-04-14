@@ -18,22 +18,9 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { GeneratorData } from "@/app/types";
+import { GenerationMixchartConfig, GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
 
-type CarrierType =
-  | "CCGT"
-  | "OCGT"
-  | "biomass"
-  | "coal"
-  | "geothermal"
-  | "lignite"
-  | "nuclear"
-  | "offwind-ac"
-  | "offwind-dc"
-  | "oil"
-  | "onwind"
-  | "ror"
-  | "solar"
-  | "load";
+type CarrierType = keyof typeof GenerationMixchartConfigSmall;
 
 interface ProcessedDataItem {
   carrier: string;
@@ -42,64 +29,7 @@ interface ProcessedDataItem {
   fill: string;
 }
 
-const chartConfig = {
-  CCGT: {
-    label: "Combined Cycle Gas Turbine",
-    color: "hsl(var(--chart-CCGT))",
-  },
-  OCGT: {
-    label: "Open Cycle Gas Turbine",
-    color: "hsl(var(--chart-OCGT))",
-  },
-  biomass: {
-    label: "Biomass",
-    color: "hsl(var(--chart-biomass))",
-  },
-  coal: {
-    label: "Coal",
-    color: "hsl(var(--chart-coal))",
-  },
-  geothermal: {
-    label: "Geothermal",
-    color: "hsl(var(--chart-geothermal))",
-  },
-  lignite: {
-    label: "Lignite",
-    color: "hsl(var(--chart-lignite))",
-  },
-  nuclear: {
-    label: "Nuclear",
-    color: "hsl(var(--chart-nuclear))",
-  },
-  "offwind-ac": {
-    label: "Offshore Wind AC",
-    color: "hsl(var(--chart-offwind-ac))",
-  },
-  "offwind-dc": {
-    label: "Offshore Wind DC",
-    color: "hsl(var(--chart-offwind-dc))",
-  },
-  oil: {
-    label: "Oil",
-    color: "hsl(var(--chart-oil))",
-  },
-  onwind: {
-    label: "Onshore Wind",
-    color: "hsl(var(--chart-onwind))",
-  },
-  ror: {
-    label: "Run of River",
-    color: "hsl(var(--chart-ror))",
-  },
-  solar: {
-    label: "Solar",
-    color: "hsl(var(--chart-solar))",
-  },
-  load: {
-    label: "Load",
-    color: "hsl(var(--chart-load))",
-  },
-} as ChartConfig;
+const chartConfig = GenerationMixchartConfig;
 
 interface ChartRadialProps {
   data: GeneratorData[];
@@ -138,7 +68,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
           actualValue: value,
           percentage: percentage.toFixed(1),
           displayValue: percentage,
-          fill: chartConfig[carrierKey]?.color || "hsl(var(--chart-1))",
+          fill: GenerationMixchartConfigSmall[carrier.toLowerCase() as CarrierType]?.color || "hsl(var(--chart-1))",
         };
       })
       .sort((a, b) => b.actualValue - a.actualValue);
@@ -218,7 +148,7 @@ export function ChartRadial({ data, valueKey, title }: ChartRadialProps) {
           <Legend
             content={<ChartRadialLegendcontent />}
             wrapperStyle={{ paddingBottom: 0, marginBottom: 0 }}
-          ></Legend>
+          />
         </RadialBarChart>
       </ChartContainer>
     </>

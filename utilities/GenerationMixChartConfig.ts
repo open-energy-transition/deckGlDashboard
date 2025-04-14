@@ -178,4 +178,4 @@ export const regionalGeneratorTypes = {
   // oil: [195, 34, 34],
   coal: [51, 51, 51, 255],
   nuclear: [40, 189, 189, 255],
-};
+} as const;
