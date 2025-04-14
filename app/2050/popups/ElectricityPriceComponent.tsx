@@ -71,12 +71,12 @@ const ElectricityPriceComponent = ({
         throw new Error("One or more API calls failed");
       }
 
-      const [investmentsNeededData,investCo2] = await Promise.all(
+      const [investmentsNeededData, investCo2] = await Promise.all(
         responses.map((r) => r.json()),
       );
 
-      console.log('investmentsNeededData', investmentsNeededData);
-      console.log('investCo2', investCo2.data[0].investment_per_co2_reduced);
+      console.log("investmentsNeededData", investmentsNeededData);
+      console.log("investCo2", investCo2.data[0].investment_per_co2_reduced);
 
       const investmentsNeeded = investmentsNeededData.data as InvestmentData[];
       const totalInvestmentNeeded = investmentsNeeded.reduce(
@@ -159,7 +159,10 @@ const ElectricityPriceComponent = ({
                 <span className="hidden md:inline">Billion</span>
                 <span className="md:hidden">B</span>
               </p>
-              <p className="font-semibold">at{" "}{data.investmentPerCo2Reduced.toFixed(3)}<span>{" "}€/tCO2</span></p>
+              <p className="font-semibold">
+                at {data.investmentPerCo2Reduced.toFixed(3)}
+                <span> €/tCO2</span>
+              </p>
             </div>
             <div className="hidden md:block md:col-span-4 row-span-3 -translate-y-8">
               <InvestmentPie
