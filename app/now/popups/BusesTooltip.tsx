@@ -1,16 +1,17 @@
 "use client";
 import { useCountry } from "@/components/country-context";
-import React, { useEffect, useState, useRef, useCallback, use } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import gsap from "gsap";
-import { GeneratorData, SideDrawerProps } from "@/app/types";
+import { GeneratorData } from "@/app/types";
 import { ChartRadial } from "@/components/Charts/ChartRadial";
+import { GenerationMixchartConfigSmall } from "@/utilities/GenerationMixChartConfig";
+
+type CarrierType = keyof typeof GenerationMixchartConfigSmall;
 
 const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
-  const { selectedCountry, setSelectedCountry } = useCountry();
+  const { selectedCountry } = useCountry();
   const [loading, setLoading] = useState(true);
-
   const [generatorData, setGeneratorData] = useState<GeneratorData[]>([]);
-
   const toolTipRef = useRef<HTMLDivElement>(null);
 
   const fetchData = useCallback(async () => {
@@ -34,6 +35,10 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
           carrier: item.carrier || "",
           bus: item.bus || "",
           country_code: selectedCountry,
+          color:
+            GenerationMixchartConfigSmall[
+              (item.carrier || "").toLowerCase() as CarrierType
+            ]?.color || "hsl(var(--chart-1))",
         }));
 
       setGeneratorData(filteredData);
@@ -74,7 +79,7 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
   return (
     <>
       <div
-        className={`bg-card/90 absolute w-0 h-0  z-40 p-2 border-border border-2 rounded-md shadow-lg overflow-hidden opacity-0`}
+        className={`bg-card/90 absolute w-0 h-0 z-40 p-2 border-border border-2 rounded-md shadow-lg overflow-hidden opacity-0`}
         ref={toolTipRef}
       >
         {!hoveredBus ? (
@@ -82,7 +87,7 @@ const BusesTooltip = ({ hoveredBus }: { hoveredBus: string | null }) => {
             No bus selected
           </div>
         ) : loading ? (
-          <div className="flex items-center justify-cente ">Loading...</div>
+          <div className="flex items-center justify-center">Loading...</div>
         ) : (
           <>
             <h2 className="text-xl font-bold text-card-foreground">
