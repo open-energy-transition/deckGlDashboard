@@ -12,6 +12,7 @@ interface InvestmentData {
 interface DrawerData {
   investmentsNeeded: InvestmentData[];
   totalInvestmentNeeded: number;
+  investmentPerCo2Reduced: number;
 }
 
 const ElectricityPriceComponent = ({
@@ -24,6 +25,7 @@ const ElectricityPriceComponent = ({
   const [data, setData] = useState<DrawerData>({
     investmentsNeeded: [],
     totalInvestmentNeeded: 0,
+    investmentPerCo2Reduced: 0,
   });
 
   const [mouse, ref] = useMouse();
@@ -51,6 +53,7 @@ const ElectricityPriceComponent = ({
       setData({
         investmentsNeeded: [],
         totalInvestmentNeeded: 0,
+        investmentPerCo2Reduced: 0,
       });
       setLoading(false);
       return;
@@ -60,6 +63,7 @@ const ElectricityPriceComponent = ({
     try {
       const responses = await Promise.all([
         fetch(`/api/investments_needed/${hoveredCountry}/2050`),
+        fetch(`/api/investment_per_co2_reduced/${hoveredCountry}/2050`),
       ]);
 
       const failedResponses = responses.filter((r) => !r.ok);
@@ -67,9 +71,12 @@ const ElectricityPriceComponent = ({
         throw new Error("One or more API calls failed");
       }
 
-      const [investmentsNeededData] = await Promise.all(
+      const [investmentsNeededData, investCo2] = await Promise.all(
         responses.map((r) => r.json()),
       );
+
+      console.log("investmentsNeededData", investmentsNeededData);
+      console.log("investCo2", investCo2.data[0].investment_per_co2_reduced);
 
       const investmentsNeeded = investmentsNeededData.data as InvestmentData[];
       const totalInvestmentNeeded = investmentsNeeded.reduce(
@@ -80,6 +87,7 @@ const ElectricityPriceComponent = ({
       const processedData: DrawerData = {
         investmentsNeeded,
         totalInvestmentNeeded,
+        investmentPerCo2Reduced: investCo2.data[0].investment_per_co2_reduced,
       };
 
       setData(processedData);
@@ -87,6 +95,7 @@ const ElectricityPriceComponent = ({
       setData({
         investmentsNeeded: [],
         totalInvestmentNeeded: 0,
+        investmentPerCo2Reduced: 0,
       });
     } finally {
       setLoading(false);
@@ -142,13 +151,17 @@ const ElectricityPriceComponent = ({
               className="pt-2 w-full aspect-square col-span-4 h-28 mx-auto md:h-auto md:col-span-1 row-span-1 translate-x-3 translate-y-3"
             />
             <div className="col-span-4 md:col-span-3 row-span-1 flex flex-col justify-center pt-3">
-              <p className="text-muted-foreground w-full  h-[10%] flex justify-center items-center">
+              <p className="text-muted-foreground w-full flex justify-center items-center">
                 Investment Required
               </p>
-              <p className="text-3xl font-bold mb-1">
+              <p className="text-2xl font-bold">
                 €{data.totalInvestmentNeeded.toFixed(2)}{" "}
                 <span className="hidden md:inline">Billion</span>
                 <span className="md:hidden">B</span>
+              </p>
+              <p className="font-semibold">
+                at {data.investmentPerCo2Reduced.toFixed(3)}
+                <span> €/tCO2</span>
               </p>
             </div>
             <div className="hidden md:block md:col-span-4 row-span-3 -translate-y-8">
