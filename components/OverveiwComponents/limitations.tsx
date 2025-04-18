@@ -46,8 +46,8 @@ export const Limitations = () => {
           results.
         </li>
         <li>
-          <strong>Single-solution results:</strong> Optimization returns one
-          feasible pathway, missing the broader solution space needed for robust
+          <strong>Simplistic optimization:</strong> An analysis returns only one
+          a single pathway, missing the broader solution space needed for robust
           decision-making.
         </li>
         <li>
