@@ -23,7 +23,7 @@ export const Limitations = () => {
         </li>
         <li>
           <strong>Only single weather-year:</strong> The model uses a single
-          weather year, which may leading to over- or underestimation of
+          weather year, which may lead to over- or underestimation of
           generation and storage needs.
         </li>
         <li>
