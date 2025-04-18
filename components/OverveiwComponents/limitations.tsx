@@ -27,7 +27,7 @@ export const Limitations = () => {
           generation and storage needs.
         </li>
         <li>
-          <strong>Limited data validation:</strong>: A general data extraction workflow used without regional-specific 
+          <strong>Limited data validation:</strong>: A general data extraction workflow used without regional-specific
           adjustments which can result in unreliable outputs, especially in data-sparse regions.
         </li>
         <li>
