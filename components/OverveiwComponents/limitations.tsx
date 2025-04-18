@@ -33,7 +33,7 @@ export const Limitations = () => {
         </li>
         <li>
           <strong>Limited visualization coverage:</strong> Currently supports
-          only 10 countries, restricting global insights and stakeholder
+          only 9 countries, restricting global insights and stakeholder
           engagement.
         </li>
         <li>
