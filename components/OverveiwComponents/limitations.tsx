@@ -27,9 +27,8 @@ export const Limitations = () => {
           generation and storage needs.
         </li>
         <li>
-          <strong>Data quality varies globally:</strong> Inconsistent or
-          unvalidated input data can result in unreliable outputs, especially in
-          data-sparse regions.
+          <strong>Limited data validation:</strong>: A general data extraction workflow used without regional-specific 
+          adjustments which can result in unreliable outputs, especially in data-sparse regions.
         </li>
         <li>
           <strong>Limited visualization coverage:</strong> Currently supports
