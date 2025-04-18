@@ -41,9 +41,8 @@ export const Limitations = () => {
           accessible, making detailed analysis and validation more difficult.
         </li>
         <li>
-          <strong>Low reproducibility:</strong> Differences in data versions,
-          environment setup, or configuration hinder consistent replication of
-          results.
+          <strong>Low reproducibility:</strong> The entry barrier arises from a specialized skill set required to build and run
+          a model which hinder consistent replication of results.
         </li>
         <li>
           <strong>Simplistic optimization:</strong> An analysis returns only one
