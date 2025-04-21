@@ -24,8 +24,7 @@ export const RequiredInvestment_info: RequiredInvestment_info_type = {
   unit: "Billion €",
   source:
     "A result of the optimisation run which accounts for the expected changes in the demand and the technologies costs",
-  values:
-    "An annulised value for the planning horizon",
+  values: "An annulised value for the planning horizon",
   comparison:
     "A requirement investments value differs across the countries and depends on the electricity demand, the existing infrastructure and available renewable potentials",
 };
