@@ -20,12 +20,12 @@ export type RequiredInvestment_info_type = {
 export const RequiredInvestment_info: RequiredInvestment_info_type = {
   full_name: "Required Investment",
   definition:
-    "The Required Investment represents the capital expenditure needed to build new generation, transmission, and distribution infrastructure to meet future electricity demand.",
-  unit: "Billion € (euros)",
+    "The Required Investment is a modeling output which represents an annualised value of capital expenditures needed to expand the existing infrastructure to meet the electricity demand in a cost-optimal way satisfying the net-zero constraint.",
+  unit: "Billion €",
   source:
-    "Calculated from projected capital costs of new system components and infrastructure",
+    "A result of the optimisation run which accounts for the expected changes in the demand and the technologies costs",
   values:
-    "Annual or cumulative investment requirements across the planning horizon",
+    "An annulised value for the planning horizon",
   comparison:
-    "Comparison of investment requirements across different scenarios, technologies, and time periods.",
+    "A requirement investments value differs across the countries and depends on the electricity demand, the existing infrastructure and available renewable potentials",
 };
