@@ -18,6 +18,7 @@ import ScrollButton from "@/components/OverveiwComponents/ScrollButton";
 import { InfoSection } from "@/components/OverveiwComponents/infoSection";
 import dynamic from "next/dynamic";
 import { ReverseInfo } from "@/components/OverveiwComponents/reverseInfo";
+import { AboutHero } from "@/components/OverveiwComponents/aboutHero";
 
 const HeroGlobeScene = dynamic(
   () => import("@/components/OverveiwComponents/HeroGlobeScene"),
@@ -36,12 +37,13 @@ export default function Page() {
       <div className="relative w-full h-[50vh] lg:h[60vh]">
         <HeroGlobeScene />
       </div>
+
       <InfoSection />
       <DataSection />
       {/* <ServicesSection />
       <BenefitsSection /> */}
+      {/* <FeaturesSection /> */}
       <ReverseInfo />
-      <FeaturesSection />
       <CommunitySection />
       <ScrollButton />
       {/* <CreditsSection /> */}

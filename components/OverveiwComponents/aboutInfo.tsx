@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-export const ReverseInfo = () => {
+export const AboutInfo = () => {
   return (
     <section className="container w-full pt-24">
-      <div className="flex flex-row-reverse flex-wrap sm:flex-nowrap gap-[8rem] items-start border-t-[0.5px] border-foreground pt-4 pb-16 justify-between ">
-        <div className=" font-bold font-sans  max-w-[22rem] text-right text-5xl md:text-6xl lg:text-6xl dark:text-secondary">
+      <div className="flex flex-row flex-wrap sm:flex-nowrap gap-[8rem] items-start border-t-[0.5px] border-foreground pt-4 pb-16  justify-between ">
+        <div className=" font-bold font-sans  max-w-[22rem] text-5xl md:text-6xl lg:text-6xl dark:text-secondary">
           {" "}
-          Who are we?
+          about
           <span className="px-2 dark:text-card-foreground text-destructive">
             Open Energy Transition
           </span>

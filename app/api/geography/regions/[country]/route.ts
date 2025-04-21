@@ -27,7 +27,6 @@ export async function GET(
     const offset = (page - 1) * pageSize;
 
     const generator_type = url.searchParams.get("generatorType");
-    console.log("generator_type:", generator_type);
 
     const simplification = parseFloat(
       url.searchParams.get("simplification") || String(GEOMETRY_SIMPLIFICATION),

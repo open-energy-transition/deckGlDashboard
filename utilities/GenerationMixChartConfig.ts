@@ -122,7 +122,7 @@ export const GenerationMixchartConfigSmall = {
     color: "hsl(var(--chart-solar))",
   },
   onwind: {
-    label: "Wind",
+    label: "Wind Onshore",
     color: "hsl(var(--chart-onwind))",
   },
   offwind: {
@@ -150,32 +150,32 @@ export const GenerationMixchartConfigSmall = {
     color: "hsl(var(--chart-lignite))",
   },
   ror: {
-    label: "Run of River",
+    label: "Hydro",
     color: "hsl(var(--chart-ror))",
   },
   "offwind-ac": {
-    label: "off wind ac",
+    label: "Wind Offshore AC",
     color: "hsl(var(--chart-offwind-ac))",
   },
   "offwind-dc": {
-    label: "off wind dc",
+    label: "Wind Offshore DC",
     color: "hsl(var(--chart-offwind-dc))",
   },
 } satisfies ChartConfig;
 
 export const regionalGeneratorTypes = {
   // csp: [232, 196, 104],
-  ror: [76, 128, 230],
-  biomass: [69, 161, 69],
+  ror: [76, 128, 230, 255],
+  biomass: [69, 161, 69, 255],
   // load: [134, 57, 172],
-  CCGT: [231, 110, 80],
-  solar: [255, 191, 0],
-  "offwind-ac": [38, 157, 217],
-  lignite: [184, 115, 46],
-  onwind: [90, 204, 242],
-  geothermal: [217, 38, 98],
-  "offwind-dc": [54, 140, 226],
+  CCGT: [231, 110, 80, 255],
+  solar: [255, 191, 0, 255],
+  "offwind-ac": [38, 157, 217, 255],
+  lignite: [184, 115, 46, 255],
+  onwind: [90, 204, 242, 255],
+  geothermal: [217, 38, 98, 255],
+  "offwind-dc": [54, 140, 226, 255],
   // oil: [195, 34, 34],
-  coal: [51, 51, 51],
-  nuclear: [40, 189, 189],
-};
+  coal: [51, 51, 51, 255],
+  nuclear: [40, 189, 189, 255],
+} as const;

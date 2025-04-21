@@ -176,7 +176,7 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2,
               })}
-              <span className="text-lg font-normal ml-2">billion tCO2</span>
+              <span className="text-lg font-normal ml-2">million tCO2</span>
             </p>
 
             <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
