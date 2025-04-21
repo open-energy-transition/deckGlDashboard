@@ -50,8 +50,9 @@ export const Limitations = () => {
         </li>
         <li>
           <strong>PyPSA-Earth improvements:</strong> The model framework
-          requires general bug fixes, feature and and modularity improvements,
-          as well as documenation updates.
+requires regional-focused improvements in data processing  to increase the overall accuracy
+          <strong>Overlooking Distribution Grids:</strong> Transmission grid only considered
+          which may lead to underestimating the costs and efforts
         </li>
       </ul>
     </div>
