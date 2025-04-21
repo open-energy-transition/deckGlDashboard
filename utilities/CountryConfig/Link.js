@@ -241,7 +241,6 @@ export const COUNTRY_BOUNDS = {
 
 export const COUNTRY_NAMES = {
   AU: "Australia",
-  BR: "Brazil",
   CO: "Colombia",
   DE: "Germany",
   IN: "India",

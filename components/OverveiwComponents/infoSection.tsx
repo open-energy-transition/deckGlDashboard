@@ -36,8 +36,8 @@ export const InfoSection = () => {
               storage?
             </li>
             <li>
-              How can manufacturers design energy technologies that are future-ready
-              and competitive?
+              How can manufacturers design energy technologies that are
+              future-ready and competitive?
             </li>
           </ul>
         </div>

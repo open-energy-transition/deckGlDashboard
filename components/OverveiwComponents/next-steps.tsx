@@ -18,9 +18,9 @@ export const NextSteps = () => {
         <br />
         If you're a software developer or energy modeller, contributing to or
         building upon open-source tools and open data platforms is incredibly
-        valuable. This application is built using <strong>
-          PyPSA
-        </strong> framework and <strong>PyPSA-Earth</strong> model, both open-source and fully reproducible.
+        valuable. This application is built using <strong>PyPSA</strong>{" "}
+        framework and <strong>PyPSA-Earth</strong> model, both open-source and
+        fully reproducible.
         <br />
         <br />
         The entire application is open-source — we invite you to reuse it,
