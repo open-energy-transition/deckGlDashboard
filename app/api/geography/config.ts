@@ -19,7 +19,6 @@ export const pool = new Pool({
 // Valid country codes
 export const VALID_COUNTRIES = [
   "au",
-  "br",
   "co",
   "de",
   "in",
