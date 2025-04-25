@@ -24,7 +24,8 @@ export const TotalSystemCost_info: TotalSystemCost_info_type = {
   unit: "Billion €",
   source:
     "A result of the optimization run that accounts for expected changes in demand and technology costs, as well as the spatio-temporal dynamics of available renewable potential and power transmission constraints.",
-  values: "The displayed value represents the annualized system costs for the entire national power system.",
+  values:
+    "The displayed value represents the annualized system costs for the entire national power system.",
   comparison:
     "The required investment value varies across countries and depends on electricity demand, existing infrastructure, and available renewable potentials.",
 };
