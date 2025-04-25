@@ -18,13 +18,13 @@ export type TotalSystemCost_info_type = {
 };
 
 export const TotalSystemCost_info: TotalSystemCost_info_type = {
-  full_name: "Total System Cost",
+  full_name: "Total System Costs",
   definition:
-    "The Total System Cost is a modeling output which represents capital and operational costs needed to operate and expand the power system. Accounts for generation, transmission, and storage infrastructure which is needed to cover the power demand  in the most cost-optimal way",
+    "This value is a modeling output that represents the sum of all capital and operational expenditures required to operate and expand the power system. It accounts for generation, transmission, and storage infrastructure, whose operation is necessary to meet power demand in a cost-optimal manner.",
   unit: "Billion €",
   source:
-    "A result of the optimisation run which accounts for the expected changes in the demand and the technologies costs",
-  values: "The displayed value includes annualized values of the capital costs for the whole national power system",
+    "A result of the optimization run that accounts for expected changes in demand and technology costs, as well as the spatio-temporal dynamics of available renewable potential and power transmission constraints.",
+  values: "The displayed value represents the annualized system costs for the entire national power system.",
   comparison:
-    "A requirement investments value differs across the countries and depends on the electricity demand, the existing infrastructure and available renewable potentials",
+    "The required investment value varies across countries and depends on electricity demand, existing infrastructure, and available renewable potentials.",
 };
