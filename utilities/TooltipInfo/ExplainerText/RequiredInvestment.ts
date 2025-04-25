@@ -20,7 +20,7 @@ export type RequiredInvestment_info_type = {
 export const RequiredInvestment_info: RequiredInvestment_info_type = {
   full_name: "Required Investment",
   definition:
-    "The Required Investment is a modeling output which represents an annualised value of capital expenditures needed to expand the existing infrastructure to meet the electricity demand in a cost-optimal way satisfying the net-zero constraint.",
+    "The Required Investment is a modeling output which represents an annualised value of capital expenditures needed to expand the existing infrastructure to meet the electricity demand in a cost-optimal way satisfying the net-zero constraint",
   unit: "Billion €",
   source:
     "A result of the optimisation run which accounts for the expected changes in the demand and the technologies costs",

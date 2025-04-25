@@ -20,11 +20,11 @@ export type Installed_capacity_info_type = {
 export const Installed_capacity_info: Installed_capacity_info_type = {
   full_name: "Installed Capacity",
   definition:
-    "Installed Capacity represents the rated capacity of electrical generators which are commissioned in a particular area.",
+    "Installed Capacity represents the rated capacity of electrical generators which are commissioned in a particular area",
   unit: "GW (gigawatts)",
   source:
     "Brownfield capacities are extracted from the available open databases which implies also geospatial information needed to represent the spatial structure of the power system. Modeled values of the installed capacity is a result of the optimization run.",
   values: "maximum potential power output",
   comparison:
-    "Changes in installed capacity between now and 2050 and what capacity expansions are needed to meet future net-zero demand.",
+    "Changes in installed capacity between now and 2050 and what capacity expansions are needed to meet future net-zero demand",
 };

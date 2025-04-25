@@ -20,10 +20,10 @@ export type Generation_info_type = {
 export const Generation_info: Generation_info_type = {
   full_name: "Generation Mix",
   definition:
-    "The generation mix is a distribution of electricity amounts generated from different energy sources, such as fossil fuels, nuclear, wind, solar, and hydro.",
+    "The generation mix is a distribution of electricity amounts generated from different energy sources, such as fossil fuels, nuclear, wind, solar, and hydro",
   unit: "TWh (terawatt-hours)",
   source: "Result of a cost optimisation modeling run",
   values: "A displayed value is an annual average",
   comparison:
-    "A comparison of the generation mix the modeled values by PyPSA-Earth run and available statistics can be used as a way to validate the model ",
+    "A comparison of the generation mix the modeled values by PyPSA-Earth run and available statistics can be used as a way to validate the model",
 };
