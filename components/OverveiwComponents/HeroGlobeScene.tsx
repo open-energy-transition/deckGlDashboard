@@ -9,7 +9,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import EarthLightUrl from "../../public/earth-night-light.jpg";
+import EarthLightUrl from "../../public/earth-light.jpg";
 import {
   getGeoJsonData,
   COUNTRY_COORDINATES,
