@@ -22,8 +22,10 @@ export const Generation_info: Generation_info_type = {
   definition:
     "The generation mix refers to the distribution of electricity produced from various energy sources, including fossil fuels, nuclear, wind, solar, and hydro.",
   unit: "TWh",
-  source: "It is evaluated in a modeling run that optimizes the overall cost of power supply for the entire year.",
-  values: "The displayed value is the annual average of the dispatch across all nodes of the power system.",
+  source:
+    "It is evaluated in a modeling run that optimizes the overall cost of power supply for the entire year.",
+  values:
+    "The displayed value is the annual average of the dispatch across all nodes of the power system.",
   comparison:
     "A comparison of the modeled generation mix with available statistics can serve as an effective metric for validating the model.",
 };

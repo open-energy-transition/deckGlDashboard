@@ -24,7 +24,8 @@ export const Installed_capacity_info: Installed_capacity_info_type = {
   unit: "GW",
   source:
     "Brownfield capacity for 2021 is extracted from available open databases, while the installed capacity values for 2050 are derived from the optimization run.",
-  values: "Installed capacity represents the generation units available in the power system to meet electricity demand.",
+  values:
+    "Installed capacity represents the generation units available in the power system to meet electricity demand.",
   comparison:
     "Required Capacity Expansion refers to the adjustments in installed generation capacity necessary to meet future demand and achieve the net-zero target in a cost-effective manner.",
 };

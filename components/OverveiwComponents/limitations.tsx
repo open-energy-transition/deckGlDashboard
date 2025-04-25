@@ -55,7 +55,7 @@ export const Limitations = () => {
           requires regional-focused improvements in data processing to increase
           the overall accuracy
         </li>
-        <li> 
+        <li>
           <strong>Overlooking Distribution Grids:</strong> Transmission grid
           only considered which may lead to underestimating the costs and
           efforts
