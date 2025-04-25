@@ -24,7 +24,7 @@ export const InfoSection = () => {
               dollar?
             </li>
             <li>
-              Where could be clean energy already cheaper than fossil fuels —
+              Where could clean energy already be cheaper than fossil fuels —
               and why?
             </li>
             <li>
