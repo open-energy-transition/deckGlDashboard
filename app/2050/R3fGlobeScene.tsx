@@ -9,7 +9,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import EarthLightUrl from "../../public/earth-night-light.jpg";
+import EarthLightUrl from "../../public/earth-light.jpg";
 import LightSkyUrl from "../../public/night-sky-light.png";
 import dynamic from "next/dynamic";
 import {
