@@ -20,10 +20,10 @@ export type NominalCapacity_info_type = {
 export const NominalCapacity_info: NominalCapacity_info_type = {
   full_name: "Nominal Capacity",
   definition:
-    "Nominal Capacity represents the maximum power output of electricity generation facilities under normal operating conditions, indicating the total installed capacity of power plants.",
+    "Nominal Capacity represents the maximum power output of electricity generation facilities under normal operating conditions, indicating the total installed capacity of power plants",
   unit: "GW (gigawatts, a measure of power capacity)",
   source: "Installed power generation facilities",
   values: "maximum power output capacity",
   comparison:
-    "Differences in installed capacity between scenarios, showing changes in potential power generation capabilities across different technologies.",
+    "Differences in installed capacity between scenarios, showing changes in potential power generation capabilities across different technologies",
 };

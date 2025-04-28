@@ -18,13 +18,14 @@ export type TotalSystemCost_info_type = {
 };
 
 export const TotalSystemCost_info: TotalSystemCost_info_type = {
-  full_name: "Total System Cost",
+  full_name: "Total System Costs",
   definition:
-    "The Total System Cost represents the complete economic cost of building and operating the entire electricity system, including generation, transmission, and distribution infrastructure.",
-  unit: "Billion € (euros)",
+    "This value is a modeling output that represents the sum of all capital and operational expenditures required to operate and expand the power system. It accounts for generation, transmission, and storage infrastructure, whose operation is necessary to meet power demand in a cost-optimal manner.",
+  unit: "Billion €",
   source:
-    "Calculated from capital, operating, and maintenance costs of all system components",
-  values: "Aggregated system-wide costs",
+    "A result of the optimization run that accounts for expected changes in demand and technology costs, as well as the spatio-temporal dynamics of available renewable potential and power transmission constraints.",
+  values:
+    "The displayed value represents the annualized system costs for the entire national power system.",
   comparison:
-    "Distribution of total system costs across different horizons and the required investments.",
+    "The required investment value varies across countries and depends on electricity demand, existing infrastructure, and available renewable potentials.",
 };

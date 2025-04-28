@@ -20,11 +20,11 @@ export type ElectricityPrice_info_type = {
 export const ElectricityPrice_info: ElectricityPrice_info_type = {
   full_name: "Electricity Price",
   definition:
-    "A displayed electricity price is an annual average value of costs needed to cover the energy demand at every particular moment.",
-  unit: "€/MWh (euros per megawatt-hour)",
+    "A displayed value is an average of hourly prices across all nodes in the power system.",
+  unit: "€/MWh",
   source:
-    "The electricity price are evaluated as result of optimisation considered operation and capital costs of generation, transmission and storage",
-  values: "An average values of electricity prices",
+    "Electricity prices are determined as the result of an optimization that considers the operational and capital costs of generation, transmission, and storage required to meet power demand at every moment.",
+  values: "The annual average of hourly electricity prices.",
   comparison:
-    "Electricity prices depends in particular on the features of power demand and available renewable potentials",
+    "Electricity prices depend on the spatio-temporal characteristics of power demand, available renewable potential, and the topology and capacity of the power grid.",
 };
