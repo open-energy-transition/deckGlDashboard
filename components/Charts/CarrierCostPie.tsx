@@ -134,7 +134,7 @@ export function CarrierCostGeneral({ data, costField, heading }: Props) {
                               typeof value === "number"
                                 ? value.toFixed(2)
                                 : Number(value).toFixed(2)
-                            } billion €`}</span>
+                            } billion €/year`}</span>
                           </div>
                           <div className="flex gap-2">
                             <span className="font-bold">percentage</span>
@@ -177,7 +177,7 @@ export function CarrierCostGeneral({ data, costField, heading }: Props) {
                             y={(viewBox.cy || 0) + 24}
                             className="fill-muted-foreground"
                           >
-                            billion €
+                            billion €/year
                           </tspan>
                         </text>
                       );
