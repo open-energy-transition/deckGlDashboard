@@ -156,11 +156,11 @@ const ElectricityPriceComponent = ({
               </p>
               <p className="text-2xl font-bold">
                 €{data.totalInvestmentNeeded.toFixed(2)}{" "}
-                <span className="hidden md:inline">Billion</span>
+                <span className="hidden md:inline">Billion/year</span>
                 <span className="md:hidden">B</span>
               </p>
               <p className="font-semibold">
-                at {data.investmentPerCo2Reduced.toFixed(3)}
+                at {data.investmentPerCo2Reduced.toFixed(2)}
                 <span> €/tCO2</span>
               </p>
             </div>
