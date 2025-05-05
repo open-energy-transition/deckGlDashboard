@@ -152,7 +152,7 @@ const ElectricityPriceComponent = ({
             />
             <div className="col-span-4 md:col-span-3 row-span-1 flex flex-col justify-center pt-3">
               <p className="text-muted-foreground w-full flex justify-center items-center">
-                Investment Required
+                EUR billion/year
               </p>
               <p className="text-2xl font-bold">
                 €{data.totalInvestmentNeeded.toFixed(2)}{" "}
