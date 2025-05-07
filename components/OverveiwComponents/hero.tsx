@@ -17,6 +17,7 @@ export const HeroSection = () => {
                 {" "}
                 Net-Zero by
                 <span className="px-2 dark:text-accent text-destructive ">
+                  {" "}
                   2050
                 </span>
                 {/* Future */}
