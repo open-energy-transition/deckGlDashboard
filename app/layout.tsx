@@ -9,6 +9,7 @@ import { NetworkViewProvider } from "@/components/network-view-context";
 import { TransitionProvider } from "@/components/TransitionProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Space_Grotesk, Wix_Madefor_Display } from "next/font/google";
+import WarningToast from "@/components/WarningToast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -60,6 +61,7 @@ export default function RootLayout({
               <NavigationMenuDemo />
               <VisualizationProvider>
                 <NetworkViewProvider>{children}</NetworkViewProvider>
+                <WarningToast />
               </VisualizationProvider>
             </CountryProvider>
           </ThemeProvider>
