@@ -182,7 +182,7 @@ const NetworkNav = ({
                     Transmission Lines
                     <NetworkElementInfoTooltip
                       tooltipInfo={Line_info}
-                      className="h-4 w-4 ml-1 -translate-y-[2px]"
+                      className="h-6 w-6 ml-1 -translate-y-[2px]"
                     />
                   </div>
                   <MapLegend
@@ -196,7 +196,7 @@ const NetworkNav = ({
                     Buses
                     <NetworkElementInfoTooltip
                       tooltipInfo={Bus_info}
-                      className="h-4 w-4 ml-1 -translate-y-[2px]"
+                      className="h-6 w-6 ml-1 -translate-y-[2px]"
                     />
                   </div>
                   <MapLegend

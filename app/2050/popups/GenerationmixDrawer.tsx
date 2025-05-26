@@ -94,7 +94,7 @@ const GenerationMixBottomDrawer = ({
                 {Generation_info.full_name} Comparision{" "}
                 <ChartInfoTooltip
                   tooltipInfo={Generation_info}
-                  className="w-6 h-6"
+                  className="w-8 h-8"
                 />
               </DrawerTitle>
               <DrawerDescription className="text-base">

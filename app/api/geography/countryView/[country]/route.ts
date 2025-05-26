@@ -9,7 +9,7 @@ import {
 export const revalidate = 3600;
 
 const DEFAULT_PAGE_SIZE = 1000;
-const GEOMETRY_SIMPLIFICATION = 0.01;
+const GEOMETRY_SIMPLIFICATION = 0.05;
 
 export async function GET(
   request: Request,

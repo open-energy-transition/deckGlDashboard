@@ -100,7 +100,7 @@ export function CarrierCostGeneral({ data, costField, heading }: Props) {
             {heading || "System and Investment cost"}{" "}
             <ChartInfoTooltip
               tooltipInfo={RequiredInvestment_info}
-              className="h-4 w-4"
+              className="h-6 w-6"
             />
           </CardTitle>
         </CardHeader>

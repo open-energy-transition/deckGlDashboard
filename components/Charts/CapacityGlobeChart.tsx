@@ -97,7 +97,7 @@ export function CarrierCapacityGeneralPie({ data, costField, heading }: Props) {
             {heading || "default heading"}{" "}
             <ChartInfoTooltip
               tooltipInfo={Installed_capacity_info}
-              className="w-4 h-4"
+              className="w-6 h-6"
             />
           </CardTitle>
         </CardHeader>
