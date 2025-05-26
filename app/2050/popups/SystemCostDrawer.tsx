@@ -142,7 +142,7 @@ const SystemCostDrawer = ({
                 {TotalSystemCost_info.full_name} comparison
                 <ChartInfoTooltip
                   tooltipInfo={TotalSystemCost_info}
-                  className="w-8 h-8 ml-2"
+                  className="w-8 h-8 ml-2 mb-1"
                 />
               </DrawerTitle>
               <DrawerDescription className="text-base">
@@ -161,7 +161,7 @@ const SystemCostDrawer = ({
                 Electricity Price{" "}
                 <ChartInfoTooltip
                   tooltipInfo={ElectricityPrice_info}
-                  className="h-6 w-6"
+                  className="h-6 w-6 mb-1"
                 />{" "}
                 {electricityPriceState2021[0]?.electricity_price ?? "N/A"} €/MWh
               </p>
@@ -187,7 +187,7 @@ const SystemCostDrawer = ({
                 Electricity Price{" "}
                 <ChartInfoTooltip
                   tooltipInfo={ElectricityPrice_info}
-                  className="h-6 w-6"
+                  className="h-6 w-6 mb-1"
                 />{" "}
                 {electricityPriceState2050[0]?.electricity_price ?? "N/A"} €/MWh
               </p>

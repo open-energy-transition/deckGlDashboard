@@ -111,7 +111,7 @@ const CapacityComparisionDrawer = ({
                 {Installed_capacity_info.full_name} Comparision
                 <ChartInfoTooltip
                   tooltipInfo={Installed_capacity_info}
-                  className="w-6 h-6 ml-2"
+                  className="w-8 h-8 ml-2 mb-1"
                 />
               </DrawerTitle>
               <DrawerDescription className="text-base">
