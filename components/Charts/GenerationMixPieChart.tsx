@@ -99,7 +99,7 @@ export function GenerationMixPieChart({ data }: Props) {
             Generation Mix{" "}
             <ChartInfoTooltip
               tooltipInfo={Generation_info}
-              className="h-4 w-4 -translate-y-[1px]"
+              className="h-6 w-6 mb-1 -translate-y-[1px]"
             />
           </CardTitle>
           <CardDescription>

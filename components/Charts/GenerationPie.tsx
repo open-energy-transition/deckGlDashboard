@@ -93,7 +93,7 @@ export function GenerationMixGeneral({ data }: Props) {
             Generation Mix{" "}
             <ChartInfoTooltip
               tooltipInfo={Generation_info}
-              className="w-4 h-4"
+              className="w-6 h-6 mb-1"
             />
           </CardTitle>
         </CardHeader>

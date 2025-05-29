@@ -14,8 +14,9 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { InfoCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { RequiredInvestment_info_type } from "../ExplainerText/RequiredInvestment";
+import { useState } from "react";
 
 interface ChartInfoTooltipProps {
   tooltipInfo?:
@@ -31,17 +32,29 @@ const ChartInfoTooltip = ({
   tooltipInfo,
   className,
 }: ChartInfoTooltipProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <HoverCard>
       <HoverCardTrigger
         asChild
-        className={`relative cursor-pointer inline-block `}
+        className={`relative cursor-pointer inline-block`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <InfoCircledIcon
-          className={`${className || ""}`}
-          width={24}
-          height={24}
-        />
+        {isHovered ? (
+          <CircleIcon
+            className={`${className || ""} `}
+            width={24}
+            height={24}
+          />
+        ) : (
+          <InfoCircledIcon
+            className={`${className || ""}`}
+            width={24}
+            height={24}
+          />
+        )}
       </HoverCardTrigger>
       <HoverCardContent className="w-96 p-4 space-y-4">
         <div>
