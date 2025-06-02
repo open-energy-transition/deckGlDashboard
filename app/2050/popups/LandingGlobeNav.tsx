@@ -16,14 +16,11 @@ import {
 } from "@/components/ui/sheet";
 import { useCountry } from "@/components/country-context";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import useSWR from "swr";
-import { Co2EmmisionsPie } from "@/components/Charts/Co2EmmisionsPie";
 import GenerationMixBottomDrawer from "./GenerationmixDrawer";
 import SystemCostDrawer from "./SystemCostDrawer";
 import CapacityComparisionDrawer from "./CapacityComparisionDrawer";
-import { CircleFlag } from "react-circle-flags";
+import CO2EmissionsDrawer from "./CO2EmissionsDrawer";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -84,20 +81,6 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
     }
   }, [selectedCountry]);
 
-  const { data: co2EmissionsData } = useSWR(
-    `/api/co2_emissions/${selectedCountry}/2021`,
-    fetcher,
-    { suspense: false },
-  );
-
-  const [co2Emissions, setCo2Emissions] = useState<DataItem[]>([]);
-
-  useEffect(() => {
-    if (co2EmissionsData?.data) {
-      setCo2Emissions(co2EmissionsData.data);
-    }
-  }, [co2EmissionsData]);
-
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -155,32 +138,11 @@ const MainPageNav = ({ open, setIsOpen }: Props) => {
             isParentOpen={open}
             setIsParentOpen={setIsOpen}
           />
-
-          <Card className="p-6 space-y-4">
-            <h3 className="text-2xl font-bold">
-              <CircleFlag
-                countryCode={selectedCountry.toLowerCase()}
-                height={30}
-                className="aspect-square h-6 inline mr-2 -translate-y-1"
-              />
-              CO2 Emissions (2021)
-            </h3>
-
-            <p className="text-2xl font-semibold tracking-tight">
-              {(
-                co2Emissions?.reduce(
-                  (acc, curr) => acc + (Number(curr.co2_emission) || 0),
-                  0,
-                ) / 1e6
-              ).toLocaleString("en-US", {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-              <span className="text-lg font-normal ml-2">million tCO2</span>
-            </p>
-
-            <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
-          </Card>
+          <CO2EmissionsDrawer
+            selectedCountry={selectedCountry}
+            isParentOpen={open}
+            setIsParentOpen={setIsOpen}
+          />
           <div className="flex items-center space-x-2 pt-4 border-t border-border mt-auto">
             <Switch
               id="theme"
