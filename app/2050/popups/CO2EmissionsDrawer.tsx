@@ -80,12 +80,11 @@ const CO2EmissionsDrawer = ({
             <div>
               <DrawerTitle className="text-4xl">CO2 Emissions data</DrawerTitle>
               <DrawerDescription className="text-base">
-                It is taken from the year 2021 and used as an input for the
-                model.
+                Breakdown of CO<sub>2</sub> Emissions by Source
               </DrawerDescription>
             </div>
           </DrawerHeader>
-          <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
+          <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 mt-4 mx-auto">
             <Card className="p-6 space-y-4">
               <h3 className="text-2xl font-bold">
                 <CircleFlag
@@ -111,9 +110,6 @@ const CO2EmissionsDrawer = ({
 
               <Co2EmmisionsPie data={co2Emissions} costField="co2_emission" />
             </Card>
-          </div>
-          <div className="flex flex-col flex-wrap gap-8 justify-center align-middle items-center w-[100%] lg:w-[50%] p-8 border-t-2 mt-4 border-r-2 mx-auto">
-            <h2 className="w-full text-3xl font-semibold text-card-foreground text-center"></h2>
           </div>
           <DrawerFooter className="w-full border-t">
             <DrawerClose>
